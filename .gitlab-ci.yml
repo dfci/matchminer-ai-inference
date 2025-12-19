@@ -1,0 +1,16 @@
+image: python:3.12-slim
+
+stages:
+  - test
+
+variables:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_CACHE_DIR: "1"
+
+test:
+  stage: test
+  script:
+    - python -m pip install -U pip
+    - python -m pip install -e ".[dev]"
+    - ruff check .
+    - pytest
