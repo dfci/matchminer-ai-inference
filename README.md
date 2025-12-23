@@ -1,43 +1,50 @@
 # mmai
 
-MatchMiner-AI Python package skeleton.
+MatchMiner-AI Python package.
 
-## Status
+This repository contains the Python package that implements the MatchMiner-AI
+pipeline.
 
-This is a minimal scaffold based on `docs/skeleton.md`. All functions are stubs and
-raise `NotImplementedError`.
+## Development
 
-## Install (dev)
+Clone the repository and work from the repo root:
+
+```sh
+git clone https://gitlab.dfci.harvard.edu/ksg/trial-matching/hf-stage/mmai-package.git
+cd mmai-package
+```
+
+We recommend working in a virtual environment:
+
+```sh
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Install the package with development dependencies:
 
 ```sh
 python -m pip install -e ".[dev]"
 ```
 
-## Quick usage
+## Code quality checks
+This repository uses `pre-commit` for local checks at commit time, including:
 
-```python
-from mmai import MMAIPipeline
-from mmai.trials import summarize_trials
-from mmai.patients import summarize_patients
-from mmai.embedding import embed_for_matching
-from mmai.matching import (
-    generate_candidate_matches,
-    reasonable_match_check,
-    exclusion_criteria_check,
-)
+- Python formatting and linting
+- Static type checking
+- Basic repository hygiene (whitespace, file size)
+- Detection of accidentally committed secrets
 
-pipeline = MMAIPipeline()
+To enable the hooks (recommended):
+```sh
+pre-commit install
 ```
 
+Hooks run automatically on `git commit`.
+
 ## Tests
+Run the test suite with:
 
 ```sh
 pytest
-```
-
-## Development
-
-```sh
-pre-commit install
-pre-commit run --all-files
 ```
