@@ -4,12 +4,17 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from mmai.config import MMAIConfig
+
 if TYPE_CHECKING:
     import pandas as pd
 
 
 def summarize_trials(
-    trials: pd.DataFrame, *, return_metadata: bool = False
+    trials: pd.DataFrame,
+    *,
+    config: MMAIConfig | None = None,
+    return_metadata: bool = False,
 ) -> pd.DataFrame | tuple[pd.DataFrame, dict]:
     """
     Summarize clinical trials into clinical spaces and general exclusion criteria.
@@ -57,14 +62,17 @@ def summarize_trials(
         space_reasoning_and_output : str
             Raw LLM response text.
     """
-    from mmai.config import load_default_preset
+    from mmai.config import MMAIConfig, load_default_preset
 
     from .postprocess import postprocess_trial_summaries
     from .summarize import run_llm_summarization
 
-    config = load_default_preset()
-    trials_with_summaries, metadata = run_llm_summarization(trials, config)
-    result = postprocess_trial_summaries(trials_with_summaries, config)
+    resolved_config = config or load_default_preset()
+    if not isinstance(resolved_config, MMAIConfig):
+        raise TypeError("config must be an MMAIConfig instance or None.")
+
+    trials_with_summaries, metadata = run_llm_summarization(trials, resolved_config)
+    result = postprocess_trial_summaries(trials_with_summaries, resolved_config)
     if return_metadata:
         return result, metadata
     return result
