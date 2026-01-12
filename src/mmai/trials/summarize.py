@@ -19,7 +19,6 @@ def summarize_trials_multi_cohort(
     backend: Any,
     *,
     trial_config: dict[str, Any],
-    sampling_params: dict[str, Any],
     primer_filename: str,
     question_filename: str,
 ) -> tuple[list[str], dict[str, Any]]:
@@ -33,7 +32,6 @@ def summarize_trials_multi_cohort(
         backend.generate_from_messages(
             messages_list=messages_list,
             trial_config=trial_config,
-            sampling_params=sampling_params,
         ),
     )
 
@@ -43,7 +41,6 @@ def run_llm_summarization(
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run LLM-based trial summarization."""
     trial_config = dict(config.trial)
-    sampling_params = dict(trial_config.get("sampling_params", {}))
     prompt_files = dict(trial_config.get("prompt_files", {}))
     primer_filename = prompt_files.get("primer", "trial.user.primer.txt")
     question_filename = prompt_files.get("question", "trial.user.question.txt")
@@ -56,7 +53,6 @@ def run_llm_summarization(
         trials_with_summaries["trial_text"].tolist(),
         backend,
         trial_config=trial_config,
-        sampling_params=sampling_params,
         primer_filename=primer_filename,
         question_filename=question_filename,
     )
