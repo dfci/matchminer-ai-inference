@@ -73,6 +73,20 @@ def summarize_trials(
     if not isinstance(resolved_config, MMAIConfig):
         raise TypeError("config must be an MMAIConfig instance or None.")
 
+    required_columns = {
+        "trial_id",
+        "trial_title",
+        "brief_summary",
+        "eligibility_criteria",
+    }
+    missing = required_columns.difference(trials.columns)
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise ValueError(
+            f"summarize_trials requires columns: {', '.join(sorted(required_columns))}. "
+            f"Missing: {missing_list}."
+        )
+
     logger.info("Starting trial summarization for %d trials.", len(trials))
     trials_with_summaries, metadata = run_llm_summarization(trials, resolved_config)
     logger.info("Completed LLM summarization. Beginning postprocessing.")
