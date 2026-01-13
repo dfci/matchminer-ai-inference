@@ -6,6 +6,7 @@ from mmai.config import MMAIConfig
 from mmai.backends import LocalBackend
 from mmai.trials.postprocess import flatten_trial_to_spaces
 from mmai.trials.prompt_builder import build_trial_text, get_filled_trial_prompt
+from mmai.trials import summarize_trials
 from mmai.trials.summarize import run_llm_summarization
 
 
@@ -159,3 +160,51 @@ def test_local_backend_generate_from_messages(monkeypatch):
 
     assert summaries == ["SUM0", "SUM1"]
     assert metadata["model_sha"] == "sha"
+
+
+def test_summarize_trials_includes_debug_columns(monkeypatch):
+    def mock_run_llm_summarization(trials, config):
+        df = pd.DataFrame(
+            [
+                {
+                    "trial_id": "T1",
+                    "trial_text": "TEXT",
+                    "space_reasoning_and_output": (
+                        "assistantfinal\n"
+                        "1. Cancer type allowed: A.\n"
+                        "Boilerplate exclusions:\n"
+                        "No HIV."
+                    ),
+                }
+            ]
+        )
+        return df, {"model_sha": "sha"}
+
+    monkeypatch.setattr(
+        "mmai.trials.summarize.run_llm_summarization", mock_run_llm_summarization
+    )
+
+    config = MMAIConfig(
+        preset_name="default",
+        debug_mode=True,
+        backend="local",
+        trial={
+            "reasoning_marker": "assistantfinal",
+            "boilerplate_marker": "Boilerplate exclusions:",
+        },
+    )
+
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title",
+                "brief_summary": "Brief",
+                "eligibility_criteria": "Criteria",
+            }
+        ]
+    )
+
+    result = summarize_trials(trials, config=config)
+    assert "trial_text" in result.columns
+    assert "space_reasoning_and_output" in result.columns
