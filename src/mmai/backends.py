@@ -55,7 +55,6 @@ class LocalBackend:
         *,
         messages_list: list[list[dict[str, str]]],
         trial_config: Dict[str, Any],
-        model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         from vllm import LLM, SamplingParams
 
@@ -67,8 +66,7 @@ class LocalBackend:
 
         model_metadata = get_model_metadata(
             model_name,
-            cache_dir=model_metadata_cache_dir
-            or trial_config.get("model_metadata_cache_dir"),
+            cache_dir=trial_config.get("model_metadata_cache_dir"),
         )
         llm = LLM(
             model=model_name,
@@ -106,7 +104,6 @@ class RemoteBackend:
         *,
         messages_list: list[list[dict[str, str]]],
         trial_config: Dict[str, Any],
-        model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
