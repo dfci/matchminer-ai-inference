@@ -50,7 +50,7 @@ def get_model_metadata(
 class LocalBackend:
     """Local vLLM-backed implementation."""
 
-    def generate_from_messages(
+    def generate_llm_outputs(
         self,
         *,
         messages_list: list[list[dict[str, str]]],
@@ -99,7 +99,7 @@ class LocalBackend:
 class RemoteBackend:
     """Remote vLLM HTTP backend (stub)."""
 
-    def generate_from_messages(
+    def generate_llm_outputs(
         self,
         *,
         messages_list: list[list[dict[str, str]]],

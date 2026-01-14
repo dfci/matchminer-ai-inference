@@ -11,6 +11,7 @@ from mmai.trials.summarize import run_llm_summarization
 
 
 def test_build_trial_text_normalizes_whitespace():
+    """Ensure trial text normalization collapses whitespace across inputs."""
     trials = pd.DataFrame(
         [
             {
@@ -25,6 +26,7 @@ def test_build_trial_text_normalizes_whitespace():
 
 
 def test_get_filled_trial_prompt_includes_trial_text():
+    """Ensure the prompt contains the trial text and has the right structure."""
     prompts = get_filled_trial_prompt(
         "FIND ME", "trial.user.primer.txt", "trial.user.question.txt"
     )
@@ -35,6 +37,7 @@ def test_get_filled_trial_prompt_includes_trial_text():
 
 
 def test_run_llm_summarization_returns_metadata(monkeypatch):
+    """Verify LLM summarization wiring and metadata return without calling vLLM."""
     mock_backend = MagicMock()
     monkeypatch.setattr("mmai.trials.summarize.get_backend", lambda name: mock_backend)
 
@@ -90,6 +93,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch):
 def test_flatten_trial_to_spaces(
     mock_summarized_data: pd.DataFrame, mock_data_for_embed: pd.DataFrame
 ):
+    """Validate postprocessing output against a fixture-based expected DataFrame."""
     result = flatten_trial_to_spaces(
         mock_summarized_data,
         reasoning_marker="assistantfinal",
@@ -98,7 +102,8 @@ def test_flatten_trial_to_spaces(
     pd.testing.assert_frame_equal(result.reset_index(drop=True), mock_data_for_embed)
 
 
-def test_local_backend_generate_from_messages(monkeypatch):
+def test_local_backend_generate_llm_outputs(monkeypatch):
+    """Without running vLLM, ensure we return outputs and model metadata."""
     mock_llm = MagicMock()
     mock_tokenizer = MagicMock()
     mock_llm.get_tokenizer.return_value = mock_tokenizer
@@ -123,7 +128,7 @@ def test_local_backend_generate_from_messages(monkeypatch):
     )
 
     backend = LocalBackend()
-    summaries, metadata = backend.generate_from_messages(
+    summaries, metadata = backend.generate_llm_outputs(
         messages_list=[
             [{"role": "user", "content": "a"}],
             [{"role": "user", "content": "b"}],
@@ -147,6 +152,8 @@ def test_local_backend_generate_from_messages(monkeypatch):
 
 
 def test_summarize_trials_includes_debug_columns(monkeypatch):
+    """Confirm debug mode adds raw LLM output columns to the final DataFrame."""
+
     def mock_run_llm_summarization(trials, config):
         df = pd.DataFrame(
             [

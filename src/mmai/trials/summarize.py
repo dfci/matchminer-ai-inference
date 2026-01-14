@@ -29,7 +29,7 @@ def summarize_trials_multi_cohort(
     ]
     return cast(
         tuple[list[str], dict[str, Any]],
-        backend.generate_from_messages(
+        backend.generate_llm_outputs(
             messages_list=messages_list,
             trial_config=trial_config,
         ),
