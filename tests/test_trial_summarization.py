@@ -87,31 +87,15 @@ def test_run_llm_summarization_returns_metadata(monkeypatch):
     assert metadata["model_metadata"]["model_sha"] == "sha"
 
 
-def test_flatten_trial_to_spaces():
-    df = pd.DataFrame(
-        [
-            {
-                "trial_id": "T1",
-                "space_reasoning_and_output": (
-                    "assistantfinal\n"
-                    "1. Cancer type allowed: A.\n"
-                    "2. Cancer type allowed: B.\n"
-                    "Boilerplate exclusions:\n"
-                    "Uncontrolled brain metastases."
-                ),
-            }
-        ]
-    )
+def test_flatten_trial_to_spaces(
+    mock_summarized_data: pd.DataFrame, mock_data_for_embed: pd.DataFrame
+):
     result = flatten_trial_to_spaces(
-        df,
+        mock_summarized_data,
         reasoning_marker="assistantfinal",
         boilerplate_marker="Boilerplate exclusions:",
     )
-    assert len(result) == 2
-    assert result["clinical_space_summary"].tolist() == [
-        "Cancer type allowed: A.",
-        "Cancer type allowed: B.",
-    ]
+    pd.testing.assert_frame_equal(result.reset_index(drop=True), mock_data_for_embed)
 
 
 def test_local_backend_generate_from_messages(monkeypatch):
