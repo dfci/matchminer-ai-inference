@@ -97,7 +97,7 @@ def test_flatten_trial_to_spaces():
                     "1. Cancer type allowed: A.\n"
                     "2. Cancer type allowed: B.\n"
                     "Boilerplate exclusions:\n"
-                    "No HIV."
+                    "Uncontrolled brain metastases."
                 ),
             }
         ]
@@ -173,7 +173,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                         "assistantfinal\n"
                         "1. Cancer type allowed: A.\n"
                         "Boilerplate exclusions:\n"
-                        "No HIV."
+                        "Uncontrolled brain metastases."
                     ),
                 }
             ]
