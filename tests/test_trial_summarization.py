@@ -36,7 +36,7 @@ def test_get_filled_trial_prompt_includes_trial_text():
 
 
 def test_run_llm_summarization_returns_metadata(monkeypatch):
-    """Verify LLM summarization wiring and metadata return without calling vLLM."""
+    """Verify LLM summarization wiring and metadata return."""
     mock_backend = MagicMock()
     monkeypatch.setattr("mmai.trials.summarize.get_backend", lambda name: mock_backend)
 
@@ -102,7 +102,7 @@ def test_flatten_trial_to_spaces(
 
 
 def test_local_backend_generate_llm_outputs(monkeypatch):
-    """Without running vLLM, ensure we return outputs and model metadata."""
+    """Ensure our function running vLLM locally return both raw LLM outputs and model metadata."""
     mock_llm = MagicMock()
     mock_tokenizer = MagicMock()
     mock_llm.get_tokenizer.return_value = mock_tokenizer
@@ -151,7 +151,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch):
 
 
 def test_summarize_trials_includes_debug_columns(monkeypatch):
-    """Confirm debug mode adds raw LLM output columns to the final DataFrame."""
+    """Confirm debug mode adds trial text and raw LLM output columns to the final DataFrame."""
 
     def mock_run_llm_summarization(trials, config):
         df = pd.DataFrame(
@@ -201,7 +201,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
 
 
 def test_summarize_trials_lightweight_integration(monkeypatch):
-    """Run summarize_trials end-to-end with a mocked llm call (backend.generate_llm_outputs)."""
+    """Run summarize_trials end-to-end with a mocked LLM call (backend.generate_llm_outputs)."""
 
     captured_messages = {}
 
