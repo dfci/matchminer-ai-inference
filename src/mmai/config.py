@@ -12,7 +12,7 @@ from importlib import resources
 
 @dataclass
 class MMAIConfig:
-    """Minimal configuration container (stub)."""
+    """Minimal configuration container."""
 
     preset_name: str
     debug_mode: bool

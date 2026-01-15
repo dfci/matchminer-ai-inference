@@ -90,7 +90,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch):
 
 
 def test_flatten_trial_to_spaces(
-    mock_summarized_data: pd.DataFrame, mock_data_for_embed: pd.DataFrame
+    mock_summarized_data: pd.DataFrame, expected_flattened_spaces: pd.DataFrame
 ):
     """Validate postprocessing output against a fixture-based expected DataFrame."""
     result = flatten_trial_to_spaces(
@@ -98,7 +98,9 @@ def test_flatten_trial_to_spaces(
         reasoning_marker="assistantfinal",
         boilerplate_marker="Boilerplate exclusions:",
     )
-    pd.testing.assert_frame_equal(result.reset_index(drop=True), mock_data_for_embed)
+    pd.testing.assert_frame_equal(
+        result.reset_index(drop=True), expected_flattened_spaces
+    )
 
 
 def test_local_backend_generate_llm_outputs(monkeypatch):

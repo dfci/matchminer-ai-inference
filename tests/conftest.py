@@ -14,6 +14,7 @@ BOILERPLATE_2 = "History of pneumonitis."
 
 @pytest.fixture
 def mock_summarized_data() -> pd.DataFrame:
+    # post llm summarization, raw LLM output
     summarized = pd.DataFrame(
         [
             {
@@ -50,7 +51,7 @@ def mock_summarized_data() -> pd.DataFrame:
 
 
 @pytest.fixture
-def mock_data_for_embed(mock_summarized_data: pd.DataFrame) -> pd.DataFrame:
+def expected_flattened_spaces(mock_summarized_data: pd.DataFrame) -> pd.DataFrame:
     with_summaries = mock_summarized_data.copy()
     with_summaries["space_output_no_reasoning"] = (
         with_summaries["space_reasoning_and_output"]
