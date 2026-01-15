@@ -1,6 +1,7 @@
 import pandas as pd
 import pytest
 
+from mmai.config import MMAIConfig
 from mmai.trials.postprocess import _strip_numerical_prefix
 
 
@@ -10,6 +11,36 @@ TRIAL_SPACE_3 = "3. Cancer type allowed: C."
 TRIAL_SPACE_4 = "1. Cancer type allowed: D."
 BOILERPLATE_1 = "Uncontrolled brain metastases."
 BOILERPLATE_2 = "History of pneumonitis."
+
+
+@pytest.fixture
+def default_trial_config() -> dict:
+    return {
+        "model_name": "model",
+        "max_model_len": 100,
+        "tensor_parallel_size": 1,
+        "gpu_memory_utilization": 0.9,
+        "sampling_params": {
+            "temperature": 0.0,
+            "top_k": 1,
+            "max_tokens": 10,
+            "repetition_penalty": 1.0,
+        },
+        "prompt_files": {
+            "primer": "trial.user.primer.txt",
+            "question": "trial.user.question.txt",
+        },
+    }
+
+
+@pytest.fixture
+def default_config(default_trial_config: dict) -> MMAIConfig:
+    return MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        backend="local",
+        trial=default_trial_config,
+    )
 
 
 @pytest.fixture

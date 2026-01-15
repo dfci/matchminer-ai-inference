@@ -35,7 +35,7 @@ def test_get_filled_trial_prompt_includes_trial_text():
     assert "FIND ME" in prompts[1]["content"]
 
 
-def test_run_llm_summarization_returns_metadata(monkeypatch):
+def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     """Verify LLM summarization wiring and metadata return."""
     mock_backend = MagicMock()
     monkeypatch.setattr("mmai.trials.summarize.get_backend", lambda name: mock_backend)
@@ -49,28 +49,6 @@ def test_run_llm_summarization_returns_metadata(monkeypatch):
         "mmai.trials.summarize.summarize_trials_multi_cohort", mock_summarize
     )
 
-    config = MMAIConfig(
-        preset_name="default",
-        debug_mode=False,
-        backend="local",
-        trial={
-            "model_name": "model",
-            "max_model_len": 100,
-            "tensor_parallel_size": 1,
-            "gpu_memory_utilization": 0.9,
-            "sampling_params": {
-                "temperature": 0.0,
-                "top_k": 1,
-                "max_tokens": 10,
-                "repetition_penalty": 1.0,
-            },
-            "prompt_files": {
-                "primer": "trial.user.primer.txt",
-                "question": "trial.user.question.txt",
-            },
-        },
-    )
-
     trials = pd.DataFrame(
         [
             {
@@ -82,11 +60,47 @@ def test_run_llm_summarization_returns_metadata(monkeypatch):
         ]
     )
 
-    df, metadata = run_llm_summarization(trials, config)
+    df, metadata = run_llm_summarization(trials, default_config)
     assert df["space_reasoning_and_output"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
     assert metadata["config_snapshot"]["trial"]["model_name"] == "model"
     assert metadata["model_metadata"]["model_sha"] == "sha"
+
+
+def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
+    """Ensure LLM outputs are aligned with the input trial order."""
+    mock_backend = MagicMock()
+    monkeypatch.setattr("mmai.trials.summarize.get_backend", lambda name: mock_backend)
+
+    mock_summarize = MagicMock()
+    mock_summarize.return_value = (
+        ["SUM0", "SUM1"],
+        {"model_sha": "sha"},
+    )
+    monkeypatch.setattr(
+        "mmai.trials.summarize.summarize_trials_multi_cohort", mock_summarize
+    )
+
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title 1",
+                "brief_summary": "Brief 1",
+                "eligibility_criteria": "Criteria 1",
+            },
+            {
+                "trial_id": "T2",
+                "trial_title": "Title 2",
+                "brief_summary": "Brief 2",
+                "eligibility_criteria": "Criteria 2",
+            },
+        ]
+    )
+
+    df, _ = run_llm_summarization(trials, default_config)
+    assert df["trial_id"].tolist() == ["T1", "T2"]
+    assert df["space_reasoning_and_output"].tolist() == ["SUM0", "SUM1"]
 
 
 def test_flatten_trial_to_spaces(
@@ -103,7 +117,7 @@ def test_flatten_trial_to_spaces(
     )
 
 
-def test_local_backend_generate_llm_outputs(monkeypatch):
+def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
     """Ensure our function running vLLM locally return both raw LLM outputs and model metadata."""
     mock_llm = MagicMock()
     mock_tokenizer = MagicMock()
@@ -134,18 +148,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch):
             [{"role": "user", "content": "a"}],
             [{"role": "user", "content": "b"}],
         ],
-        trial_config={
-            "model_name": "model",
-            "max_model_len": 100,
-            "tensor_parallel_size": 1,
-            "gpu_memory_utilization": 0.9,
-            "sampling_params": {
-                "temperature": 0.0,
-                "top_k": 1,
-                "max_tokens": 10,
-                "repetition_penalty": 1.0,
-            },
-        },
+        trial_config=default_trial_config,
     )
 
     assert summaries == ["SUM0", "SUM1"]
