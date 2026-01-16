@@ -17,3 +17,25 @@ trial:
   reasoning_marker: assistantfinal
   boilerplate_marker: "Boilerplate exclusions:"
   model_metadata_cache_dir: ".mmai_cache/model_metadata"
+patient:
+  model_name: openai/gpt-oss-120b
+  max_model_len: 120000
+  tensor_parallel_size: 1
+  gpu_memory_utilization: 0.9
+  sampling_params:
+    temperature: 0.0
+    top_k: 1
+    max_tokens: 7000
+    repetition_penalty: 1.2
+  prompt_files:
+    primer: patient.user.primer.txt
+    question: patient.user.question.txt
+  reasoning_marker: assistantfinal
+  boilerplate_marker: "Boilerplate:"
+  model_metadata_cache_dir: ".mmai_cache/model_metadata"
+  text_token_threshold: 115000
+  tagger:
+    model_name: "ksg-dfci/TinyBertOncoTagger-1225"
+    device: cuda
+    positive_tag_cutoff: 0.1
+    negative_tag_cutoff: 0.9
