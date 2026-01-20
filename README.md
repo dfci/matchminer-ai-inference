@@ -5,6 +5,8 @@ MatchMiner-AI Python package.
 This repository contains the Python package that implements the MatchMiner-AI
 pipeline.
 
+Requires Python 3.12+.
+
 ## Development
 
 Clone the repository and work from the repo root:
@@ -25,6 +27,19 @@ Install the package with development dependencies:
 
 ```sh
 python -m pip install -e ".[dev]"
+```
+
+Install optional local LLM dependencies:
+
+```sh
+python -m pip install -e ".[vllm]"
+```
+
+Note: the first local LLM run will download large model weights and can be slow.
+If you already have the weights cached, point Hugging Face to that location, e.g.:
+
+```sh
+export HF_HOME=/path/to/hf_cache
 ```
 
 ## Code quality checks

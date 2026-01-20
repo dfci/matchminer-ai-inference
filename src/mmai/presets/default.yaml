@@ -1,1 +1,19 @@
 version: 0
+debug_mode: false
+backend: local
+trial:
+  model_name: openai/gpt-oss-120b
+  max_model_len: 15000
+  tensor_parallel_size: 1
+  gpu_memory_utilization: 0.9
+  sampling_params:
+    temperature: 0.0
+    top_k: 1
+    max_tokens: 10000
+    repetition_penalty: 1.3
+  prompt_files:
+    primer: trial.user.primer.txt
+    question: trial.user.question.txt
+  reasoning_marker: assistantfinal
+  boilerplate_marker: "Boilerplate exclusions:"
+  model_metadata_cache_dir: ".mmai_cache/model_metadata"
