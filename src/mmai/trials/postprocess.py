@@ -90,10 +90,8 @@ def postprocess_trial_summaries(
 ) -> pd.DataFrame:
     """Postprocess trial summaries into clinical spaces."""
     trial_config = dict(config.trial)
-    reasoning_marker = trial_config.get("reasoning_marker", "assistantfinal")
-    boilerplate_marker = trial_config.get(
-        "boilerplate_marker", "Boilerplate exclusions:"
-    )
+    reasoning_marker = trial_config["reasoning_marker"]
+    boilerplate_marker = trial_config["boilerplate_marker"]
 
     spaces = flatten_trial_to_spaces(
         trials_with_summaries,
