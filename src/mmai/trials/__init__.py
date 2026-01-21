@@ -93,7 +93,14 @@ def summarize_trials(
     result = postprocess_trial_summaries(trials_with_summaries, resolved_config)
     logger.info("Postprocessing complete. Produced %d rows.", len(result))
     if return_metadata:
-        return result, metadata
+        return result, {
+            "config_snapshot": {
+                "trial": resolved_config.trial,
+            },
+            "model_metadata": {
+                "trial_summarizer": metadata["model_metadata"],
+            },
+        }
     return result
 
 
