@@ -75,12 +75,14 @@ def _extract_relevant_text_from_notes(
     backend: Any,
     *,
     tagger_config: dict,
+    model_metadata_cache_dir: str | None,
 ) -> tuple[pd.Series, dict[str, Any]]:
     negative_tag_cutoff = float(tagger_config["negative_tag_cutoff"])
     positive_tag_cutoff = float(tagger_config["positive_tag_cutoff"])
     predictions, model_metadata = backend.tag_excerpts(
         excerpts_frame["excerpt"].tolist(),
         tagger_config=tagger_config,
+        model_metadata_cache_dir=model_metadata_cache_dir,
     )
     predictions_frame = pd.DataFrame(predictions)
     excerpts_frame = excerpts_frame.copy()
@@ -109,6 +111,7 @@ def extract_relevant_text_from_patient(
     backend: Any,
     *,
     tagger_config: dict,
+    model_metadata_cache_dir: str | None,
 ) -> tuple[pd.Series, dict[str, Any]]:
     """Extract relevant snippets for a single patient."""
     note_rows = note_rows.copy()
@@ -124,6 +127,7 @@ def extract_relevant_text_from_patient(
             excerpts_frame=excerpts_frame,
             backend=backend,
             tagger_config=tagger_config,
+            model_metadata_cache_dir=model_metadata_cache_dir,
         )
     return (
         pd.Series(
@@ -182,10 +186,11 @@ def extract_relevant_sentences(
         extract_relevant_text_from_patient,
         backend=backend,
         tagger_config=tagger_config,
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
     )
     result_df = grouped.apply(lambda item: item[0]).reset_index(drop=True)
     metadata = {
-        "config_snapshot": {"patient": patient_config},
+        "config_snapshot": resolved_config.raw,
         "model_metadata": grouped.iloc[0][1] if len(grouped) else {},
     }
     return result_df, metadata
