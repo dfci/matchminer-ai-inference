@@ -188,6 +188,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
             "boilerplate_marker": "Boilerplate exclusions:",
         },
         patient={},
+        model_metadata_cache_dir=None,
         raw={},
     )
 

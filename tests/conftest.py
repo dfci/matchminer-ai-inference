@@ -44,6 +44,7 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         backend="local",
         trial=default_trial_config,
         patient={},
+        model_metadata_cache_dir=None,
         raw={},
     )
 
