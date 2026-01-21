@@ -75,10 +75,10 @@ def _extract_relevant_text_from_notes(
     backend: Any,
     *,
     tagger_config: dict,
-) -> pd.Series:
+) -> tuple[pd.Series, dict[str, Any]]:
     negative_tag_cutoff = float(tagger_config["negative_tag_cutoff"])
     positive_tag_cutoff = float(tagger_config["positive_tag_cutoff"])
-    predictions = backend.tag_excerpts(
+    predictions, model_metadata = backend.tag_excerpts(
         excerpts_frame["excerpt"].tolist(),
         tagger_config=tagger_config,
     )
@@ -95,9 +95,12 @@ def _extract_relevant_text_from_notes(
 
     excerpts_frame = excerpts_frame[negative_condition | positive_condition].copy()
 
-    return _format_relevant_text(
-        patient_id=patient_id,
-        excerpts_frame=excerpts_frame,
+    return (
+        _format_relevant_text(
+            patient_id=patient_id,
+            excerpts_frame=excerpts_frame,
+        ),
+        model_metadata,
     )
 
 
@@ -106,7 +109,7 @@ def extract_relevant_text_from_patient(
     backend: Any,
     *,
     tagger_config: dict,
-) -> pd.Series:
+) -> tuple[pd.Series, dict[str, Any]]:
     """Extract relevant snippets for a single patient."""
     note_rows = note_rows.copy()
     note_rows["note_date"] = pd.to_datetime(note_rows["note_date"])
@@ -122,11 +125,14 @@ def extract_relevant_text_from_patient(
             backend=backend,
             tagger_config=tagger_config,
         )
-    return pd.Series(
-        {
-            "patient_id": note_rows["patient_id"].iloc[0],
-            "patient_long_text": "",
-        }
+    return (
+        pd.Series(
+            {
+                "patient_id": note_rows["patient_id"].iloc[0],
+                "patient_long_text": "",
+            }
+        ),
+        {"model_name": tagger_config.get("model_name")},
     )
 
 
@@ -134,7 +140,7 @@ def extract_relevant_sentences(
     df: pd.DataFrame,
     *,
     config: MMAIConfig | None = None,
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     """
     Extract relevant sentences from longitudinal patient notes.
 
@@ -156,9 +162,9 @@ def extract_relevant_sentences(
 
     Returns
     -------
-    pd.DataFrame
-        Patient-level DataFrame. One row per patient, with a concatenated
-        `patient_long_text` field containing relevant excerpts.
+    tuple[pd.DataFrame, dict[str, Any]]
+        Patient-level DataFrame (one row per patient) and metadata
+        about the tagger model and configuration.
     """
     resolved_config = config or load_default_preset()
     if not isinstance(resolved_config, MMAIConfig):
@@ -172,16 +178,17 @@ def extract_relevant_sentences(
     df.loc[:, "note_text"] = df["note_text"].astype(str)
     df.loc[:, "note_date"] = pd.to_datetime(df["note_date"])
 
-    result_df = (
-        df.groupby("patient_id")
-        .apply(
-            extract_relevant_text_from_patient,
-            backend=backend,
-            tagger_config=tagger_config,
-        )
-        .reset_index(drop=True)
+    grouped = df.groupby("patient_id").apply(
+        extract_relevant_text_from_patient,
+        backend=backend,
+        tagger_config=tagger_config,
     )
-    return result_df
+    result_df = grouped.apply(lambda item: item[0]).reset_index(drop=True)
+    metadata = {
+        "config_snapshot": {"patient": patient_config},
+        "model_metadata": grouped.iloc[0][1] if len(grouped) else {},
+    }
+    return result_df, metadata
 
 
 __all__ = ["extract_relevant_sentences"]

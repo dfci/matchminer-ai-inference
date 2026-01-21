@@ -17,6 +17,7 @@ def create_model_metadata(model_name: str) -> Dict[str, Any]:
 
     metadata = model_info(model_name)
     return {
+        "model_name": model_name,
         "model_sha": metadata.sha,
         "created_at": metadata.created_at.isoformat(),
         "last_modified": metadata.last_modified.isoformat(),
@@ -99,7 +100,7 @@ class LocalBackend:
         excerpts: list[str],
         *,
         tagger_config: Dict[str, Any],
-    ) -> list[dict[str, Any]]:
+    ) -> Tuple[list[dict[str, Any]], Dict[str, Any]]:
         """Tag note excerpts using a local text classification pipeline."""
         from transformers import AutoTokenizer, pipeline
 
@@ -115,7 +116,11 @@ class LocalBackend:
             max_length=128,
             device=device,
         )
-        return cast(list[dict[str, Any]], tagger_pipeline(excerpts))
+        model_metadata = get_model_metadata(weights_path_or_model_name)
+        return (
+            cast(list[dict[str, Any]], tagger_pipeline(excerpts)),
+            model_metadata,
+        )
 
 
 @dataclass
@@ -135,7 +140,7 @@ class RemoteBackend:
         excerpts: list[str],
         *,
         tagger_config: Dict[str, Any],
-    ) -> list[dict[str, Any]]:
+    ) -> Tuple[list[dict[str, Any]], Dict[str, Any]]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
 
