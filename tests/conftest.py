@@ -30,6 +30,9 @@ def default_trial_config() -> dict:
             "primer": "trial.user.primer.txt",
             "question": "trial.user.question.txt",
         },
+        "reasoning_marker": "assistantfinal",
+        "boilerplate_marker": "Boilerplate exclusions:",
+        "model_metadata_cache_dir": ".mmai_cache/model_metadata",
     }
 
 
@@ -40,6 +43,9 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         debug_mode=False,
         backend="local",
         trial=default_trial_config,
+        patient={},
+        model_metadata_cache_dir=None,
+        raw={},
     )
 
 

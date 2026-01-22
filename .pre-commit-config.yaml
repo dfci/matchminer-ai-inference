@@ -3,7 +3,9 @@ repos:
     rev: v0.6.8
     hooks:
       - id: ruff
+        exclude: ^examples/
       - id: ruff-format
+        exclude: ^examples/
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
@@ -14,8 +16,11 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-added-large-files
+        exclude: ^examples/
       - id: end-of-file-fixer
+        exclude: ^examples/
       - id: trailing-whitespace
+        exclude: ^examples/
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.18.4
     hooks:

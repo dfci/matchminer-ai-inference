@@ -187,6 +187,9 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
             "reasoning_marker": "assistantfinal",
             "boilerplate_marker": "Boilerplate exclusions:",
         },
+        patient={},
+        model_metadata_cache_dir=None,
+        raw={},
     )
 
     trials = pd.DataFrame(
@@ -211,7 +214,9 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
     captured_messages = {}
 
     class MockBackend:
-        def generate_llm_outputs(self, *, messages_list, trial_config):
+        def generate_llm_outputs(
+            self, *, messages_list, trial_config, model_metadata_cache_dir=None
+        ):
             captured_messages["messages_list"] = messages_list
             return (
                 [

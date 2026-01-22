@@ -32,7 +32,7 @@ python -m pip install -e ".[dev]"
 Install optional local LLM dependencies:
 
 ```sh
-python -m pip install -e ".[vllm]"
+python -m pip install -e ".[local]"
 ```
 
 Note: the first local LLM run will download large model weights and can be slow.

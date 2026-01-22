@@ -21,6 +21,7 @@ def summarize_trials_multi_cohort(
     trial_config: dict[str, Any],
     primer_filename: str,
     question_filename: str,
+    model_metadata_cache_dir: str | None = None,
 ) -> tuple[list[str], dict[str, Any]]:
     """Summarize trials using the configured backend."""
     messages_list = [
@@ -32,6 +33,7 @@ def summarize_trials_multi_cohort(
         backend.generate_llm_outputs(
             messages_list=messages_list,
             trial_config=trial_config,
+            model_metadata_cache_dir=model_metadata_cache_dir,
         ),
     )
 
@@ -55,6 +57,7 @@ def run_llm_summarization(
         trial_config=trial_config,
         primer_filename=primer_filename,
         question_filename=question_filename,
+        model_metadata_cache_dir=config.model_metadata_cache_dir,
     )
 
     trials_with_summaries["space_reasoning_and_output"] = trial_summaries
