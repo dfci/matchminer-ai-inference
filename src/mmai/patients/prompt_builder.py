@@ -1,8 +1,45 @@
-"""Patient prompt builder stubs."""
+"""Patient prompt builders."""
 
 from __future__ import annotations
 
+from importlib import resources
 
-def build_patient_summary_prompt(*args: object, **kwargs: object) -> str:
-    """Build a patient summarization prompt (stub)."""
-    raise NotImplementedError("Patient prompt builder not implemented in skeleton.")
+
+def load_prompt_text(filename: str) -> str:
+    """Load a prompt text file from the package."""
+    prompt_path = resources.files("mmai.prompts").joinpath(filename)
+    with prompt_path.open("r", encoding="utf-8") as handle:
+        return handle.read()
+
+
+def format_patient_text(
+    patient_text: str, primer_filename: str, question_filename: str
+) -> str:
+    """Wrap patient text in the configured prompt template."""
+    return (
+        load_prompt_text(primer_filename)
+        + "The excerpt for you to summarize is:\n"
+        + patient_text
+        + "\n"
+        + load_prompt_text(question_filename)
+    )
+
+
+def get_filled_patient_prompt(
+    patient_text: str, primer_filename: str, question_filename: str
+) -> list[dict[str, str]]:
+    """Prepare the chat-style prompt for a patient summary."""
+    return [
+        {
+            "role": "system",
+            "content": """
+Reasoning: high.
+""",
+        },
+        {
+            "role": "user",
+            "content": format_patient_text(
+                patient_text, primer_filename, question_filename
+            ),
+        },
+    ]
