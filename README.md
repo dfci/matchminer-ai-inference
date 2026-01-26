@@ -19,7 +19,7 @@ cd mmai-package
 We recommend working in a virtual environment:
 
 ```sh
-python3.12 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
 ```
 
