@@ -66,7 +66,7 @@ def summarize_from_relevant_sentences(
 
     summaries, model_metadata = backend.generate_llm_outputs(
         messages_list=messages_list,
-        trial_config=patient_config,
+        llm_config=patient_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
     )
 

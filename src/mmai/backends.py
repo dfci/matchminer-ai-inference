@@ -55,16 +55,16 @@ class LocalBackend:
         self,
         *,
         messages_list: list[list[dict[str, str]]],
-        trial_config: Dict[str, Any],
+        llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         from vllm import LLM, SamplingParams
 
-        model_name = trial_config["model_name"]
-        max_model_len = trial_config["max_model_len"]
-        tensor_parallel_size = trial_config["tensor_parallel_size"]
-        gpu_memory_utilization = trial_config["gpu_memory_utilization"]
-        sampling_params = dict(trial_config["sampling_params"])
+        model_name = llm_config["model_name"]
+        max_model_len = llm_config["max_model_len"]
+        tensor_parallel_size = llm_config["tensor_parallel_size"]
+        gpu_memory_utilization = llm_config["gpu_memory_utilization"]
+        sampling_params = dict(llm_config["sampling_params"])
 
         model_metadata = get_model_metadata(
             model_name,
@@ -160,7 +160,7 @@ class RemoteBackend:
         self,
         *,
         messages_list: list[list[dict[str, str]]],
-        trial_config: Dict[str, Any],
+        llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         raise NotImplementedError("Remote backend is not implemented yet.")

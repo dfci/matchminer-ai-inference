@@ -32,7 +32,7 @@ def summarize_trials_multi_cohort(
         tuple[list[str], dict[str, Any]],
         backend.generate_llm_outputs(
             messages_list=messages_list,
-            trial_config=trial_config,
+            llm_config=trial_config,
             model_metadata_cache_dir=model_metadata_cache_dir,
         ),
     )
