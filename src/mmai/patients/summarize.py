@@ -13,31 +13,6 @@ from .postprocess import postprocess_patient_summaries
 from .prompt_builder import get_filled_patient_prompt
 
 
-def _truncate_patient_texts(
-    patient_texts: list[str],
-    *,
-    model_name: str,
-    text_token_threshold: int,
-) -> list[str]:
-    """Truncate overly long patient texts using the model tokenizer."""
-    from transformers import AutoTokenizer
-
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    truncated: list[str] = []
-    for patient_text in patient_texts:
-        patient_text_tokens = tokenizer(
-            patient_text, add_special_tokens=False
-        ).input_ids
-        if len(patient_text_tokens) > text_token_threshold:
-            first_part = patient_text_tokens[: text_token_threshold // 2]
-            last_part = patient_text_tokens[-text_token_threshold // 2 :]
-            patient_text = (
-                tokenizer.decode(first_part) + " ... " + tokenizer.decode(last_part)
-            )
-        truncated.append(patient_text)
-    return truncated
-
-
 def summarize_from_relevant_sentences(
     df: pd.DataFrame,
     config: MMAIConfig | None = None,
@@ -67,23 +42,21 @@ def summarize_from_relevant_sentences(
         raise TypeError("config must be an MMAIConfig instance or None.")
 
     patient_config = dict(resolved_config.patient)
-    model_name = patient_config["model_name"]
     prompt_files = dict(patient_config["prompt_files"])
     primer_filename = prompt_files["primer"]
     question_filename = prompt_files["question"]
 
     patient_long_text_col = "patient_long_text"
-    text_token_threshold = int(patient_config["text_token_threshold"])
 
     df = df.copy()
     df = df[df[patient_long_text_col] != ""]
     df = df.dropna(subset=[patient_long_text_col])
 
+    backend = get_backend(resolved_config.backend)
     patient_texts = df[patient_long_text_col].astype(str).tolist()
-    truncated_texts = _truncate_patient_texts(
+    truncated_texts = backend.truncate_texts(
         patient_texts,
-        model_name=model_name,
-        text_token_threshold=text_token_threshold,
+        patient_config=patient_config,
     )
 
     messages_list = [
@@ -91,7 +64,6 @@ def summarize_from_relevant_sentences(
         for patient_text in truncated_texts
     ]
 
-    backend = get_backend(resolved_config.backend)
     summaries, model_metadata = backend.generate_llm_outputs(
         messages_list=messages_list,
         trial_config=patient_config,

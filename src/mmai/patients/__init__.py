@@ -92,7 +92,7 @@ def summarize_patients(
     logger.info("Extracted relevant text for %d patients.", len(relevant_sentences))
 
     summaries, metadata = summarize_from_relevant_sentences(
-        relevant_sentences, resolved_config
+        relevant_sentences, config=resolved_config
     )
     logger.info("Patient summarization complete. Produced %d rows.", len(summaries))
     if return_metadata:

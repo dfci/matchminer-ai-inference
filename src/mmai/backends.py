@@ -127,6 +127,30 @@ class LocalBackend:
             model_metadata,
         )
 
+    def truncate_texts(
+        self,
+        texts: list[str],
+        *,
+        patient_config: Dict[str, Any],
+    ) -> list[str]:
+        """Truncate long texts using the model tokenizer."""
+        from transformers import AutoTokenizer
+
+        model_name = patient_config["model_name"]
+        text_token_threshold = int(patient_config["text_token_threshold"])
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        truncated: list[str] = []
+        for text in texts:
+            text_tokens = tokenizer(text, add_special_tokens=False).input_ids
+            if len(text_tokens) > text_token_threshold:
+                first_part = text_tokens[: text_token_threshold // 2]
+                last_part = text_tokens[-text_token_threshold // 2 :]
+                text = (
+                    tokenizer.decode(first_part) + " ... " + tokenizer.decode(last_part)
+                )
+            truncated.append(text)
+        return truncated
+
 
 @dataclass
 class RemoteBackend:
@@ -148,6 +172,14 @@ class RemoteBackend:
         tagger_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[dict[str, Any]], Dict[str, Any]]:
+        raise NotImplementedError("Remote backend is not implemented yet.")
+
+    def truncate_texts(
+        self,
+        texts: list[str],
+        *,
+        patient_config: Dict[str, Any],
+    ) -> list[str]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
 
