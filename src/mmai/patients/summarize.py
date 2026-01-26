@@ -73,7 +73,7 @@ def summarize_from_relevant_sentences(
     df["original_patient_summary"] = summaries
     df = postprocess_patient_summaries(df, resolved_config)
     metadata = {
-        "config_snapshot": {"patient": patient_config},
+        "config_snapshot": resolved_config.raw,
         "model_metadata": model_metadata,
     }
     return df, metadata
