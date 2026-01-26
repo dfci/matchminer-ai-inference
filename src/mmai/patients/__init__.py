@@ -22,7 +22,7 @@ def summarize_patients(
 ) -> pd.DataFrame | tuple[pd.DataFrame, dict]:
     """
     Summarize longitudinal patient notes into a cancer history summary and
-    evidence related to general exclusion criteria.
+    evidence related to general clinical trial exclusion criteria.
 
     Parameters
     ----------
