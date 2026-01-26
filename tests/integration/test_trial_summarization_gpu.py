@@ -26,6 +26,15 @@ def test_trial_summarization_gpu_smoke():
         / "scheduled__2025-09-04T230000+0000.trials_for_summarize.csv"
     )
     trials = pd.read_csv(data_path, nrows=2)
+    trials = trials.rename(
+        columns={
+            "oncore_id": "trial_id",
+            "title": "trial_title",
+        }
+    )
+    trials = trials[
+        ["trial_id", "trial_title", "brief_summary", "eligibility_criteria"]
+    ]
 
     summaries, metadata = summarize_trials(trials, return_metadata=True)
 

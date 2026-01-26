@@ -26,6 +26,15 @@ def test_patient_summarization_gpu_smoke():
         / "2026_01_16_dummy_notes.csv"
     )
     notes = pd.read_csv(data_path, nrows=3)
+    notes = notes.rename(
+        columns={
+            "DFCI_MRN": "patient_id",
+            "RPT_TEXT": "note_text",
+            "NOTE_SOURCE": "note_type",
+            "EVENT_DATE": "note_date",
+        }
+    )
+    notes = notes[["patient_id", "note_text", "note_type", "note_date"]]
 
     summaries, metadata = summarize_patients(notes, return_metadata=True)
 

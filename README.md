@@ -19,7 +19,7 @@ cd mmai-package
 We recommend working in a virtual environment:
 
 ```sh
-python -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 ```
 
@@ -62,4 +62,10 @@ Run the test suite with:
 
 ```sh
 pytest
+```
+
+GPU integration tests (requires CUDA + model downloads):
+
+```sh
+pytest -m resource_heavy
 ```
