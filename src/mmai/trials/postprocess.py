@@ -53,10 +53,12 @@ def flatten_trial_to_spaces(
     trials_with_summaries["space_text"] = trials_with_summaries[
         "space_text"
     ].str.strip()
-    trials_with_summaries["boilerplate_text"] = trials_with_summaries[
-        "boilerplate_text"
-    ].str.strip()
-    trials_with_summaries["boilerplate_text"].fillna("None", inplace=True)
+    trials_with_summaries["boilerplate_text"] = (
+        trials_with_summaries["boilerplate_text"]
+        .str.strip()
+        .fillna("None")
+        .replace("", "None")
+    )
 
     frames: list[pd.DataFrame] = []
     for i in range(trials_with_summaries.shape[0]):
