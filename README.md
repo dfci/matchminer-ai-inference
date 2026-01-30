@@ -63,3 +63,9 @@ Run the test suite with:
 ```sh
 pytest
 ```
+
+GPU integration tests (requires CUDA + model downloads):
+
+```sh
+pytest -m resource_heavy
+```

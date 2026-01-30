@@ -55,16 +55,16 @@ class LocalBackend:
         self,
         *,
         messages_list: list[list[dict[str, str]]],
-        trial_config: Dict[str, Any],
+        llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         from vllm import LLM, SamplingParams
 
-        model_name = trial_config["model_name"]
-        max_model_len = trial_config["max_model_len"]
-        tensor_parallel_size = trial_config["tensor_parallel_size"]
-        gpu_memory_utilization = trial_config["gpu_memory_utilization"]
-        sampling_params = dict(trial_config["sampling_params"])
+        model_name = llm_config["model_name"]
+        max_model_len = llm_config["max_model_len"]
+        tensor_parallel_size = llm_config["tensor_parallel_size"]
+        gpu_memory_utilization = llm_config["gpu_memory_utilization"]
+        sampling_params = dict(llm_config["sampling_params"])
 
         model_metadata = get_model_metadata(
             model_name,
@@ -120,13 +120,36 @@ class LocalBackend:
         )
         model_metadata = get_model_metadata(
             weights_path_or_model_name,
-            cache_dir=model_metadata_cache_dir
-            or tagger_config.get("model_metadata_cache_dir"),
+            cache_dir=model_metadata_cache_dir,
         )
         return (
             cast(list[dict[str, Any]], tagger_pipeline(excerpts)),
             model_metadata,
         )
+
+    def truncate_texts(
+        self,
+        texts: list[str],
+        *,
+        patient_config: Dict[str, Any],
+    ) -> list[str]:
+        """Truncate long texts using the model tokenizer."""
+        from transformers import AutoTokenizer
+
+        model_name = patient_config["model_name"]
+        text_token_threshold = int(patient_config["text_token_threshold"])
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        truncated: list[str] = []
+        for text in texts:
+            text_tokens = tokenizer(text, add_special_tokens=False).input_ids
+            if len(text_tokens) > text_token_threshold:
+                first_part = text_tokens[: text_token_threshold // 2]
+                last_part = text_tokens[-text_token_threshold // 2 :]
+                text = (
+                    tokenizer.decode(first_part) + " ... " + tokenizer.decode(last_part)
+                )
+            truncated.append(text)
+        return truncated
 
 
 @dataclass
@@ -137,7 +160,7 @@ class RemoteBackend:
         self,
         *,
         messages_list: list[list[dict[str, str]]],
-        trial_config: Dict[str, Any],
+        llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any]]:
         raise NotImplementedError("Remote backend is not implemented yet.")
@@ -149,6 +172,14 @@ class RemoteBackend:
         tagger_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[dict[str, Any]], Dict[str, Any]]:
+        raise NotImplementedError("Remote backend is not implemented yet.")
+
+    def truncate_texts(
+        self,
+        texts: list[str],
+        *,
+        patient_config: Dict[str, Any],
+    ) -> list[str]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
 

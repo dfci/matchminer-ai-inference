@@ -148,7 +148,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
             [{"role": "user", "content": "a"}],
             [{"role": "user", "content": "b"}],
         ],
-        trial_config=default_trial_config,
+        llm_config=default_trial_config,
     )
 
     assert summaries == ["SUM0", "SUM1"]
@@ -215,7 +215,7 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
 
     class MockBackend:
         def generate_llm_outputs(
-            self, *, messages_list, trial_config, model_metadata_cache_dir=None
+            self, *, messages_list, llm_config, model_metadata_cache_dir=None
         ):
             captured_messages["messages_list"] = messages_list
             return (

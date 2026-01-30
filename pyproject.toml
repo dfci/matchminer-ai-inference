@@ -51,6 +51,7 @@ target-version = "py312"
 
 [tool.mypy]
 python_version = "3.12"
+mypy_path = ["src"]
 warn_unused_ignores = true
 warn_redundant_casts = true
 warn_return_any = true

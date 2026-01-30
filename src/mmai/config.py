@@ -37,11 +37,11 @@ def load_preset(name: str) -> MMAIConfig:
     data = _load_preset_data(name)
     return MMAIConfig(
         preset_name=name,
-        debug_mode=bool(data.get("debug_mode", False)),
-        backend=str(data.get("backend", "local")),
-        trial=dict(data.get("trial", {})),
-        patient=dict(data.get("patient", {})),
-        model_metadata_cache_dir=data.get("model_metadata_cache_dir"),
+        debug_mode=bool(data["debug_mode"]),
+        backend=str(data["backend"]),
+        trial=dict(data["trial"]),
+        patient=dict(data["patient"]),
+        model_metadata_cache_dir=data["model_metadata_cache_dir"],
         raw=data,
     )
 

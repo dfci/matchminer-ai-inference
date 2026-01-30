@@ -137,7 +137,7 @@ def extract_relevant_text_from_patient(
                 "patient_long_text": "",
             }
         ),
-        {"model_name": tagger_config.get("model_name")},
+        {"model_name": tagger_config["model_name"]},
     )
 
 

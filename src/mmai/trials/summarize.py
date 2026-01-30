@@ -32,7 +32,7 @@ def summarize_trials_multi_cohort(
         tuple[list[str], dict[str, Any]],
         backend.generate_llm_outputs(
             messages_list=messages_list,
-            trial_config=trial_config,
+            llm_config=trial_config,
             model_metadata_cache_dir=model_metadata_cache_dir,
         ),
     )
@@ -43,9 +43,9 @@ def run_llm_summarization(
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Run LLM-based trial summarization."""
     trial_config = dict(config.trial)
-    prompt_files = dict(trial_config.get("prompt_files", {}))
-    primer_filename = prompt_files.get("primer", "trial.user.primer.txt")
-    question_filename = prompt_files.get("question", "trial.user.question.txt")
+    prompt_files = dict(trial_config["prompt_files"])
+    primer_filename = prompt_files["primer"]
+    question_filename = prompt_files["question"]
 
     backend = get_backend(config.backend)
 
