@@ -5,10 +5,30 @@ from mmai.config import MMAIConfig
 from mmai.trials.postprocess import _strip_numerical_prefix
 
 
-TRIAL_SPACE_1 = "1. Cancer type allowed: A."
-TRIAL_SPACE_2 = "2. Cancer type allowed: B."
-TRIAL_SPACE_3 = "3. Cancer type allowed: C."
-TRIAL_SPACE_4 = "1. Cancer type allowed: D."
+TRIAL_SPACE_1 = (
+    "1. Age: 18+. Sex: Any. Cancer type allowed: A. Histology allowed: Any. "
+    "Cancer burden allowed: Any. Prior treatment required: None. "
+    "Prior treatment excluded: None. Biomarkers required: None. "
+    "Biomarkers excluded: None."
+)
+TRIAL_SPACE_2 = (
+    "2. Age: 18+. Sex: Any. Cancer type allowed: B. Histology allowed: Any. "
+    "Cancer burden allowed: Any. Prior treatment required: None. "
+    "Prior treatment excluded: None. Biomarkers required: None. "
+    "Biomarkers excluded: None."
+)
+TRIAL_SPACE_3 = (
+    "3. Age: 18+. Sex: Any. Cancer type allowed: C. Histology allowed: Any. "
+    "Cancer burden allowed: Any. Prior treatment required: None. "
+    "Prior treatment excluded: None. Biomarkers required: None. "
+    "Biomarkers excluded: None."
+)
+TRIAL_SPACE_4 = (
+    "1. Age: 18+. Sex: Any. Cancer type allowed: D. Histology allowed: Any. "
+    "Cancer burden allowed: Any. Prior treatment required: None. "
+    "Prior treatment excluded: None. Biomarkers required: None. "
+    "Biomarkers excluded: None."
+)
 BOILERPLATE_1 = "Uncontrolled brain metastases."
 BOILERPLATE_2 = "History of pneumonitis."
 
@@ -31,7 +51,7 @@ def default_trial_config() -> dict:
             "question": "trial.user.question.txt",
         },
         "reasoning_marker": "assistantfinal",
-        "boilerplate_marker": "Boilerplate exclusions:",
+        "boilerplate_marker": "\\n.*Boilerplate.*\\n",
         "model_metadata_cache_dir": ".mmai_cache/model_metadata",
     }
 

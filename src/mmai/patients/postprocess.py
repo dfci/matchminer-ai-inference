@@ -23,7 +23,7 @@ def parse_boilerplate(
     )
 
     split_df = df["cleaned_patient_summary"].str.split(
-        boilerplate_marker, n=1, expand=True
+        boilerplate_marker, n=1, expand=True, regex=True
     )
     df["cancer_history_summary"] = split_df[0].str.strip()
     df["general_exclusion_criteria_evidence"] = split_df[1].str.strip()

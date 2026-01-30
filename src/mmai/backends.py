@@ -108,6 +108,7 @@ class LocalBackend:
 
         weights_path_or_model_name = tagger_config["model_name"]
         device = tagger_config["device"]
+        batch_size = int(tagger_config["batch_size"])
         tokenizer = AutoTokenizer.from_pretrained(weights_path_or_model_name)
         tagger_pipeline = pipeline(
             "text-classification",
@@ -123,7 +124,9 @@ class LocalBackend:
             cache_dir=model_metadata_cache_dir,
         )
         return (
-            cast(list[dict[str, Any]], tagger_pipeline(excerpts)),
+            cast(
+                list[dict[str, Any]], tagger_pipeline(excerpts, batch_size=batch_size)
+            ),
             model_metadata,
         )
 

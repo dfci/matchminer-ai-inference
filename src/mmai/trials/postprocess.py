@@ -21,6 +21,19 @@ def _strip_numerical_prefix(text: str) -> str:
     return text
 
 
+REQUIRED_TRIAL_SPACE_KEYWORDS = [
+    "Age",
+    "Sex",
+    "Cancer type",
+    "Histology",
+    "Cancer burden",
+    "Prior treatment required",
+    "Prior treatment excluded",
+    "Biomarkers required",
+    "Biomarkers excluded",
+]
+
+
 def flatten_trial_to_spaces(
     trials_with_summaries: pd.DataFrame,
     reasoning_marker: str,
@@ -36,16 +49,14 @@ def flatten_trial_to_spaces(
 
     trials_with_summaries[["space_text", "boilerplate_text"]] = trials_with_summaries[
         "space_output_no_reasoning"
-    ].str.split(boilerplate_marker, n=1, expand=True)
+    ].str.split(boilerplate_marker, n=1, expand=True, regex=True)
     trials_with_summaries["space_text"] = trials_with_summaries[
         "space_text"
     ].str.strip()
     trials_with_summaries["boilerplate_text"] = trials_with_summaries[
         "boilerplate_text"
     ].str.strip()
-    trials_with_summaries["boilerplate_text"].fillna(
-        trials_with_summaries["space_text"], inplace=True
-    )
+    trials_with_summaries["boilerplate_text"].fillna("None", inplace=True)
 
     frames: list[pd.DataFrame] = []
     for i in range(trials_with_summaries.shape[0]):
@@ -77,8 +88,8 @@ def flatten_trial_to_spaces(
 
     cohort_level_trials = pd.concat(frames, axis=0).reset_index(drop=True)
     cohort_level_trials = cohort_level_trials.loc[
-        cohort_level_trials["clinical_space_summary"].str.match(
-            r"\*?\*?Cancer type allowed\*?\*?"
+        cohort_level_trials["clinical_space_summary"].apply(
+            lambda text: all(term in text for term in REQUIRED_TRIAL_SPACE_KEYWORDS)
         )
     ]
     return cohort_level_trials

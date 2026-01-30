@@ -188,6 +188,7 @@ def test_extract_relevant_sentences_returns_metadata(monkeypatch):
             "tagger": {
                 "model_name": "tagger",
                 "device": "cpu",
+                "batch_size": 2,
                 "positive_tag_cutoff": 0.1,
                 "negative_tag_cutoff": 0.9,
             }
@@ -229,6 +230,7 @@ def test_local_backend_tag_excerpts(monkeypatch):
         tagger_config={
             "model_name": "tagger",
             "device": "cpu",
+            "batch_size": 2,
         },
         model_metadata_cache_dir=None,
     )
@@ -276,6 +278,7 @@ def test_extract_relevant_sentences_lightweight_integration(monkeypatch):
             "tagger": {
                 "model_name": "tagger",
                 "device": "cpu",
+                "batch_size": 2,
                 "positive_tag_cutoff": 0.1,
                 "negative_tag_cutoff": 0.9,
             }
@@ -331,6 +334,7 @@ def test_extract_relevant_sentences_preserves_patient_ids(monkeypatch):
             "tagger": {
                 "model_name": "tagger",
                 "device": "cpu",
+                "batch_size": 2,
                 "positive_tag_cutoff": 0.1,
                 "negative_tag_cutoff": 0.9,
             }

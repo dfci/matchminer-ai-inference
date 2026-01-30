@@ -110,7 +110,7 @@ def test_flatten_trial_to_spaces(
     result = flatten_trial_to_spaces(
         mock_summarized_data,
         reasoning_marker="assistantfinal",
-        boilerplate_marker="Boilerplate exclusions:",
+        boilerplate_marker="\\n.*Boilerplate.*\\n",
     )
     pd.testing.assert_frame_equal(
         result.reset_index(drop=True), expected_flattened_spaces
@@ -166,7 +166,10 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                     "trial_text": "TEXT",
                     "space_reasoning_and_output": (
                         "assistantfinal\n"
-                        "1. Cancer type allowed: A.\n"
+                        "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
+                        "Histology allowed: Any. Cancer burden allowed: Any. "
+                        "Prior treatment required: None. Prior treatment excluded: None. "
+                        "Biomarkers required: None. Biomarkers excluded: None.\n"
                         "Boilerplate exclusions:\n"
                         "Uncontrolled brain metastases."
                     ),
@@ -185,7 +188,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
         backend="local",
         trial={
             "reasoning_marker": "assistantfinal",
-            "boilerplate_marker": "Boilerplate exclusions:",
+            "boilerplate_marker": "\\n.*Boilerplate.*\\n",
         },
         patient={},
         model_metadata_cache_dir=None,
@@ -221,7 +224,10 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
             return (
                 [
                     "assistantfinal\n"
-                    "1. Cancer type allowed: A.\n"
+                    "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
+                    "Histology allowed: Any. Cancer burden allowed: Any. "
+                    "Prior treatment required: None. Prior treatment excluded: None. "
+                    "Biomarkers required: None. Biomarkers excluded: None.\n"
                     "Boilerplate exclusions:\n"
                     "Uncontrolled brain metastases."
                 ],
@@ -243,7 +249,13 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
 
     result = summarize_trials(trials)
     assert len(result) == 1
-    assert result["clinical_space_summary"].iloc[0] == "Cancer type allowed: A."
+    assert (
+        result["clinical_space_summary"].iloc[0]
+        == "Age: 18+. Sex: Any. Cancer type allowed: A. Histology allowed: Any. "
+        "Cancer burden allowed: Any. Prior treatment required: None. "
+        "Prior treatment excluded: None. Biomarkers required: None. "
+        "Biomarkers excluded: None."
+    )
     assert captured_messages["messages_list"][0][1]["role"] == "user"
     assert (
         "Here is a clinical trial document"
