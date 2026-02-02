@@ -78,7 +78,7 @@ def patient_qc_report(
     total_patients = int(summaries["patient_id"].nunique())
 
     # Patients with no tagged notes.
-    no_tagged_ids: set[str] = set()
+    no_tagged_ids: set[str] | None = None
     if tagged_patients is not None:
         if "patient_id" not in tagged_patients.columns:
             raise ValueError("tagged_patients must include patient_id")
@@ -92,11 +92,13 @@ def patient_qc_report(
     metrics.append(
         {
             "metric": "patients_with_no_tagged_notes",
-            "value": len(no_tagged_ids),
-            "percent": (len(no_tagged_ids) / total_patients * 100)
-            if total_patients
-            else 0.0,
-            "ids": sorted(no_tagged_ids),
+            "value": len(no_tagged_ids) if no_tagged_ids is not None else None,
+            "percent": (
+                (len(no_tagged_ids) / total_patients * 100)
+                if total_patients and no_tagged_ids is not None
+                else None
+            ),
+            "ids": sorted(no_tagged_ids) if no_tagged_ids is not None else None,
         }
     )
 
