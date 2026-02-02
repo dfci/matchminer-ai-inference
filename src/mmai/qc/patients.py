@@ -29,6 +29,7 @@ def _normalize_series(series: pd.Series) -> pd.Series:
 def patient_qc_report(
     patient_summaries: pd.DataFrame,
     *,
+    patient_inputs: pd.DataFrame,
     tagged_patients: pd.DataFrame | None = None,
     expected_keywords: list[str] | None = None,
     max_summary_length: int = 4000,
@@ -42,6 +43,9 @@ def patient_qc_report(
         Output from summarize_patients, one row per patient.
         Required columns: patient_id, cancer_history_summary,
         general_exclusion_criteria_evidence.
+    patient_inputs : pd.DataFrame
+        Original patient notes table with patient_id column. Used to detect
+        patients with zero summaries.
     tagged_patients : pd.DataFrame, optional
         Output from extract_relevant_sentences, used to identify
         patients with no tagged notes (empty patient_long_text).
@@ -75,7 +79,9 @@ def patient_qc_report(
     )
 
     metrics: list[dict[str, object]] = []
-    total_patients = int(summaries["patient_id"].nunique())
+    if "patient_id" not in patient_inputs.columns:
+        raise ValueError("patient_inputs must include patient_id")
+    total_patients = int(patient_inputs["patient_id"].nunique())
 
     # Patients with no tagged notes.
     no_tagged_ids: set[str] | None = None
@@ -108,6 +114,9 @@ def patient_qc_report(
             summaries["cancer_history_summary"].str.strip() == "", "patient_id"
         ]
     )
+    input_ids = set(patient_inputs["patient_id"].astype(str))
+    output_ids = set(summaries["patient_id"].astype(str))
+    missing_summary_ids.update(input_ids - output_ids)
     metrics.append(
         {
             "metric": "patients_missing_summaries",
