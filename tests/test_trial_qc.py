@@ -4,7 +4,7 @@ from mmai.qc.trials import trial_qc_report
 
 
 def test_trial_qc_report_metrics():
-    trial_inputs = pd.DataFrame(
+    trial_source = pd.DataFrame(
         [
             {"trial_id": "T1"},
             {"trial_id": "T2"},
@@ -47,7 +47,7 @@ def test_trial_qc_report_metrics():
 
     report = trial_qc_report(
         trial_spaces,
-        trial_inputs=trial_inputs,
+        trial_source=trial_source,
         max_space_length=50,
     ).set_index("metric")
 

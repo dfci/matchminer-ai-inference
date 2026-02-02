@@ -29,8 +29,8 @@ def _normalize_series(series: pd.Series) -> pd.Series:
 def patient_qc_report(
     patient_summaries: pd.DataFrame,
     *,
-    patient_inputs: pd.DataFrame,
-    tagged_patients: pd.DataFrame | None = None,
+    patient_note_source: pd.DataFrame,
+    tagged_notes: pd.DataFrame | None = None,
     expected_keywords: list[str] | None = None,
     max_summary_length: int = 4000,
 ) -> pd.DataFrame:
@@ -43,10 +43,10 @@ def patient_qc_report(
         Output from summarize_patients, one row per patient.
         Required columns: patient_id, cancer_history_summary,
         general_exclusion_criteria_evidence.
-    patient_inputs : pd.DataFrame
+    patient_note_source : pd.DataFrame
         Original patient notes table with patient_id column. Used to detect
         patients with zero summaries.
-    tagged_patients : pd.DataFrame, optional
+    tagged_notes : pd.DataFrame, optional
         Output from extract_relevant_sentences, used to identify
         patients with no tagged notes (empty patient_long_text).
     expected_keywords : list[str], optional
@@ -79,18 +79,18 @@ def patient_qc_report(
     )
 
     metrics: list[dict[str, object]] = []
-    if "patient_id" not in patient_inputs.columns:
-        raise ValueError("patient_inputs must include patient_id")
-    total_patients = int(patient_inputs["patient_id"].nunique())
+    if "patient_id" not in patient_note_source.columns:
+        raise ValueError("patient_note_source must include patient_id")
+    total_patients = int(patient_note_source["patient_id"].nunique())
 
     # Patients with no tagged notes.
     no_tagged_ids: set[str] | None = None
-    if tagged_patients is not None:
-        if "patient_id" not in tagged_patients.columns:
-            raise ValueError("tagged_patients must include patient_id")
-        if "patient_long_text" not in tagged_patients.columns:
-            raise ValueError("tagged_patients must include patient_long_text")
-        tagged = tagged_patients.copy()
+    if tagged_notes is not None:
+        if "patient_id" not in tagged_notes.columns:
+            raise ValueError("tagged_notes must include patient_id")
+        if "patient_long_text" not in tagged_notes.columns:
+            raise ValueError("tagged_notes must include patient_long_text")
+        tagged = tagged_notes.copy()
         tagged["patient_long_text"] = _normalize_series(tagged["patient_long_text"])
         no_tagged_ids = set(
             tagged.loc[tagged["patient_long_text"].str.strip() == "", "patient_id"]
@@ -114,7 +114,7 @@ def patient_qc_report(
             summaries["cancer_history_summary"].str.strip() == "", "patient_id"
         ]
     )
-    input_ids = set(patient_inputs["patient_id"].astype(str))
+    input_ids = set(patient_note_source["patient_id"].astype(str))
     output_ids = set(summaries["patient_id"].astype(str))
     missing_summary_ids.update(input_ids - output_ids)
     metrics.append(

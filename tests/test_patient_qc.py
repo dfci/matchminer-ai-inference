@@ -33,8 +33,8 @@ def test_patient_qc_report_metrics():
 
     report = patient_qc_report(
         summaries,
-        patient_inputs=tagged[["patient_id"]],
-        tagged_patients=tagged,
+        patient_note_source=tagged[["patient_id"]],
+        tagged_notes=tagged,
         expected_keywords=["Cancer type", "Histology"],
         max_summary_length=40,
     ).set_index("metric")
