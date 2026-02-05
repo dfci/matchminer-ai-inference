@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, TYPE_CHECKING, Literal, overload
+from typing import Any, TYPE_CHECKING
 
 import pandas as pd
 
@@ -139,24 +139,6 @@ def extract_relevant_text_from_patient(
         ),
         {"model_name": tagger_config["model_name"]},
     )
-
-
-@overload
-def extract_relevant_sentences(
-    df: pd.DataFrame,
-    *,
-    config: MMAIConfig | None = None,
-    return_qc: Literal[True],
-) -> tuple[pd.DataFrame, dict[str, Any], pd.DataFrame]: ...
-
-
-@overload
-def extract_relevant_sentences(
-    df: pd.DataFrame,
-    *,
-    config: MMAIConfig | None = None,
-    return_qc: Literal[False] = False,
-) -> tuple[pd.DataFrame, dict[str, Any]]: ...
 
 
 def extract_relevant_sentences(

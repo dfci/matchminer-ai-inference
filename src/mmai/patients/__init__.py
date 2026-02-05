@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from mmai.config import MMAIConfig, load_default_preset
 
@@ -103,26 +103,35 @@ def summarize_patients(
         )
 
     logger.info("Extracting relevant patient sentences from %d notes.", len(notes))
-    relevant_sentences, tagger_metadata = extract_relevant_sentences(
-        notes,
-        config=resolved_config,
-        return_qc=False,
+    relevant_sentences, tagger_metadata = cast(
+        tuple[pd.DataFrame, dict],
+        extract_relevant_sentences(
+            notes,
+            config=resolved_config,
+            return_qc=False,
+        ),
     )
     logger.info("Extracted relevant text for %d patients.", len(relevant_sentences))
 
     qc_report = None
     if return_qc:
         # Summary-only QC is built inside the summarization helper.
-        summaries, metadata, summary_qc = summarize_from_relevant_sentences(
-            relevant_sentences,
-            config=resolved_config,
-            return_qc=True,
+        summaries, metadata, summary_qc = cast(
+            tuple[pd.DataFrame, dict, pd.DataFrame],
+            summarize_from_relevant_sentences(
+                relevant_sentences,
+                config=resolved_config,
+                return_qc=True,
+            ),
         )
     else:
-        summaries, metadata = summarize_from_relevant_sentences(
-            relevant_sentences,
-            config=resolved_config,
-            return_qc=False,
+        summaries, metadata = cast(
+            tuple[pd.DataFrame, dict],
+            summarize_from_relevant_sentences(
+                relevant_sentences,
+                config=resolved_config,
+                return_qc=False,
+            ),
         )
     logger.info("Patient summarization complete. Produced %d rows.", len(summaries))
     if return_qc:

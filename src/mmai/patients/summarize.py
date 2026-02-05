@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Literal, overload
+from typing import Any
 
 import pandas as pd
 
@@ -11,24 +11,6 @@ from mmai.config import MMAIConfig, load_default_preset
 
 from .postprocess import postprocess_patient_summaries
 from .prompt_builder import get_filled_patient_prompt
-
-
-@overload
-def summarize_from_relevant_sentences(
-    df: pd.DataFrame,
-    config: MMAIConfig | None = None,
-    *,
-    return_qc: Literal[True],
-) -> tuple[pd.DataFrame, dict[str, Any], pd.DataFrame]: ...
-
-
-@overload
-def summarize_from_relevant_sentences(
-    df: pd.DataFrame,
-    config: MMAIConfig | None = None,
-    *,
-    return_qc: Literal[False] = False,
-) -> tuple[pd.DataFrame, dict[str, Any]]: ...
 
 
 def summarize_from_relevant_sentences(
