@@ -53,12 +53,12 @@ def test_trial_qc_report_metrics():
         max_space_length=50,
     ).set_index("metric")
 
-    assert report.loc["trials_missing_summaries", "value"] == 1
-    assert report.loc["trials_missing_summaries", "percent"] > 0
-    assert report.loc["trials_missing_summaries", "ids"] == ["T3"]
+    assert report.loc["trials_missing_in_output", "value"] == 1
+    assert report.loc["trials_missing_in_output", "percent"] > 0
+    assert report.loc["trials_missing_in_output", "ids"] == ["T3"]
     assert report.loc["spaces_per_trial_max", "value"] == 2
     assert report.loc["trials_with_non_distinct_spaces", "value"] == 1
     assert report.loc["trials_with_non_distinct_spaces", "ids"] == ["T1"]
     assert report.loc["trials_missing_boilerplate_exclusions", "value"] == 2
     assert report.loc["spaces_excessive_length", "value"] >= 1
-    assert report.loc["spaces_missing_keyword:Age", "value"] >= 1
+    assert report.loc["spaces_dropped_missing_keyword:Age", "value"] >= 1

@@ -97,7 +97,7 @@ def trial_qc_report(
     missing_summary_ids.update(input_ids - output_ids)
     metrics.append(
         {
-            "metric": "trials_missing_summaries",
+            "metric": "trials_missing_in_output",
             "value": len(missing_summary_ids),
             "percent": (len(missing_summary_ids) / total_trials * 100)
             if total_trials
@@ -178,7 +178,7 @@ def trial_qc_report(
         )
         metrics.append(
             {
-                "metric": f"spaces_missing_keyword:{keyword}",
+                "metric": f"spaces_dropped_missing_keyword:{keyword}",
                 "value": len(missing_spaces),
                 "percent": (len(missing_spaces) / total_spaces * 100)
                 if total_spaces

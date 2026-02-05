@@ -30,9 +30,11 @@ Returned by `summarize_patients(..., return_qc=True)`.
 ## Trial summarization QC
 Returned by `summarize_trials(..., return_qc=True)`.
 
-- `trials_missing_summaries`: trials missing any summary rows.
+- `trials_missing_in_output`: trials present in the input but not represented
+  in the output.
 - `spaces_per_trial_min|median|max`: distribution of spaces per trial.
 - `trials_with_non_distinct_spaces`: duplicate space numbers or duplicate text.
-- `spaces_missing_keyword:<keyword>`: spaces missing expected sections.
+- `spaces_dropped_missing_keyword:<keyword>`: spaces missing the keyword in
+  the pre-filtered output (these would be dropped by keyword filtering).
 - `trials_missing_boilerplate_exclusions`: missing/empty boilerplate text.
 - `spaces_excessive_length`: space text exceeds the length threshold.
