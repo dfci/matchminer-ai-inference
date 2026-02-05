@@ -39,6 +39,9 @@ def summarize_patients(
             Type of note (clinical_note, pathology_report, etc.).
         note_date : str or datetime
             Date of the note.
+    return_metadata : bool, optional
+        When True, also return a metadata dict containing the config snapshot
+        and model metadata for this run.
 
     Returns
     -------
@@ -65,6 +68,8 @@ def summarize_patients(
             Raw LLM response generated from the patient long text.
         cleaned_patient_summary : str
             LLM response with reasoning text removed.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus a metadata dict.
     """
     logger = logging.getLogger(__name__)
     resolved_config = config or load_default_preset()

@@ -35,6 +35,9 @@ def summarize_trials(
             Brief textual summary of the trial.
         eligibility_criteria : str
             Full eligibility criteria text for the trial.
+    return_metadata : bool, optional
+        When True, also return a metadata dict containing the config snapshot
+        and model metadata for this run.
 
     Returns
     -------
@@ -62,6 +65,8 @@ def summarize_trials(
             This is the raw input text fed into the LLM.
         space_reasoning_and_output : str
             Raw LLM response text.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus a metadata dict.
     """
     from mmai.config import MMAIConfig, load_default_preset
 
