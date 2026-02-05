@@ -193,7 +193,7 @@ def trial_qc_report(
     ]
     metrics.append(
         {
-            "metric": "trials_missing_boilerplate_exclusions",
+            "metric": "trials_exclusion_criteria_not_extracted",
             "value": boilerplate_missing["trial_id"].nunique(),
             "percent": (boilerplate_missing["trial_id"].nunique() / total_trials * 100)
             if total_trials

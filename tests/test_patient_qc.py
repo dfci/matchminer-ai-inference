@@ -45,6 +45,6 @@ def test_patient_qc_report_metrics():
     assert report.loc["patients_missing_summaries", "value"] == 1
     assert report.loc["patients_dropped_noninformative_summary", "value"] == 1
     assert report.loc["patients_dropped_noninformative_summary", "ids"] == ["P2"]
-    assert report.loc["patients_summary_equals_boilerplate", "value"] == 1
+    assert report.loc["patients_exclusion_criteria_not_extracted", "value"] == 1
     assert report.loc["patients_missing_keyword:Histology", "value"] == 2
     assert report.loc["patient_summaries_excessive_length", "value"] >= 0

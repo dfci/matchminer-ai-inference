@@ -145,7 +145,7 @@ def patient_qc_report(
     ]
     metrics.append(
         {
-            "metric": "patients_summary_equals_boilerplate",
+            "metric": "patients_exclusion_criteria_not_extracted",
             "value": int(same_text.nunique()),
             "percent": (int(same_text.nunique()) / total_patients * 100)
             if total_patients
@@ -258,7 +258,7 @@ def patient_summary_qc_report(
     ]
     metrics.append(
         {
-            "metric": "patients_summary_equals_boilerplate",
+            "metric": "patients_exclusion_criteria_not_extracted",
             "value": int(same_text.nunique()),
             "percent": (int(same_text.nunique()) / total_patients * 100)
             if total_patients
