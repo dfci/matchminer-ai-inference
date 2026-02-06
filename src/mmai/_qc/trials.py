@@ -28,6 +28,19 @@ def _normalize_series(series: pd.Series) -> pd.Series:
     return series.fillna("").astype(str)
 
 
+def _ensure_space_trial_id(spaces: pd.DataFrame) -> pd.DataFrame:
+    if "space_trial_id" in spaces.columns:
+        return spaces
+    if {"trial_id", "clinical_space_number"}.issubset(spaces.columns):
+        spaces = spaces.copy()
+        spaces["space_trial_id"] = (
+            spaces["trial_id"].astype(str)
+            + "-"
+            + spaces["clinical_space_number"].astype(str)
+        )
+    return spaces
+
+
 def trial_qc_report(
     trial_spaces: pd.DataFrame,
     *,
@@ -81,6 +94,7 @@ def trial_qc_report(
     spaces["general_exclusion_criteria"] = _normalize_series(
         spaces["general_exclusion_criteria"]
     )
+    spaces = _ensure_space_trial_id(spaces)
 
     metrics: list[dict[str, object]] = []
     total_trials = int(trial_source["trial_id"].nunique())
@@ -161,7 +175,7 @@ def trial_qc_report(
     )
 
     # Missing expected keywords (per keyword).
-    keyword_spaces = unfiltered_spaces.copy()
+    keyword_spaces = _ensure_space_trial_id(unfiltered_spaces.copy())
     if "clinical_space_summary" not in keyword_spaces.columns:
         raise ValueError("keyword_source must include clinical_space_summary")
     keyword_spaces["clinical_space_summary"] = _normalize_series(
