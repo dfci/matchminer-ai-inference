@@ -57,7 +57,7 @@ class LocalBackend:
         messages_list: list[list[dict[str, str]]],
         llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
-    ) -> Tuple[list[str], Dict[str, Any]]:
+    ) -> Tuple[list[str], Dict[str, Any], list[str]]:
         from vllm import LLM, SamplingParams
 
         model_name = llm_config["model_name"]
@@ -94,7 +94,11 @@ class LocalBackend:
                 repetition_penalty=sampling_params["repetition_penalty"],
             ),
         )
-        return [response.outputs[0].text for response in responses], model_metadata
+        texts = [response.outputs[0].text for response in responses]
+        finish_reasons = [
+            cast(str, response.outputs[0].finish_reason) for response in responses
+        ]
+        return texts, model_metadata, finish_reasons
 
     def tag_excerpts(
         self,
@@ -165,7 +169,7 @@ class RemoteBackend:
         messages_list: list[list[dict[str, str]]],
         llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
-    ) -> Tuple[list[str], Dict[str, Any]]:
+    ) -> Tuple[list[str], Dict[str, Any], list[str]]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
     def tag_excerpts(
