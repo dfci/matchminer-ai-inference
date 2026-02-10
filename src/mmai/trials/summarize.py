@@ -22,14 +22,14 @@ def summarize_trials_multi_cohort(
     primer_filename: str,
     question_filename: str,
     model_metadata_cache_dir: str | None = None,
-) -> tuple[list[str], dict[str, Any]]:
+) -> tuple[list[str], dict[str, Any], list[str]]:
     """Summarize trials using the configured backend."""
     messages_list = [
         get_filled_trial_prompt(text, primer_filename, question_filename)
         for text in trial_texts
     ]
     return cast(
-        tuple[list[str], dict[str, Any]],
+        tuple[list[str], dict[str, Any], list[str]],
         backend.generate_llm_outputs(
             messages_list=messages_list,
             llm_config=trial_config,
@@ -51,7 +51,7 @@ def run_llm_summarization(
 
     trials_with_summaries = trials_to_process.copy()
     trials_with_summaries["trial_text"] = build_trial_text(trials_to_process)
-    trial_summaries, model_metadata = summarize_trials_multi_cohort(
+    trial_summaries, model_metadata, finish_reasons = summarize_trials_multi_cohort(
         trials_with_summaries["trial_text"].tolist(),
         backend,
         trial_config=trial_config,
@@ -61,6 +61,7 @@ def run_llm_summarization(
     )
 
     trials_with_summaries["space_reasoning_and_output"] = trial_summaries
+    trials_with_summaries["finish_reason"] = finish_reasons
     metadata = {
         "config_snapshot": {"trial": trial_config},
         "model_metadata": model_metadata,

@@ -73,13 +73,14 @@ def summarize_from_relevant_sentences(
         for patient_text in truncated_texts
     ]
 
-    summaries, model_metadata = backend.generate_llm_outputs(
+    summaries, model_metadata, finish_reasons = backend.generate_llm_outputs(
         messages_list=messages_list,
         llm_config=patient_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
     )
 
     df["original_patient_summary"] = summaries
+    df["finish_reason"] = finish_reasons
     dropped_ids: list[str] | None = None
     if return_qc:
         df, dropped_ids = postprocess_patient_summaries(
