@@ -44,6 +44,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     mock_summarize.return_value = (
         ["SUM0"],
         {"model_sha": "sha"},
+        ["stop"],
     )
     monkeypatch.setattr(
         "mmai.trials.summarize.summarize_trials_multi_cohort", mock_summarize
@@ -76,6 +77,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
     mock_summarize.return_value = (
         ["SUM0", "SUM1"],
         {"model_sha": "sha"},
+        ["stop", "stop"],
     )
     monkeypatch.setattr(
         "mmai.trials.summarize.summarize_trials_multi_cohort", mock_summarize
@@ -127,6 +129,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
     mock_outputs = [MagicMock(), MagicMock()]
     for n, output in enumerate(mock_outputs):
         output.outputs[0].text = f"SUM{n}"
+        output.outputs[0].finish_reason = "stop"
     mock_llm.generate.return_value = mock_outputs
 
     mock_vllm = MagicMock()
@@ -143,7 +146,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
     )
 
     backend = LocalBackend()
-    summaries, metadata = backend.generate_llm_outputs(
+    summaries, metadata, finish_reasons = backend.generate_llm_outputs(
         messages_list=[
             [{"role": "user", "content": "a"}],
             [{"role": "user", "content": "b"}],
@@ -153,6 +156,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
 
     assert summaries == ["SUM0", "SUM1"]
     assert metadata["model_sha"] == "sha"
+    assert finish_reasons == ["stop", "stop"]
 
 
 def test_summarize_trials_includes_debug_columns(monkeypatch):
@@ -232,6 +236,7 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
                     "Uncontrolled brain metastases."
                 ],
                 {"model_sha": "sha"},
+                ["stop"],
             )
 
     monkeypatch.setattr("mmai.trials.summarize.get_backend", lambda name: MockBackend())

@@ -29,6 +29,7 @@ def test_summarize_from_relevant_sentences_filters_empty_and_returns_metadata(
                     "No CNS mets."
                 ],
                 {"model_name": "model", "model_sha": "sha"},
+                ["stop"],
             )
 
     monkeypatch.setattr(
@@ -107,6 +108,7 @@ def test_summarize_from_relevant_sentences_returns_qc_report(monkeypatch):
                     "None"
                 ],
                 {"model_name": "model", "model_sha": "sha"},
+                ["length"],
             )
 
     monkeypatch.setattr(
