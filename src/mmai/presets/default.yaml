@@ -39,3 +39,7 @@ patient:
     batch_size: 1024
     positive_tag_cutoff: 0.1
     negative_tag_cutoff: 0.9
+embedding:
+  model_path: "ksg-dfci/TrialSpace-1225"
+  device: cpu
+  prompt_file: embedding.txt

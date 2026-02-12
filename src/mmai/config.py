@@ -19,6 +19,7 @@ class MMAIConfig:
     backend: str
     trial: dict[str, Any]
     patient: dict[str, Any]
+    embedding: dict[str, Any]
     model_metadata_cache_dir: str | None
     raw: dict[str, Any]
 
@@ -41,6 +42,7 @@ def load_preset(name: str) -> MMAIConfig:
         backend=str(data["backend"]),
         trial=dict(data["trial"]),
         patient=dict(data["patient"]),
+        embedding=dict(data["embedding"]),
         model_metadata_cache_dir=data["model_metadata_cache_dir"],
         raw=data,
     )
