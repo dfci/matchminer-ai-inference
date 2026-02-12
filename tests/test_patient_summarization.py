@@ -76,6 +76,7 @@ def test_summarize_from_relevant_sentences_filters_empty_and_returns_metadata(
         },
         model_metadata_cache_dir=None,
         raw={"config": "snapshot"},
+        embedding={},
     )
 
     result, metadata = summarize_from_relevant_sentences(df, config=config)
@@ -148,6 +149,7 @@ def test_summarize_from_relevant_sentences_returns_qc_report(monkeypatch):
         },
         model_metadata_cache_dir=None,
         raw={"config": "snapshot"},
+        embedding={},
     )
 
     result, metadata, qc_artifacts = summarize_from_relevant_sentences(
@@ -307,6 +309,7 @@ def test_summarize_patients_joins_metadata(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={"config": "snapshot"},
+        embedding={},
     )
 
     result, metadata = summarize_patients(notes, config=config, return_metadata=True)
@@ -401,6 +404,7 @@ def test_summarize_patients_returns_qc_report(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={},
+        embedding={},
     )
 
     result, qc_report = summarize_patients(notes, config=config, return_qc=True)
@@ -486,6 +490,7 @@ def test_summarize_patients_includes_debug_columns(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={},
+        embedding={},
     )
 
     result = summarize_patients(notes, config=config)
@@ -563,6 +568,7 @@ def test_summarize_patients_lightweight_integration(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={},
+        embedding={},
     )
 
     result = summarize_patients(notes, config=config)

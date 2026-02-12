@@ -201,6 +201,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={},
+        embedding={},
     )
 
     trials = pd.DataFrame(

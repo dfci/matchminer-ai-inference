@@ -66,6 +66,7 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         patient={},
         model_metadata_cache_dir=None,
         raw={},
+        embedding={},
     )
 
 

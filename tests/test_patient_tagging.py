@@ -195,6 +195,7 @@ def test_extract_relevant_sentences_returns_metadata(monkeypatch):
         },
         model_metadata_cache_dir=None,
         raw={"version": 0},
+        embedding={},
     )
 
     result, metadata = extract_relevant_sentences(notes, config=config)
@@ -257,6 +258,7 @@ def test_extract_relevant_sentences_returns_qc_report(monkeypatch):
         },
         model_metadata_cache_dir=None,
         raw={"version": 0},
+        embedding={},
     )
 
     result, metadata, qc_report = extract_relevant_sentences(
@@ -352,6 +354,7 @@ def test_extract_relevant_sentences_lightweight_integration(monkeypatch):
         },
         model_metadata_cache_dir=None,
         raw={"version": 0},
+        embedding={},
     )
 
     result, metadata = extract_relevant_sentences(notes, config=config)
@@ -408,6 +411,7 @@ def test_extract_relevant_sentences_preserves_patient_ids(monkeypatch):
         },
         model_metadata_cache_dir=None,
         raw={"version": 0},
+        embedding={},
     )
 
     result, _ = extract_relevant_sentences(notes, config=config)
