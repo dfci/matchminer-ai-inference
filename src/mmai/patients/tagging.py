@@ -145,7 +145,11 @@ def extract_relevant_sentences(
     df: pd.DataFrame,
     *,
     config: MMAIConfig | None = None,
-) -> tuple[pd.DataFrame, dict[str, Any]]:
+    return_qc: bool = False,
+) -> (
+    tuple[pd.DataFrame, dict[str, Any]]
+    | tuple[pd.DataFrame, dict[str, Any], pd.DataFrame]
+):
     """
     Extract relevant sentences from longitudinal patient notes.
 
@@ -170,6 +174,8 @@ def extract_relevant_sentences(
     tuple[pd.DataFrame, dict[str, Any]]
         Patient-level DataFrame (one row per patient) and metadata
         about the tagger model and configuration.
+    tuple[pd.DataFrame, dict[str, Any], pd.DataFrame]
+        When return_qc is True, also returns a tagger QC report.
     """
     resolved_config = config or load_default_preset()
     if not isinstance(resolved_config, MMAIConfig):
@@ -198,6 +204,14 @@ def extract_relevant_sentences(
         "config_snapshot": resolved_config.raw,
         "model_metadata": results[0][1] if results else {},
     }
+    if return_qc:
+        from mmai._qc.patients import tagger_qc_report
+
+        qc_report = tagger_qc_report(
+            tagged_notes=result_df,
+            patient_note_source=df,
+        )
+        return result_df, metadata, qc_report
     return result_df, metadata
 
 

@@ -203,6 +203,73 @@ def test_extract_relevant_sentences_returns_metadata(monkeypatch):
     assert metadata["model_metadata"]["model_name"] == "tagger"
 
 
+def test_extract_relevant_sentences_returns_qc_report(monkeypatch):
+    """Return a QC report with patients missing tagged notes."""
+
+    def mock_extract(
+        note_rows, patient_id, backend, *, tagger_config, model_metadata_cache_dir
+    ):
+        if patient_id == "P1":
+            return (
+                pd.Series({"patient_id": patient_id, "patient_long_text": ""}),
+                {"model_name": "tagger"},
+            )
+        return (
+            pd.Series({"patient_id": patient_id, "patient_long_text": "has text"}),
+            {"model_name": "tagger"},
+        )
+
+    monkeypatch.setattr(
+        "mmai.patients.tagging.extract_relevant_text_from_patient", mock_extract
+    )
+    monkeypatch.setattr("mmai.patients.tagging.get_backend", lambda name: MagicMock())
+
+    notes = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "note_text": "A",
+                "note_type": "clinical_note",
+                "note_date": "2024-01-01",
+            },
+            {
+                "patient_id": "P2",
+                "note_text": "B",
+                "note_type": "clinical_note",
+                "note_date": "2024-01-02",
+            },
+        ]
+    )
+
+    config = MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        backend="local",
+        trial={},
+        patient={
+            "tagger": {
+                "model_name": "tagger",
+                "device": "cpu",
+                "batch_size": 2,
+                "positive_tag_cutoff": 0.1,
+                "negative_tag_cutoff": 0.9,
+            }
+        },
+        model_metadata_cache_dir=None,
+        raw={"version": 0},
+    )
+
+    result, metadata, qc_report = extract_relevant_sentences(
+        notes, config=config, return_qc=True
+    )
+
+    assert len(result) == 2
+    assert metadata["model_metadata"]["model_name"] == "tagger"
+    report = qc_report.set_index("metric")
+    assert report.loc["patients_with_no_tagged_notes", "value"] == 1
+    assert report.loc["patients_with_no_tagged_notes", "ids"] == ["P1"]
+
+
 def test_local_backend_tag_excerpts(monkeypatch):
     """Ensure the local tagger returns predictions and model metadata."""
     mock_pipeline = MagicMock()

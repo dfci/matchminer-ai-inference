@@ -48,15 +48,23 @@ def clean_bad_data(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def postprocess_patient_summaries(df: pd.DataFrame, config: MMAIConfig) -> pd.DataFrame:
+def postprocess_patient_summaries(
+    df: pd.DataFrame,
+    config: MMAIConfig,
+    *,
+    return_qc_data: bool = False,
+) -> pd.DataFrame | tuple[pd.DataFrame, list[str]]:
     """Postprocess patient summaries into clean outputs."""
     patient_config = dict(config.patient)
     reasoning_marker = patient_config["reasoning_marker"]
     boilerplate_marker = patient_config["boilerplate_marker"]
-    df = parse_boilerplate(df, reasoning_marker, boilerplate_marker)
-    df = clean_bad_data(df)
+    parsed = parse_boilerplate(df, reasoning_marker, boilerplate_marker)
+    cleaned = clean_bad_data(parsed)
+    dropped_ids = sorted(
+        set(parsed["patient_id"].astype(str)) - set(cleaned["patient_id"].astype(str))
+    )
     if not config.debug_mode:
-        df = df.drop(
+        cleaned = cleaned.drop(
             columns=[
                 "patient_long_text",
                 "original_patient_summary",
@@ -64,4 +72,8 @@ def postprocess_patient_summaries(df: pd.DataFrame, config: MMAIConfig) -> pd.Da
             ],
             errors="ignore",
         )
-    return df
+    if return_qc_data:
+        cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
+        return cleaned, dropped_ids
+    cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
+    return cleaned

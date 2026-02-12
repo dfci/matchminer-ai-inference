@@ -16,7 +16,13 @@ def summarize_trials(
     *,
     config: MMAIConfig | None = None,
     return_metadata: bool = False,
-) -> pd.DataFrame | tuple[pd.DataFrame, dict]:
+    return_qc: bool = False,
+) -> (
+    pd.DataFrame
+    | tuple[pd.DataFrame, dict]
+    | tuple[pd.DataFrame, pd.DataFrame]
+    | tuple[pd.DataFrame, dict, pd.DataFrame]
+):
     """
     Summarize clinical trials into clinical spaces and general exclusion criteria.
 
@@ -38,6 +44,8 @@ def summarize_trials(
     return_metadata : bool, optional
         When True, also return a metadata dict containing the config snapshot
         and model metadata for this run.
+    return_qc : bool, optional
+        When True, also return a QC report DataFrame for this run.
 
     Returns
     -------
@@ -67,6 +75,11 @@ def summarize_trials(
             Raw LLM response text.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
+    tuple[pd.DataFrame, pd.DataFrame]
+        When return_qc is True, returns the DataFrame plus a QC report DataFrame.
+    tuple[pd.DataFrame, dict, pd.DataFrame]
+        When return_metadata and return_qc are True, returns the DataFrame,
+        metadata dict, and QC report DataFrame.
     """
     from mmai.config import MMAIConfig, load_default_preset
 
@@ -93,17 +106,46 @@ def summarize_trials(
         )
 
     logger.info("Starting trial summarization for %d trials.", len(trials))
-    trials_with_summaries, metadata = run_llm_summarization(trials, resolved_config)
+    trials_with_summaries, metadata, finish_reasons = run_llm_summarization(
+        trials, resolved_config
+    )
     logger.info("Completed LLM summarization. Beginning postprocessing.")
-    result = postprocess_trial_summaries(trials_with_summaries, resolved_config)
+    if return_qc:
+        # Capture unfiltered spaces for QC before keyword filtering.
+        result, unfiltered_spaces = postprocess_trial_summaries(
+            trials_with_summaries,
+            resolved_config,
+            return_qc_data=True,
+        )
+    else:
+        unfiltered_spaces = None
+        result = postprocess_trial_summaries(trials_with_summaries, resolved_config)
     logger.info("Postprocessing complete. Produced %d rows.", len(result))
+    # Build QC report only when requested.
+    if return_qc:
+        from mmai._qc.trials import trial_qc_report
+
+        qc_report = trial_qc_report(
+            result,
+            trial_source=trials,
+            unfiltered_spaces=unfiltered_spaces,
+            finish_reasons=finish_reasons,
+        )
+    else:
+        qc_report = None
     if return_metadata:
-        return result, {
+        # Optionally return metadata, and append QC when requested.
+        metadata_payload = {
             "config_snapshot": resolved_config.raw,
             "model_metadata": {
                 "trial_summarizer": metadata["model_metadata"],
             },
         }
+        if return_qc:
+            return result, metadata_payload, qc_report
+        return result, metadata_payload
+    if return_qc:
+        return result, qc_report
     return result
 
 

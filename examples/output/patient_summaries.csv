@@ -1,0 +1,202 @@
+patient_id,cancer_history_summary,general_exclusion_criteria_evidence
+-12,"Age: 19  
+Sex: Male  
+Cancer type: Osteosarcoma (high‑grade conventional) of the distal right femur  
+Histology: High‑grade conventional osteosarcoma  
+Current extent: Metastatic (solitary pulmonary nodule in right lower lobe, 2.0 × 1.8 cm)  
+
+Biomarkers: No molecular/genetic results reported to date; comprehensive sarcoma‑focused NGS ordered but pending.  
+
+Treatment history:  
+# Surgery – definitive limb‑preserving resection of distal right femur with prosthetic reconstruction; completed approximately 2024 (documented as “last year”).  
+# Chemotherapy – adjuvant MAP (high‑dose Methotrexate, Doxorubicin, Cisplatin), six cycles; completed by mid‑2024 (after surgery, before June 2025).  
+# Ongoing surveillance – serial chest CT scans; latest scan 25 Jun 2025 identified progressing pulmonary metastasis.  
+# Planned/Proposed (not yet initiated): Video‑assisted thoracoscopic surgical (VATS) wedge resection versus stereotactic body radiotherapy (SBRT) for solitary lung lesion; awaiting multidisciplinary decision. Biopsy and genomic profiling pending.","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, renal dysfunction, hepatic dysfunction, HIV infection, or chronic viral hepatitis documented in the supplied excerpts."
+-11,"Age: 68  
+Sex: Male  
+
+Cancer type: Cutaneous malignant melanoma (left upper extremity primary)  
+Histology: Malignant melanoma, cutaneous origin  
+Current extent: Metastatic disease confined to bilateral pulmonary nodules (no extrathoracic disease reported) – presently showing partial response to therapy  
+
+Biomarkers: BRAFV600E mutation positive; NRAS wild‑type; PD‑1 inhibitor exposure (pembrolizumab)  
+
+Treatment history:  
+# 2024‑06‑22 to 2025‑06‑22: Pembrolizumab 200 mg IV every 3 weeks (adjuvant), completed 12 months; tolerated with Grade 2 dermatologic toxicity (resolved)  
+# 2025‑04‑~15 to 2025‑06‑~20: Ipilimumab 3 mg/kg IV + Nivolumab 1 mg/kg IV every 3 weeks (induction, planned 4 cycles) – received at least 3 infusions; achieved ≈30 % tumor reduction (Partial Response) after 2 cycles; discontinued ipilimumab permanently after Grade 3 immune‑mediated colitis following the third infusion  
+# 2025‑06‑~25 present: Nivolumab 240 mg IV every 2 weeks (maintenance) – continuing indefinitely pending disease progression or intolerable toxicity; patient remains clinically stable with persistent partial response","No evidence of uncontrolled brain metastases (imaging showed no CNS involvement).  
+No lack of measurable disease (multiple pulmonary nodules measured serially).  
+No congestive heart failure documented.  
+No pneumonitis (radiology specifically noted absence of pneumonitis).  
+No renal dysfunction (creatinine 0.92 mg/dL, within reference).  
+No significant liver dysfunction (AST/ALT < 40 U/L, bilirubin 0.7 mg/dL).  
+No HIV or hepatitis infection mentioned."
+-10,"Age: 55  
+Sex: Female  
+Cancer type: Ovarian cancer  
+Histology: Low‑grade serous carcinoma (FIGO Stage IIIC at initial presentation)  
+Current extent: Recurrent/progressive disease confined to peritoneum and regional lymph nodes (pelvic sidewall soft‑tissue implants, right para‑aortic lymph node ~2 cm); no distant organ or bony metastases identified on imaging as of 2025‑06‑24  
+
+Biomarkers: KRAS p.G12D dominant clone (variant allele frequency ≈45%), NRAS Q61K subclonal mutation (low VAF), CCNE1 copy number gain (~3‑fold); Serum CA‑125 elevated and rising (210 U/mL on 2025‑06‑22 home test; 62 U/mL on 2025‑06‑23 lab draw, ↑ from 48 U/mL 4 weeks prior)  
+
+Treatment history:  
+# Surgery (total abdominal hysterectomy, bilateral salpingo‑oophorectomy, comprehensive staging) – performed at age 53 (approximately 2023)  
+# 04/2024‑08/2024: Adjuvant chemotherapy – carboplatin AUC 5 + paclitaxel 175 mg/m², 4 cycles (completed 14 months prior to 2025‑06‑22) – achieved initial disease control, thereafter development of radiographically stable peritoneal nodules  
+# 03/2025‑present: Endocrine therapy – letrozole 2.5 mg orally daily (started 3 months before 2025‑06‑22) – tolerated with Grade 1 arthralgias; symptomatic pelvic pressure modestly improved but CA‑125 continued to rise and PET/CT on 2025‑06‑22 showed new FDG‑avid pelvic sidewall lesion and para‑aortic node, indicating disease progression while on letrozole","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal dysfunction (Cr 0.85 mg/dL), liver dysfunction (AST/ALT within normal limits), or HIV/hepatitis infection documented in the available records."
+-9,"Age: 45  
+Sex: Male  
+Cancer type: T‑cell lymphoblastic lymphoma (primary site: anterior mediastinum)  
+Histology: Precursor T‑cell lymphoblastic lymphoma, TdT⁺, CD3⁺, CD7⁺; CD20⁻, CD19⁻, CD22⁻  
+Current extent: Metastatic – bilateral pulmonary nodules, multiple hepatic lesions, probable splenic and bone‑marrow involvement (systemic disease)  
+Biomarkers: NOTCH1 V1578F mutation; PTEN loss; JAK3 V678M mutation; TAL1‑ST5 fusion; CD20‑, CD19‑, CD22‑negative  
+
+Treatment history:  
+# Front‑line Hyper‑CVAD ± high‑dose methotrexate/cytarabine – 4 cycles (completed prior to 2025; yielded partial radiographic response)  
+# Salvage nelarabine – 2 cycles (dates not recorded; achieved stable disease then progression)  
+# Palliative mediastinal external‑beam radiation – 30 Gy in 10 fractions, delivered approximately 2025‑05‑30 to 2025‑06‑12; completed by 2025‑06‑23 scan showing ∼70 % tumor volume reduction  
+# Prednisone 40 mg PO daily ×5 days with taper (started 2025‑06‑22)  
+# Anticoagulation for right popliteal/DVT – therapeutic enoxaparin 1 mg/kg SC q12h begun ≈2025‑05‑11, subsequently transitioned to apixaban 5 mg PO BID (continuing as of 2025‑06‑22)  
+# Analgesia with acetaminophen‑codeine PRN (ongoing)  
+# Planned/off‑label systemic options discussed but not yet initiated: gamma‑secretase inhibitor (NOTCH1‑mutant), ruxolitinib (JAK3‑mutant), pembrolizumab (PD‑1 blockade), bispecific anti‑CD3 antibody, CAR‑T constructs targeting TRBV families  
+
+Best response: Partial response to initial Hyper‑CVAD regimen; disease progression after nelarabine and despite mediastinal radiation, manifest as new pulmonary and hepatic metastases (progression per Lugano classification).  
+
+Boilerplate: Evidence of liver dysfunction – Grade 3 transaminitis (AST/ALT >5 × upper limit of normal) documented on 2025‑06‑22 progress note and reaffirmed in 2025‑06‑24 hepatoprocedural consult, attributed to hepatic infiltration by lymphoma. No documented uncontrolled brain metastases, congestive heart failure, pneumonitis, renal impairment, or HIV/hepatitis infection.","Age: 45  
+Sex: Male  
+Cancer type: T‑cell lymphoblastic lymphoma (primary site: anterior mediastinum)  
+Histology: Precursor T‑cell lymphoblastic lymphoma, TdT⁺, CD3⁺, CD7⁺; CD20⁻, CD19⁻, CD22⁻  
+Current extent: Metastatic – bilateral pulmonary nodules, multiple hepatic lesions, probable splenic and bone‑marrow involvement (systemic disease)  
+Biomarkers: NOTCH1 V1578F mutation; PTEN loss; JAK3 V678M mutation; TAL1‑ST5 fusion; CD20‑, CD19‑, CD22‑negative  
+
+Treatment history:  
+# Front‑line Hyper‑CVAD ± high‑dose methotrexate/cytarabine – 4 cycles (completed prior to 2025; yielded partial radiographic response)  
+# Salvage nelarabine – 2 cycles (dates not recorded; achieved stable disease then progression)  
+# Palliative mediastinal external‑beam radiation – 30 Gy in 10 fractions, delivered approximately 2025‑05‑30 to 2025‑06‑12; completed by 2025‑06‑23 scan showing ∼70 % tumor volume reduction  
+# Prednisone 40 mg PO daily ×5 days with taper (started 2025‑06‑22)  
+# Anticoagulation for right popliteal/DVT – therapeutic enoxaparin 1 mg/kg SC q12h begun ≈2025‑05‑11, subsequently transitioned to apixaban 5 mg PO BID (continuing as of 2025‑06‑22)  
+# Analgesia with acetaminophen‑codeine PRN (ongoing)  
+# Planned/off‑label systemic options discussed but not yet initiated: gamma‑secretase inhibitor (NOTCH1‑mutant), ruxolitinib (JAK3‑mutant), pembrolizumab (PD‑1 blockade), bispecific anti‑CD3 antibody, CAR‑T constructs targeting TRBV families  
+
+Best response: Partial response to initial Hyper‑CVAD regimen; disease progression after nelarabine and despite mediastinal radiation, manifest as new pulmonary and hepatic metastases (progression per Lugano classification).  
+
+Boilerplate: Evidence of liver dysfunction – Grade 3 transaminitis (AST/ALT >5 × upper limit of normal) documented on 2025‑06‑22 progress note and reaffirmed in 2025‑06‑24 hepatoprocedural consult, attributed to hepatic infiltration by lymphoma. No documented uncontrolled brain metastases, congestive heart failure, pneumonitis, renal impairment, or HIV/hepatitis infection."
+-8,"Age: 76  
+Sex: Female  
+Cancer type: Ovarian cancer  
+Histology: High‑grade serous carcinoma  
+Current extent: Metastatic (FIGO Stage IV), presently stable disease with residual hepatic metastases and treated para‑aortic nodal disease  
+Biomarkers: CA‑125 48 U/mL (stable vs prior 44 U/mL)  
+
+Treatment history:  
+# 2024 (date not specified): Initial management of newly diagnosed FIGO Stage IV high‑grade serous ovarian carcinoma (presumed cytoreductive surgery and platinum‑based chemotherapy, details not recorded in excerpt)  
+# 03/2025‑04/2025: Percutaneous radiofrequency ablation of dominant hepatic metastasis (initial size 4.2 cm → post‑ablation 3.8 cm with central necrosis)  
+# 03/2025‑04/2025: Stereotactic body radiotherapy (SBRT) to solitary para‑aortic lymph node, 30 Gy in 5 fractions (resulting in fibrosis, no measurable enhancement)  
+# 2024‑present (continued as of 06/20/2025): Rucaparib 600 mg orally twice daily (maintenance PARP inhibition) – tolerated with grade 2 anemia/fatigue, no new toxicities","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal dysfunction (creatinine 0.84 mg/dL on 06/15/2025), clinically meaningful liver dysfunction, HIV infection, or hepatitis infection reported in the available records."
+-7,"Age: 70 (most recent documentation)  
+Sex: Male  
+Cancer type: Prostate cancer  
+Histology: Adenocarcinoma, Gleason 9 (4+5)  
+Current extent: Metastatic castration‑resistant prostate cancer, bone‑only disease, no visceral metastases evident on CT (2025‑06‑25)  
+
+Biomarkers:   
+- Serum PSA: increased from 0.4 ng/mL (baseline 3 months earlier) to 2.6 ng/mL as of 2025‑06‑19 (>50% rise) indicating biochemical progression.  
+- Testosterone: persistently castrate (<20 ng/dL, most recent assay).  
+- No genomic alterations reported yet; NGS sequencing ordered (date unspecified).  
+
+Treatment history:  
+# Prior to 2024 (dates not specified): Radical prostatectomy with extended pelvic lymph node dissection; initiation of continuous androgen deprivation therapy (leuprolide depot). Post‑operative PSA nadir 0.18 ng/mL.  
+# Approx. mid‑2024–2025‑06‑19: Abiraterone acetate 1000 mg oral daily + prednisone 5 mg twice daily (started ≈12 months before 2025‑06‑19 for rising PSA and osseous disease). Well tolerated except intermittent hot flashes and development of Grade 2 essential hypertension (controlled with amlodipine 5 mg daily). Discontinued 2025‑06‑19 due to biochemical progression.  
+# 2025‑06‑19 to present: Enzalutamide 160 mg PO daily initiated; continuation of leuprolide depot; gradual prednisone tap­er scheduled over 1 week.  
+# Future/planned (not yet started as of latest note): Docetaxel 75 mg/m² IV every 21 days ± prednisone 5 mg BID (recommended for symptomatic bone disease or rapid PSA kinetics).  
+# Consideration: Radium‑223 dichloride for symptomatic bone‑dominant disease without visceral metastases (discussed, not yet administered).  
+# Pending: Comprehensive genomic profiling (archival primary tumor or ctDNA) to evaluate DDR gene mutations (e.g., BRCA1/2, ATM, PALB2) for potential PARP inhibitor eligibility.","No evidence of uncontrolled brain metastases, lack of measurable disease affecting assessment, congestive heart failure, pneumonitis, significant renal dysfunction, clinically important liver dysfunction, or active HIV/hepatitis infection documented in the available records."
+-6,"Age: 63  
+Sex: Male  
+Cancer type: Small‑cell lung carcinoma (extensive‑stage)  
+Histology: Small‑cell carcinoma  
+Current extent: Progressive disease with new solitary hepatic metastasis (segment VII) while other extracranial sites remain stable; no intracranial disease.  
+Biomarkers: Not reported  
+
+Treatment history:  
+# First‑line (2025): carboplatin AUC 5 + etoposide 100 mg/m² IV days 1‑3 q21 days, total 4 cycles; concurrent palliative external beam radiation to L3 (single 8 Gy fraction). Achieved partial response (~30 % tumor shrinkage) after cycle 2; thereafter stable disease. Toxicities – grade 3 neutropenia (filgrastim support), grade 3 thrombocytopenia requiring transfusion, grade 2 peripheral neuropathy.  
+# Second‑line (dates not explicitly stated): amrubicin (dose/schedule not detailed). Administered after first‑line failure; contributed to cumulative myelosuppression. Specific response not recorded.  
+# Third‑line (2025): lurbinectedin 3.2 mg/m² IV q21 days, continued for at least 5 cycles. Resulted in modest decrease of left adrenal lesion and stable femoral bone lesion; however developed grade 2 anemia (treated with oral iron) and recurrent grade 3 neutropenia prompting dose reduction after fifth cycle. Restaging PET‑CT performed 7 days prior to 2025‑06‑25 showed new hypermetabolic hepatic lesion meeting RECIST criteria for progressive disease; all other sites remained controlled. Therapy halted pending next line decision.  
+# Planned fourth‑line (post‑June 2025): temozolomide 200 mg/m² orally days 1‑5 q28 days (documented as intended future option).","No evidence of uncontrolled brain metastases (brain MRI repeatedly negative). No documentation of congestive heart failure, pneumonitis, clinically significant renal impairment, severe hepatic dysfunction beyond mild injury related to metastatic involvement, HIV infection, or active hepatitis B/C. Hypertension and hyperlipidemia are present but stable on therapy and do not constitute exclusion criteria."
+-5,"Age: 45  
+Sex: Female  
+Cancer type: Breast cancer (right-sided)  
+Histology: Invasive ductal carcinoma, estrogen receptor–positive, HER2‑negative  
+Current extent: Metastatic (hepatic metastases noted in segments IV, VI, VII/VIII; disease progression evidenced by increase in size of lesions)  
+Biomarkers: ER positive, HER2 negative  
+
+Treatment history:  
+# Ongoing systemic therapy for metastatic breast cancer (start date not specified in available records); continued through 2025‑06‑25, with radiologic evidence of disease progression despite therapy","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal or liver dysfunction, HIV infection, or hepatitis infection reported in the supplied documentation."
+-4,"Age: 62
+Sex: Female
+Cancer type: Glioblastoma, IDH‑wildtype (right parietal lobe)
+Histology: WHO Grade IV astrocytoma (glioblastoma), IDH‑wildtype
+Current extent: Progressive disease with new non‑enhancing infiltrative focus in right posterior parietal lobe (~2.1 cm), no new contrast‑enhancing lesions, otherwise stable postoperative changes
+Biomarkers: IDH‑wildtype; additional genomic/protein markers not recorded
+Treatment history:
+# Surgical resection of left temporal lesion (date not specified, performed prior to subsequent therapies)
+# External beam radiation therapy to operative field ± concurrent temozolomide (standard adjuvant protocol, dates not specified)
+# Experimental PDGFRα inhibitor combined with temozolomide (administered before 2025, specific dates not provided) – did not prevent progression
+# Bevacizumab 10 mg/kg IV every 14 days – initiated after progression noted at “age 63” (early 2025); subsequently held owing to grade 3 proteinuria; resumed 2025‑06‑25 and continues at present
+Best response: Transient symptomatic improvement with bevacizumab, followed by radiographic progression evident on MRI 2025‑06‑20","Evidence of renal dysfunction – grade 3 proteinuria associated with bevacizumab therapy, prompting dose interruption (progress note dated 2025‑06‑25). No documented uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant hepatic dysfunction, HIV infection, or hepatitis infection."
+-3,"Age: 66  
+Sex: Male  
+
+Cancer type: Breast cancer (right side)  
+Histology: Invasive lobular carcinoma, hormone‑receptor positive (ER⁺/PR⁺), HER2‑low  
+
+Current extent: Metastatic (known hepatic lesion in segment IV and multiple osseous metastases in the thoracic spine); disease classified as stable/responding to therapy  
+
+Biomarkers: ER⁺/PR⁺, HER2‑low; PIK3CA E545K mutation; ESR1 D538G mutation; no HER2 amplification reported  
+
+Treatment history:  
+# ~2023‑present: Oral capecitabine 1250 mg/m² twice daily on days 1‑14 of a 21‑day cycle (started at age 64). Ongoing as of 25 Jun 2025; radiographic assessment indicates partial response per RECIST v1.1 and overall disease stability. Toxicities: resolved Grade 2 diarrhea after first two cycles; ongoing Grade 1 peripheral neuropathy attributed to prior paclitaxel.  
+# Dates not recorded: Prior paclitaxel (taxane‑based chemotherapy) administered before initiation of capecitabine; resulted in Grade 1 peripheral neuropathy persisting into current visit.","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, clinically significant renal or hepatic dysfunction, HIV infection, or active hepatitis infection documented in the records."
+-2,"Age: 34  
+Sex: Male  
+Cancer type: Appendiceal neuroendocrine tumour (gastroenteropancreatic NET)  
+Histology: Well‑differentiated, Grade 2 (Ki‑67 ≈ 8%)  
+Current extent: Metastatic to liver, stable disease on imaging (segment III scar, segment VI 1 cm lesion unchanged)  
+Biomarkers: Somatostatin receptor‑2 positive (⁶⁸Ga‑DOTATATE SUVmax ≈ 12); Ki‑67 ~ 8%  
+
+Treatment history:  
+# 2015 (age 24): Surgical resection of primary appendix (stage IA, T1 N0 M0)  
+# 2016‑2018 (ages 25‑27): Temozolomide + Bevacizumab – partial radiographic response  
+# 2018‑present: Octreotide LAR 30 mg intramuscular q28 days – continuous since initiation after confirming SSTR2 positivity  
+# 2022‑2023 (approximately age 31): Lu‑177‑DOTATATE peptide receptor radionuclide therapy (PRRT) – achieved disease control; post‑PRRT baseline MRI at age 31 showed regression of treated lesions  
+# 03/2025‑present: Everolimus 10 mg orally daily combined with continued Octreotide LAR 30 mg q28 days – stable disease per RECIST on MRI 05/2025","No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal dysfunction, severe liver dysfunction, HIV infection, or hepatitis infection."
+-1,"Age: 64  
+Sex: Male  
+Cancer type: Gastro‑esophageal junction adenocarcinoma  
+Histology: Adenocarcinoma  
+Current extent: Metastatic disease with stable hepatic metastases, progressive peritoneal carcinomatosis, new moderate‑volume ascites, slight enlargement of retroperitoneal lymph nodes; overall progressive disease on third‑line immunotherapy  
+
+Biomarkers: HER2 positive (IHC 3+, ISH amplification); co‑amplifications MET and FGFR2; KRAS p.G12D mutation; PIK3CA p.H1047R mutation; PD‑L1 combined positivity score 15%  
+
+Treatment history:  
+# First‑line (dates not specified): CAPOX (capecitabine + oxaliplatin) plus trastuzumab – achieved disease stabilization.  
+# Second‑line (dates not specified): FOLFIRI (folinic acid, fluorouracil, irinotecan) – progressed.  
+# Third‑line (ongoing as of 6/20/2025): Pembrolizumab (Keytruda) 200 mg IV every 3 weeks – initiated prior to 2025, continued through 6/25/2025; latest assessment shows radiographic progression.  
+# Local therapy: Palliative external beam radiation to L3 vertebral osteoblastic metastasis (completed prior to 6/25/2025).  
+Supportive care: Red blood cell transfusions for grade 3 anemia; initiation of epoetin alfa 40,000 U SC weekly (planned after ferritin confirmation); levothyroxine 75 µg daily for grade 2 hypothyroidism; ondansetron PRN; ferrous sulfate 325 mg BID.  
+
+Boilerplate: No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal dysfunction, severe liver dysfunction, HIV infection, or active hepatitis infection documented in the available records.","Age: 64  
+Sex: Male  
+Cancer type: Gastro‑esophageal junction adenocarcinoma  
+Histology: Adenocarcinoma  
+Current extent: Metastatic disease with stable hepatic metastases, progressive peritoneal carcinomatosis, new moderate‑volume ascites, slight enlargement of retroperitoneal lymph nodes; overall progressive disease on third‑line immunotherapy  
+
+Biomarkers: HER2 positive (IHC 3+, ISH amplification); co‑amplifications MET and FGFR2; KRAS p.G12D mutation; PIK3CA p.H1047R mutation; PD‑L1 combined positivity score 15%  
+
+Treatment history:  
+# First‑line (dates not specified): CAPOX (capecitabine + oxaliplatin) plus trastuzumab – achieved disease stabilization.  
+# Second‑line (dates not specified): FOLFIRI (folinic acid, fluorouracil, irinotecan) – progressed.  
+# Third‑line (ongoing as of 6/20/2025): Pembrolizumab (Keytruda) 200 mg IV every 3 weeks – initiated prior to 2025, continued through 6/25/2025; latest assessment shows radiographic progression.  
+# Local therapy: Palliative external beam radiation to L3 vertebral osteoblastic metastasis (completed prior to 6/25/2025).  
+Supportive care: Red blood cell transfusions for grade 3 anemia; initiation of epoetin alfa 40,000 U SC weekly (planned after ferritin confirmation); levothyroxine 75 µg daily for grade 2 hypothyroidism; ondansetron PRN; ferrous sulfate 325 mg BID.  
+
+Boilerplate: No evidence of uncontrolled brain metastases, lack of measurable disease, congestive heart failure, pneumonitis, significant renal dysfunction, severe liver dysfunction, HIV infection, or active hepatitis infection documented in the available records."

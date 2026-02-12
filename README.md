@@ -69,3 +69,6 @@ GPU integration tests (requires CUDA + model downloads):
 ```sh
 pytest -m resource_heavy
 ```
+
+## QC metrics
+See `mmai-package/src/mmai/_qc/README.md`.

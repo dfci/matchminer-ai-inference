@@ -1,0 +1,18 @@
+metric,value,percent,ids
+trials_missing_in_output,1.0,0.2127659574468085,['NCT06462183']
+trials_truncated_llm_response,1.0,0.2127659574468085,['NCT05417594']
+spaces_per_trial_min,1.0,,[]
+spaces_per_trial_median,2.0,,[]
+spaces_per_trial_max,44.0,,[]
+trials_with_non_distinct_spaces,7.0,1.4893617021276597,"['NCT04389632', 'NCT04557449', 'NCT04777994', 'NCT05098132', 'NCT05508906', 'NCT05647122', 'NCT06179160']"
+spaces_dropped_missing_keyword:Age,0.0,0.0,[]
+spaces_dropped_missing_keyword:Sex,0.0,0.0,[]
+spaces_dropped_missing_keyword:Cancer type,0.0,0.0,[]
+spaces_dropped_missing_keyword:Histology,0.0,0.0,[]
+spaces_dropped_missing_keyword:Cancer burden,0.0,0.0,[]
+spaces_dropped_missing_keyword:Prior treatment required,1.0,0.06939625260235947,['NCT05417594-14']
+spaces_dropped_missing_keyword:Prior treatment excluded,3.0,0.2081887578070784,"['NCT05417594-14', 'NCT06462183-1', 'NCT06462183-2']"
+spaces_dropped_missing_keyword:Biomarkers required,1.0,0.06939625260235947,['NCT05417594-14']
+spaces_dropped_missing_keyword:Biomarkers excluded,3.0,0.2081887578070784,"['NCT05417594-14', 'NCT06462183-1', 'NCT06462183-2']"
+trials_exclusion_criteria_not_extracted,11.0,2.3404255319148937,"['NCT01656603', 'NCT04613596', 'NCT05098132', 'NCT05417594', 'NCT05566795', 'NCT05592626', 'NCT06095505', 'NCT06104566', 'NCT06369285', 'NCT06479135', 'NCT06657222']"
+spaces_excessive_length,0.0,0.0,[]

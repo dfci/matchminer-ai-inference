@@ -34,12 +34,12 @@ REQUIRED_TRIAL_SPACE_KEYWORDS = [
 ]
 
 
-def flatten_trial_to_spaces(
+def _expand_trial_spaces(
     trials_with_summaries: pd.DataFrame,
     reasoning_marker: str,
     boilerplate_marker: str,
 ) -> pd.DataFrame:
-    """Split LLM summaries into individual clinical spaces."""
+    """Expand LLM summaries into one row per clinical space."""
     trials_with_summaries = trials_with_summaries.copy()
     trials_with_summaries["space_output_no_reasoning"] = (
         trials_with_summaries["space_reasoning_and_output"]
@@ -53,10 +53,12 @@ def flatten_trial_to_spaces(
     trials_with_summaries["space_text"] = trials_with_summaries[
         "space_text"
     ].str.strip()
-    trials_with_summaries["boilerplate_text"] = trials_with_summaries[
-        "boilerplate_text"
-    ].str.strip()
-    trials_with_summaries["boilerplate_text"].fillna("None", inplace=True)
+    trials_with_summaries["boilerplate_text"] = (
+        trials_with_summaries["boilerplate_text"]
+        .str.strip()
+        .fillna("None")
+        .replace("", "None")
+    )
 
     frames: list[pd.DataFrame] = []
     for i in range(trials_with_summaries.shape[0]):
@@ -67,6 +69,7 @@ def flatten_trial_to_spaces(
         cohorts = pd.Series(space_text.split("\n")).str.strip()
         cohorts = cohorts[cohorts.str.match(r"[1-9]")]
         cohorts = cohorts.apply(_strip_numerical_prefix)
+        # clean up spaces
         cohorts = cohorts[
             ~((cohorts.isnull()) | (cohorts == "\n") | (cohorts == ""))
         ].reset_index(drop=True)
@@ -84,34 +87,68 @@ def flatten_trial_to_spaces(
         frames.append(frame)
 
     if not frames:
-        return pd.DataFrame()
+        return pd.DataFrame(
+            columns=[
+                *trials_with_summaries.columns,
+                "clinical_space_summary",
+                "clinical_space_number",
+            ]
+        )
 
-    cohort_level_trials = pd.concat(frames, axis=0).reset_index(drop=True)
-    cohort_level_trials = cohort_level_trials.loc[
+    return pd.concat(frames, axis=0).reset_index(drop=True)
+
+
+def flatten_trial_to_spaces(
+    trials_with_summaries: pd.DataFrame,
+    reasoning_marker: str,
+    boilerplate_marker: str,
+) -> pd.DataFrame:
+    """Split LLM summaries into individual clinical spaces and do keyword filtering."""
+    cohort_level_trials = _expand_trial_spaces(
+        trials_with_summaries,
+        reasoning_marker=reasoning_marker,
+        boilerplate_marker=boilerplate_marker,
+    )
+    if cohort_level_trials.empty:
+        return cohort_level_trials
+    return cohort_level_trials.loc[
         cohort_level_trials["clinical_space_summary"].apply(
             lambda text: all(term in text for term in REQUIRED_TRIAL_SPACE_KEYWORDS)
         )
     ]
-    return cohort_level_trials
 
 
 def postprocess_trial_summaries(
     trials_with_summaries: pd.DataFrame,
     config: MMAIConfig,
-) -> pd.DataFrame:
+    *,
+    return_qc_data: bool = False,
+) -> pd.DataFrame | tuple[pd.DataFrame, pd.DataFrame]:
     """Postprocess trial summaries into clinical spaces."""
     trial_config = dict(config.trial)
     reasoning_marker = trial_config["reasoning_marker"]
     boilerplate_marker = trial_config["boilerplate_marker"]
 
-    spaces = flatten_trial_to_spaces(
-        trials_with_summaries,
-        reasoning_marker=reasoning_marker,
-        boilerplate_marker=boilerplate_marker,
-    )
-
+    if return_qc_data:
+        unfiltered_spaces = _expand_trial_spaces(
+            trials_with_summaries,
+            reasoning_marker=reasoning_marker,
+            boilerplate_marker=boilerplate_marker,
+        )
+        spaces = unfiltered_spaces.loc[
+            unfiltered_spaces["clinical_space_summary"].apply(
+                lambda text: all(term in text for term in REQUIRED_TRIAL_SPACE_KEYWORDS)
+            )
+        ]
+    else:
+        unfiltered_spaces = pd.DataFrame()
+        spaces = flatten_trial_to_spaces(
+            trials_with_summaries,
+            reasoning_marker=reasoning_marker,
+            boilerplate_marker=boilerplate_marker,
+        )
     if spaces.empty:
-        return pd.DataFrame(
+        empty = pd.DataFrame(
             columns=[
                 "space_trial_id",
                 "trial_id",
@@ -120,6 +157,7 @@ def postprocess_trial_summaries(
                 "general_exclusion_criteria",
             ]
         )
+        return (empty, unfiltered_spaces) if return_qc_data else empty
 
     output = pd.DataFrame(
         {
@@ -138,5 +176,5 @@ def postprocess_trial_summaries(
     if config.debug_mode:
         output["trial_text"] = spaces["trial_text"]
         output["space_reasoning_and_output"] = spaces["space_reasoning_and_output"]
-
-    return output
+    # qc spaces = unfiltered trial spaces
+    return (output, unfiltered_spaces) if return_qc_data else output
