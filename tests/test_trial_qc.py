@@ -1,9 +1,10 @@
 import pandas as pd
 
 from mmai._qc.trials import trial_qc_report
+from mmai.config import MMAIConfig
 
 
-def test_trial_qc_report_metrics():
+def test_trial_qc_report_metrics(monkeypatch):
     """Validate trial QC metrics for missing summaries, duplicates, and boilerplate gaps."""
     trial_source = pd.DataFrame(
         [
@@ -49,12 +50,38 @@ def test_trial_qc_report_metrics():
         ["stop", "length"],
         index=["T1", "T2"],
     )
+    monkeypatch.setattr(
+        "mmai._qc.trials.get_backend",
+        lambda _: type(
+            "MockBackend",
+            (),
+            {
+                "count_embedding_tokens": lambda self, texts, embedding_config: [
+                    120,
+                    10,
+                    3400,
+                ]
+            },
+        )(),
+    )
+    config = MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        backend="local",
+        trial={},
+        patient={},
+        embedding={"model_path": "m", "device": "cpu", "prompt_file": "embedding.txt"},
+        model_metadata_cache_dir=None,
+        raw={},
+    )
 
     report = trial_qc_report(
         trial_spaces,
         trial_source=trial_source,
         unfiltered_spaces=trial_spaces,
         finish_reasons=finish_reasons,
+        config=config,
+        max_embedding_input_tokens=2500,
         max_space_length=50,
     ).set_index("metric")
 
@@ -64,6 +91,8 @@ def test_trial_qc_report_metrics():
     assert report.loc["spaces_per_trial_max", "value"] == 2
     assert report.loc["trials_with_non_distinct_spaces", "value"] == 1
     assert report.loc["trials_with_non_distinct_spaces", "ids"] == ["T1"]
+    assert report.loc["spaces_exceed_embedding_token_limit", "value"] == 1
+    assert report.loc["spaces_exceed_embedding_token_limit", "ids"] == ["T2-1"]
     assert report.loc["trials_exclusion_criteria_not_extracted", "value"] == 2
     assert report.loc["spaces_excessive_length", "value"] >= 1
     assert report.loc["spaces_dropped_missing_keyword:Age", "value"] >= 1

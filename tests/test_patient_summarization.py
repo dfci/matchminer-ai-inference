@@ -395,6 +395,14 @@ def test_summarize_patients_returns_qc_report(monkeypatch):
             )
         ),
     )
+    monkeypatch.setattr(
+        "mmai._qc.patients.get_backend",
+        MagicMock(
+            return_value=MagicMock(
+                count_embedding_tokens=MagicMock(return_value=[100]),
+            )
+        ),
+    )
 
     config = MMAIConfig(
         preset_name="default",
@@ -404,7 +412,11 @@ def test_summarize_patients_returns_qc_report(monkeypatch):
         patient={},
         model_metadata_cache_dir=None,
         raw={},
-        embedding={},
+        embedding={
+            "model_path": "mock-model",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+        },
     )
 
     result, qc_report = summarize_patients(notes, config=config, return_qc=True)
