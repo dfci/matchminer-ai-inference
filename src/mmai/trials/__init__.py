@@ -130,7 +130,6 @@ def summarize_trials(
 
     # Depending on flags, decide what to return
     if return_metadata:
-        # Optionally return metadata, and append QC when requested.
         metadata_payload = {
             "config_snapshot": resolved_config.raw,
             "model_metadata": {
