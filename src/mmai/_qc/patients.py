@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import pandas as pd
+
+from mmai.backends import get_backend
+
+if TYPE_CHECKING:
+    from mmai.config import MMAIConfig
 
 
 DEFAULT_KEYWORDS = [
@@ -156,6 +161,7 @@ def patient_qc_report(
             "ids": sorted(missing_summary_ids),
         }
     )
+
     # Combine summary QC with upstream-only metrics.
     summary_metrics = summary_qc_report.copy()
     tagger_metrics = tagger_qc_report.copy()
@@ -170,6 +176,8 @@ def patient_summary_qc_report(
     *,
     noninformative_summary_drop_ids: list[str],
     finish_reasons: pd.Series | list[str] | None,
+    config: MMAIConfig | None = None,
+    max_embedding_input_tokens: int = 2500,
     expected_keywords: list[str] | None = None,
     max_summary_length: int = 4000,
 ) -> pd.DataFrame:
@@ -186,6 +194,11 @@ def patient_summary_qc_report(
         Patient ids dropped because the summary was non-informative.
     finish_reasons : pd.Series | list[str] | None
         Finish reasons for each summary row (used for truncation metrics).
+    config : MMAIConfig | None, optional
+        Config used to resolve backend and embedding settings when token counts
+        are computed inside this QC function.
+    max_embedding_input_tokens : int
+        Maximum token length accepted by the embedding model.
     expected_keywords : list[str], optional
         Keywords expected in each cancer_history_summary.
     max_summary_length : int
@@ -244,6 +257,28 @@ def patient_summary_qc_report(
             "ids": sorted(length_ids.astype(str).unique().tolist()),
         }
     )
+
+    if config is not None and config.embedding:
+        backend = get_backend(config.backend)
+        token_series = pd.Series(
+            backend.count_embedding_tokens(
+                summaries["cancer_history_summary"].fillna("").astype(str).tolist(),
+                embedding_config=dict(config.embedding),
+            ),
+            index=summaries["patient_id"].astype(str).tolist(),
+        )
+        token_series = pd.to_numeric(token_series, errors="coerce").fillna(0)
+        over_limit_ids = token_series[token_series > max_embedding_input_tokens].index
+        metrics.append(
+            {
+                "metric": "patients_exceed_embedding_token_limit",
+                "value": int(over_limit_ids.nunique()),
+                "percent": (int(over_limit_ids.nunique()) / total_patients * 100)
+                if total_patients
+                else 0.0,
+                "ids": sorted(over_limit_ids.astype(str).unique().tolist()),
+            }
+        )
 
     # Summary equals boilerplate exclusions.
     same_text = summaries.loc[
