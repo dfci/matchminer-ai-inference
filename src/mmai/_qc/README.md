@@ -32,18 +32,15 @@ Returned by `summarize_patients(..., return_qc=True)`.
   from the final summaries output.
 
 ### Patient percent denominators
-- Source-level metrics use unique patients in `patient_note_source` as the
-  denominator (for example, `patients_with_no_tagged_notes`,
-  `patients_missing_summaries`).
-- Most summary-level metrics use unique patients in the summary table passed
-  into `patient_summary_qc_report` as the denominator (for example,
-  `patients_dropped_noninformative_summary`,
-  `patients_missing_keyword:<keyword>`).
-- `patients_truncated_llm_response` uses the number of generated summaries
-  (`len(finish_reasons)`) as the denominator, since truncation is a generation
-  event measured from model finish reasons.
-- `patients_exceed_embedding_token_limit` uses unique patients in the summary
-  table as the denominator.
+- `patients_with_no_tagged_notes` and `patients_missing_summaries` are
+  calculated as a percent of patients in the original input notes.
+- `patients_dropped_noninformative_summary` and
+  `patients_truncated_llm_response` are calculated as a percent of patients
+  that reached the summarization step.
+- `patients_exclusion_criteria_not_extracted`,
+  `patients_missing_keyword:<keyword>`, and
+  `patients_exceed_embedding_token_limit` are calculated as a percent of
+  patients in the summary output table.
 
 ## Trial summarization QC
 Returned by `summarize_trials(..., return_qc=True)`.

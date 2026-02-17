@@ -9,8 +9,6 @@ from mmai.config import MMAIConfig
 
 if TYPE_CHECKING:
     import pandas as pd
-else:
-    import pandas as pd
 
 
 def summarize_trials(

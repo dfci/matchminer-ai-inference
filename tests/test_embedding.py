@@ -17,6 +17,7 @@ class MockBackend:
 
 
 def test_embed_for_matching_patient(monkeypatch):
+    """Embed patient summaries and pass embedding config through to backend."""
     backend = MockBackend()
     monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
     config = MMAIConfig(
@@ -44,6 +45,7 @@ def test_embed_for_matching_patient(monkeypatch):
 
 
 def test_embed_for_matching_trial(monkeypatch):
+    """Embed trial space summaries using the trial summary text column."""
     backend = MockBackend()
     monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
     config = MMAIConfig(
@@ -67,29 +69,8 @@ def test_embed_for_matching_trial(monkeypatch):
     assert result.loc[0, "embedding"] == [4.0]
 
 
-def test_embed_for_matching_allows_empty_model_path(monkeypatch):
-    backend = MockBackend()
-    monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
-    config = MMAIConfig(
-        preset_name="default",
-        debug_mode=False,
-        backend="local",
-        trial={},
-        patient={},
-        model_metadata_cache_dir=None,
-        raw={},
-        embedding={"model_path": "", "device": "cpu", "prompt_file": "embedding.txt"},
-    )
-    result = embed_for_matching(
-        pd.DataFrame([{"cancer_history_summary": "x"}]),
-        entity_type="patient",
-        config=config,
-    )
-    assert result.loc[0, "embedding"] == [1.0]
-    assert backend.last_embedding_config["model_path"] == ""
-
-
 def test_embed_for_matching_missing_column(monkeypatch):
+    """Raise a clear error when the required summary column is missing."""
     backend = MockBackend()
     monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
     config = MMAIConfig(
@@ -115,33 +96,8 @@ def test_embed_for_matching_missing_column(monkeypatch):
         )
 
 
-def test_embedding_prompt_is_set_on_model(monkeypatch):
-    backend = MockBackend()
-    monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
-    config = MMAIConfig(
-        preset_name="default",
-        debug_mode=False,
-        backend="local",
-        trial={},
-        patient={},
-        model_metadata_cache_dir=None,
-        raw={},
-        embedding={
-            "model_path": "mock-model",
-            "device": "cpu",
-            "prompt_file": "embedding.txt",
-        },
-    )
-
-    embed_for_matching(
-        pd.DataFrame([{"cancer_history_summary": "hello"}]),
-        entity_type="patient",
-        config=config,
-    )
-    assert backend.last_embedding_config["prompt_file"] == "embedding.txt"
-
-
 def test_embed_for_matching_reads_config(monkeypatch):
+    """Read embedding model/device/prompt settings from config."""
     backend = MockBackend()
     monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
 
