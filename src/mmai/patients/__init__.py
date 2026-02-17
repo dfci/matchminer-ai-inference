@@ -125,14 +125,16 @@ def summarize_patients(
     )
     logger.info("Patient summarization complete. Produced %d rows.", len(summaries))
     # Build the full QC report using original notes, tagged notes, and summary QC.
-    from mmai._qc.patients import patient_qc_report
+    qc_report = None
+    if return_qc:
+        from mmai._qc.patients import patient_qc_report
 
-    qc_report = patient_qc_report(
-        summaries,
-        patient_note_source=notes,
-        summary_qc_report=summary_qc,
-        tagger_qc_report=tagger_qc,
-    )
+        qc_report = patient_qc_report(
+            summaries,
+            patient_note_source=notes,
+            summary_qc_report=summary_qc,
+            tagger_qc_report=tagger_qc,
+        )
     if return_metadata:
         metadata_payload = {
             "config_snapshot": resolved_config.raw,

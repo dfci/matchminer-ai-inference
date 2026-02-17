@@ -102,6 +102,7 @@ def summarize_from_relevant_sentences(
             df,
             noninformative_summary_drop_ids=dropped_ids or [],
             finish_reasons=finish_reason_by_patient,
+            config=resolved_config,
         )
         return df, metadata, qc_report
     return df, metadata
