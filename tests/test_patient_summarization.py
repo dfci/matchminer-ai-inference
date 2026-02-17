@@ -202,9 +202,10 @@ def test_clean_bad_data_filters_invalid_summaries():
         ]
     )
 
-    cleaned = clean_bad_data(df)
+    cleaned, qc_artifact = clean_bad_data(df)
 
     assert cleaned["cancer_history_summary"].tolist() == ["Valid summary"]
+    assert qc_artifact["metric"] == "patients_dropped_noninformative_summary"
 
 
 def test_local_backend_truncate_texts_splits_long_inputs(monkeypatch):

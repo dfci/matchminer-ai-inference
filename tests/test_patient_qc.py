@@ -50,11 +50,6 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
             },
         ]
     )
-    finish_reasons = pd.Series(
-        ["stop", "length", "stop"],
-        index=summaries["patient_id"].astype(str),
-    )
-
     monkeypatch.setattr(
         "mmai._qc.patients.get_backend",
         lambda _: type(
@@ -82,8 +77,18 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
 
     report = patient_summary_qc_report(
         summaries,
-        noninformative_summary_drop_ids=["P2"],
-        finish_reasons=finish_reasons,
+        noninformative_summary_qc_artifact={
+            "metric": "patients_dropped_noninformative_summary",
+            "numerator": 1,
+            "denominator": 3,
+            "ids": ["P2"],
+        },
+        truncated_llm_qc_artifact={
+            "metric": "patients_truncated_llm_response",
+            "numerator": 1,
+            "denominator": 3,
+            "ids": ["P2"],
+        },
         config=config,
         max_embedding_input_tokens=2500,
         expected_keywords=["Cancer type", "Histology"],
@@ -126,11 +131,6 @@ def test_patient_qc_report_metrics(monkeypatch):
             },
         ]
     )
-    finish_reasons = pd.Series(
-        ["stop", "length", "stop"],
-        index=summaries["patient_id"].astype(str),
-    )
-
     monkeypatch.setattr(
         "mmai._qc.patients.get_backend",
         lambda _: type(
@@ -158,8 +158,18 @@ def test_patient_qc_report_metrics(monkeypatch):
 
     summary_report = patient_summary_qc_report(
         summaries,
-        noninformative_summary_drop_ids=["P2"],
-        finish_reasons=finish_reasons,
+        noninformative_summary_qc_artifact={
+            "metric": "patients_dropped_noninformative_summary",
+            "numerator": 1,
+            "denominator": 3,
+            "ids": ["P2"],
+        },
+        truncated_llm_qc_artifact={
+            "metric": "patients_truncated_llm_response",
+            "numerator": 1,
+            "denominator": 3,
+            "ids": ["P2"],
+        },
         config=config,
         max_embedding_input_tokens=2500,
         expected_keywords=["Cancer type", "Histology"],
