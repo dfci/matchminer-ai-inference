@@ -64,6 +64,16 @@ def _load_prompt_text(filename: str) -> str:
         return handle.read()
 
 
+def _resolve_embedding_runtime(
+    embedding_config: Dict[str, Any],
+) -> tuple[str, str, str]:
+    model_path = str(embedding_config.get("model_path", "")).strip()
+    device = str(embedding_config.get("device", "cpu")).strip() or "cpu"
+    prompt_filename = str(embedding_config.get("prompt_file", "")).strip()
+    query_prompt = _load_prompt_text(prompt_filename).strip()
+    return model_path, device, query_prompt
+
+
 @dataclass
 class LocalBackend:
     """Local vLLM-backed implementation."""
@@ -181,16 +191,27 @@ class LocalBackend:
         *,
         embedding_config: Dict[str, Any],
     ) -> list[list[float]]:
-        model_path = str(embedding_config.get("model_path", "")).strip()
-        device = str(embedding_config.get("device", "cpu")).strip() or "cpu"
-        prompt_filename = str(embedding_config.get("prompt_file", "")).strip()
-        query_prompt = _load_prompt_text(prompt_filename).strip()
+        model_path, device, query_prompt = _resolve_embedding_runtime(embedding_config)
         model = _get_embedding_model(model_path, device, query_prompt)
         embeddings = model.encode(texts, prompt="query")
         embedding_list = (
             embeddings.tolist() if hasattr(embeddings, "tolist") else embeddings
         )
         return cast(list[list[float]], embedding_list)
+
+    def count_embedding_tokens(
+        self,
+        texts: list[str],
+        *,
+        embedding_config: Dict[str, Any],
+    ) -> list[int]:
+        model_path, device, query_prompt = _resolve_embedding_runtime(embedding_config)
+        model = _get_embedding_model(model_path, device, query_prompt)
+        prepared = [f"{query_prompt} {text}".strip() for text in texts]
+        encoded = model.tokenizer(prepared, add_special_tokens=True, truncation=False)[
+            "input_ids"
+        ]
+        return [len(input_ids) for input_ids in encoded]
 
 
 @dataclass
@@ -229,6 +250,14 @@ class RemoteBackend:
         *,
         embedding_config: Dict[str, Any],
     ) -> list[list[float]]:
+        raise NotImplementedError("Remote backend is not implemented yet.")
+
+    def count_embedding_tokens(
+        self,
+        texts: list[str],
+        *,
+        embedding_config: Dict[str, Any],
+    ) -> list[int]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
 
