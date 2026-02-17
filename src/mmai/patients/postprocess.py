@@ -64,9 +64,7 @@ def clean_bad_data(
 def postprocess_patient_summaries(
     df: pd.DataFrame,
     config: MMAIConfig,
-    *,
-    return_qc_data: bool = False,
-) -> pd.DataFrame | tuple[pd.DataFrame, dict[str, object]]:
+) -> tuple[pd.DataFrame, dict[str, object]]:
     """Postprocess patient summaries into clean outputs."""
     patient_config = dict(config.patient)
     reasoning_marker = patient_config["reasoning_marker"]
@@ -82,8 +80,5 @@ def postprocess_patient_summaries(
             ],
             errors="ignore",
         )
-    if return_qc_data:
-        cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
-        return cleaned, qc_artifact
     cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
-    return cleaned
+    return cleaned, qc_artifact

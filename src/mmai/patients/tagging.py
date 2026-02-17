@@ -177,6 +177,7 @@ def extract_relevant_sentences(
     tuple[pd.DataFrame, dict[str, Any], pd.DataFrame]
         When return_qc is True, also returns a tagger QC report.
     """
+    # Resolve config and backend resources for the tagging step.
     resolved_config = config or load_default_preset()
     if not isinstance(resolved_config, MMAIConfig):
         raise TypeError("config must be an MMAIConfig instance or None.")
@@ -184,11 +185,14 @@ def extract_relevant_sentences(
     patient_config = dict(resolved_config.patient)
     tagger_config = dict(patient_config["tagger"])
     backend = get_backend(resolved_config.backend)
+
+    # Normalize and clean note-level inputs before grouping by patient.
     df = df.copy()
     df = df[df["note_text"].notna()]
     df["note_text"] = df["note_text"].astype(str)
     df["note_date"] = pd.to_datetime(df["note_date"])
 
+    # Run excerpt tagging and relevant-text aggregation per patient.
     results = [
         extract_relevant_text_from_patient(
             group,
@@ -200,17 +204,19 @@ def extract_relevant_sentences(
         for patient_id, group in df.groupby("patient_id")
     ]
     result_df = pd.DataFrame([item[0] for item in results]).reset_index(drop=True)
+
+    # Build metadata and QC report for the tagging step.
     metadata = {
         "config_snapshot": resolved_config.raw,
         "model_metadata": results[0][1] if results else {},
     }
-    if return_qc:
-        from mmai._qc.patients import tagger_qc_report
+    from mmai._qc.patients import tagger_qc_report
 
-        qc_report = tagger_qc_report(
-            tagged_notes=result_df,
-            patient_note_source=df,
-        )
+    qc_report = tagger_qc_report(
+        tagged_notes=result_df,
+        patient_note_source=df,
+    )
+    if return_qc:
         return result_df, metadata, qc_report
     return result_df, metadata
 

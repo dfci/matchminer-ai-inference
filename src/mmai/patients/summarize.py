@@ -51,6 +51,7 @@ def summarize_from_relevant_sentences(
     if not isinstance(resolved_config, MMAIConfig):
         raise TypeError("config must be an MMAIConfig instance or None.")
 
+    # Resolve config and backend resources
     patient_config = dict(resolved_config.patient)
     prompt_files = dict(patient_config["prompt_files"])
     primer_filename = prompt_files["primer"]
@@ -58,10 +59,12 @@ def summarize_from_relevant_sentences(
 
     patient_long_text_col = "patient_long_text"
 
+    # Drop patients who have empty or missing tagged notes
     df = df.copy()
     df = df[df[patient_long_text_col] != ""]
     df = df.dropna(subset=[patient_long_text_col])
 
+    # Summarize each patient's relevant long text with the configured LLM.
     backend = get_backend(resolved_config.backend)
     patient_texts = df[patient_long_text_col].astype(str).tolist()
     truncated_texts = backend.truncate_texts(
@@ -79,32 +82,33 @@ def summarize_from_relevant_sentences(
         llm_config=patient_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
     )
+
+    # Build QC artifact for generation behavior (e.g., truncated responses).
     patient_ids = df["patient_id"].astype(str).tolist()
     truncated_llm_qc_artifact = build_truncated_response_qc_artifact(
         patient_ids, list(finish_reasons)
     )
 
+    # Postprocess raw summaries into final patient summary outputs.
     df["original_patient_summary"] = summaries
-    if return_qc:
-        df, noninformative_summary_qc_artifact = postprocess_patient_summaries(
-            df, resolved_config, return_qc_data=True
-        )
-    else:
-        df = postprocess_patient_summaries(df, resolved_config)
+    df, noninformative_summary_qc_artifact = postprocess_patient_summaries(
+        df, resolved_config
+    )
 
+    # Build run metadata and summary-level QC report.
     metadata = {
         "config_snapshot": resolved_config.raw,
         "model_metadata": model_metadata,
     }
-    if return_qc:
-        from mmai._qc.patients import patient_summary_qc_report
+    from mmai._qc.patients import patient_summary_qc_report
 
-        qc_report = patient_summary_qc_report(
-            df,
-            noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
-            truncated_llm_qc_artifact=truncated_llm_qc_artifact,
-            config=resolved_config,
-        )
+    qc_report = patient_summary_qc_report(
+        df,
+        noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
+        truncated_llm_qc_artifact=truncated_llm_qc_artifact,
+        config=resolved_config,
+    )
+    if return_qc:
         return df, metadata, qc_report
     return df, metadata
 
