@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import pandas as pd
+
+from mmai.backends import get_backend
+
+if TYPE_CHECKING:
+    from mmai.config import MMAIConfig
 
 
 DEFAULT_KEYWORDS = [
@@ -47,6 +52,8 @@ def trial_qc_report(
     trial_source: pd.DataFrame,
     unfiltered_spaces: pd.DataFrame,
     finish_reasons: pd.Series | list[str] | None,
+    config: MMAIConfig | None = None,
+    max_embedding_input_tokens: int = 2500,
     expected_keywords: list[str] | None = None,
     max_space_length: int = 2000,
 ) -> pd.DataFrame:
@@ -67,6 +74,11 @@ def trial_qc_report(
     finish_reasons : pd.Series | list[str] | None
         Finish reasons from trial-level generation. Expected to be indexed
         by trial_id so truncated-response IDs map to trials.
+    config : MMAIConfig | None, optional
+        Config used to resolve backend and embedding settings when token counts
+        are computed inside this QC function.
+    max_embedding_input_tokens : int
+        Maximum token length accepted by the embedding model.
     expected_keywords : list[str], optional
         Keywords expected in each clinical_space_summary.
     max_space_length : int
@@ -139,6 +151,29 @@ def trial_qc_report(
             "ids": sorted(length_ids.astype(str).unique().tolist()),
         }
     )
+
+    if config is not None and config.embedding:
+        backend = get_backend(config.backend)
+        embedding_config = dict(config.embedding)
+        token_series = pd.Series(
+            backend.count_embedding_tokens(
+                spaces["clinical_space_summary"].fillna("").astype(str).tolist(),
+                embedding_config=embedding_config,
+            ),
+            index=spaces["space_trial_id"].astype(str).tolist(),
+        )
+        token_series = pd.to_numeric(token_series, errors="coerce").fillna(0)
+        over_limit_ids = token_series[token_series > max_embedding_input_tokens].index
+        metrics.append(
+            {
+                "metric": "spaces_exceed_embedding_token_limit",
+                "value": int(over_limit_ids.nunique()),
+                "percent": (int(over_limit_ids.nunique()) / total_spaces * 100)
+                if total_spaces
+                else 0.0,
+                "ids": sorted(over_limit_ids.astype(str).unique().tolist()),
+            }
+        )
 
     # Spaces per trial.
     spaces_per_trial = spaces.groupby("trial_id").size()
