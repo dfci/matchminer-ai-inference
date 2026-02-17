@@ -87,7 +87,6 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
         config=config,
         max_embedding_input_tokens=2500,
         expected_keywords=["Cancer type", "Histology"],
-        max_summary_length=40,
     ).set_index("metric")
 
     assert report.loc["patients_dropped_noninformative_summary", "value"] == 1
@@ -164,7 +163,6 @@ def test_patient_qc_report_metrics(monkeypatch):
         config=config,
         max_embedding_input_tokens=2500,
         expected_keywords=["Cancer type", "Histology"],
-        max_summary_length=40,
     )
     tagger_report = tagger_qc_report(
         tagged,
@@ -177,7 +175,6 @@ def test_patient_qc_report_metrics(monkeypatch):
         summary_qc_report=summary_report,
         tagger_qc_report=tagger_report,
         expected_keywords=["Cancer type", "Histology"],
-        max_summary_length=40,
     ).set_index("metric")
 
     assert report.loc["patients_with_no_tagged_notes", "value"] == 1
@@ -188,4 +185,3 @@ def test_patient_qc_report_metrics(monkeypatch):
     assert report.loc["patients_exceed_embedding_token_limit", "ids"] == ["P2"]
     assert report.loc["patients_exclusion_criteria_not_extracted", "value"] == 1
     assert report.loc["patients_missing_keyword:Histology", "value"] == 2
-    assert report.loc["patient_summaries_excessive_length", "value"] >= 0

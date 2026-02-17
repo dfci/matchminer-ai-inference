@@ -23,7 +23,6 @@ Returned by `summarize_from_relevant_sentences(..., return_qc=True)`.
 - `patients_exclusion_criteria_not_extracted`: summary text equals the
   exclusion criteria text, implying exclusions were not separated.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.
-- `patient_summaries_excessive_length`: summaries above the length threshold.
 - `patients_exceed_embedding_token_limit`: summaries whose embedding-tokenized
   length exceeds `max_embedding_input_tokens` (default `2500`).
 
@@ -63,7 +62,6 @@ Returned by `summarize_trials(..., return_qc=True)`.
   that lack the keyword (these would be dropped by keyword filtering).
 - `trials_exclusion_criteria_not_extracted`: trials with missing/empty
   general exclusion criteria in the final output.
-- `spaces_excessive_length`: spaces whose text exceeds the length threshold.
 - `spaces_exceed_embedding_token_limit`: spaces whose embedding-tokenized
   length exceeds `max_embedding_input_tokens` (default `2500`).
 
@@ -77,5 +75,4 @@ Returned by `summarize_trials(..., return_qc=True)`.
 - Space-level metrics use the number of rows in the final `trial_spaces` table
   as the denominator (for example,
   `spaces_dropped_missing_keyword:<keyword>`,
-  `spaces_excessive_length`,
   `spaces_exceed_embedding_token_limit`).

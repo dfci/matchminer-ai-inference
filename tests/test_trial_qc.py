@@ -82,7 +82,6 @@ def test_trial_qc_report_metrics(monkeypatch):
         finish_reasons=finish_reasons,
         config=config,
         max_embedding_input_tokens=2500,
-        max_space_length=50,
     ).set_index("metric")
 
     assert report.loc["trials_missing_in_output", "value"] == 1
@@ -94,5 +93,4 @@ def test_trial_qc_report_metrics(monkeypatch):
     assert report.loc["spaces_exceed_embedding_token_limit", "value"] == 1
     assert report.loc["spaces_exceed_embedding_token_limit", "ids"] == ["T2-1"]
     assert report.loc["trials_exclusion_criteria_not_extracted", "value"] == 2
-    assert report.loc["spaces_excessive_length", "value"] >= 1
     assert report.loc["spaces_dropped_missing_keyword:Age", "value"] >= 1

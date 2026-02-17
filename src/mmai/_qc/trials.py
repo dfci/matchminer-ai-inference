@@ -55,7 +55,6 @@ def trial_qc_report(
     config: MMAIConfig | None = None,
     max_embedding_input_tokens: int = 2500,
     expected_keywords: list[str] | None = None,
-    max_space_length: int = 2000,
 ) -> pd.DataFrame:
     """
     Build a QC report for trial summarization outputs.
@@ -81,8 +80,6 @@ def trial_qc_report(
         Maximum token length accepted by the embedding model.
     expected_keywords : list[str], optional
         Keywords expected in each clinical_space_summary.
-    max_space_length : int
-        Maximum allowed length (characters) before flagging a space.
 
     Returns
     -------
@@ -268,21 +265,6 @@ def trial_qc_report(
             if total_trials
             else 0.0,
             "ids": sorted(boilerplate_missing["trial_id"].unique().tolist()),
-        }
-    )
-
-    # Excessive length spaces.
-    excessive = spaces[spaces["clinical_space_summary"].str.len() > max_space_length]
-    metrics.append(
-        {
-            "metric": "spaces_excessive_length",
-            "value": len(excessive),
-            "percent": (len(excessive) / total_spaces * 100) if total_spaces else 0.0,
-            "ids": sorted(
-                excessive.get("space_trial_id", excessive["trial_id"])
-                .astype(str)
-                .tolist()
-            ),
         }
     )
 
