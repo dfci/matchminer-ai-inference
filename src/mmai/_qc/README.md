@@ -15,16 +15,14 @@ Returned by `extract_relevant_sentences(..., return_qc=True)`.
 ### Summary-only QC
 Returned by `summarize_from_relevant_sentences(..., return_qc=True)`.
 
-- `patients_dropped_noninformative_summary`: summaries dropped by
-  `clean_bad_data` because they match non-informative patterns (e.g.,
+- `patients_dropped_noninformative_summary`: summaries dropped because they match non-informative patterns (e.g.,
   "no information", "no malignancy").
 - `patients_truncated_llm_response`: summaries where the LLM stopped due to
   max token length.
-- `patients_exclusion_criteria_not_extracted`: summary text equals the
-  exclusion criteria text, implying exclusions were not separated.
+- `patients_exclusion_criteria_not_extracted`: exclusion criteria not successfully extracted.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.
 - `patients_exceed_embedding_token_limit`: summaries whose embedding-tokenized
-  length exceeds `max_embedding_input_tokens` (default `2500`).
+  length exceeds the allowable amount by the embedding model.
 
 ### Full QC
 Returned by `summarize_patients(..., return_qc=True)`.
