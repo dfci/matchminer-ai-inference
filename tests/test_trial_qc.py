@@ -5,7 +5,7 @@ from mmai.config import MMAIConfig
 
 
 def test_trial_qc_report_metrics(monkeypatch):
-    """Validate trial QC metrics for missing summaries, duplicates, and boilerplate gaps."""
+    """Validate trial QC metrics for output coverage, duplicates, truncation, and embedding limits."""
     trial_source = pd.DataFrame(
         [
             {"trial_id": "T1"},

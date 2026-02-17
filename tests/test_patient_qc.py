@@ -30,7 +30,7 @@ def test_tagger_qc_report_metrics():
 
 
 def test_patient_summary_qc_report_metrics(monkeypatch):
-    """Validate summary-only QC metrics for drops, truncation, and keywords."""
+    """Validate summary QC metrics for drops, truncation, embedding limit, and content checks."""
     summaries = pd.DataFrame(
         [
             {
@@ -99,7 +99,7 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
 
 
 def test_patient_qc_report_metrics(monkeypatch):
-    """Validate patient QC metrics for missing summaries, boilerplate, and keywords."""
+    """Validate full patient QC metrics across tagging, summary, and missing-output checks."""
     tagged = pd.DataFrame(
         [
             {"patient_id": "P1", "patient_long_text": "notes"},
