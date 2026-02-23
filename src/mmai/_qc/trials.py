@@ -115,8 +115,9 @@ def trial_qc_report(
     metrics: list[dict[str, object]] = []
     total_trials = int(trial_source["trial_id"].nunique())
     total_spaces = int(len(spaces))
+    total_output_trials = int(spaces["trial_id"].nunique())
 
-    # Trials missing summaries (no rows) or blank summaries.
+    # QC metric for trials missing summaries (no rows) or blank summaries.
     missing_summary_ids: set[str] = set()
     blank_summary_ids = set(
         spaces.loc[spaces["clinical_space_summary"].str.strip() == "", "trial_id"]
@@ -137,6 +138,7 @@ def trial_qc_report(
 
     metrics.append(qc_artifact_to_report_row(truncated_llm_qc_artifact))
 
+    # QC metric for trial summaries exceeding embedding model token limit
     if config is not None and config.embedding:
         backend = get_backend(config.backend)
         embedding_config = dict(config.embedding)
@@ -159,7 +161,7 @@ def trial_qc_report(
             )
         )
 
-    # Spaces per trial.
+    # QC metric for number of spaces per trial.
     spaces_per_trial = spaces.groupby("trial_id").size()
     metrics.extend(
         [
@@ -189,7 +191,7 @@ def trial_qc_report(
         ]
     )
 
-    # Non-distinct spaces: duplicate space numbers (esp "1") or duplicate text.
+    # QC metric for non-distinct spaces: duplicate space numbers (esp "1") or duplicate text.
     dup_number_ids = set(
         spaces.loc[
             spaces.duplicated(subset=["trial_id", "clinical_space_number"], keep=False),
@@ -210,12 +212,12 @@ def trial_qc_report(
             build_qc_artifact(
                 metric="trials_with_non_distinct_spaces",
                 ids=non_distinct_ids,
-                denominator=total_trials,
+                denominator=total_output_trials,
             )
         )
     )
 
-    # Missing expected keywords (per keyword).
+    # QC metric for number of trial spaces dropped due to missing expected keywords (per keyword).
     keyword_spaces = _ensure_space_trial_id(unfiltered_spaces.copy())
     if "clinical_space_summary" not in keyword_spaces.columns:
         raise ValueError("unfiltered_spaces must include clinical_space_summary")
@@ -224,6 +226,7 @@ def trial_qc_report(
     keyword_spaces["clinical_space_summary"] = normalize_series(
         keyword_spaces["clinical_space_summary"]
     )
+    total_keyword_spaces = int(len(keyword_spaces))
     for keyword in expected_keywords:
         missing_spaces = keyword_spaces.loc[
             ~keyword_spaces["clinical_space_summary"].str.contains(keyword, regex=False)
@@ -233,12 +236,12 @@ def trial_qc_report(
                 build_qc_artifact(
                     metric=f"spaces_dropped_missing_keyword:{keyword}",
                     ids=sorted(missing_spaces["space_trial_id"].astype(str).tolist()),
-                    denominator=total_spaces,
+                    denominator=total_keyword_spaces,
                 )
             )
         )
 
-    # Missing boilerplate exclusions.
+    # QC metric for trials where exclusion criteria was not extracted.
     boilerplate_missing = spaces[
         spaces["general_exclusion_criteria"].str.strip().isin(["", "None", "none"])
     ]
@@ -249,7 +252,7 @@ def trial_qc_report(
                 ids=sorted(
                     boilerplate_missing["trial_id"].astype(str).unique().tolist()
                 ),
-                denominator=total_trials,
+                denominator=total_output_trials,
             )
         )
     )

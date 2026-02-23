@@ -229,9 +229,12 @@ def patient_summary_qc_report(
 
     metrics: list[dict[str, object]] = []
     total_patients = int(summaries["patient_id"].nunique())
+
+    # Add QC metrics for noninformative patient summary and LLM responses that were truncated
     metrics.append(qc_artifact_to_report_row(noninformative_summary_qc_artifact))
     metrics.append(qc_artifact_to_report_row(truncated_llm_qc_artifact))
 
+    # QC metric for summaries that exceed embedding model token limit
     if config is not None and config.embedding:
         backend = get_backend(config.backend)
         token_series = pd.Series(
@@ -253,7 +256,7 @@ def patient_summary_qc_report(
             )
         )
 
-    # Summary equals boilerplate exclusions.
+    # QC metric for patients whose exclusion criteria info was not extracted
     same_text = summaries.loc[
         summaries["cancer_history_summary"].str.strip()
         == summaries["general_exclusion_criteria_evidence"].str.strip(),
@@ -269,7 +272,7 @@ def patient_summary_qc_report(
         )
     )
 
-    # Missing expected keywords (per keyword).
+    # QC metrics for summaries missing expected keywords (per keyword).
     for keyword in expected_keywords:
         missing_patients = summaries.loc[
             ~summaries["cancer_history_summary"].str.contains(keyword, regex=False),

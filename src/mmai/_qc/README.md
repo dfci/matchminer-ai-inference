@@ -29,8 +29,9 @@ Returned by `summarize_from_relevant_sentences(..., return_qc=True)`.
 Returned by `summarize_patients(..., return_qc=True)`.
 
 - Includes tagging QC and summary-only QC, plus:
-- `patients_missing_summaries`: patients in the input notes who are missing
-  from the final summaries output.
+- `patients_missing_summaries`: patients in the input notes who are either
+  missing from the final summaries output or have a blank final
+  `cancer_history_summary`.
 
 ## Trial summarization QC
 Returned by `summarize_trials(..., return_qc=True)`.
