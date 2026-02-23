@@ -15,6 +15,7 @@ dependencies = [
   "numpy>=1.26",
   "pandas>=2.0",
   "pyyaml>=6.0",
+  "sentence-transformers>=3.0.0",
 ]
 
 [project.optional-dependencies]
@@ -30,7 +31,6 @@ local = [
   "vllm>=0.6.3",
   "huggingface_hub>=0.24.0",
   "transformers>=4.44.0",
-  "sentence-transformers>=3.0.0",
 ]
 
 [tool.setuptools]
