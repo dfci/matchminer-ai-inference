@@ -7,6 +7,11 @@ from typing import TYPE_CHECKING, Iterable
 import pandas as pd
 
 from mmai.backends import get_backend
+from mmai._qc.common import (
+    build_qc_artifact,
+    normalize_series,
+    qc_artifact_to_report_row,
+)
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -27,51 +32,6 @@ DEFAULT_KEYWORDS = [
 
 def _as_list(value: Iterable[str]) -> list[str]:
     return list(value)
-
-
-def _normalize_series(series: pd.Series) -> pd.Series:
-    return series.fillna("").astype(str)
-
-
-def build_qc_artifact(
-    *,
-    metric: str,
-    ids: list[str],
-    denominator: int,
-    numerator: int | None = None,
-) -> dict[str, object]:
-    """Build a standardized QC artifact dictionary."""
-    normalized_ids = sorted({str(item) for item in ids})
-    value = int(numerator) if numerator is not None else len(normalized_ids)
-    return {
-        "metric": metric,
-        "numerator": value,
-        "denominator": int(denominator),
-        "ids": normalized_ids,
-    }
-
-
-def qc_artifact_to_report_row(artifact: dict[str, object]) -> dict[str, object]:
-    """Convert a standardized QC artifact into a report row."""
-    metric_obj = artifact.get("metric", "")
-    metric = str(metric_obj) if metric_obj is not None else ""
-    ids_obj = artifact.get("ids", [])
-    ids = sorted(str(item) for item in ids_obj) if isinstance(ids_obj, list) else []
-    numerator_obj = artifact.get("numerator", len(ids))
-    numerator = (
-        int(numerator_obj) if isinstance(numerator_obj, (int, float)) else len(ids)
-    )
-    denominator_obj = artifact.get("denominator", 0)
-    denominator = (
-        int(denominator_obj) if isinstance(denominator_obj, (int, float)) else 0
-    )
-    return {
-        "metric": metric,
-        "value": numerator,
-        "denominator": denominator,
-        "percent": (numerator / denominator * 100) if denominator else 0.0,
-        "ids": ids,
-    }
 
 
 def trial_qc_report(
@@ -130,10 +90,10 @@ def trial_qc_report(
     if "trial_id" not in trial_source.columns:
         raise ValueError("trial_source must include trial_id")
 
-    spaces["clinical_space_summary"] = _normalize_series(
+    spaces["clinical_space_summary"] = normalize_series(
         spaces["clinical_space_summary"]
     )
-    spaces["general_exclusion_criteria"] = _normalize_series(
+    spaces["general_exclusion_criteria"] = normalize_series(
         spaces["general_exclusion_criteria"]
     )
 
@@ -151,15 +111,13 @@ def trial_qc_report(
     output_ids = set(spaces["trial_id"].astype(str))
     missing_summary_ids.update(input_ids - output_ids)
     metrics.append(
-        {
-            "metric": "trials_missing_in_output",
-            "value": len(missing_summary_ids),
-            "denominator": total_trials,
-            "percent": (len(missing_summary_ids) / total_trials * 100)
-            if total_trials
-            else 0.0,
-            "ids": sorted(missing_summary_ids),
-        }
+        qc_artifact_to_report_row(
+            build_qc_artifact(
+                metric="trials_missing_in_output",
+                ids=sorted(str(tid) for tid in missing_summary_ids),
+                denominator=total_trials,
+            )
+        )
     )
 
     metrics.append(qc_artifact_to_report_row(truncated_llm_qc_artifact))
@@ -177,15 +135,13 @@ def trial_qc_report(
         token_series = pd.to_numeric(token_series, errors="coerce").fillna(0)
         over_limit_ids = token_series[token_series > max_embedding_input_tokens].index
         metrics.append(
-            {
-                "metric": "spaces_exceed_embedding_token_limit",
-                "value": int(over_limit_ids.nunique()),
-                "denominator": total_spaces,
-                "percent": (int(over_limit_ids.nunique()) / total_spaces * 100)
-                if total_spaces
-                else 0.0,
-                "ids": sorted(over_limit_ids.astype(str).unique().tolist()),
-            }
+            qc_artifact_to_report_row(
+                build_qc_artifact(
+                    metric="spaces_exceed_embedding_token_limit",
+                    ids=sorted(over_limit_ids.astype(str).unique().tolist()),
+                    denominator=total_spaces,
+                )
+            )
         )
 
     # Spaces per trial.
@@ -235,15 +191,13 @@ def trial_qc_report(
     )
     non_distinct_ids = sorted(set(dup_number_ids) | set(dup_text_ids))
     metrics.append(
-        {
-            "metric": "trials_with_non_distinct_spaces",
-            "value": len(non_distinct_ids),
-            "denominator": total_trials,
-            "percent": (len(non_distinct_ids) / total_trials * 100)
-            if total_trials
-            else 0.0,
-            "ids": non_distinct_ids,
-        }
+        qc_artifact_to_report_row(
+            build_qc_artifact(
+                metric="trials_with_non_distinct_spaces",
+                ids=non_distinct_ids,
+                denominator=total_trials,
+            )
+        )
     )
 
     # Missing expected keywords (per keyword).
@@ -252,7 +206,7 @@ def trial_qc_report(
         raise ValueError("unfiltered_spaces must include clinical_space_summary")
     if "space_trial_id" not in keyword_spaces.columns:
         raise ValueError("unfiltered_spaces must include space_trial_id")
-    keyword_spaces["clinical_space_summary"] = _normalize_series(
+    keyword_spaces["clinical_space_summary"] = normalize_series(
         keyword_spaces["clinical_space_summary"]
     )
     for keyword in expected_keywords:
@@ -260,15 +214,13 @@ def trial_qc_report(
             ~keyword_spaces["clinical_space_summary"].str.contains(keyword, regex=False)
         ]
         metrics.append(
-            {
-                "metric": f"spaces_dropped_missing_keyword:{keyword}",
-                "value": len(missing_spaces),
-                "denominator": total_spaces,
-                "percent": (len(missing_spaces) / total_spaces * 100)
-                if total_spaces
-                else 0.0,
-                "ids": sorted(missing_spaces["space_trial_id"].astype(str).tolist()),
-            }
+            qc_artifact_to_report_row(
+                build_qc_artifact(
+                    metric=f"spaces_dropped_missing_keyword:{keyword}",
+                    ids=sorted(missing_spaces["space_trial_id"].astype(str).tolist()),
+                    denominator=total_spaces,
+                )
+            )
         )
 
     # Missing boilerplate exclusions.
@@ -276,15 +228,15 @@ def trial_qc_report(
         spaces["general_exclusion_criteria"].str.strip().isin(["", "None", "none"])
     ]
     metrics.append(
-        {
-            "metric": "trials_exclusion_criteria_not_extracted",
-            "value": boilerplate_missing["trial_id"].nunique(),
-            "denominator": total_trials,
-            "percent": (boilerplate_missing["trial_id"].nunique() / total_trials * 100)
-            if total_trials
-            else 0.0,
-            "ids": sorted(boilerplate_missing["trial_id"].unique().tolist()),
-        }
+        qc_artifact_to_report_row(
+            build_qc_artifact(
+                metric="trials_exclusion_criteria_not_extracted",
+                ids=sorted(
+                    boilerplate_missing["trial_id"].astype(str).unique().tolist()
+                ),
+                denominator=total_trials,
+            )
+        )
     )
 
     return pd.DataFrame(metrics)

@@ -7,6 +7,11 @@ from typing import TYPE_CHECKING, Iterable
 import pandas as pd
 
 from mmai.backends import get_backend
+from mmai._qc.common import (
+    build_qc_artifact,
+    normalize_series,
+    qc_artifact_to_report_row,
+)
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -51,7 +56,7 @@ def tagger_qc_report(
         raise ValueError("tagged_notes must include patient_long_text")
 
     tagged = tagged_notes.copy()
-    tagged["patient_long_text"] = _normalize_series(tagged["patient_long_text"])
+    tagged["patient_long_text"] = normalize_series(tagged["patient_long_text"])
     total_patients = int(patient_note_source["patient_id"].nunique())
 
     no_tagged_ids = set(
@@ -71,51 +76,6 @@ def tagger_qc_report(
 
 def _as_list(value: Iterable[str]) -> list[str]:
     return list(value)
-
-
-def _normalize_series(series: pd.Series) -> pd.Series:
-    return series.fillna("").astype(str)
-
-
-def build_qc_artifact(
-    *,
-    metric: str,
-    ids: list[str],
-    denominator: int,
-    numerator: int | None = None,
-) -> dict[str, object]:
-    """Build a standardized QC artifact dictionary."""
-    normalized_ids = sorted({str(item) for item in ids})
-    value = int(numerator) if numerator is not None else len(normalized_ids)
-    return {
-        "metric": metric,
-        "numerator": value,
-        "denominator": int(denominator),
-        "ids": normalized_ids,
-    }
-
-
-def qc_artifact_to_report_row(artifact: dict[str, object]) -> dict[str, object]:
-    """Convert a standardized QC artifact into a report row."""
-    metric_obj = artifact.get("metric", "")
-    metric = str(metric_obj) if metric_obj is not None else ""
-    ids_obj = artifact.get("ids", [])
-    ids = sorted(str(item) for item in ids_obj) if isinstance(ids_obj, list) else []
-    numerator_obj = artifact.get("numerator", len(ids))
-    numerator = (
-        int(numerator_obj) if isinstance(numerator_obj, (int, float)) else len(ids)
-    )
-    denominator_obj = artifact.get("denominator", 0)
-    denominator = (
-        int(denominator_obj) if isinstance(denominator_obj, (int, float)) else 0
-    )
-    return {
-        "metric": metric,
-        "value": numerator,
-        "denominator": denominator,
-        "percent": (numerator / denominator * 100) if denominator else 0.0,
-        "ids": ids,
-    }
 
 
 def patient_qc_report(
@@ -164,10 +124,10 @@ def patient_qc_report(
         raise ValueError(f"patient_summaries is missing columns: {', '.join(missing)}")
     if "patient_id" not in patient_note_source.columns:
         raise ValueError("patient_note_source must include patient_id")
-    summaries["cancer_history_summary"] = _normalize_series(
+    summaries["cancer_history_summary"] = normalize_series(
         summaries["cancer_history_summary"]
     )
-    summaries["general_exclusion_criteria_evidence"] = _normalize_series(
+    summaries["general_exclusion_criteria_evidence"] = normalize_series(
         summaries["general_exclusion_criteria_evidence"]
     )
 
@@ -256,10 +216,10 @@ def patient_summary_qc_report(
     if missing:
         raise ValueError(f"patient_summaries is missing columns: {', '.join(missing)}")
 
-    summaries["cancer_history_summary"] = _normalize_series(
+    summaries["cancer_history_summary"] = normalize_series(
         summaries["cancer_history_summary"]
     )
-    summaries["general_exclusion_criteria_evidence"] = _normalize_series(
+    summaries["general_exclusion_criteria_evidence"] = normalize_series(
         summaries["general_exclusion_criteria_evidence"]
     )
 
