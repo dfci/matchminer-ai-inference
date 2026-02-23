@@ -74,24 +74,6 @@ def qc_artifact_to_report_row(artifact: dict[str, object]) -> dict[str, object]:
     }
 
 
-def build_truncated_response_qc_artifact(
-    trial_ids: list[str], finish_reasons: list[str]
-) -> dict[str, object]:
-    """Build QC artifact for trial summaries truncated with finish_reason='length'."""
-    length_ids = list(
-        {
-            trial_id
-            for trial_id, reason in zip(trial_ids, finish_reasons, strict=False)
-            if str(reason) == "length"
-        }
-    )
-    return build_qc_artifact(
-        metric="trials_truncated_llm_response",
-        ids=length_ids,
-        denominator=len(trial_ids),
-    )
-
-
 def _ensure_space_trial_id(spaces: pd.DataFrame) -> pd.DataFrame:
     if "space_trial_id" in spaces.columns:
         return spaces

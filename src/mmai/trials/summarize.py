@@ -6,7 +6,7 @@ from typing import Any, TYPE_CHECKING, cast
 
 import pandas as pd
 
-from mmai._qc.trials import build_truncated_response_qc_artifact
+from mmai._qc.trials import build_qc_artifact
 from mmai.backends import get_backend
 
 from .prompt_builder import build_trial_text, get_filled_trial_prompt
@@ -63,8 +63,14 @@ def run_llm_summarization(
 
     trials_with_summaries["space_reasoning_and_output"] = trial_summaries
     trial_ids = trials_with_summaries["trial_id"].astype(str).tolist()
-    truncated_llm_qc_artifact = build_truncated_response_qc_artifact(
-        trial_ids, list(finish_reasons)
+    truncated_llm_qc_artifact = build_qc_artifact(
+        metric="trials_truncated_llm_response",
+        ids=[
+            trial_id
+            for trial_id, reason in zip(trial_ids, finish_reasons, strict=False)
+            if str(reason) == "length"
+        ],
+        denominator=len(trial_ids),
     )
     metadata = {
         "config_snapshot": {"trial": trial_config},

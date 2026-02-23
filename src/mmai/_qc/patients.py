@@ -118,24 +118,6 @@ def qc_artifact_to_report_row(artifact: dict[str, object]) -> dict[str, object]:
     }
 
 
-def build_truncated_response_qc_artifact(
-    patient_ids: list[str], finish_reasons: list[str]
-) -> dict[str, object]:
-    """Build QC artifact for responses truncated with finish_reason='length'."""
-    length_ids = list(
-        {
-            patient_id
-            for patient_id, reason in zip(patient_ids, finish_reasons, strict=False)
-            if str(reason) == "length"
-        }
-    )
-    return build_qc_artifact(
-        metric="patients_truncated_llm_response",
-        ids=length_ids,
-        denominator=len(patient_ids),
-    )
-
-
 def patient_qc_report(
     patient_summaries: pd.DataFrame,
     *,

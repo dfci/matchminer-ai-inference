@@ -6,9 +6,9 @@ from typing import Any
 
 import pandas as pd
 
+from mmai._qc.patients import build_qc_artifact
 from mmai.backends import get_backend
 from mmai.config import MMAIConfig, load_default_preset
-from mmai._qc.patients import build_truncated_response_qc_artifact
 
 from .postprocess import postprocess_patient_summaries
 from .prompt_builder import get_filled_patient_prompt
@@ -85,8 +85,14 @@ def summarize_from_relevant_sentences(
 
     # Build QC artifact for generation behavior (e.g., truncated responses).
     patient_ids = df["patient_id"].astype(str).tolist()
-    truncated_llm_qc_artifact = build_truncated_response_qc_artifact(
-        patient_ids, list(finish_reasons)
+    truncated_llm_qc_artifact = build_qc_artifact(
+        metric="patients_truncated_llm_response",
+        ids=[
+            patient_id
+            for patient_id, reason in zip(patient_ids, finish_reasons, strict=False)
+            if str(reason) == "length"
+        ],
+        denominator=len(patient_ids),
     )
 
     # Postprocess raw summaries into final patient summary outputs.
