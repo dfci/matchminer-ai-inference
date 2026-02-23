@@ -74,19 +74,6 @@ def qc_artifact_to_report_row(artifact: dict[str, object]) -> dict[str, object]:
     }
 
 
-def _ensure_space_trial_id(spaces: pd.DataFrame) -> pd.DataFrame:
-    if "space_trial_id" in spaces.columns:
-        return spaces
-    if {"trial_id", "clinical_space_number"}.issubset(spaces.columns):
-        spaces = spaces.copy()
-        spaces["space_trial_id"] = (
-            spaces["trial_id"].astype(str)
-            + "-"
-            + spaces["clinical_space_number"].astype(str)
-        )
-    return spaces
-
-
 def trial_qc_report(
     trial_spaces: pd.DataFrame,
     *,
@@ -131,6 +118,7 @@ def trial_qc_report(
 
     spaces = trial_spaces.copy()
     required = [
+        "space_trial_id",
         "trial_id",
         "clinical_space_number",
         "clinical_space_summary",
@@ -148,7 +136,6 @@ def trial_qc_report(
     spaces["general_exclusion_criteria"] = _normalize_series(
         spaces["general_exclusion_criteria"]
     )
-    spaces = _ensure_space_trial_id(spaces)
 
     metrics: list[dict[str, object]] = []
     total_trials = int(trial_source["trial_id"].nunique())
@@ -260,9 +247,11 @@ def trial_qc_report(
     )
 
     # Missing expected keywords (per keyword).
-    keyword_spaces = _ensure_space_trial_id(unfiltered_spaces.copy())
+    keyword_spaces = unfiltered_spaces.copy()
     if "clinical_space_summary" not in keyword_spaces.columns:
-        raise ValueError("keyword_source must include clinical_space_summary")
+        raise ValueError("unfiltered_spaces must include clinical_space_summary")
+    if "space_trial_id" not in keyword_spaces.columns:
+        raise ValueError("unfiltered_spaces must include space_trial_id")
     keyword_spaces["clinical_space_summary"] = _normalize_series(
         keyword_spaces["clinical_space_summary"]
     )
@@ -270,11 +259,6 @@ def trial_qc_report(
         missing_spaces = keyword_spaces.loc[
             ~keyword_spaces["clinical_space_summary"].str.contains(keyword, regex=False)
         ]
-        ids = (
-            missing_spaces["space_trial_id"]
-            if "space_trial_id" in missing_spaces.columns
-            else missing_spaces["trial_id"]
-        )
         metrics.append(
             {
                 "metric": f"spaces_dropped_missing_keyword:{keyword}",
@@ -283,7 +267,7 @@ def trial_qc_report(
                 "percent": (len(missing_spaces) / total_spaces * 100)
                 if total_spaces
                 else 0.0,
-                "ids": sorted(ids.astype(str).tolist()),
+                "ids": sorted(missing_spaces["space_trial_id"].astype(str).tolist()),
             }
         )
 
