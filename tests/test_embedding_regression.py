@@ -8,6 +8,7 @@ from typing import cast
 import pandas as pd
 
 from mmai.patients import summarize_from_relevant_sentences
+from mmai.trials import summarize_trials
 
 
 REGRESSION_DATA_DIR = (
@@ -38,3 +39,10 @@ def _summarize_patient_input_for_regression() -> pd.DataFrame:
         summarize_from_relevant_sentences(patient_input, return_qc=False),
     )
     return summaries
+
+
+def _summarize_trial_input_for_regression() -> pd.DataFrame:
+    trial_input = _load_trial_input()[
+        ["trial_id", "trial_title", "brief_summary", "eligibility_criteria"]
+    ].copy()
+    return cast(pd.DataFrame, summarize_trials(trial_input, return_qc=False))
