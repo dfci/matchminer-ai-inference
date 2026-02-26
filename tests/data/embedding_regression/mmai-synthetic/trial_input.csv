@@ -1,5 +1,5 @@
-trial_id	trial_title	brief_summary	eligibility_criteria
-NCT06477419	A Study of Sacituzumab Govitecan in People With Mesothelioma	Participants will receive sacituzumab govitecan until their disease gets worse (progresses), they have severe side effects and cannot continue study treatment, or the participants or the study doctor thinks it's in your best interest to stop treatment.	"Inclusion Criteria:
+trial_id,trial_title,brief_summary,eligibility_criteria
+NCT06477419,A Study of Sacituzumab Govitecan in People With Mesothelioma,"Participants will receive sacituzumab govitecan until their disease gets worse (progresses), they have severe side effects and cannot continue study treatment, or the participants or the study doctor thinks it's in your best interest to stop treatment.","Inclusion Criteria:
 
 * Patient, or legally authorized representative (LAR), willing and able to provide written informed consent for the trial
 * Patient age ≥ 18 at time of consent
@@ -40,7 +40,7 @@ Exclusion Criteria:
 * Myocardial infarction, unstable angina, stroke, transient ischemic attack (TIA), or coronary/peripheral artery bypass graft, or any acute coronary syndrome within 6 months of start of study drug
 * Congestive heart failure defined as New York Heart Association (NYHA) Class III-IV or hospitalization for congestive heart failure (any NYHA class) within 6 months of study Day 1
 * Pregnant women or women who are breastfeeding or of childbearing potential and not using a highly effective method of birth control for at least one month prior to enrollment. If the risk of contraception exists, male and female subjects must use highly effective contraception throughout the study and for at least 60 days after last treatment. Highly effective contraception includes either 2 barrier methods (diaphragm, condom by the partner, copper intrauterine device, sponge, or spermicide), or 1 barrier method and 1 hormonal method (any oral, subcutaneous, intrauterine, or intramuscular registered and marketed contraceptive agent that contains an estrogen and/or a progesterone agent)"
-NCT06755242	A Study of GNC-077 in Patients With Locally Advanced or Metastatic Gastrointestinal Tumors and Other Solid Tumors	This study is an open-label, multicenter, dose-escalation and cohort expansion phase I clinical study to evaluate the safety, tolerability, pharmacokinetics characteristics or preliminary efficacy and antitumor activity in patients with locally advanced or metastatic gastrointestinal tumors and other solid tumors.	"Inclusion Criteria:
+NCT06755242,A Study of GNC-077 in Patients With Locally Advanced or Metastatic Gastrointestinal Tumors and Other Solid Tumors,"This study is an open-label, multicenter, dose-escalation and cohort expansion phase I clinical study to evaluate the safety, tolerability, pharmacokinetics characteristics or preliminary efficacy and antitumor activity in patients with locally advanced or metastatic gastrointestinal tumors and other solid tumors.","Inclusion Criteria:
 
 1. Able to understand the informed consent form, voluntarily participate in and sign the informed consent form;
 2. Gender is not limited;
@@ -77,9 +77,9 @@ Exclusion Criteria:
 18. Who had participated in a clinical trial of an unmarketed drug within 4 weeks before the trial dose;
 19. Had received a live vaccine within 4 weeks before the trial dose;
 20. Other circumstances that the investigator deemed inappropriate for participation in the trial."
-NCT06680739	Single cEll pRofiling PErsistaNce To ImmuNothErapy	"The SERPENTINE trial (ESR 21-21165) is a phase II clinical study aiming to evaluate the efficacy of durvalumab and tremelimumab, alone or in combination, in patients with colorectal or endometrial cancer. The trial targets patients with microsatellite instability-high (MSI-H) tumors and those with microsatellite stable (MSS) tumors.
+NCT06680739,Single cEll pRofiling PErsistaNce To ImmuNothErapy,"The SERPENTINE trial (ESR 21-21165) is a phase II clinical study aiming to evaluate the efficacy of durvalumab and tremelimumab, alone or in combination, in patients with colorectal or endometrial cancer. The trial targets patients with microsatellite instability-high (MSI-H) tumors and those with microsatellite stable (MSS) tumors.
 
-Colorectal and endometrial cancers present significant challenges due to their heterogeneity and variable responses to treatment. Immunotherapy, particularly checkpoint inhibitors like durvalumab and tremelimumab, has shown promise in some patients, but predicting response remains elusive. The SERPENTINE trial aims to address this gap by investigating the effectiveness of these immunotherapies in a carefully selected patient population."	"Inclusion Criteria:
+Colorectal and endometrial cancers present significant challenges due to their heterogeneity and variable responses to treatment. Immunotherapy, particularly checkpoint inhibitors like durvalumab and tremelimumab, has shown promise in some patients, but predicting response remains elusive. The SERPENTINE trial aims to address this gap by investigating the effectiveness of these immunotherapies in a carefully selected patient population.","Inclusion Criteria:
 
 * Capable of giving signed informed consent which includes compliance with the requirements and restrictions listed in the informed consent form (ICF) and in this protocol. Written informed consent and any locally required authorization (e.g., Health Insurance Portability and Accountability Act in the US, European Union \[EU\] Data Privacy Directive in the EU) obtained from the patient/legal representative prior to performing any protocol-related procedures, including screening evaluations.
 * Age \> 18 years at time of study entry.
@@ -141,10 +141,10 @@ Exclusion Criteria:
 * Has previously received prior therapy with an anti-PD-1, anti-PD-L1 including durvalumab, or anti CTLA-4 (including ipilimumab or any other antibody or drug specifically targeting T-cell co-stimulation or checkpoint pathways).
 * Has received a live vaccine within 30 days of planned start of study therapy. Examples of live vaccines include, but are not limited to, the following: measles, mumps, rubella, varicella/zoster (chicken pox), yellow fever, rabies, Bacillus Calmette-Guérin (BCG), and typhoid vaccine. Seasonal influenza vaccines for injection are generally killed virus vaccines and are allowed; however, intranasal influenza vaccines (e.g., FluMist®) are live attenuated vaccines and are not allowed.
 * Judgment by the investigator that the patient is unsuitable to participate in the study and the patient is unlikely to comply with study procedures, restrictions, and requirements."
-NCT06797635	Study of Patritumab Deruxtecan Plus Pembrolizumab With Other Anticancer Agents in Participants With High-Risk Early-Stage Triple-Negative or Hormone Receptor-Low Positive/HER-2 Negative Breast Cancer (MK-1022-010, HERTHENA-Breast-03)	"Researchers are looking for new ways to treat triple-negative breast cancer (TNBC) and hormone receptor (HR) low positive/human epidermal growth factor receptor-2 (HER2) negative breast cancer. The main goals of this study are to learn:
+NCT06797635,"Study of Patritumab Deruxtecan Plus Pembrolizumab With Other Anticancer Agents in Participants With High-Risk Early-Stage Triple-Negative or Hormone Receptor-Low Positive/HER-2 Negative Breast Cancer (MK-1022-010, HERTHENA-Breast-03)","Researchers are looking for new ways to treat triple-negative breast cancer (TNBC) and hormone receptor (HR) low positive/human epidermal growth factor receptor-2 (HER2) negative breast cancer. The main goals of this study are to learn:
 
 * About the safety of the study treatments and if people tolerate them
-* If people who receive patritumab deruxtecan, pembrolizumab, and chemotherapy before surgery have fewer cancer cells removed during surgery compared to those who receive only pembrolizumab (pembro) and chemotherapy."	"Inclusion Criteria:
+* If people who receive patritumab deruxtecan, pembrolizumab, and chemotherapy before surgery have fewer cancer cells removed during surgery compared to those who receive only pembrolizumab (pembro) and chemotherapy.","Inclusion Criteria:
 
 The main inclusion criteria include but are not limited to the following:
 
@@ -172,13 +172,13 @@ The main exclusion criteria include but are not limited to the following:
 * Has an active infection requiring systemic therapy
 * Has concurrent active HBV and HCV infection
 * Has clinically severe respiratory compromise resulting from intercurrent pulmonary illness"
-NCT06085755	Trastuzumab Deruxtecan(T-DXd) and Afatinib Combination in HER2-low Advanced Gastric Cancer	"Despite recent advances, the prognosis of patients with advanced gastric cancer remains poor. At present, regimens that combine a platinum and fluorouracil agent either alone or in combination with a third drug such as epirubicin or taxane constitute the most effective treatment option in the first-line metastatic setting, resulting in a median OS of approximately 10 months. In the second-line setting, ramucirumab (a vascular endothelial growth factor receptor 2 antagonist) was recently approved by the United States Food and Drug Administration, and has demonstrated modest activity in patients with advanced gastric or GEJ adenocarcinoma who progressed after first-line platinum- or fluoropyrimidine-containing chemotherapy. Median OS was 5.2 months in the ramucirumab group versus 3.8 months in the placebo group.
+NCT06085755,Trastuzumab Deruxtecan(T-DXd) and Afatinib Combination in HER2-low Advanced Gastric Cancer,"Despite recent advances, the prognosis of patients with advanced gastric cancer remains poor. At present, regimens that combine a platinum and fluorouracil agent either alone or in combination with a third drug such as epirubicin or taxane constitute the most effective treatment option in the first-line metastatic setting, resulting in a median OS of approximately 10 months. In the second-line setting, ramucirumab (a vascular endothelial growth factor receptor 2 antagonist) was recently approved by the United States Food and Drug Administration, and has demonstrated modest activity in patients with advanced gastric or GEJ adenocarcinoma who progressed after first-line platinum- or fluoropyrimidine-containing chemotherapy. Median OS was 5.2 months in the ramucirumab group versus 3.8 months in the placebo group.
 
 At the updated DCO of 03 June 2020 in the DS8201-A-J202 (DESTINY-Gastric01) study in HER2-positive GC or GEJ adenocarcinoma subjects assigned to T-DXd 6.4 mg/kg, T-DXd further demonstrated clinically meaningful efficacy. The median OS was 12.5 months for the T-DXd group and 8.9 months for the physician's choice group (HR = 0.60, 95% CI: 0.42, 0.86). In a prespecified subgroup analysis, the percentages of patients with an objective response were analyzed in HER2-low group. The response rate in HER2 2+ was 29% (8 of 28) with T-DXd monotherapy.
 
 Refer to the figure below for the response rate in HER2-low group in previous DESTINY trials.
 
-This is a two part, phase I/Ⅱ, open-label, single center study of afatinib in combination with T-DXd, in 2L/3L gastric cancer patients with HER2-low. The study design allows an investigation of combination dose of afatinib with T-DXd, with intensive safety monitoring to ensure the safety of the patients."	"Inclusion Criteria:
+This is a two part, phase I/Ⅱ, open-label, single center study of afatinib in combination with T-DXd, in 2L/3L gastric cancer patients with HER2-low. The study design allows an investigation of combination dose of afatinib with T-DXd, with intensive safety monitoring to ensure the safety of the patients.","Inclusion Criteria:
 
 1. Provision of fully informed consent prior to any study specific procedures.
 2. Patients must be ≥ 19 years of age
@@ -281,7 +281,7 @@ Exclusion Criteria:
     * Lung-specific intercurrent clinically significant illnesses including, but not limited to, any underlying pulmonary disorder (e.g. pulmonary emboli within three months of the study enrollment, severe asthma, severe COPD, restrictive lung disease, pleural effusion etc.)
     * Any autoimmune, connective tissue or inflammatory disorders (e.g. Rheumatoid arthritis, Sjogren's, sarcoidosis etc.) where there is documented, or a suspicion of pulmonary involvement at the time of screening. Full details of the disorder should be recorded in the CRF for patients who are included in the study.
     * Prior pneumonectomy (complete)"
-NCT07182708	High-Dose Firmonertinib Plus Bevacizumab as Neoadjuvant Therapy for Resectable EGFRm Stage II-IIIB NSCLC	This is a Phase II, single-arm, open-label, multicenter clinical study aimed at evaluating the efficacy and safety of Firmonertinib 160 mg combined with Bevacizumab as neoadjuvant therapy in patients with resectable stage II-IIIB Epidermal Growth Factor Receptor(EGFR)-mutated non-small cell lung cancer.	"Inclusion Criteria:
+NCT07182708,High-Dose Firmonertinib Plus Bevacizumab as Neoadjuvant Therapy for Resectable EGFRm Stage II-IIIB NSCLC,"This is a Phase II, single-arm, open-label, multicenter clinical study aimed at evaluating the efficacy and safety of Firmonertinib 160 mg combined with Bevacizumab as neoadjuvant therapy in patients with resectable stage II-IIIB Epidermal Growth Factor Receptor(EGFR)-mutated non-small cell lung cancer.","Inclusion Criteria:
 
 1. Male or female, aged ≥18 years.
 2. Histologically/cytologically confirmed primary non-small cell lung cancer within 60 days prior to the study.
@@ -314,7 +314,7 @@ Exclusion Criteria:
 8. Known or suspected allergy to almonertinib mesylate, bevacizumab, or any other component of their formulations, or patients with other contraindications.
 9. If the patient cannot comply with the study procedures, restrictions, and requirements, or if the investigator deems the patient ineligible or unsuitable for participation in the study for any other reason.
 10. Patients currently or previously enrolled in any other anti-tumor clinical studies."
-NCT06941142	A Study of Sirolimus (Albumin-Bound) in Combination With Palbociclib and Fulvestrant for the Treatment of Advanced Breast Cancer	This study adopts multicenter/randomized trial design. It plans to enroll patients with HR- positive, HER2- negative advanced breast cancer who are resistant to (neo)adjuvant endocrine therapy. Dose-escalation and dose-expansion studies will be carried out to evaluate the safety, tolerability, and preliminary efficacy of sirolimus (albumin-bound) in combination with palbociclib and fulvestrant in this patient population.	"Inclusion Criteria:
+NCT06941142,A Study of Sirolimus (Albumin-Bound) in Combination With Palbociclib and Fulvestrant for the Treatment of Advanced Breast Cancer,"This study adopts multicenter/randomized trial design. It plans to enroll patients with HR- positive, HER2- negative advanced breast cancer who are resistant to (neo)adjuvant endocrine therapy. Dose-escalation and dose-expansion studies will be carried out to evaluate the safety, tolerability, and preliminary efficacy of sirolimus (albumin-bound) in combination with palbociclib and fulvestrant in this patient population.","Inclusion Criteria:
 
 * 1\. Subjects should be over 18 years old, regardless of gender.
 * 2\. Histologically or cytologically confirmed HR - positive, HER2 - negative advanced breast cancer.
@@ -336,7 +336,7 @@ Exclusion Criteria:
 * 7\. Patients with known coagulation disorders such as bleeding tendency; or those who need to use anticoagulants, which may affect the intramuscular injection of fulvestrant or the use of LHRH agonists.
 * 8\. Patients with known hypersensitivity or intolerance to any component of the investigational drug(s), their excipients, or LHRH agonists (if applicable).
 * 9\. Patients with a history of autoimmune diseases (except tuberous sclerosis), immunodeficiency diseases (including positive HIV test), or other acquired or congenital immunodeficiency diseases, or a history of organ transplantation."
-NCT06891833	A Study of BL-M07D1 With or Without Pertuzumab Versus Taxane + Trastuzumab and Pertuzumab in Neoadjuvant Therapy for HER2-Positive Breast Cancer	This trial is a registered phase III, randomized, open and multicenter study to evaluate the efficacy and safety of BL-M07D1 with or without Pertuzumab in the neoadjuvant treatment of HER2-positive breast cancer. The study is divided into a single-arm study phase (Phase II) and a randomized controlled study phase (Phase III).	"Inclusion Criteria:
+NCT06891833,A Study of BL-M07D1 With or Without Pertuzumab Versus Taxane + Trastuzumab and Pertuzumab in Neoadjuvant Therapy for HER2-Positive Breast Cancer,"This trial is a registered phase III, randomized, open and multicenter study to evaluate the efficacy and safety of BL-M07D1 with or without Pertuzumab in the neoadjuvant treatment of HER2-positive breast cancer. The study is divided into a single-arm study phase (Phase II) and a randomized controlled study phase (Phase III).","Inclusion Criteria:
 
 1. Voluntarily signed informed consent and followed the program requirements;
 2. Females ≥18 and ≤75 years of age at the time of signing the informed consent;
@@ -373,7 +373,7 @@ Exclusion Criteria:
 18. Intestinal obstruction, Crohn's disease, ulcerative colitis or chronic diarrhea;
 19. Subjects who are scheduled to receive a live vaccine or who have received a live vaccine within 28 days prior to the first dose;
 20. Presence of other serious physical, laboratory test abnormalities or poor compliance that may increase the risk of participation in the study or interfere with the study results, as well as patients who, in the opinion of the investigator, are not suitable for participation in this study."
-NCT05883852	EC-THP Versus TCbHP in HER2-positive Lymph Node Positive Early Breast Cancer	compare the efficacy and safety of TCbHP and EC-THP regimen in HER2-positive breast cancer patients	"Inclusion Criteria:
+NCT05883852,EC-THP Versus TCbHP in HER2-positive Lymph Node Positive Early Breast Cancer,compare the efficacy and safety of TCbHP and EC-THP regimen in HER2-positive breast cancer patients,"Inclusion Criteria:
 
 * Women aged 18-70；
 * 0-1 for ECOG；
@@ -409,7 +409,7 @@ Exclusion Criteria:
 * Those who tested positive for pregnancy before taking the drug after joining the trial；
 * Mental illness, cognitive impairment, inability to understand the trial protocol and side effects, inability to complete the trial protocol and follow-up workers ；(systematic evaluation is required before trial enrollment)；
 * Persons without personal freedom and independent capacity for civil conduct。"
-NCT05839197	A Single-arm Clinical Study of HAIC Combined With Apatinib and Camrelizumab in the Treatment of Unresectable MTM HCC	This is a single-arm, open, multicenter II phase clinical study to compare the efficacy and safety of HAIC combined with Apatinib and Camrelizumab in the treatment of unresectable middle-advanced MTM-HCC.	"Inclusion Criteria:
+NCT05839197,A Single-arm Clinical Study of HAIC Combined With Apatinib and Camrelizumab in the Treatment of Unresectable MTM HCC,"This is a single-arm, open, multicenter II phase clinical study to compare the efficacy and safety of HAIC combined with Apatinib and Camrelizumab in the treatment of unresectable middle-advanced MTM-HCC.","Inclusion Criteria:
 
 * Macrotrabecular Massive HCC diagnosed by histopathology or cytology according to the Guidelines for Diagnosis and Treatment of Primary Liver Cancer in China (2022 Edition);
 * Stage Ⅰa\~Ⅱb and up-to-seven（tumor number +tumor size≥7) OR stage Ⅲa according to the Guidelines for Diagnosis and Treatment of Primary Liver Cancer in China (2022 Edition);
@@ -431,7 +431,7 @@ Exclusion Criteria:
 * Suffered from other malignant tumors in the past 5 years, except basal cell or squamous cell carcinoma of the skin after radical resection, or cervical carcinoma in situ;
 * Any other disease, with clinically significant metabolic abnormalities, physical examination abnormalities or laboratory abnormalities, according to the researchers, there is reason to suspect that the patient has a disease or state that is not suitable for the use of research drugs (such as having seizures and requiring treatment), or will affect the interpretation of the results of the study, or put the patient at high risk;
 * The researchers judged that patients have other factors that may affect the results of the study or lead to the termination of the study, such as alcohol abuse, drug abuse, and other serious diseases (including mental illness) that need to be combined with treatment. there are serious laboratory abnormalities, accompanied by family or social factors, which will affect the safety of patients."
-NCT05780294	A Multi-center, Randomized, Double-blind, Phase III Clinical Trial of Leucogen Versus Placebo on Leukocyte and Platelet Whole-course Management Assisted by PFLL Chemotherapy in the Treatment of Stage IV, Recurrent or Metastatic NPC	Toxic and side effects during and after chemoradiotherapy for nasopharyngeal carcinoma seriously affect patients' treatment compliance and long-term quality of life. Active and effective prediction, prevention and management of toxic and side effects is an important element to improve the prognosis of patients. Leucogen has the ability to promote the growth and maturation of granulocytes in the bone marrow and the proliferation of leukocytes, and is widely used in radiation therapy and chemotherapy-induced leukopenia in malignant carcinomas. In addition, leucogen may have potential anticancer synergistic effects. Therefore, based on the application prospect of leucogen in preventing myelosuppression during chemotherapy for solid tumors, the study was designed to investigate the efficacy and safety of leucogen versus placebo on leukocyte and platelet whole-course management assisted by platinum plus low-dose long-term continuous intravenous infused 5-fluorouracil chemotherapy in the treatment of stage IV, recurrent or metastatic nasopharyngeal carcinoma.	"Inclusion Criteria:
+NCT05780294,"A Multi-center, Randomized, Double-blind, Phase III Clinical Trial of Leucogen Versus Placebo on Leukocyte and Platelet Whole-course Management Assisted by PFLL Chemotherapy in the Treatment of Stage IV, Recurrent or Metastatic NPC","Toxic and side effects during and after chemoradiotherapy for nasopharyngeal carcinoma seriously affect patients' treatment compliance and long-term quality of life. Active and effective prediction, prevention and management of toxic and side effects is an important element to improve the prognosis of patients. Leucogen has the ability to promote the growth and maturation of granulocytes in the bone marrow and the proliferation of leukocytes, and is widely used in radiation therapy and chemotherapy-induced leukopenia in malignant carcinomas. In addition, leucogen may have potential anticancer synergistic effects. Therefore, based on the application prospect of leucogen in preventing myelosuppression during chemotherapy for solid tumors, the study was designed to investigate the efficacy and safety of leucogen versus placebo on leukocyte and platelet whole-course management assisted by platinum plus low-dose long-term continuous intravenous infused 5-fluorouracil chemotherapy in the treatment of stage IV, recurrent or metastatic nasopharyngeal carcinoma.","Inclusion Criteria:
 
 1. ≥18 years old and ≤60 years old；
 2. Pathological diagnosis of stage IV, recurrent or distant metastatic nasopharyngeal carcinoma；
@@ -466,7 +466,7 @@ Exclusion Criteria:
 12. Women who are pregnant or breastfeeding, or who refuse/cannot accept medically acceptable conditions. For women with potential pregnancy and sexually active men.
 
     \-"
-NCT07158840	AK112 in Non-squamous Non-small Cell Lung Cancer (NSCLC)Patients With Actionable Genomic Alterations (AGA) Who Have Failed to Previous Tyrosine Kinase Inhibitor (TKI) Treatment	AK112 in non-squamous non-small cell lung cancer patients with actionable genomic alterations (AGA) who have failed to previous tyrosine kinase inhibitor (TKI) treatment	"Inclusion Criteria:
+NCT07158840,AK112 in Non-squamous Non-small Cell Lung Cancer (NSCLC)Patients With Actionable Genomic Alterations (AGA) Who Have Failed to Previous Tyrosine Kinase Inhibitor (TKI) Treatment,AK112 in non-squamous non-small cell lung cancer patients with actionable genomic alterations (AGA) who have failed to previous tyrosine kinase inhibitor (TKI) treatment,"Inclusion Criteria:
 
 1. Signed the Informed Consent Form (ICF) voluntarily。
 2. Participants must be aged between 18 and 75 years (inclusive), regardless of gender.
@@ -492,7 +492,7 @@ Exclusion Criteria:
 10. History of malignancy other than NSCLC within 3 years prior to the first dose; participants with other malignancies that have been cured by local treatment are allowed.
 11. Active autoimmune disease requiring systemic therapy within 2 years prior to the first dose.
 12. History of major medical conditions within 1 year prior to the first dose."
-NCT05812677	A Clinical Study on Oncolytic Virus Injection (R130) for the Treatment of Relapsed/Refractory Cervical and Endometrial Cancer	20 participants are expected to be enrolled for this open，Single-armed clinical trial to evaluate the safety and efficacy of the recombinant herpes simplex virus Ⅰ, R130 in patients with relapsed/refractory Cervical and Endometrial Cancer.	"Inclusion Criteria:
+NCT05812677,A Clinical Study on Oncolytic Virus Injection (R130) for the Treatment of Relapsed/Refractory Cervical and Endometrial Cancer,"20 participants are expected to be enrolled for this open，Single-armed clinical trial to evaluate the safety and efficacy of the recombinant herpes simplex virus Ⅰ, R130 in patients with relapsed/refractory Cervical and Endometrial Cancer.","Inclusion Criteria:
 
 1. Patients with cervical cancer or endometrial cancer clearly diagnosed by histology and/or cytology.
 2. Failure of standard treatment or patient unwillingness to receive other antitumor therapy.
@@ -520,11 +520,11 @@ Exclusion Criteria:
 11. Patients who have undergone surgery of grade 3 or higher or whose surgical wounds have not healed within 4 weeks prior to enrollment.
 12. Participation in other clinical trials within four weeks prior to enrollment.
 13. Subjects who, in the judgment of the investigator, are unsuitable for participation in this trial for any reason."
-NCT04301739	to Evaluate Efficacy and Safety of HLX10 in Combination With Chemotherapy Versus Placebo in Combination With Chemotherapy as Neoadjuvant Therapy and HLX10 Versus Placebo as Adjuvant Therapy in Patients With Triple Negative Breast Cancer (TNBC)	"This study is a randomized, double-Blind,international multi-Centre, phase III clinical study to evaluate efficacy and safety of HLX10 in combination with chemotherapy versus placebo in combination with chemotherapy as neoadjuvant therapy and HLX10 versus placebo as adjuvant therapy in previously untreated and potentially resectable patients with TNBC and without distant metastasis.
+NCT04301739,to Evaluate Efficacy and Safety of HLX10 in Combination With Chemotherapy Versus Placebo in Combination With Chemotherapy as Neoadjuvant Therapy and HLX10 Versus Placebo as Adjuvant Therapy in Patients With Triple Negative Breast Cancer (TNBC),"This study is a randomized, double-Blind,international multi-Centre, phase III clinical study to evaluate efficacy and safety of HLX10 in combination with chemotherapy versus placebo in combination with chemotherapy as neoadjuvant therapy and HLX10 versus placebo as adjuvant therapy in previously untreated and potentially resectable patients with TNBC and without distant metastasis.
 
 Eligible subjects in this study will be randomized to Arm A or Arm B at 2:1 ratio as follows:
 
-Arm A (HLX10 arm): HLX10 + chemotherapy (nab-paclitaxel carboplatin) (4 cycles) → HLX10 + chemotherapy (doxorubicin or epirubicin cyclophosphamide) (4 cycles) → surgery → HLX10 (9 cycles) Arm B (placebo arm): Placebo + chemotherapy (nab-paclitaxel carboplatin) (4 cycles) → Placebo + chemotherapy (doxorubicin or epirubicin cyclophosphamide) (4 cycles) → surgery → Placebo (9 cycles) The three stratification factors for randomization include: lymph node metastasis (yes or no), size of primary tumor lesion (T1/T2 or T3/T4), asian population (yes or no)."	"Inclusion Criteria:
+Arm A (HLX10 arm): HLX10 + chemotherapy (nab-paclitaxel carboplatin) (4 cycles) → HLX10 + chemotherapy (doxorubicin or epirubicin cyclophosphamide) (4 cycles) → surgery → HLX10 (9 cycles) Arm B (placebo arm): Placebo + chemotherapy (nab-paclitaxel carboplatin) (4 cycles) → Placebo + chemotherapy (doxorubicin or epirubicin cyclophosphamide) (4 cycles) → surgery → Placebo (9 cycles) The three stratification factors for randomization include: lymph node metastasis (yes or no), size of primary tumor lesion (T1/T2 or T3/T4), asian population (yes or no).","Inclusion Criteria:
 
 1. Subjects histologically diagnosed with previously untreated TNBC (lack of human epidermal growth factor receptor-2 \[HER2\], estrogen receptor \[ER\], progesterone receptor expression as determined by the study site).
 2. Subjects who are judged as one of the following by the American Joint Committee on Cancer (AJCC) within 4 weeks prior to randomisation:
@@ -544,9 +544,9 @@ Exclusion Criteria:
 4. Pregnant or lactating women.
 5. Subjects with a known history of psychotropics abuse or drug abuse
 6. Subjects presenting other factors not suitable for participation as judged by the investigator."
-NCT07009002	BCOR and ZC3H12 Genes Knock-out CD19-targeting CAR-T Cell Therapy in r/r B Cell Lymphoma	"In this single-center, single-arm, prospective, Phase 1/2 study, the safety and efficacy of autologous BCOR and ZC3H12 genes knock-out CD19-targeting chimeric antigen receptor (CAR) T-cell therapy will be evaluated in patients with refractory/relapsed (r/r) B-cell Lymphoma. For simplicity, we have termed these CD19 CAR T cells lacking ZC3H12A and BCOR as CAR19TIF( immortal-like and functional CD19 CAR T ) cells, reflecting their immortal-like and functional characteristics.
+NCT07009002,BCOR and ZC3H12 Genes Knock-out CD19-targeting CAR-T Cell Therapy in r/r B Cell Lymphoma,"In this single-center, single-arm, prospective, Phase 1/2 study, the safety and efficacy of autologous BCOR and ZC3H12 genes knock-out CD19-targeting chimeric antigen receptor (CAR) T-cell therapy will be evaluated in patients with refractory/relapsed (r/r) B-cell Lymphoma. For simplicity, we have termed these CD19 CAR T cells lacking ZC3H12A and BCOR as CAR19TIF( immortal-like and functional CD19 CAR T ) cells, reflecting their immortal-like and functional characteristics.
 
-In phase 1, 3 eligible patients will be enrolled and receive CAR19TIF cells at a initial dose of 5×10\^5 cells/kg. Based on the results, subsequently an additional 3-15 patients will be enrolled in a ""3+3"" dose-escalation/decline design to adjust the dose of CAR19TIF cells to achieve optimal safety and efficacy. The recommended Phase 2 dose (RP2D) will then be established. 10 to 12 subjects will be enrolled and receive CAR19TIF cells infusion at dose of RP2D."	"Inclusion Criteria:
+In phase 1, 3 eligible patients will be enrolled and receive CAR19TIF cells at a initial dose of 5×10\^5 cells/kg. Based on the results, subsequently an additional 3-15 patients will be enrolled in a ""3+3"" dose-escalation/decline design to adjust the dose of CAR19TIF cells to achieve optimal safety and efficacy. The recommended Phase 2 dose (RP2D) will then be established. 10 to 12 subjects will be enrolled and receive CAR19TIF cells infusion at dose of RP2D.","Inclusion Criteria:
 
 1. Age 18-70 (inclusive).
 2. Subjects who meet the following requirements:
@@ -620,7 +620,7 @@ Exclusion Criteria:
 19. History of severe immediate hypersensitivity reaction to any of the agents used in this study.
 20. Vaccine ≤ 6 weeks prior to planned start of conditioning regimen.
 21. In the investigator's judgment, the subject is unlikely to complete all protocol-required study visits or procedures, including follow-up visits, or comply with the study requirements for participation."
-NCT06829173	Concurrent XRD-0394 With Radiation Therapy for High Grade Gliomas	This is an open-label, dose-finding study of XRD-0394 in subjects with newly diagnosed and recurrent high grade gliomas receiving radiation therapy, with and without concurrent temozolomide based on O6-Methylguanine-DNA methyltransferase (MGMT) status for patients with newly diagnosed high grade gliomas.	"Inclusion Criteria:
+NCT06829173,Concurrent XRD-0394 With Radiation Therapy for High Grade Gliomas,"This is an open-label, dose-finding study of XRD-0394 in subjects with newly diagnosed and recurrent high grade gliomas receiving radiation therapy, with and without concurrent temozolomide based on O6-Methylguanine-DNA methyltransferase (MGMT) status for patients with newly diagnosed high grade gliomas.","Inclusion Criteria:
 
 * Willing and able to provide written informed consent.
 * ≥18 years of age.
@@ -645,7 +645,7 @@ Exclusion Criteria:
 * Contraindication to temozolomide (Cohort A only)
 * Severe headache, rapidly progressive neurologic decline, objective neurologic manifestations of uncal herniation, depressed level of consciousness
 * Subjects receiving treatment with any drug that is a strong inhibitor or inducer of CYP3A4 enzyme activity or an inhibitor of BCRP within a minimum of 5 half- lives or 14 days prior to screening or during study participation."
-NCT07021677	"Use of a New Medicine ""Daratumumab"" to Treat Left-over Cancer in a Blood Cancer Called ""T Acute Lymphoblastic Leukemia"""	"T-ALL (T-acute lymphoblastic leukemia) is an aggressive blood cancer, wherein patients who are MRD positive after two courses of induction chemotherapy have poor outcomes. This goal of this study is to determine if Daratumumab can make such T-ALL patients MRD negative.
+NCT07021677,"Use of a New Medicine ""Daratumumab"" to Treat Left-over Cancer in a Blood Cancer Called ""T Acute Lymphoblastic Leukemia""","T-ALL (T-acute lymphoblastic leukemia) is an aggressive blood cancer, wherein patients who are MRD positive after two courses of induction chemotherapy have poor outcomes. This goal of this study is to determine if Daratumumab can make such T-ALL patients MRD negative.
 
 The main questions this study aims to answer are -
 
@@ -654,7 +654,7 @@ The main questions this study aims to answer are -
 3. Whether addition of daratumumab can affect the risk of progression or death at 1-year?
 4. Whether daratumumab is safe to use?
 
-Newly diagnosed patients of T-ALL who are MRD positive after two courses of induction chemotherapy will be eligible to receive daratumumab. These patients will receive two doses of weekly intravenous daratumumab at standard dose (16mg/kg), and will undergo repeat evaluation of MRD from bone marrow one week after the second dose of daratumumab. Patients who become MRD negative will continue chemotherapy as per institutional policy. Those who remain MRD positive will be eligible to receive two additional doses, and will undergo another bone marrow MRD testing one week after the fourth dose. Irrespective of the results after the fourth dose, patients will be continued on chemotherapy as per institutional policy."	"Inclusion Criteria:
+Newly diagnosed patients of T-ALL who are MRD positive after two courses of induction chemotherapy will be eligible to receive daratumumab. These patients will receive two doses of weekly intravenous daratumumab at standard dose (16mg/kg), and will undergo repeat evaluation of MRD from bone marrow one week after the second dose of daratumumab. Patients who become MRD negative will continue chemotherapy as per institutional policy. Those who remain MRD positive will be eligible to receive two additional doses, and will undergo another bone marrow MRD testing one week after the fourth dose. Irrespective of the results after the fourth dose, patients will be continued on chemotherapy as per institutional policy.","Inclusion Criteria:
 
 1. Adults ≥18 - ≤65 years of age
 2. Baseline diagnosis of T-ALL, including ETP-ALL
@@ -677,7 +677,7 @@ Exclusion Criteria:
 6. Human immunodeficiency virus (HIV) positive.
 7. Pregnant or breastfeeding female
 8. HBsAg positive or HBV-DNA positivity"
-NCT05563922	Organ Preservation Strategy of Total Neoadjuvant Chemoradiotherapy for Low Rectal Carcinoma	This study aims to evaluate the efficacy and safety of an organ-sparing strategy after neoadjuvant chemoradiotherapy followed by transanal endoscopic microsurgery （TEM） or endoscopic local resection for early low rectal cancer（cT 1-3N0M0）.Besides, the clinical complete response rate and near-clinical complete response rate, organ preservation rate, local recurrence rate, distant metastasis rate and quality of life （QoL） will also be assessed.	"Inclusion Criteria:
+NCT05563922,Organ Preservation Strategy of Total Neoadjuvant Chemoradiotherapy for Low Rectal Carcinoma,"This study aims to evaluate the efficacy and safety of an organ-sparing strategy after neoadjuvant chemoradiotherapy followed by transanal endoscopic microsurgery （TEM） or endoscopic local resection for early low rectal cancer（cT 1-3N0M0）.Besides, the clinical complete response rate and near-clinical complete response rate, organ preservation rate, local recurrence rate, distant metastasis rate and quality of life （QoL） will also be assessed.","Inclusion Criteria:
 
 * Age≥18 years
 * cT1-3N0M0 assessed by CT, MRI and ultrasound colonoscopy
@@ -701,7 +701,7 @@ Exclusion Criteria:
 * Organ transplantation requires immunosuppressive therapy
 * Serious uncontrolled recurrent infections, or other serious uncontrolled concomitant diseases
 * The baseline blood routine and biochemical indexes of the subject do not meet the following criteria: hemoglobin ≥90g / L; absolute neutrophil count (ANC) ≥1.5\*10\^9 / L; platelet ≥100\*10\^9 / L; ALT and AST≤ 2.5 times normal upper limit; ALP ≤2.5 times normal upper limit; serum total bilirubin \<1.5 times normal upper limit; serum normal creatinine""\<1 time upper limit; and serum albumin ≥30g / L"
-NCT03424850	Safety and Efficacy of 21 Gy, 23 Gy and 25 Gy for High Dose Rate (HDR) Prostate Brachytherapy	The purpose of this research study is to learn more about the outcomes and early and late side effects of treating early stage prostate cancer with high dose rate brachytherapy.	"Inclusion Criteria:
+NCT03424850,"Safety and Efficacy of 21 Gy, 23 Gy and 25 Gy for High Dose Rate (HDR) Prostate Brachytherapy",The purpose of this research study is to learn more about the outcomes and early and late side effects of treating early stage prostate cancer with high dose rate brachytherapy.,"Inclusion Criteria:
 
 * Histologically or cytologically confirmed diagnosis of early stage prostate cancer.
 * Must be considered either low-risk (T1-T2a, Gleason ≤ 6, PSA \< 10 ng/mL) or favorable intermediate-risk (Gleason 3 +4 = 7, percentage of positive biopsy cores \< 50%, no more than one NCCN intermediate risk factor).
@@ -718,7 +718,7 @@ Exclusion Criteria:
 * Uncontrolled intercurrent illness including, but not limited to, ongoing or active infection, symptomatic congestive heart failure, unstable angina pectoris, or cardiac arrhythmia.
 * Unable to undergo general, spinal or local anesthesia.
 * Prior TURP with a sufficiently large defect that would compromise the integrity of the implant per clinician's assessment."
-NCT07138274	Metyrapone Study for Patients Diagnosed With Mild Autonomous Cortisol Secretion - MACS	single-center, randomized, double-blind, placebo-controlled Phase 2 study to evaluate safety and efficacy of overnight metyrapone in patients with MACS.	"Inclusion Criteria:
+NCT07138274,Metyrapone Study for Patients Diagnosed With Mild Autonomous Cortisol Secretion - MACS,"single-center, randomized, double-blind, placebo-controlled Phase 2 study to evaluate safety and efficacy of overnight metyrapone in patients with MACS.","Inclusion Criteria:
 
 1. Provide written informed consent.
 2. Stated willingness to comply with all study procedures and availability for the duration of the study.
@@ -759,9 +759,9 @@ Exclusion Criteria:
 10. Known allergic reactions to metyrapone
 11. Suspected false positive post-dexamethasone cortisol results due to increased metabolism, poor absorption, or noncompliance with dexamethasone
 12. Treatment with another investigational drug or other intervention within lower than specific therapy washout period"
-NCT06999512	Impact of Comprehensive Geriatric Management on Morbidity and Quality of Life in Elderly Patients Undergoing Major Hepatectomy and Pancreaticoduodenectomy for Cancer	"The worldwide incidence of hepatobiliary and pancreatic (HPB) cancers is dramatically increasing especially for pancreatic cancer. Increasing age is associated with increased cancer risk. In North America and Europe, most people who are diagnosed with cancer every year are aged 65 years or older. Hepatectomy for hepatocellular carcinoma, intra hepatic and hilar cholangiocarcinoma, gallbladder cancer and hepatic metastases from colorectal cancer allows better survival compared to other treatments. Similarly, pancreaticoduodenectomy (PD) is the standard of care in patients with distal cholangiocarcinoma and patients with resectable pancreatic adenocarcinoma located in the head of the pancreas. This results in an increasing number of elderly patients being evaluated for hepatic and pancreatic surgery. Major hepatectomy and PD are amongst the most invasive and complex procedures in general surgery with high rates of morbidity as well as negative impact on quality of life. Many studies have reported poor post-surgical outcomes in the elderly patients, especially related to co-morbidities that characterizes this population such as, polypharmacy, cognitive decline, depression and malnutrition. The age in elderly cancer patient is not just a number. The management of these patients should not be limited to oncological care, but it should be extended to different clinical domains including physical, cognitive, psychological, socioeconomic and environmental aspects. In this population, the risk of adverse postoperative outcomes is not adequately described by routine format of current preoperative evaluation, such as age, comorbidities and other traditional tests. Furthermore, the Comprehensive Geriatric Assessment (CGA) is scarcely considered. The aim of CGA is to identify current health problems and to guide interventions thus reducing adverse outcomes and optimizing the functional status of older adults. Several trials have indeed shown that CGA and perioperative tailored interventions reduce morbidity and improve patient survival in other surgical disciplines. Similar data is lacking in both hepatic and pancreatic surgery.
+NCT06999512,Impact of Comprehensive Geriatric Management on Morbidity and Quality of Life in Elderly Patients Undergoing Major Hepatectomy and Pancreaticoduodenectomy for Cancer,"The worldwide incidence of hepatobiliary and pancreatic (HPB) cancers is dramatically increasing especially for pancreatic cancer. Increasing age is associated with increased cancer risk. In North America and Europe, most people who are diagnosed with cancer every year are aged 65 years or older. Hepatectomy for hepatocellular carcinoma, intra hepatic and hilar cholangiocarcinoma, gallbladder cancer and hepatic metastases from colorectal cancer allows better survival compared to other treatments. Similarly, pancreaticoduodenectomy (PD) is the standard of care in patients with distal cholangiocarcinoma and patients with resectable pancreatic adenocarcinoma located in the head of the pancreas. This results in an increasing number of elderly patients being evaluated for hepatic and pancreatic surgery. Major hepatectomy and PD are amongst the most invasive and complex procedures in general surgery with high rates of morbidity as well as negative impact on quality of life. Many studies have reported poor post-surgical outcomes in the elderly patients, especially related to co-morbidities that characterizes this population such as, polypharmacy, cognitive decline, depression and malnutrition. The age in elderly cancer patient is not just a number. The management of these patients should not be limited to oncological care, but it should be extended to different clinical domains including physical, cognitive, psychological, socioeconomic and environmental aspects. In this population, the risk of adverse postoperative outcomes is not adequately described by routine format of current preoperative evaluation, such as age, comorbidities and other traditional tests. Furthermore, the Comprehensive Geriatric Assessment (CGA) is scarcely considered. The aim of CGA is to identify current health problems and to guide interventions thus reducing adverse outcomes and optimizing the functional status of older adults. Several trials have indeed shown that CGA and perioperative tailored interventions reduce morbidity and improve patient survival in other surgical disciplines. Similar data is lacking in both hepatic and pancreatic surgery.
 
-The hypothesis is that CGA with perioperative tailored interventions could reduce postoperative morbidity in elderly patients after major hepatectomy and pancreaticoduodenectomy for cancer."	"Inclusion Criteria:
+The hypothesis is that CGA with perioperative tailored interventions could reduce postoperative morbidity in elderly patients after major hepatectomy and pancreaticoduodenectomy for cancer.","Inclusion Criteria:
 
 * Patients ≥ 70 years, with histologically proven or clinical diagnosis of HPB cancer among the following:
 * hepatocellular carcinoma
@@ -780,7 +780,7 @@ Exclusion Criteria:
 * Patient unable to sign informed consent.
 * Patients included in a double-blind randomized trial
 * Patients legally protected"
-NCT05488353	A Clinical Study of Disitamab Vedotin for Injection Combined With Penpulimab Injection in Neoadjuvant Therapy for Patients With HER2-expressing Cisplatin-intolerant cT2-T4aNxM0 Bladder Urothelial Carcinoma	This study is a one-arm exploratory clinical study of Disitamab Vedotin for Injection combined with Penpulimab Injection designed for cisplatin intolerant CT2-T4anxm0 bladder urothelial carcinoma patients.It will confirme the efficacy and safety of Disitamab Vedotin for Injection combined with Penpulimab Injection neoadjuvant treatment for cisplatin intolerant CT2-T4anxm0 bladder urothelial carcinoma patients. Finally, it will provide new evidence-based medical evidence for neoadjuvant therapy for such patients.	"Inclusion Criteria:
+NCT05488353,A Clinical Study of Disitamab Vedotin for Injection Combined With Penpulimab Injection in Neoadjuvant Therapy for Patients With HER2-expressing Cisplatin-intolerant cT2-T4aNxM0 Bladder Urothelial Carcinoma,"This study is a one-arm exploratory clinical study of Disitamab Vedotin for Injection combined with Penpulimab Injection designed for cisplatin intolerant CT2-T4anxm0 bladder urothelial carcinoma patients.It will confirme the efficacy and safety of Disitamab Vedotin for Injection combined with Penpulimab Injection neoadjuvant treatment for cisplatin intolerant CT2-T4anxm0 bladder urothelial carcinoma patients. Finally, it will provide new evidence-based medical evidence for neoadjuvant therapy for such patients.","Inclusion Criteria:
 
 1. Voluntarily participate in this trial, be able to sign a written informed consent form, and understand and agree to comply with the requirements of this study and the evaluation schedule.
 2. The age on the date of signing the informed consent form is 18 to 75 years old.
@@ -823,14 +823,14 @@ Exclusion Criteria:
 15. Known hypersensitivity to other monoclonal antibodies.
 16. Known allergy to any study drug or excipient.
 17. Concurrently participate in another therapeutic clinical study."
-NCT06539338	Safety of INT2104 in Participants Aged 18 Years and Older Who Have B-cell Cancer That Came Back After Prior Treatment	"The purpose of this first-in-human study is to evaluate the safety of INT2104 when administered to humans in a broad population of participants with refractory/relapsing B-cell malignancies. Preliminary efficacy information may also be obtained.
+NCT06539338,Safety of INT2104 in Participants Aged 18 Years and Older Who Have B-cell Cancer That Came Back After Prior Treatment,"The purpose of this first-in-human study is to evaluate the safety of INT2104 when administered to humans in a broad population of participants with refractory/relapsing B-cell malignancies. Preliminary efficacy information may also be obtained.
 
 INT2104 is a gene therapy delivering a transgene for a chimeric antigen receptor (CAR) specific for CD20 (CAR20). The lentiviral vector is designed to generate CAR T and CAR Natural Killer (NK) cells inside the body following intravenous (IV) administration.
 
 Study details include the following:
 
 * The study duration will be 5 years
-* The treatment duration will be a one-time intravenous (IV) infusion of INT2104"	"Inclusion Criteria:
+* The treatment duration will be a one-time intravenous (IV) infusion of INT2104","Inclusion Criteria:
 
 * Age 18 or older and capable of giving signed informed consent
 * Diagnosed with relapsed/refractory (R/R) B-NHL (Burkitt's lymphoma are eligible for Part B only) confirmed by histology or flow cytometry Note: Bone Marrow involvement is allowed
@@ -872,7 +872,7 @@ Exclusion Criteria:
 * An active fungal, bacterial, viral, or other infection that is uncontrolled or requires antimicrobials at the time of INT2104 infusion.
 * Participant is pregnant or nursing.
 * In the investigator's judgment, the participant is unlikely to complete all protocol-required study visits or procedures, including follow-up visits, or comply with the study requirements for participation"
-NCT00804154	Resiniferatoxin to Treat Severe Pain Associated With Advanced Cancer	"This study will examine the safety of giving the experimental drug, resiniferatoxin (RTX), to treat severe pain in patients with advanced cancer. RTX is a chemical extracted from a cactus-like plant. It is similar to capsaicin, the active ingredient in hot pepper. RTX has relieved pain and reduced the need for pain medication in several animal experiments. It works by destroying nerves that transmit pain information.
+NCT00804154,Resiniferatoxin to Treat Severe Pain Associated With Advanced Cancer,"This study will examine the safety of giving the experimental drug, resiniferatoxin (RTX), to treat severe pain in patients with advanced cancer. RTX is a chemical extracted from a cactus-like plant. It is similar to capsaicin, the active ingredient in hot pepper. RTX has relieved pain and reduced the need for pain medication in several animal experiments. It works by destroying nerves that transmit pain information.
 
 People at least 18 years of age with severe pain from advanced cancer at or below the level of the chest that cannot be controlled with standard treatments may be eligible for this study. Participants undergo the following procedures:
 
@@ -909,7 +909,7 @@ Outpatient followup
 * Blood draw, Urinalysis, neurological and sensory testing, EKG on days 7, 14 and 30 after the injection
 * MRI scans of the head and back, Urology assessment and PEFR on day 15 after the injection
 * Eye examination
-* Follow-up phone calls monthly for 6 months"	"* INCLUSION CRITERIA:
+* Follow-up phone calls monthly for 6 months","* INCLUSION CRITERIA:
 
 Subject inclusion criteria are based on inadequate control of pain despite best efforts, including appropriate use of analgesic medications. To be enrolled in the study, subjects must meet all of the following criteria:
 
@@ -981,13 +981,13 @@ Subjects will be excluded from the study if they meet any of the following crite
 17. Have skin ulceration that does not resolve with medical or surgical treatment.
 18. Have a history of seizure activity in the previous month.
 19. Have experienced symptoms of opioid toxicity in the past month (i.e. myoclonus, seizures, and/or hallucinations)"
-NCT07005154	A Phase 2 Study to Evaluate the Effects of ASP5541 in Participants With Prostate Cancer	"Hormone therapy, or androgen deprivation therapy (ADT) is a standard way to treat prostate cancer. It works by reducing the amount of the main male sex hormone, testosterone in the body. Androgen receptor pathway inhibitors (ARPIs) are another type of hormone therapy. They either slow down how much testosterone is made or block testosterone from reaching the prostate cancer cells. Abiraterone acetate (AA) is an ARPI that is used to treat advanced prostate cancer. This type of treatment is usually given as a tablet with a steroid called prednisone/prednisolone to manage any medical problems from the hormone therapy. ASP5541 is a different form of AA. It is given as an injection into the muscle. In this study, ASP5541 will be given to men with advanced prostate cancer, both with and without prednisone/prednisolone. This study will check the safety of ASP5541 and compare how well ASP5541 works in men with advanced prostate cancer compared to AA.
+NCT07005154,A Phase 2 Study to Evaluate the Effects of ASP5541 in Participants With Prostate Cancer,"Hormone therapy, or androgen deprivation therapy (ADT) is a standard way to treat prostate cancer. It works by reducing the amount of the main male sex hormone, testosterone in the body. Androgen receptor pathway inhibitors (ARPIs) are another type of hormone therapy. They either slow down how much testosterone is made or block testosterone from reaching the prostate cancer cells. Abiraterone acetate (AA) is an ARPI that is used to treat advanced prostate cancer. This type of treatment is usually given as a tablet with a steroid called prednisone/prednisolone to manage any medical problems from the hormone therapy. ASP5541 is a different form of AA. It is given as an injection into the muscle. In this study, ASP5541 will be given to men with advanced prostate cancer, both with and without prednisone/prednisolone. This study will check the safety of ASP5541 and compare how well ASP5541 works in men with advanced prostate cancer compared to AA.
 
 The main aims of the study are to check how well ASP5541 with prednisone/prednisolone works compared to AA with prednisone/prednisolone in men with advanced prostate cancer who haven't previously been treated with an ARPI, to check safety of ASP5541 given by itself in men with advanced prostate cancer that haven't previously been treated with an ARPI, to check how well ASP5541 given by itself works compared to AA with prednisone/prednisolone in men with advanced prostate cancer that haven't previously been treated with an ARPI, and to check safety of ASP5541 with prednisone/prednisolone in Japanese men with advanced prostate cancer.
 
 Adult men with a certain type of advanced prostate cancer can take part. Their cancer has spread to other parts of the body (metastatic). The different types are: Metastatic hormone-sensitive prostate cancer (mHSPC). Prostate cancer that needs testosterone to grow. Metastatic castration-resistant prostate cancer (mCRPC). Prostate cancer that continues to grow even when testosterone levels are low.
 
-In this study there will be 3 treatment groups. In Group 1 men with mCRPC who haven't previously been treated with an ARPI will either be given ASP5541 and prednisone/prednisolone or AA and prednisone/prednisolone. In Group 2 men with mHSPC who haven't previously been treated with an ARPI will either be given ASP5541 by itself or be given AA with prednisone/prednisolone. In Group 3 Japanese men with mCRPC or mHSPC who may or may not have previously been treated with an ARPI will be given ASP5541 with prednisone."	"Inclusion Criteria:
+In this study there will be 3 treatment groups. In Group 1 men with mCRPC who haven't previously been treated with an ARPI will either be given ASP5541 and prednisone/prednisolone or AA and prednisone/prednisolone. In Group 2 men with mHSPC who haven't previously been treated with an ARPI will either be given ASP5541 by itself or be given AA with prednisone/prednisolone. In Group 3 Japanese men with mCRPC or mHSPC who may or may not have previously been treated with an ARPI will be given ASP5541 with prednisone.","Inclusion Criteria:
 
 * Participant is diagnosed with histologically or cytologically confirmed adenocarcinoma of the prostate without neuroendocrine differentiation or small cell features.
 * Participant has ECOG performance status of 0 or 1, or ECOG performance status of 2 if due to bone pain.
@@ -1089,7 +1089,7 @@ Exclusion Criteria for Cohort 2
 * Arterial thrombotic or embolic events such as cerebrovascular accident (including transient ischemic attacks) within the last 12 months.
 
   * Venous thromboembolic events (deep vein thrombosis or pulmonary embolism) within the 3 months before start of study medication (except for adequately treated catheter-related venous thrombosis occurring \> 1 month before Cycle 1 Day 1)."
-NCT05828511	A Window of Opportunity Trial to Learn if Linvoseltamab is Safe and Well Tolerated, and How Well it Works in Adult Participants With Recently Diagnosed Multiple Myeloma Who Have Not Already Received Treatment	"This study is researching an experimental drug called linvoseltamab (called ""study drug""). The study is focused on participants with newly diagnosed multiple myeloma (NDMM) who are eligible for high dose chemotherapy with autologous stem cell transplantation (transplant-eligible) or ineligible for autologous stem cell transplantation (transplant-ineligible).
+NCT05828511,"A Window of Opportunity Trial to Learn if Linvoseltamab is Safe and Well Tolerated, and How Well it Works in Adult Participants With Recently Diagnosed Multiple Myeloma Who Have Not Already Received Treatment","This study is researching an experimental drug called linvoseltamab (called ""study drug""). The study is focused on participants with newly diagnosed multiple myeloma (NDMM) who are eligible for high dose chemotherapy with autologous stem cell transplantation (transplant-eligible) or ineligible for autologous stem cell transplantation (transplant-ineligible).
 
 The aim of this clinical trial is to study the safety, tolerability (how the body reacts to the drug), and effectiveness (tumor shrinkage) of linvoseltamab in study participants with NDMM as a first step in determining if the study drug has a role in the treatment of NDMM.
 
@@ -1105,7 +1105,7 @@ The study is looking at several research questions, including:
 * How many participants treated with linvoseltamab have improvement of their disease and for how long?
 * The effects of linvoseltamab study treatment before and after transplant
 * How much linvoseltamab is in the blood at different times?
-* Whether the body makes antibodies against linvoseltamab (which could make the drug less effective or could lead to side effects)."	"Key Inclusion Criteria:
+* Whether the body makes antibodies against linvoseltamab (which could make the drug less effective or could lead to side effects).","Key Inclusion Criteria:
 
 1. Eastern Cooperative Oncology Group (ECOG) performance status of 0, 1, or 2
 2. Confirmed diagnosis of symptomatic multiple myeloma (MM) by International Myeloma Working Group (IMWG) diagnosis criteria
@@ -1122,9 +1122,9 @@ Key Exclusion Criteria:
 4. Diagnosis of non-secretory MM, active plasma cell leukemia, primary light-chain (AL) amyloidosis, Waldenström macroglobulinemia (lymphoplasmacytic lymphoma), or known POEMS syndrome (plasma cell dyscrasia with polyneuropathy, organomegaly, endocrinopathy, monoclonal protein, and skin changes)
 
 Note: Other protocol-defined Inclusion/Exclusion criteria apply"
-NCT06016920	Safety and Efficacy of VB10.16 and Pembrolizumab in Patients with Head-Neck Squamous Cell Carcinoma	"This is a multi-center study in patients with un-resectable Recurrent or Metastatic HPV16-positive oropharyngeal Head and Neck Squamous Cell Carcinoma (HNSCC). The trial is designed to investigate VB10.16, an investigational therapeutic DNA vaccine in combination with another medicine, pembrolizumab, which is the standard of care for patients with previously untreated metastatic or resectable recurrent PD-L1 positive HNSCC. The study is divided in 2 parts: a phase 1, dose escalation part, testing 3 different doses of VB10.16 in combination with a standard fixed dose of pembrolizumab. The goal of this part is to evaluate the safety and tolerability of the combined treatment and to decide on the dose of VB10.16 to be used in the second part of the trial. In the second part of the trial, a phase 2a, dose expansion part, participants will receive either the highest safe dose of VB10.16 from part 1 or the 3 mg dose both in combination with pembrolizumab. The dose given to each participant will be decided in random.
+NCT06016920,Safety and Efficacy of VB10.16 and Pembrolizumab in Patients with Head-Neck Squamous Cell Carcinoma,"This is a multi-center study in patients with un-resectable Recurrent or Metastatic HPV16-positive oropharyngeal Head and Neck Squamous Cell Carcinoma (HNSCC). The trial is designed to investigate VB10.16, an investigational therapeutic DNA vaccine in combination with another medicine, pembrolizumab, which is the standard of care for patients with previously untreated metastatic or resectable recurrent PD-L1 positive HNSCC. The study is divided in 2 parts: a phase 1, dose escalation part, testing 3 different doses of VB10.16 in combination with a standard fixed dose of pembrolizumab. The goal of this part is to evaluate the safety and tolerability of the combined treatment and to decide on the dose of VB10.16 to be used in the second part of the trial. In the second part of the trial, a phase 2a, dose expansion part, participants will receive either the highest safe dose of VB10.16 from part 1 or the 3 mg dose both in combination with pembrolizumab. The dose given to each participant will be decided in random.
 
-The trial is designed to define the optimal dose of VB10.16 in combination with pembrolizumab for future clinical studies based on the safety, tolerability and anti-tumor effect data generated."	"Inclusion Criteria:
+The trial is designed to define the optimal dose of VB10.16 in combination with pembrolizumab for future clinical studies based on the safety, tolerability and anti-tumor effect data generated.","Inclusion Criteria:
 
 GENERAL REQUIREMENTS
 
@@ -1231,7 +1231,7 @@ HNSCC DISEASE
 38. Has a known psychiatric or substance abuse disorder that would interfere with the patient's ability to cooperate with the requirements of the trial
 39. Has a concomitant medical condition requiring receipt of a therapeutic anticoagulant that, in the opinion of the treating physician, would contraindicate administration of VB10.16 and tumor biopsies
 40. Female patients who are pregnant or breastfeeding"
-NCT06822010	SeqUential GeMcitabine and MITomycin Treatment for Favorable High-Risk Upper Urinary Tract Urothelial Carcinoma	"This Phase II clinical trial, titled ""A Phase II Trial of Sequential Gemcitabine and Mitomycin Treatment for Favorable High-Risk Upper Urinary Tract Urothelial Carcinoma (SUMMIT),"" aims to evaluate the safety and effectiveness of a combination chemotherapy treatment for patients with favorable papillary high-grade upper tract urothelial carcinoma (UTUC). The study focuses on sequential administration of two drugs, gemcitabine and Jelmyto (a gel-based form of mitomycin), to potentially preserve kidney function and avoid nephroureterectomy (kidney removal), which is the current standard of care for participants with non-endoscopically resectable tumors."	"Inclusion Criteria:
+NCT06822010,SeqUential GeMcitabine and MITomycin Treatment for Favorable High-Risk Upper Urinary Tract Urothelial Carcinoma,"This Phase II clinical trial, titled ""A Phase II Trial of Sequential Gemcitabine and Mitomycin Treatment for Favorable High-Risk Upper Urinary Tract Urothelial Carcinoma (SUMMIT),"" aims to evaluate the safety and effectiveness of a combination chemotherapy treatment for patients with favorable papillary high-grade upper tract urothelial carcinoma (UTUC). The study focuses on sequential administration of two drugs, gemcitabine and Jelmyto (a gel-based form of mitomycin), to potentially preserve kidney function and avoid nephroureterectomy (kidney removal), which is the current standard of care for participants with non-endoscopically resectable tumors.","Inclusion Criteria:
 
 * Subjects must meet all of the following applicable inclusion criteria to participate in the study:
 
@@ -1281,7 +1281,7 @@ NCT06822010	SeqUential GeMcitabine and MITomycin Treatment for Favorable High-Ri
   3. Has been surgically sterile for at least 6 months prior to trial drug administration.
 
      * Acceptable methods of birth control which are considered to have a low failure rate (i.e., less than 1% per year) when used consistently and correctly, such as implants, injectable, combined (estrogen/progesterone) oral contraceptives, intrauterine devices (IUDs-only hormonal), condoms with spermicide, sexual abstinence or vasectomized partner."
-NCT06173349	PLZ4-Coated Paclitaxel-Loaded Micelles for the Treatment of Patients With Recurrent or Refractory Non-Muscle Invasive Bladder Cancer	This phase I trial tests the safety, tolerability and effectiveness of PLZ4-coated paclitacel-loaded micelles (PPM) in treating patients with non-muscle invasive bladder cancer that has come back after a period of improvement (recurrent) or that does not respond to treatment (refractory). PPM is a bladder cancer-specific nanoparticle that can specifically target and deliver treatment to the tumor cells in the bladder. PPM contains paclitaxel, which is a drug that kills tumor cells or keeps them from growing.	"Inclusion Criteria:
+NCT06173349,PLZ4-Coated Paclitaxel-Loaded Micelles for the Treatment of Patients With Recurrent or Refractory Non-Muscle Invasive Bladder Cancer,"This phase I trial tests the safety, tolerability and effectiveness of PLZ4-coated paclitacel-loaded micelles (PPM) in treating patients with non-muscle invasive bladder cancer that has come back after a period of improvement (recurrent) or that does not respond to treatment (refractory). PPM is a bladder cancer-specific nanoparticle that can specifically target and deliver treatment to the tumor cells in the bladder. PPM contains paclitaxel, which is a drug that kills tumor cells or keeps them from growing.","Inclusion Criteria:
 
 * Histologically confirmed non muscle invasive bladder cancer (NMIBC), defined as noninvasive papillary carcinoma (Ta), carcinoma in situ (CIS) or carcinoma invading the subepithelial connective tissue (T1), determined via transurethral resection of bladder tumor (TURBT) within 3 months of enrollment
 * Participant must have Bacillus Calmette Guerin (BCG)-unresponsive NMIBC or intolerance of treatment with BCG. BCG-unresponsive disease is defined as being at least one of the following:
@@ -1329,7 +1329,7 @@ Exclusion Criteria:
   * Any other cancer deemed to be of low-risk for progression or patient morbidity during trial period, such as localized prostate cancer after definitive treatment and prostate-specific antigen (PSA) less than 0.2 ng/mL
 * Any condition that would prohibit the understanding or rendering of informed consent
 * Any condition that in the opinion of the investigator would interfere with the participant's safety or compliance while on trial"
-NCT06406634	Cadonilimab in Combination With Lenvatinib and Hepatic Arterial Infusion Chemotherapy (HAIC) for the Treatment of Unresectable Hepatocellular Carcinoma	This study is an open-label, multicenter, single-arm Phase II clinical study to evaluate the effectiveness of Cadonilimab(AK104) in Combination With Lenvatinib and Hepatic Arterial Infusion Chemotherapy (HAIC) for the Treatment of Unresectable Hepatocellular Carcinoma	"Inclusion Criteria:
+NCT06406634,Cadonilimab in Combination With Lenvatinib and Hepatic Arterial Infusion Chemotherapy (HAIC) for the Treatment of Unresectable Hepatocellular Carcinoma,"This study is an open-label, multicenter, single-arm Phase II clinical study to evaluate the effectiveness of Cadonilimab(AK104) in Combination With Lenvatinib and Hepatic Arterial Infusion Chemotherapy (HAIC) for the Treatment of Unresectable Hepatocellular Carcinoma","Inclusion Criteria:
 
 1. The written informed consent form should be signed before a subject participates in the trial；
 2. Histologically/cytologically confirmed HCC or cirrhosis meeting the clinical diagnostic criteria of HCC by the American Association for the Study of Liver Diseases (AASLD)；
@@ -1371,7 +1371,7 @@ Exclusion Criteria:
 26. Receipt of treatment in other clinical trials within 4 weeks before the first dose;
 27. Pregnant or breastfeeding female patients;
 28. Considered ineligible for participating in the trial by the investigator."
-NCT06933394	Arsenic Trioxide With MAPK Inhibitors and Chemotherapy for Stage 4/M Neuroblastoma	This prospective, single-arm, multi-center clinical trial aims to explore and evaluate the efficacy and safety of the combination therapy involving arsenic trioxide, MAPK inhibitors, and chemotherapy for stage 4/M neuroblastoma.	"Inclusion Criteria:
+NCT06933394,Arsenic Trioxide With MAPK Inhibitors and Chemotherapy for Stage 4/M Neuroblastoma,"This prospective, single-arm, multi-center clinical trial aims to explore and evaluate the efficacy and safety of the combination therapy involving arsenic trioxide, MAPK inhibitors, and chemotherapy for stage 4/M neuroblastoma.","Inclusion Criteria:
 
 1. Patients with a pathological diagnosis of neuroblastoma.
 2. Preoperative staging as INRG M stage or postoperative staging as INSS stage 4 (regardless of risk classification).
@@ -1384,11 +1384,11 @@ Exclusion Criteria:
 2. Severe progressive or persistent heart failure: NYHA heart function class III or IV, or left ventricular ejection fraction (LVEF) \< 50%.
 3. Severe progressive or persistent renal failure: glomerular filtration rate (GFR) \< 30 ml/(min·1.73 m²) or serum creatinine \> 5 mg/dL (442 μmol/L).
 4. Severe liver dysfunction: aspartate aminotransferase (AST), alanine aminotransferase (ALT) ≥ 5× upper limit of normal (ULN), or serum total bilirubin ≥ 3× ULN."
-NCT06807359	Photodynamic Therapy of Primary Localized Prostate Cancer With the SpectraCure P18 System	"The goal of this study is to obtain safety data, establish dose parameters, and effectiveness of treatment for the SpectraCure P18 System with IDOSE®, together with verteporfin for injection (VFI) as photosensitizer, for the treatment of primary localized prostate cancer.
+NCT06807359,Photodynamic Therapy of Primary Localized Prostate Cancer With the SpectraCure P18 System,"The goal of this study is to obtain safety data, establish dose parameters, and effectiveness of treatment for the SpectraCure P18 System with IDOSE®, together with verteporfin for injection (VFI) as photosensitizer, for the treatment of primary localized prostate cancer.
 
 The study will be divided into two parts, with Phase I, dose-escalation, to study safety and establish an effective light dose, followed by Phase II, cohort expansion, to evaluate clinical efficacy and confirm safety/tolerability. The subjects will be followed for a period of 18 months to determine the primary outcome. The long-term follow-up is an additional 18 months, i.e. a total of 36 months.
 
-Interstitial Photodynamic Therapy (PDT) will be performed during general anesthesia. Optical fibers will be inserted into the prostate with a transperineal approach using transrectal ultrasound guidance. The intent is to deliver an adequate light dose throughout the prostate. Subjects will receive VFI intravenously, approximately 60-90 minutes prior to light delivery."	"Inclusion Criteria:
+Interstitial Photodynamic Therapy (PDT) will be performed during general anesthesia. Optical fibers will be inserted into the prostate with a transperineal approach using transrectal ultrasound guidance. The intent is to deliver an adequate light dose throughout the prostate. Subjects will receive VFI intravenously, approximately 60-90 minutes prior to light delivery.","Inclusion Criteria:
 
 1. Subjects ≥ 18 years.
 2. Histologically confirmed organ-confined adenocarcinoma of the prostate cancer diagnosed within the last 9 months. Including subjects on active surveillance with evidence of disease progression and a prostate biopsy not older than 9 months.
@@ -1431,7 +1431,7 @@ Exclusion Criteria:
 15. Enrolment in another therapeutic clinical study within 3 month prior to enrolment and throughout the study.
 16. Contraindication for MRI/Gadolinium contrast such as: implants, hip prosthesis, severe renal impairment (glomerular filtration rate \[GFR\] \<30 mL/min/1.73m2), or previous contrast reactions.
 17. Has known hypersensitivity to pancuronium bromide, atricurium or cisatricurium"
-NCT06782334	AMT-116 in Patients with Solid Tumors	The purpose of this study is to evaluate the safety and efficacy of AMT-116 monotherapy in subjects with advanced solid tumors. The study is divided into two parts: the part I is dose escalation and the Part Ⅱ for expansion.	"Inclusion Criteria:
+NCT06782334,AMT-116 in Patients with Solid Tumors,The purpose of this study is to evaluate the safety and efficacy of AMT-116 monotherapy in subjects with advanced solid tumors. The study is divided into two parts: the part I is dose escalation and the Part Ⅱ for expansion.,"Inclusion Criteria:
 
 1. Patients must be willing and able to sign the ICF, and to adhere to the study visit schedule and other protocol requirements.
 2. Age ≥18 years (at the time consent is obtained).
@@ -1471,8 +1471,8 @@ Exclusion Criteria:
 20. Pregnant or breast-feeding females.
 21. Mental or medical disorders that prevent patients from signing informed consent or complying with the study, or other severe acute or chronic medical or psychiatric disorders or abnormal laboratory results that may increase the risk associated with study participation or IMP administration or may interfere with the interpretation of study results and, in the investigator's judgment, make patients ineligible for enrollment in the study.
 22. There was a history of malignant tumors other than the selected diagnosis within 5 years prior to the first administration of IMP"
-NCT06837389	Early Clinical Study of JY306 Universal NK Cell Injection in the Treatment of Adult Relapsed or Refractory CD70+ Malignant Hematologic Tumors	"1. Primary objectives of study:To valuate the tolerability and safety of JY306 in patients with relapsed or refractory CD70 + malignant hematological tumors.
-2. Secondary objectives of study:To conduct a preliminary Evaluation of the Efficacy, Pharmacokinetics, and Pharmacodynamics of JY306 in Patients with Relapsed or Refractory CD70+ Malignant Hematological Tumors."	"Inclusion Criteria:
+NCT06837389,Early Clinical Study of JY306 Universal NK Cell Injection in the Treatment of Adult Relapsed or Refractory CD70+ Malignant Hematologic Tumors,"1. Primary objectives of study:To valuate the tolerability and safety of JY306 in patients with relapsed or refractory CD70 + malignant hematological tumors.
+2. Secondary objectives of study:To conduct a preliminary Evaluation of the Efficacy, Pharmacokinetics, and Pharmacodynamics of JY306 in Patients with Relapsed or Refractory CD70+ Malignant Hematological Tumors.","Inclusion Criteria:
 
 * Relapsed or refractory malignant hematological tumors judged by clinical diagnosis;
 * The tumor cells were confirmed positive for CD70 by flow cytometry (FCM) or immunohistochemistry, and the positivity rate was \>80%;
@@ -1496,7 +1496,7 @@ Exclusion Criteria:
 * Unstable systemic diseases judged by the investigator: including but not limited to severe hepatic, renal or metabolic diseases requiring drug treatment;
 * Pregnant or lactating women, and female subjects who plan to become pregnant within 2 years after cell infusion or male subjects whose partners plan to become pregnant within 2 years after cell infusion;
 * According to the judgment of the investigator conditions that may increase the subject's risk or interfere with the trial results."
-NCT06246357	Evaluating the Functional Status of the Adrenal Glands With [68Ga]Ga-PentixaFor in Hyperaldosteronism and Hypercortisolism	"Background:
+NCT06246357,Evaluating the Functional Status of the Adrenal Glands With [68Ga]Ga-PentixaFor in Hyperaldosteronism and Hypercortisolism,"Background:
 
 The adrenal glands are 2 small organs that sit on top of each kidney. They release hormones; these are chemicals that control how the body works. Tumors on or outside the adrenal glands are called functional if they release hormones; they are called nonfunctional if they do not. Doctors who treat adrenal tumors need to know which type a person has. Researchers want to find better ways to learn whether an adrenal tumor is functional.
 
@@ -1518,7 +1518,7 @@ The tracer will be given through a tube attached to a needle inserted into a vei
 
 Participants heart rate, blood pressure, and rate of breathing will be checked before, during, and after the scan.
 
-Participants will have a follow-up visit 3 days after their scan. This visit can be by phone, email, or in person."	"* INCLUSION CRITERIA:
+Participants will have a follow-up visit 3 days after their scan. This visit can be by phone, email, or in person.","* INCLUSION CRITERIA:
 * Must have any of the following:
 
   * one or more adrenal masses on CT and/or MRI and biochemical evidence of excess aldosterone
@@ -1544,7 +1544,7 @@ EXCLUSION CRITERIA:
 * Positive beta-human chorionic gonadotropin (beta-HCG) serum or urine pregnancy test performed in females of childbearing potential at screening.
 * Uncontrolled intercurrent illness or social situations based on the review of medical history that would limit compliance with study requirements.
 * Contraindications to having an MRI and CT."
-NCT04006522	89Zr-DFO-Atezolizumab ImmunoPET/CT in Patients With Locally Advanced or Metastatic Renal Cell Carcinoma	This is an exploratory clinical trial to assess the potential of 89Zr-DFO-Atezolizumab Positron Emission Tomography/Computed Tomography (PET/CT) scans in patients with locally advanced or metastatic renal cell carcinoma (RCC). This open label, nontherapeutic trial will test the correlation of 89Zr-DFO-Atezolizumab immunoPET/CT with programmed death-ligand 1 (PD-L1) expression and the response to immune checkpoint inhibitor therapy in patients with RCC. There will be two cohorts, one made up of patients with localized RCC who will undergo 89Zr-DFO-Atezolizumab PET/CT prior to nephrectomy and a second cohort of patients with metastatic RCC who will undergo 89Zr-DFO-Atezolizumab PET/CT prior to treatment with an immune checkpoint inhibitor.	"Inclusion Criteria:
+NCT04006522,89Zr-DFO-Atezolizumab ImmunoPET/CT in Patients With Locally Advanced or Metastatic Renal Cell Carcinoma,"This is an exploratory clinical trial to assess the potential of 89Zr-DFO-Atezolizumab Positron Emission Tomography/Computed Tomography (PET/CT) scans in patients with locally advanced or metastatic renal cell carcinoma (RCC). This open label, nontherapeutic trial will test the correlation of 89Zr-DFO-Atezolizumab immunoPET/CT with programmed death-ligand 1 (PD-L1) expression and the response to immune checkpoint inhibitor therapy in patients with RCC. There will be two cohorts, one made up of patients with localized RCC who will undergo 89Zr-DFO-Atezolizumab PET/CT prior to nephrectomy and a second cohort of patients with metastatic RCC who will undergo 89Zr-DFO-Atezolizumab PET/CT prior to treatment with an immune checkpoint inhibitor.","Inclusion Criteria:
 
 * Patients with suspected renal cell carcinoma with planned surgery or patients with metastatic RCC and a tissue diagnosis. (In standard clinical practice, biopsy is not routinely performed in patients who will be having surgery).
 * Ability to understand and the willingness to sign a written informed consent.
@@ -1568,7 +1568,7 @@ Exclusion Criteria:
 * Subjects unable to provide informed consent.
 * Subjects who are claustrophobic or have other contraindications to PET/CT.
 * Subjects must not weigh more than the maximum weight limit for the table for the PET/CT scanner where the study is being performed. (\>200 kg or 440 lbs)."
-NCT05270824	Study Evaluating Neoadjuvant Immunotherapy Increasing CD8+ Cell Infiltration in Advance Gastric Adenocarcinoma	Focusing on the clinical question of whether patients with advanced gastric cancer can benefit from immunotherapy, this project intends to detect the degree of CD8+ tumor-infiltrating lymphocyte infiltration in patients with advanced gastric cancer before and after receiving neoadjuvant combined immunotherapy and neoadjuvant therapy alone. To explore the evolving nature of tumor immune response before and after neoadjuvant therapy for gastric cancer, and quantitatively present it through chemical immunohistochemical techniques to achieve a more accurate diagnosis and treatment and improve the long-term efficacy of patients.	"Inclusion Criteria:
+NCT05270824,Study Evaluating Neoadjuvant Immunotherapy Increasing CD8+ Cell Infiltration in Advance Gastric Adenocarcinoma,"Focusing on the clinical question of whether patients with advanced gastric cancer can benefit from immunotherapy, this project intends to detect the degree of CD8+ tumor-infiltrating lymphocyte infiltration in patients with advanced gastric cancer before and after receiving neoadjuvant combined immunotherapy and neoadjuvant therapy alone. To explore the evolving nature of tumor immune response before and after neoadjuvant therapy for gastric cancer, and quantitatively present it through chemical immunohistochemical techniques to achieve a more accurate diagnosis and treatment and improve the long-term efficacy of patients.","Inclusion Criteria:
 
 1. Age from 18 to 75 years
 2. Primary gastric adenocarcinoma (papillary, tubular, mucinous, signet ring cell, or poorly differentiated) confirmed pathologically ；
@@ -1604,7 +1604,7 @@ Exclusion Criteria:
 12. Multiple factors affect oral drugs (such as inability to swallow, persistent uncontrollable nausea and vomiting, chronic diarrhea and intestinal obstruction, etc.);
 13. Those who have allergic reactions to the drugs in this study;
 14. The researcher believes that it is not suitable for inclusion."
-NCT06860477	Cryoablation Combined With Lenvatinib Plus Tislelizumab Compared With FOLFOX in Patients With Advanced Intrahepatic Cholangiocarcinoma (CASTLE-ZS-01)	This study will evaluate the efficacy and safety of cryoablation combined with lenvatinib plus Tislelizumab compared with FOLFOX in patients with advanced Intrahepatic Cholangiocarcinoma (ICC) who have progressed after first-line treatment.	"Inclusion Criteria:
+NCT06860477,Cryoablation Combined With Lenvatinib Plus Tislelizumab Compared With FOLFOX in Patients With Advanced Intrahepatic Cholangiocarcinoma (CASTLE-ZS-01),This study will evaluate the efficacy and safety of cryoablation combined with lenvatinib plus Tislelizumab compared with FOLFOX in patients with advanced Intrahepatic Cholangiocarcinoma (ICC) who have progressed after first-line treatment.,"Inclusion Criteria:
 
 * Written informed consent obtained.
 * Age ≥ 18 years at time of study entry.
@@ -1636,7 +1636,7 @@ Exclusion Criteria:
 * Prior therapy with an anti-CD137 (4-1BB ligand, a member of the Tumor Necrosis Factor Receptor (TNFR) family), or anti-Cytotoxic T-lymphocyte-associated antigen-4 (anti-CTLA-4) antibody (including ipilimumab or any other antibody or drug specifically targeting T-cell co-stimulation or checkpoint pathways).
 * Female subjects who are pregnant, breast-feeding or male/female patients of reproductive potential who are not employing an effective method of birth control (failure rate of less than 1% per year). \[Acceptable methods of contraception are: implants, injectable contraceptives, combined oral contraceptives, intrauterine pessars (only hormonal devices), sexual abstinence or vasectomy of the partner\]. Women of childbearing potential must have a negative pregnancy test (serum β-HCG) at screening.
 * Patient with any significant history of non-compliance to medical regimens or with inability to grant reliable informed consent."
-NCT06857292	Clinical Study on the Safety, Efficacy and Pharmacokinetics of Telpegfilgrastim in Pediatric Cancer Patients with Chemotherapy	This study is a multicenter, single-arm, prospective study. The study population includes children with cancer who require high-intensity chemotherapy. The study aims to evaluate the safety and effectiveness of Telpegfilgrastim in preventing neutropenia in children with cancer (neuroblastoma, sarcoma, lymphoma, etc.) undergoing chemotherapy, while also studying the pharmacokinetic characteristics of Telpegfilgrastim in children with cancer.	"Inclusion Criteria:
+NCT06857292,"Clinical Study on the Safety, Efficacy and Pharmacokinetics of Telpegfilgrastim in Pediatric Cancer Patients with Chemotherapy","This study is a multicenter, single-arm, prospective study. The study population includes children with cancer who require high-intensity chemotherapy. The study aims to evaluate the safety and effectiveness of Telpegfilgrastim in preventing neutropenia in children with cancer (neuroblastoma, sarcoma, lymphoma, etc.) undergoing chemotherapy, while also studying the pharmacokinetic characteristics of Telpegfilgrastim in children with cancer.","Inclusion Criteria:
 
 * Patients with 14≤ age \< 18 years;
 
@@ -1663,7 +1663,7 @@ Exclusion Criteria:
       * Clinical trials of other drugs were being conducted within 2 months before enrollment;
 
         * There is no control of infection, body temperature ≥38℃; ⑥ Liver function test: total bilirubin (TBIL) alanine aminotransferase (ALT.) and aspartate aminotransferase (AST.) were more than 2.5 times the upper limit of normal value; ⑦ Renal function test: serum creatinine (Cr.) \> 1.5 times the upper limit of normal value; ⑧Other conditions considered by the researchers to be contraindications for this study."
-NCT06571708	Gemcitabine/Cisplatin Plus Cemiplimab With or Without Fianlimab in Localized Muscle-invasive Bladder Cancer (NeoSTOP-IT)	"The goal of this clinical trial is to learn if gemcitabine/cisplatin plus cemiplimab with or without fianlimab works to treat bladder cancer in adults. The main question it aims to answer is: Can gemcitabine, cisplatin, and cemiplimab with or without fianlimab treat bladder cancer?
+NCT06571708,Gemcitabine/Cisplatin Plus Cemiplimab With or Without Fianlimab in Localized Muscle-invasive Bladder Cancer (NeoSTOP-IT),"The goal of this clinical trial is to learn if gemcitabine/cisplatin plus cemiplimab with or without fianlimab works to treat bladder cancer in adults. The main question it aims to answer is: Can gemcitabine, cisplatin, and cemiplimab with or without fianlimab treat bladder cancer?
 
 Participants will be randomly selected (like the loss of a coin) to treatment with gemcitabine, cisplatin, cemiplimab, and fianlimab or gemcitabine, cisplatin, and cemiplimab.
 
@@ -1672,7 +1672,7 @@ Participants will:
 * Undergo transurethral resection of bladder tumor (TURBT) followed by the start of treatment, receive 4 cycles of treatment (21 day cycles)
 * After 4 cycles of treatment, patients will undergo repeat maximal TURBT with imaging
 * Participants with a complete response will continue maintenance cemiplimab or cemiplimab/fianlimab for 13 more cycles with imaging every 3 months
-* Participants without a complete clinical response will undergo cystectomy (bladder surgery)."	"Inclusion Criteria:
+* Participants without a complete clinical response will undergo cystectomy (bladder surgery).","Inclusion Criteria:
 
 * Willing and able to provide written informed consent for the trial.
 * Age ≥18 years of age on day of signing informed consent.
@@ -1704,7 +1704,7 @@ Exclusion Criteria:
 * Has known psychiatric or substance abuse disorders that would interfere with cooperation with the requirements of the trial.
 * Uncontrolled infection with human immunodeficiency virus (HIV), hepatitis B virus (HBV), or hepatitis C virus (HCV) infection; or diagnosis of immunodeficiency that is related to, or results in chronic infection.
 * Is pregnant or is a breastfeeding woman."
-NCT05101265	Clinical Pharmacokinetic Study of Lurbinectedin in Patients With Advanced Solid Tumors and Varying Degrees of Hepatic Impairment	Lurbinectedin is mainly eliminated by the liver. Thus, Hepatic Impairment (HI) may alter the plasma concentrations of lurbinectedin. This study is designed to examine the PK and safety of an adjusted dose of lurbinectedin when administered to patients with HI. The results of this study may be used to support future clinical studies in patients and prescribing information in future labeling.	"Inclusion criteria
+NCT05101265,Clinical Pharmacokinetic Study of Lurbinectedin in Patients With Advanced Solid Tumors and Varying Degrees of Hepatic Impairment,"Lurbinectedin is mainly eliminated by the liver. Thus, Hepatic Impairment (HI) may alter the plasma concentrations of lurbinectedin. This study is designed to examine the PK and safety of an adjusted dose of lurbinectedin when administered to patients with HI. The results of this study may be used to support future clinical studies in patients and prescribing information in future labeling.","Inclusion criteria
 
 All patients must fulfill the following inclusion criteria (1 - 9) to be enrolled in the study:
 
@@ -1777,7 +1777,7 @@ All patients who meet any of the following criteria (1 - 6) will be excluded fro
 7. History of gastrointestinal hemorrhage due to esophageal varices or peptic ulcers less than one month prior to Day 1 of Cycle 1.
 8. Signs of significant hepatic encephalopathy (\> grade II Portal Systemic Encephalopathy).
 9. Severe ascites and/or pleural effusion, except for patients at the severe HI cohort."
-NCT05811975	KSX01-TCRT Injection Project in Solid Tumors	1\) Safety and efficacy of TCR-T cells in subjects with refractory/relapsed solid tumors. 2) The activation and proliferation of TCR-T cells in the subject, and the survival time.	"Inclusion Criteria:
+NCT05811975,KSX01-TCRT Injection Project in Solid Tumors,"1\) Safety and efficacy of TCR-T cells in subjects with refractory/relapsed solid tumors. 2) The activation and proliferation of TCR-T cells in the subject, and the survival time.","Inclusion Criteria:
 
 * 1\) Voluntary participation in clinical research; Fully understand the study and voluntarily sign an informed consent form; Willing to follow and capable of completing all test procedures.
 * 2\) Age: 18 to 70 years old (including boundary value).
@@ -1863,7 +1863,7 @@ Exclusion Criteria:
 * 23\) Have a clear history of neurological or mental disorders, such as epilepsy, dementia, schizophrenia, etc.
 * 24)According to the judgment of the researcher, the underlying condition of the subject may increase the risk of receiving treatment with the investigational drug, or may cause confusion in the interpretation of the toxic reactions and adverse events that occur.
 * 25\) Other situations where the researcher considers it inappropriate to participate in this study."
-NCT06341296	Phase II Study of Irinotecan Liposomes in First-line Treatment of Metastatic Colorectal Cancer	To evaluate the objective response rate, disease control rate, progression-free survival, overall survival, surgical conversion rate and safety of irinotecan liposome combined with 5-FU/LV+ bevacizumab regimen in first-line treatment of advanced metastatic colorectal cancer patients.	"Inclusion Criteria:
+NCT06341296,Phase II Study of Irinotecan Liposomes in First-line Treatment of Metastatic Colorectal Cancer,"To evaluate the objective response rate, disease control rate, progression-free survival, overall survival, surgical conversion rate and safety of irinotecan liposome combined with 5-FU/LV+ bevacizumab regimen in first-line treatment of advanced metastatic colorectal cancer patients.","Inclusion Criteria:
 
 * 18\~85 years old.
 * Histopathologically confirmed patient with an inoperable metastatic colorectal adenocarcinoma.
@@ -1892,7 +1892,7 @@ Exclusion Criteria:
 * Have had other malignancies within the past 5 years or currently, except cured cervical carcinoma in situ, uterine carcinoma in situ, and non-melanoma skin cancer.
 * Patients of childbearing age who refuse to take contraceptives, women who are pregnant or breastfeeding.
 * The researchers didn't consider it appropriate to participate in this study."
-NCT06150885	A Safety and Efficacy Study of Allogeneic CAR Gamma-Delta T Cells in Subjects with Relapsed/Refractory Solid Tumors	This study is composed of phase I and IIa parts. The dose-escalation phase I part aims to find the maximum tolerated dose (MTD) and to identify the safety of CAR001 in subjects with relapsed/refractory solid tumor; the dose-expansion phase IIa part aims to evaluate the potential efficacy of CAR001 in subjects with relapsed/refractory non-small cell lung cancer (NSCLC), triple negative breast cancer (TNBC), colorectal cancer (CRC) or Glioblastoma multiforme (GBM).	"Inclusion Criteria:
+NCT06150885,A Safety and Efficacy Study of Allogeneic CAR Gamma-Delta T Cells in Subjects with Relapsed/Refractory Solid Tumors,"This study is composed of phase I and IIa parts. The dose-escalation phase I part aims to find the maximum tolerated dose (MTD) and to identify the safety of CAR001 in subjects with relapsed/refractory solid tumor; the dose-expansion phase IIa part aims to evaluate the potential efficacy of CAR001 in subjects with relapsed/refractory non-small cell lung cancer (NSCLC), triple negative breast cancer (TNBC), colorectal cancer (CRC) or Glioblastoma multiforme (GBM).","Inclusion Criteria:
 
 1. Male or female subjects aged ≥ 18 years
 2. For phase I part, subjects with histologically confirmed diagnosis of solid tumor with expression of PD-L1 ≥ 1% and are relapsed/refractory to at least two lines of standard-of-care therapy. For phase IIa part, subjects with histologically confirmed diagnosis of TNBC, NSCLC, CRC or GBM with expression of PD-L1 ≥ 1%, and are relapsed/refractory to at least two lines of standard-of-care therapy.
@@ -1939,7 +1939,7 @@ For exclusion criteria #15 and #16, acceptable forms of birth control include:
 * Established use of oral, injected, or implanted hormonal methods of contraception that have comparable efficacy (failure rate \< 1 %), for example hormone vaginal ring or transdermal hormone contraception
 * Placement of an intrauterine device or intrauterine system
 * Barrier methods of contraception: condom or occlusive cap (diaphragm or cervical/vault caps)"
-NCT05991349	A Study of IBI129 in Subjects with Unresectable, Locally Advanced or Metastatic Solid Tumors	This is a phase 1/2 multicenter, first-in-human study of IBI129. It includes a phase 1 dose escalation and expansion section to identify MTD/RP2D of IBI129, plan to enroll 22\~180 subjects, and a phase 2 to explore efficacy, safety and tolerability of IBI129 at RP2D in specified types of solid tumor. Approximately 182 evaluable subjects will be enrolled for phase 2	"Inclusion Criteria:
+NCT05991349,"A Study of IBI129 in Subjects with Unresectable, Locally Advanced or Metastatic Solid Tumors","This is a phase 1/2 multicenter, first-in-human study of IBI129. It includes a phase 1 dose escalation and expansion section to identify MTD/RP2D of IBI129, plan to enroll 22\~180 subjects, and a phase 2 to explore efficacy, safety and tolerability of IBI129 at RP2D in specified types of solid tumor. Approximately 182 evaluable subjects will be enrolled for phase 2","Inclusion Criteria:
 
 1. Subjects with the ability to understand and give written informed consent for participation in this trial, including all evaluations and procedures as specified by this protocol;
 2. At least 1 evaluable lesion according to Response Evaluation Criteria in Solid Tumors (RECIST) Version 1.1.;
@@ -1955,11 +1955,11 @@ Exclusion Criteria:
 3. Progressed refractory to an antibody drug conjugate that consists of an exatecan derivative that is a topoisomerase I inhibitor.
 4. Plan to receive other antitumor therapy during the study excluding palliative radiotherapy for the purpose of symptom (like pain) relief that must also do not have impact on tumor assessment throughout the study;
 5. Known symptomatic central nervous system (CNS) metastases."
-NCT06450314	Decreasing Treatment for Metastatic HER2-Positive Breast Cancer With Undectable Cancer Levels in Blood Tests.	"Heroes is a multicentre, national, non-randomized, open-label, phase 2 study. The goal of this clinical trial is to evaluate the feasibility of therapeutic de-escalation in HER2-positive metastatic breast cancer with disease controlled after 2 years of maintenance treatment with anti-HER2 targeted therapy AND ctDNA negative testing.
+NCT06450314,Decreasing Treatment for Metastatic HER2-Positive Breast Cancer With Undectable Cancer Levels in Blood Tests.,"Heroes is a multicentre, national, non-randomized, open-label, phase 2 study. The goal of this clinical trial is to evaluate the feasibility of therapeutic de-escalation in HER2-positive metastatic breast cancer with disease controlled after 2 years of maintenance treatment with anti-HER2 targeted therapy AND ctDNA negative testing.
 
 The main question it aims to answer is :
 
-• Is it possible to identify patients for whom temporary or permanent discontinuation of treatment is possible without impacting prognosis?"	"Inclusion Criteria:
+• Is it possible to identify patients for whom temporary or permanent discontinuation of treatment is possible without impacting prognosis?","Inclusion Criteria:
 
 1. Patient must have signed a written informed consent prior to any trial specific procedures. When the patient is physically unable to give their written consent, a trusted person of their choice, independent from the investigator or the sponsor, can confirm in signing the patient's consent;
 2. Men or women ≥18 years of age;
@@ -1994,7 +1994,7 @@ Exclusion Criteria:
 9. Patients unwilling or unable to comply with the medical follow-up required by the trial because of geographic, familial, social, or psychological reasons;
 10. Participation in another clinical study whose procedures interfere with those of the study (within 28 days prior to patient enrolment and for the duration of the study);
 11. Persons deprived of their liberty or under protective custody or guardianship."
-NCT06300424	Neoadjuvant Almonertinib Followed by Chemo-immunotherapy in II-IIIB EGFR-mutant NSCLC	Phase II, single-arm, open-label study that assess clinical feasibility and safety of neoadjuvant almonertinib followed by 3 cycles neoadjuvant adebrelimab plus chemotherapy in EGFR-mutant stage IIA-IIIB NSCLC followed by surgery, adjuvant treatment was upon investigators' decisions.	"Inclusion Criteria:
+NCT06300424,Neoadjuvant Almonertinib Followed by Chemo-immunotherapy in II-IIIB EGFR-mutant NSCLC,"Phase II, single-arm, open-label study that assess clinical feasibility and safety of neoadjuvant almonertinib followed by 3 cycles neoadjuvant adebrelimab plus chemotherapy in EGFR-mutant stage IIA-IIIB NSCLC followed by surgery, adjuvant treatment was upon investigators' decisions.","Inclusion Criteria:
 
 1. Male or female，Age: 18 Years and older,
 2. Subjects voluntarily joined the study and signed informed consent,
@@ -2013,9 +2013,9 @@ Exclusion Criteria:
 5. received thoracic radiotherapy,
 6. currently enrolled in other clinical trial,
 7. active or known or suspected autoimmune disease."
-NCT03266653	EBV-specific Cytotoxic T-lymphocytes (CTLs) for Refractory EBV Infection	"Related donor Epstein-Barr Virus (EBV) specific cytotoxic T cells (CTLs) manufactured with the Miltenyi CliniMACS Prodigy Cytokine Capture System will be administered in children, adolescents and young adults with refractory EBV infection post Allogeneic Hematopoietic Stem Cell Transplantation (AlloHSCT), with primary immunodeficiencies (PID) or post solid organ transplant.
+NCT03266653,EBV-specific Cytotoxic T-lymphocytes (CTLs) for Refractory EBV Infection,"Related donor Epstein-Barr Virus (EBV) specific cytotoxic T cells (CTLs) manufactured with the Miltenyi CliniMACS Prodigy Cytokine Capture System will be administered in children, adolescents and young adults with refractory EBV infection post Allogeneic Hematopoietic Stem Cell Transplantation (AlloHSCT), with primary immunodeficiencies (PID) or post solid organ transplant.
 
-Funding Source: FDA OOPD"	"1\. Patients with Epstein-Barr virus infections post allogeneic HSCT, primary immunodeficiencies or post solid organ transplant with:
+Funding Source: FDA OOPD","1\. Patients with Epstein-Barr virus infections post allogeneic HSCT, primary immunodeficiencies or post solid organ transplant with:
 
 * Increasing or persistent quantitative EBV RT-PCR DNA copies despite two weeks of appropriate anti-viral therapy and/or
 * progressive clinical symptoms attributable to EBV, including biopsy proven colitis, lymphadenopathy, hepatomegaly, splenomegaly AND/OR
@@ -2041,7 +2041,7 @@ Patient with acute GVHD \> grade 2 or extensive chronic GVHD at the time of CTL 
 Known hypersensitivity to iron dextran Patients unwilling or unable to comply with the protocol or unable to give informed consent.
 
 Known human anti-mouse antibodies"
-NCT07052422	VEN+DAC+Bu2Flu4 vs Bu2Flu5 Conditioning Regimen for Elderly Myeloid Malignancies Undergoing Allo-HSCT	The purpose of this study is to compare the efficacy and safety of venetoclax+decitabine+busulfan+fludarabine (VEN+DAC+Bu2Flu4) regimen with busulfan+fludarabine (Bu2Flu5) regimen in older patients with myeloid malignancies undergoing allogeneic hematopoietic stem cell transplantation (allo-HSCT).	"Inclusion Criteria:
+NCT07052422,VEN+DAC+Bu2Flu4 vs Bu2Flu5 Conditioning Regimen for Elderly Myeloid Malignancies Undergoing Allo-HSCT,The purpose of this study is to compare the efficacy and safety of venetoclax+decitabine+busulfan+fludarabine (VEN+DAC+Bu2Flu4) regimen with busulfan+fludarabine (Bu2Flu5) regimen in older patients with myeloid malignancies undergoing allogeneic hematopoietic stem cell transplantation (allo-HSCT).,"Inclusion Criteria:
 
 * 60-75 years
 * Acute myeloid leukaemia in first complete remission or myelodysplastic syndrome
@@ -2052,7 +2052,7 @@ Exclusion Criteria:
 
 * Any abnormality in a vital sign (e.g., heart rate, respiratory rate, or blood pressure)
 * Patients with any conditions not suitable for the trial (investigators' decision)"
-NCT06993870	Phase I Study of HBT-708 for Patients With Advanced Solid Tumors	The purpose of this study will be to evaluate the safety, tolerability, and inital efficacy of HBT-708 in subjects with advanced solid tumors.	"Inclusion Criteria:
+NCT06993870,Phase I Study of HBT-708 for Patients With Advanced Solid Tumors,"The purpose of this study will be to evaluate the safety, tolerability, and inital efficacy of HBT-708 in subjects with advanced solid tumors.","Inclusion Criteria:
 
 1. Male or female subjects, age 18 years or older.
 2. Histologically and/or cytologically documented advanced or measurable solid tumors.
