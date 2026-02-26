@@ -121,25 +121,20 @@ def _compare_embedding_frames(
     id_col: str,
     package_embedding_col: str = "embedding",
     gold_embedding_col: str,
-) -> tuple[pd.DataFrame, list[str], list[str]]:
+) -> pd.DataFrame:
     """
     Compare package and gold embeddings by id and return per-id cosine scores.
 
     Returns
     -------
-    tuple[pd.DataFrame, list[str], list[str]]
-        (scores_df, missing_in_package, missing_in_gold)
+    pd.DataFrame
+        Per-id cosine similarity table.
     """
     package = package_df.copy()
     gold = gold_df.copy()
 
     package[id_col] = package[id_col].astype(str)
     gold[id_col] = gold[id_col].astype(str)
-
-    package_ids = set(package[id_col])
-    gold_ids = set(gold[id_col])
-    missing_in_package = sorted(gold_ids - package_ids)
-    missing_in_gold = sorted(package_ids - gold_ids)
 
     merged = package[[id_col, package_embedding_col]].merge(
         gold[[id_col, gold_embedding_col]],
@@ -153,13 +148,13 @@ def _compare_embedding_frames(
         ),
         axis=1,
     )
-    return merged[[id_col, "cosine_similarity"]], missing_in_package, missing_in_gold
+    return merged[[id_col, "cosine_similarity"]]
 
 
 def _compare_patient_package_vs_gold(
     patient_package_embeddings: pd.DataFrame,
     patient_gold: pd.DataFrame,
-) -> tuple[pd.DataFrame, list[str], list[str]]:
+) -> pd.DataFrame:
     return _compare_embedding_frames(
         patient_package_embeddings,
         patient_gold,
@@ -172,7 +167,7 @@ def _compare_patient_package_vs_gold(
 def _compare_trial_package_vs_gold(
     trial_package_embeddings: pd.DataFrame,
     trial_gold: pd.DataFrame,
-) -> tuple[pd.DataFrame, list[str], list[str]]:
+) -> pd.DataFrame:
     """
     Compare trial embeddings by trial_id using bidirectional best-match cosine.
 
@@ -189,10 +184,9 @@ def _compare_trial_package_vs_gold(
 
     package_trials = set(package["trial_id"])
     gold_trials = set(gold["trial_id"])
-    missing_in_package = sorted(gold_trials - package_trials)
-    missing_in_gold = sorted(package_trials - gold_trials)
 
     rows: list[dict[str, object]] = []
+    # For each shared trial_id, compare the set of package spaces to the set of gold spaces.
     common_trials = sorted(package_trials & gold_trials)
     for trial_id in common_trials:
         pkg_vectors = [
@@ -216,6 +210,7 @@ def _compare_trial_package_vs_gold(
             )
             continue
 
+        # Build pairwise cosine matrix: each row is a package space and each column is a gold space.
         sim_matrix = np.array(
             [
                 [_cosine_similarity(pkg_vec, gold_vec) for gold_vec in gold_vectors]
@@ -223,7 +218,9 @@ def _compare_trial_package_vs_gold(
             ],
             dtype=float,
         )
+        # Direction 1: for each package space, keep its best-matching gold space, then average.
         pkg_to_gold = float(sim_matrix.max(axis=1).mean())
+        # Direction 2: for each gold space, keep its best-matching package space, then average.
         gold_to_pkg = float(sim_matrix.max(axis=0).mean())
         rows.append(
             {
@@ -236,4 +233,4 @@ def _compare_trial_package_vs_gold(
             }
         )
 
-    return pd.DataFrame(rows), missing_in_package, missing_in_gold
+    return pd.DataFrame(rows)
