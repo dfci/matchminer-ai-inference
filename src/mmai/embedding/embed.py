@@ -25,7 +25,7 @@ def _resolve_id_columns(entity_type: Literal["patient", "trial"]) -> list[str]:
     if entity_type == "patient":
         return ["patient_id"]
     if entity_type == "trial":
-        return ["trial_id", "clinical_space_number", "space_trial_id"]
+        return ["space_trial_id"]
     raise ValueError("entity_type must be one of: 'patient', 'trial'")
 
 
@@ -58,6 +58,8 @@ def embed_for_matching(
             ----------------
             clinical_space_summary : str
                 Summary text to embed for each clinical space.
+            space_trial_id : str
+                Unique identifier for the clinical space.
     entity_type : {"patient", "trial"}
         Controls which summary column is used as the text to embed.
     config : MMAIConfig, optional
@@ -78,8 +80,6 @@ def embed_for_matching(
                 Vector representation of the summary text in a shared semantic space.
 
         For entity_type="trial"
-            trial_id : str
-            clinical_space_number : int
             space_trial_id : str
             embedding : array-like
                 Vector representation of the summary text in a shared semantic space.

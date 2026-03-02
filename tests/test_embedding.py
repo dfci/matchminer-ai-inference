@@ -67,8 +67,6 @@ def test_embed_for_matching_trial(monkeypatch):
     df = pd.DataFrame(
         [
             {
-                "trial_id": "T1",
-                "clinical_space_number": 1,
                 "space_trial_id": "T1_1",
                 "clinical_space_summary": "abcd",
             }
@@ -77,8 +75,6 @@ def test_embed_for_matching_trial(monkeypatch):
     result = embed_for_matching(df, entity_type="trial", config=config)
 
     assert result.loc[0, "embedding"] == [4.0]
-    assert result.loc[0, "trial_id"] == "T1"
-    assert result.loc[0, "clinical_space_number"] == 1
     assert result.loc[0, "space_trial_id"] == "T1_1"
 
 

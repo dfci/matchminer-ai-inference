@@ -84,7 +84,7 @@ def _generate_trial_package_embeddings(
         entity_type="trial",
         config=config,
     )
-    return trial_embedded[["space_trial_id", "trial_id", "embedding"]].copy()
+    return trial_embedded[["space_trial_id", "embedding"]].copy()
 
 
 def _parse_embedding_vector(value: object) -> np.ndarray:
