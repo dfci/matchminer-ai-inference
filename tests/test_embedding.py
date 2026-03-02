@@ -38,8 +38,9 @@ def test_embed_for_matching_patient(monkeypatch):
     df = pd.DataFrame([{"patient_id": "P1", "cancer_history_summary": "abc"}])
     result = embed_for_matching(df, entity_type="patient", config=config)
 
-    assert "embedding" in result.columns
+    assert list(result.columns) == ["patient_id", "embedding"]
     assert result.loc[0, "embedding"] == [3.0]
+    assert result.loc[0, "patient_id"] == "P1"
     assert backend.last_texts == ["abc"]
     assert backend.last_embedding_config["model_path"] == "mock-model"
 
@@ -63,10 +64,22 @@ def test_embed_for_matching_trial(monkeypatch):
         },
     )
 
-    df = pd.DataFrame([{"space_trial_id": "T1-1", "clinical_space_summary": "abcd"}])
+    df = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "clinical_space_number": 1,
+                "space_trial_id": "T1_1",
+                "clinical_space_summary": "abcd",
+            }
+        ]
+    )
     result = embed_for_matching(df, entity_type="trial", config=config)
 
     assert result.loc[0, "embedding"] == [4.0]
+    assert result.loc[0, "trial_id"] == "T1"
+    assert result.loc[0, "clinical_space_number"] == 1
+    assert result.loc[0, "space_trial_id"] == "T1_1"
 
 
 def test_embed_for_matching_missing_column(monkeypatch):
@@ -116,7 +129,7 @@ def test_embed_for_matching_reads_config(monkeypatch):
         },
     )
     result = embed_for_matching(
-        pd.DataFrame([{"cancer_history_summary": "hello"}]),
+        pd.DataFrame([{"patient_id": "P2", "cancer_history_summary": "hello"}]),
         entity_type="patient",
         config=config,
     )
