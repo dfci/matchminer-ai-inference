@@ -285,7 +285,7 @@ def test_patient_embedding_regression_mmai_synthetic():
     scores = _compare_patient_package_vs_gold(package_embeddings, patient_gold)
     assert not scores.empty, "No patient embeddings were comparable to gold output."
     print(f"Compared {len(scores)} patient embeddings.")
-    print(scores.head())
+    print(scores)
 
     mean_score = float(scores["cosine_similarity"].mean())
     if mean_score < 0.8:
@@ -313,7 +313,7 @@ def test_trial_embedding_regression_mmai_synthetic():
     scores = _compare_trial_package_vs_gold(package_embeddings, trial_gold)
     assert not scores.empty, "No trial embeddings were comparable to gold output."
     print(f"Compared {len(scores)} trial embeddings.")
-    print(scores.head())
+    print(scores)
 
     mean_score = float(scores["trial_score"].mean())
     if mean_score < 0.8:
