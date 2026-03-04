@@ -1,4 +1,13 @@
-"""Embedding regression tests."""
+"""Embedding regression tests.
+
+Note: run patient and trial tests separately to avoid vLLM hangs:
+- pytest -m resource_heavy tests/test_embedding_regression.py -k patient
+- pytest -m resource_heavy tests/test_embedding_regression.py -k trial
+
+To see progress logs while running, add -s (disable capture):
+- pytest -m resource_heavy tests/test_embedding_regression.py -k patient -s
+- pytest -m resource_heavy tests/test_embedding_regression.py -k trial -s
+"""
 
 from __future__ import annotations
 
@@ -264,11 +273,18 @@ def _compare_trial_package_vs_gold(
 @pytest.mark.resource_heavy
 def test_patient_embedding_regression_mmai_synthetic():
     """Simple patient embedding regression check against gold outputs."""
+    print("Loading patient regression inputs...")
     patient_input = _load_patient_input()
+    print(f"Loaded {len(patient_input)} patient inputs.")
     patient_gold = _load_patient_output_gold()
+    print(f"Loaded {len(patient_gold)} patient gold embeddings.")
+    print("Generating patient package embeddings...")
     package_embeddings = _generate_patient_package_embeddings(patient_input)
+    print(f"Generated {len(package_embeddings)} patient embeddings.")
+    print("Comparing patient embeddings to gold...")
     scores = _compare_patient_package_vs_gold(package_embeddings, patient_gold)
     assert not scores.empty, "No patient embeddings were comparable to gold output."
+    print(f"Compared {len(scores)} patient embeddings.")
 
     mean_score = float(scores["cosine_similarity"].mean())
     if mean_score < 0.8:
@@ -284,11 +300,18 @@ def test_patient_embedding_regression_mmai_synthetic():
 @pytest.mark.resource_heavy
 def test_trial_embedding_regression_mmai_synthetic():
     """Simple trial embedding regression check against gold outputs."""
+    print("Loading trial regression inputs...")
     trial_input = _load_trial_input()
+    print(f"Loaded {len(trial_input)} trial inputs.")
     trial_gold = _load_trial_output_gold()
+    print(f"Loaded {len(trial_gold)} trial gold embeddings.")
+    print("Generating trial package embeddings...")
     package_embeddings = _generate_trial_package_embeddings(trial_input)
+    print(f"Generated {len(package_embeddings)} trial embeddings.")
+    print("Comparing trial embeddings to gold...")
     scores = _compare_trial_package_vs_gold(package_embeddings, trial_gold)
     assert not scores.empty, "No trial embeddings were comparable to gold output."
+    print(f"Compared {len(scores)} trial embeddings.")
 
     mean_score = float(scores["trial_score"].mean())
     if mean_score < 0.8:
