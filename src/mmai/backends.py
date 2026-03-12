@@ -190,14 +190,19 @@ class LocalBackend:
         texts: list[str],
         *,
         embedding_config: Dict[str, Any],
-    ) -> list[list[float]]:
+        model_metadata_cache_dir: str | None = None,
+    ) -> Tuple[list[list[float]], Dict[str, Any]]:
         model_path, device, query_prompt = _resolve_embedding_runtime(embedding_config)
         model = _get_embedding_model(model_path, device, query_prompt)
+        model_metadata = get_model_metadata(
+            model_path,
+            cache_dir=model_metadata_cache_dir,
+        )
         embeddings = model.encode(texts, prompt="query")
         embedding_list = (
             embeddings.tolist() if hasattr(embeddings, "tolist") else embeddings
         )
-        return cast(list[list[float]], embedding_list)
+        return cast(list[list[float]], embedding_list), model_metadata
 
     def count_embedding_tokens(
         self,
@@ -249,7 +254,8 @@ class RemoteBackend:
         texts: list[str],
         *,
         embedding_config: Dict[str, Any],
-    ) -> list[list[float]]:
+        model_metadata_cache_dir: str | None = None,
+    ) -> Tuple[list[list[float]], Dict[str, Any]]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
     def count_embedding_tokens(

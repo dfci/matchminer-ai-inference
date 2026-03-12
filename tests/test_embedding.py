@@ -9,11 +9,18 @@ class MockBackend:
     def __init__(self):
         self.last_texts = None
         self.last_embedding_config = None
+        self.last_model_metadata_cache_dir = None
 
-    def generate_embeddings(self, texts, *, embedding_config):
+    def generate_embeddings(
+        self, texts, *, embedding_config, model_metadata_cache_dir=None
+    ):
         self.last_texts = texts
         self.last_embedding_config = embedding_config
-        return [[float(len(text))] for text in texts]
+        self.last_model_metadata_cache_dir = model_metadata_cache_dir
+        return (
+            [[float(len(text))] for text in texts],
+            {"model_name": embedding_config["model_path"], "model_sha": "mock-sha"},
+        )
 
 
 def test_embed_for_matching_patient(monkeypatch):
@@ -133,3 +140,35 @@ def test_embed_for_matching_reads_config(monkeypatch):
     assert backend.last_embedding_config["model_path"] == "cfg-model"
     assert backend.last_embedding_config["device"] == "cpu"
     assert backend.last_embedding_config["prompt_file"] == "embedding.txt"
+
+
+def test_embed_for_matching_return_metadata(monkeypatch):
+    """Return embedding metadata payload when requested."""
+    backend = MockBackend()
+    monkeypatch.setattr("mmai.embedding.embed.get_backend", lambda name: backend)
+    config = MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        backend="local",
+        trial={},
+        patient={},
+        model_metadata_cache_dir=".mmai_cache/model_metadata",
+        raw={"preset_name": "default"},
+        embedding={
+            "model_path": "cfg-model",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+        },
+    )
+
+    result, metadata = embed_for_matching(
+        pd.DataFrame([{"patient_id": "P2", "cancer_history_summary": "hello"}]),
+        entity_type="patient",
+        config=config,
+        return_metadata=True,
+    )
+
+    assert list(result.columns) == ["patient_id", "embedding"]
+    assert metadata["config_snapshot"] == {"preset_name": "default"}
+    assert metadata["model_metadata"]["embedding_model"]["model_name"] == "cfg-model"
+    assert backend.last_model_metadata_cache_dir == ".mmai_cache/model_metadata"

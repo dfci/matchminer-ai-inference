@@ -34,7 +34,8 @@ def embed_for_matching(
     *,
     entity_type: Literal["patient", "trial"],
     config: MMAIConfig | None = None,
-) -> pd.DataFrame:
+    return_metadata: bool = False,
+) -> pd.DataFrame | tuple[pd.DataFrame, dict]:
     """
     Convert trial or patient summaries into embedding vectors for semantic matching.
 
@@ -66,6 +67,9 @@ def embed_for_matching(
         MMAI configuration containing embedding settings
         (model_path, device, prompt_file/query_prompt). Uses default preset
         when omitted.
+    return_metadata : bool, optional
+        When True, also return a metadata dict containing the config snapshot
+        and model metadata for this run.
 
     Returns
     -------
@@ -83,6 +87,8 @@ def embed_for_matching(
             space_trial_id : str
             embedding : array-like
                 Vector representation of the summary text in a shared semantic space.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus a metadata dict.
     """
     text_col = _resolve_text_column(entity_type)
     if text_col not in df.columns:
@@ -100,8 +106,19 @@ def embed_for_matching(
 
     summaries = output[text_col].fillna("").astype(str).tolist()
     backend = get_backend(resolved_config.backend)
-    output["embedding"] = backend.generate_embeddings(
+    embeddings, model_metadata = backend.generate_embeddings(
         summaries,
         embedding_config=embedding_config,
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
     )
-    return output[id_cols + ["embedding"]].copy()
+    output["embedding"] = embeddings
+    result = output[id_cols + ["embedding"]].copy()
+    if return_metadata:
+        metadata_payload = {
+            "config_snapshot": resolved_config.raw,
+            "model_metadata": {
+                "embedding_model": model_metadata,
+            },
+        }
+        return result, metadata_payload
+    return result
