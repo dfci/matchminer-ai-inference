@@ -3,13 +3,7 @@
 from __future__ import annotations
 
 from .match import generate_candidate_matches
-
-
-def reasonable_match_check(*args: object, **kwargs: object) -> None:
-    """Phase-level reasonable match check (stub)."""
-    raise NotImplementedError(
-        "Reasonable match check phase not implemented in skeleton."
-    )
+from .reasonable_check import reasonable_match_check
 
 
 def exclusion_criteria_check(*args: object, **kwargs: object) -> None:
