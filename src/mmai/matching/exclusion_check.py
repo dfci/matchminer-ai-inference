@@ -60,7 +60,7 @@ def exclusion_criteria_check(
         trial_id : str
             Trial identifier.
         general_exclusion_criteria : str
-            Trial-level exclusion criteria text for the clinical space.
+            Trial-level exclusion criteria text.
         general_exclusion_criteria_evidence : str
             Patient-level evidence related to exclusion criteria.
 
@@ -88,7 +88,7 @@ def exclusion_criteria_check(
             Model-generated confidence score associated with exclusion-check label.
         exclusion_criteria_pass : bool
             True when the patient is predicted to pass exclusion criteria for
-            this trial space; False otherwise.
+            this trial; False otherwise.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus metadata.
     """
