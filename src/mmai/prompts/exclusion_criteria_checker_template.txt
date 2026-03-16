@@ -1,0 +1,2 @@
+Patient history: {}
+Trial exclusions:{}

@@ -47,3 +47,7 @@ reasonable_match:
   model_name: "ksg-dfci/TrialChecker-1225"
   device: cuda
   prompt_file: reasonable_match_checker_template.txt
+exclusion_criteria:
+  model_name: "ksg-dfci/BoilerPlateChecker-1225"
+  device: cuda
+  prompt_file: exclusion_criteria_checker_template.txt
