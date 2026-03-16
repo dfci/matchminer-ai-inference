@@ -125,10 +125,10 @@ def reasonable_match_check(
 
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
     output["reasonable_match_score"] = [
-        float(prediction.get("score", 0.0)) for prediction in predictions
+        float(prediction["score"]) for prediction in predictions
     ]
     output["reasonable_match"] = [
-        str(prediction.get("label", "")).strip().upper() == "POSITIVE"
+        str(prediction["label"]).strip().upper() == "POSITIVE"
         for prediction in predictions
     ]
     if filter_unreasonable:
