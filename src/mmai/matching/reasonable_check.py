@@ -13,8 +13,6 @@ from mmai.config import load_default_preset
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
 
-DEFAULT_REASONABLE_MATCH_TEMPLATE_FILE = "reasonable_match_checker_template.txt"
-
 
 def _load_reasonable_match_template(filename: str) -> str:
     prompt_path = resources.files("mmai.prompts").joinpath(filename)
@@ -109,20 +107,7 @@ def reasonable_match_check(
 
     resolved_config = config or load_default_preset()
     checker_config = dict(resolved_config.raw.get("reasonable_match", {}))
-    prompt_file = (
-        str(
-            checker_config.get("prompt_file", DEFAULT_REASONABLE_MATCH_TEMPLATE_FILE)
-        ).strip()
-        or DEFAULT_REASONABLE_MATCH_TEMPLATE_FILE
-    )
-
-    required_checker = ["model_name", "device", "batch_size"]
-    missing_checker = [key for key in required_checker if key not in checker_config]
-    if missing_checker:
-        raise ValueError(
-            "reasonable_match config is missing required keys: "
-            f"{', '.join(missing_checker)}"
-        )
+    prompt_file = str(checker_config["prompt_file"]).strip()
 
     template = _load_reasonable_match_template(prompt_file)
     prompts = _build_reasonable_match_prompts(candidate_pairs, template=template)
