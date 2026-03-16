@@ -161,14 +161,14 @@ class LocalBackend:
             model_metadata,
         )
 
-    def check_reasonable_matches(
+    def run_checker(
         self,
         prompts: list[str],
         *,
         checker_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[dict[str, Any]], Dict[str, Any]]:
-        """Score candidate patient-trial prompts with the trial checker model."""
+        """Run a text-classification checker model on prompts."""
         from transformers import AutoTokenizer, pipeline
 
         model_name = checker_config["model_name"]
@@ -299,7 +299,7 @@ class RemoteBackend:
     ) -> list[int]:
         raise NotImplementedError("Remote backend is not implemented yet.")
 
-    def check_reasonable_matches(
+    def run_checker(
         self,
         prompts: list[str],
         *,
