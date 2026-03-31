@@ -29,6 +29,7 @@ class PreparedPatientNotes:
     """Prepared note chunks and metadata for one patient."""
 
     patient_id: str
+    starting_summary: str | None
     last_note_date: str
     chunks: list[PreparedPatientChunk]
 
@@ -53,6 +54,36 @@ def validate_note_inputs(
     normalized[note_text_col] = normalized[note_text_col].astype(str)
     normalized[note_date_col] = pd.to_datetime(normalized[note_date_col])
     normalized[patient_id_col] = normalized[patient_id_col].astype(str)
+    return normalized
+
+
+def validate_existing_summaries(
+    existing_summaries: pd.DataFrame,
+    *,
+    patient_id_col: str = "patient_id",
+    summary_col: str = "patient_summary",
+) -> pd.DataFrame:
+    """Validate and normalize existing patient summary state."""
+    required_columns = [patient_id_col, summary_col]
+    missing = [
+        column
+        for column in required_columns
+        if column not in existing_summaries.columns
+    ]
+    if missing:
+        raise ValueError(
+            "existing summaries input is missing required columns: "
+            f"{', '.join(missing)}"
+        )
+
+    normalized = existing_summaries.copy()
+    normalized[patient_id_col] = normalized[patient_id_col].astype(str)
+    normalized[summary_col] = normalized[summary_col].where(
+        normalized[summary_col].notna(),
+        None,
+    )
+
+    normalized = normalized.drop_duplicates(subset=[patient_id_col], keep="last")
     return normalized
 
 
@@ -138,9 +169,11 @@ def prepare_patient_notes(
     notes: pd.DataFrame,
     tokenizer: Any,
     *,
+    existing_summaries: pd.DataFrame | None = None,
     patient_id_col: str = "patient_id",
     note_text_col: str = "note_text",
     note_date_col: str = "note_date",
+    summary_col: str = "patient_summary",
     chunk_size: int = 10000,
     chunk_overlap: int = 500,
 ) -> list[PreparedPatientNotes]:
@@ -156,9 +189,21 @@ def prepare_patient_notes(
     normalized = normalized.sort_values([patient_id_col, note_date_col]).reset_index(
         drop=True
     )
+    existing_summary_lookup: dict[str, dict[str, Any]] = {}
+    if existing_summaries is not None:
+        normalized_existing = validate_existing_summaries(
+            existing_summaries,
+            patient_id_col=patient_id_col,
+            summary_col=summary_col,
+        )
+        existing_summary_lookup = {
+            str(row[patient_id_col]): row.to_dict()
+            for _, row in normalized_existing.iterrows()
+        }
 
     prepared_patients: list[PreparedPatientNotes] = []
     for patient_id, group in normalized.groupby(patient_id_col, sort=False):
+        existing_summary = existing_summary_lookup.get(str(patient_id), {})
         patient_notes = [
             (
                 row[note_date_col].date().isoformat(),
@@ -171,6 +216,7 @@ def prepare_patient_notes(
             prepared_patients.append(
                 PreparedPatientNotes(
                     patient_id=str(patient_id),
+                    starting_summary=existing_summary.get(summary_col),
                     last_note_date="",
                     chunks=[],
                 )
@@ -186,6 +232,7 @@ def prepare_patient_notes(
         prepared_patients.append(
             PreparedPatientNotes(
                 patient_id=str(patient_id),
+                starting_summary=existing_summary.get(summary_col),
                 last_note_date=patient_notes[-1][0],
                 chunks=[
                     PreparedPatientChunk(
@@ -211,5 +258,6 @@ __all__ = [
     "concatenate_and_chunk_notes",
     "deduplicate_patient_notes",
     "prepare_patient_notes",
+    "validate_existing_summaries",
     "validate_note_inputs",
 ]
