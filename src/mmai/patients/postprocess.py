@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 def parse_boilerplate(
     df: pd.DataFrame, reasoning_marker: str, boilerplate_marker: str
 ) -> pd.DataFrame:
-    """Split LLM output into summary and boilerplate portions."""
+    """Split final patient summary output into summary and boilerplate portions."""
     df = df.copy()
     df["cleaned_patient_summary"] = (
         df["original_patient_summary"]
@@ -65,7 +65,7 @@ def postprocess_patient_summaries(
     df: pd.DataFrame,
     config: MMAIConfig,
 ) -> tuple[pd.DataFrame, dict[str, object]]:
-    """Postprocess patient summaries into clean outputs."""
+    """Postprocess final serial patient summaries into clean outputs."""
     patient_config = dict(config.patient)
     reasoning_marker = patient_config["reasoning_marker"]
     boilerplate_marker = patient_config["boilerplate_marker"]
@@ -74,7 +74,6 @@ def postprocess_patient_summaries(
     if not config.debug_mode:
         cleaned = cleaned.drop(
             columns=[
-                "patient_long_text",
                 "original_patient_summary",
                 "cleaned_patient_summary",
             ],
