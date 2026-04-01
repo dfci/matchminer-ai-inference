@@ -33,33 +33,6 @@ def validate_note_inputs(
     return normalized
 
 
-def validate_existing_summaries(
-    existing_summaries: pd.DataFrame,
-) -> pd.DataFrame:
-    """Validate and normalize existing patient summary state."""
-    required_columns = ["patient_id", "patient_summary"]
-    missing = [
-        column
-        for column in required_columns
-        if column not in existing_summaries.columns
-    ]
-    if missing:
-        raise ValueError(
-            "existing summaries input must include columns "
-            "'patient_id' and 'patient_summary'. Missing: "
-            f"{', '.join(missing)}"
-        )
-
-    normalized = existing_summaries.copy()
-    normalized["patient_id"] = normalized["patient_id"].astype(str)
-    normalized["patient_summary"] = normalized["patient_summary"].where(
-        normalized["patient_summary"].notna(),
-        None,
-    )
-    normalized = normalized.drop_duplicates(subset=["patient_id"], keep="last")
-    return normalized
-
-
 def deduplicate_patient_notes(
     notes: list[tuple[str, str]],
 ) -> list[tuple[str, str]]:
@@ -142,7 +115,6 @@ def prepare_patient_notes(
     notes: pd.DataFrame,
     tokenizer: Any,
     *,
-    existing_summaries: pd.DataFrame | None = None,
     chunk_size: int = 10000,
     chunk_overlap: int = 500,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -153,13 +125,6 @@ def prepare_patient_notes(
     normalized = normalized.sort_values(["patient_id", "note_date"]).reset_index(
         drop=True
     )
-
-    existing_summary_lookup: dict[str, str | None] = {}
-    if existing_summaries is not None:
-        normalized_existing = validate_existing_summaries(existing_summaries)
-        existing_summary_lookup = normalized_existing.set_index("patient_id")[
-            "patient_summary"
-        ].to_dict()
 
     patient_rows: list[dict[str, object]] = []
     chunk_rows: list[dict[str, object]] = []
@@ -178,7 +143,6 @@ def prepare_patient_notes(
         patient_rows.append(
             {
                 "patient_id": str(patient_id),
-                "starting_summary": existing_summary_lookup.get(str(patient_id)),
                 "last_note_date": last_note_date,
             }
         )
@@ -207,7 +171,7 @@ def prepare_patient_notes(
 
     patient_df = pd.DataFrame(
         patient_rows,
-        columns=["patient_id", "starting_summary", "last_note_date"],
+        columns=["patient_id", "last_note_date"],
     )
     chunk_df = pd.DataFrame(
         chunk_rows,
@@ -226,6 +190,5 @@ __all__ = [
     "concatenate_and_chunk_notes",
     "deduplicate_patient_notes",
     "prepare_patient_notes",
-    "validate_existing_summaries",
     "validate_note_inputs",
 ]
