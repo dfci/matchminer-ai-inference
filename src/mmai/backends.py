@@ -58,6 +58,23 @@ def _get_embedding_model(model_path: str, device: str, prompt: str):
     return model
 
 
+@lru_cache(maxsize=2)
+def _get_local_llm(
+    model_name: str,
+    tensor_parallel_size: int,
+    max_model_len: int,
+    gpu_memory_utilization: float,
+):
+    from vllm import LLM
+
+    return LLM(
+        model=model_name,
+        tensor_parallel_size=tensor_parallel_size,
+        max_model_len=max_model_len,
+        gpu_memory_utilization=gpu_memory_utilization,
+    )
+
+
 def _load_prompt_text(filename: str) -> str:
     prompt_path = resources.files("mmai.prompts").joinpath(filename)
     with prompt_path.open("r", encoding="utf-8") as handle:
@@ -85,7 +102,7 @@ class LocalBackend:
         llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
     ) -> Tuple[list[str], Dict[str, Any], list[str]]:
-        from vllm import LLM, SamplingParams
+        from vllm import SamplingParams
 
         model_name = llm_config["model_name"]
         max_model_len = llm_config["max_model_len"]
@@ -97,11 +114,11 @@ class LocalBackend:
             model_name,
             cache_dir=model_metadata_cache_dir,
         )
-        llm = LLM(
-            model=model_name,
-            tensor_parallel_size=tensor_parallel_size,
-            max_model_len=max_model_len,
-            gpu_memory_utilization=gpu_memory_utilization,
+        llm = _get_local_llm(
+            model_name,
+            int(tensor_parallel_size),
+            int(max_model_len),
+            float(gpu_memory_utilization),
         )
         tokenizer = llm.get_tokenizer()
         prompts = [
