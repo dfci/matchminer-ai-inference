@@ -5,13 +5,14 @@ from __future__ import annotations
 from typing import Any
 
 import pandas as pd
+from transformers import AutoTokenizer
 
 from mmai._qc.patients import build_qc_artifact
 from mmai.backends import get_backend
 from mmai.config import MMAIConfig, load_default_preset
 
 from .postprocess import postprocess_patient_summaries
-from .prompt_builder import get_filled_patient_prompt
+from .prompt_builder import get_serial_patient_prompt
 
 
 def summarize_from_relevant_sentences(
@@ -71,9 +72,21 @@ def summarize_from_relevant_sentences(
         patient_texts,
         patient_config=patient_config,
     )
+    tokenizer = AutoTokenizer.from_pretrained(patient_config["model_name"])
 
     messages_list = [
-        get_filled_patient_prompt(patient_text, primer_filename, question_filename)
+        get_serial_patient_prompt(
+            prior_summary=None,
+            first_date="unknown date",
+            last_date="unknown date",
+            chunk_text=patient_text,
+            tokenizer=tokenizer,
+            max_model_len=int(patient_config["max_model_len"]),
+            primer_filename=primer_filename,
+            question_filename=question_filename,
+            margin_tokens=int(patient_config.get("prompt_margin_tokens", 5000)),
+            model_name=str(patient_config.get("model_name", "")),
+        )
         for patient_text in truncated_texts
     ]
 
