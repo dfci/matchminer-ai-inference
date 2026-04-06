@@ -43,8 +43,6 @@ def summarize_patients(
             Unique patient identifier.
         note_text : str
             Full note text.
-        note_type : str
-            Type of note (clinical_note, pathology_report, etc.).
         note_date : str or datetime
             Date of the note.
     existing_summaries : pd.DataFrame, optional
@@ -62,6 +60,31 @@ def summarize_patients(
         and model metadata for this run.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this run.
+
+    Returns
+    -------
+    pd.DataFrame
+        Patient-level DataFrame. One row per patient.
+
+        Columns
+        -------
+        patient_id : str
+            Original patient identifier.
+        cancer_history_summary : str
+            Summary of the patient's cancer history.
+        general_exclusion_criteria_evidence : str
+            Summary of conditions / findings that correspond to common
+            clinical trial exclusion criteria.
+
+        Debug output columns for serial patient summarization will be added later.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus a metadata dict.
+    tuple[pd.DataFrame, pd.DataFrame]
+        When return_qc is True, returns the DataFrame plus a QC report DataFrame.
+    tuple[pd.DataFrame, dict, pd.DataFrame]
+        When return_metadata and return_qc are True, returns the DataFrame,
+        metadata dict, and QC report DataFrame.
+
     """
     logger = logging.getLogger(__name__)
     resolved_config = config or load_default_preset()
@@ -71,7 +94,6 @@ def summarize_patients(
     required_columns = [
         "patient_id",
         "note_text",
-        "note_type",
         "note_date",
     ]
     missing = [col for col in required_columns if col not in notes.columns]
