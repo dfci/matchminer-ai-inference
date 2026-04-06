@@ -358,7 +358,13 @@ class RemoteBackend:
         *,
         embedding_config: Dict[str, Any],
     ) -> list[int]:
-        raise NotImplementedError("Remote backend is not implemented yet.")
+        model_path, device, query_prompt = _resolve_embedding_runtime(embedding_config)
+        model = _get_embedding_model(model_path, device, query_prompt)
+        prepared = [f"{query_prompt} {text}".strip() for text in texts]
+        encoded = model.tokenizer(prepared, add_special_tokens=True, truncation=False)[
+            "input_ids"
+        ]
+        return [len(input_ids) for input_ids in encoded]
 
     def run_checker(
         self,
