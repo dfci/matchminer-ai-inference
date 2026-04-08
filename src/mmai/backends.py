@@ -75,6 +75,16 @@ def _get_local_llm(
     )
 
 
+@lru_cache(maxsize=4)
+def _get_chat_template_tokenizer(model_name: str):
+    from transformers import AutoTokenizer
+
+    return AutoTokenizer.from_pretrained(
+        model_name,
+        trust_remote_code=True,
+    )
+
+
 def _load_prompt_text(filename: str) -> str:
     prompt_path = resources.files("mmai.prompts").joinpath(filename)
     with prompt_path.open("r", encoding="utf-8") as handle:
@@ -306,13 +316,22 @@ class RemoteBackend:
             model_name,
             cache_dir=model_metadata_cache_dir,
         )
+        tokenizer = _get_chat_template_tokenizer(model_name)
+        prompts = [
+            tokenizer.apply_chat_template(
+                conversation=messages,
+                add_generation_prompt=True,
+                tokenize=False,
+            )
+            for messages in messages_list
+        ]
 
         texts: list[str] = []
         finish_reasons: list[str] = []
-        for messages in messages_list:
-            response = client.chat.completions.create(
+        for prompt in prompts:
+            response = client.completions.create(
                 model=model_name,
-                messages=messages,
+                prompt=prompt,
                 temperature=float(sampling_params["temperature"]),
                 max_tokens=int(sampling_params["max_tokens"]),
                 extra_body={
@@ -321,7 +340,7 @@ class RemoteBackend:
                 },
             )
             choice = response.choices[0]
-            texts.append(choice.message.content or "")
+            texts.append(cast(str, getattr(choice, "text", "") or ""))
             finish_reasons.append(cast(str, choice.finish_reason or "stop"))
 
         return texts, model_metadata, finish_reasons
