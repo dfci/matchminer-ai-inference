@@ -36,12 +36,6 @@ patient:
   reasoning_marker: assistantfinal
   boilerplate_marker: "\\s*Boilerplate\\s*:?\\s*"
   text_token_threshold: 115000
-  tagger:
-    model_name: "ksg-dfci/TinyBertOncoTagger-1225"
-    device: cuda
-    batch_size: 1024
-    positive_tag_cutoff: 0.1
-    negative_tag_cutoff: 0.9
 embedding:
   model_path: "ksg-dfci/TrialSpace-0426"
   device: cpu
