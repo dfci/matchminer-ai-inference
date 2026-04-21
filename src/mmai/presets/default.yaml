@@ -19,6 +19,12 @@ trial:
   boilerplate_marker: "\\n.*Boilerplate.*\\n"
 patient:
   model_name: openai/gpt-oss-120b
+  server_urls:
+    - http://localhost:8000/v1
+  max_concurrent_requests: 16
+  request_timeout: 600
+  max_retries: 6
+  batch_size: 1000
   max_model_len: 120000
   tensor_parallel_size: 1
   gpu_memory_utilization: 0.9
@@ -29,7 +35,7 @@ patient:
     temperature: 0.0
     top_k: 1
     max_tokens: 7500
-    repetition_penalty: 1.2
+    repetition_penalty: 1.3
   prompt_files:
     primer: patient.serial.user.primer.txt
     question: patient.serial.user.question.txt
