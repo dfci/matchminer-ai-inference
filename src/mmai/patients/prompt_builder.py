@@ -2,9 +2,22 @@
 
 from __future__ import annotations
 
+import logging
+import os
+from dataclasses import dataclass
 from importlib import resources
+from multiprocessing import Pool
+from multiprocessing.pool import Pool as PoolType
 from typing import Any
 from typing import cast
+
+from transformers import AutoTokenizer
+
+from mmai.prompt_rendering import Prompt
+
+
+_worker_tokenizer: Any = None
+_worker_config: dict[str, Any] = {}
 
 
 def load_prompt_text(filename: str) -> str:
@@ -110,9 +123,89 @@ def get_serial_patient_prompt(
     ]
 
 
+@dataclass
+class PromptWorkItem:
+    """A prompt that needs building."""
+
+    row_idx: int
+    prior_summary_text: str | None
+    first_date: str
+    last_date: str
+    chunk_text: str
+
+
+def _init_prompt_worker(patient_config: dict[str, Any]) -> None:
+    """Initialize tokenizer and config in each prompt-building worker."""
+    global _worker_tokenizer, _worker_config
+    _worker_config = dict(patient_config)
+    _worker_tokenizer = AutoTokenizer.from_pretrained(_worker_config["model_name"])
+
+
+def prep_prompt_pool(
+    patient_config: dict[str, Any],
+    n_workers: int = min(os.cpu_count() or 4, 32),
+) -> PoolType:
+    """Create a multiprocessing pool for parallel prompt building."""
+    n_workers = max(1, int(n_workers))
+    logging.info("Creating prompt-building pool with %d workers.", n_workers)
+    return Pool(
+        processes=n_workers,
+        initializer=_init_prompt_worker,
+        initargs=(patient_config,),
+    )
+
+
+def build_prompt_worker(item: PromptWorkItem) -> Prompt:
+    """Build a single patient prompt in a worker process."""
+    prompt_files = dict(_worker_config["prompt_files"])
+    messages = get_serial_patient_prompt(
+        prior_summary=item.prior_summary_text,
+        first_date=item.first_date,
+        last_date=item.last_date,
+        chunk_text=item.chunk_text,
+        tokenizer=_worker_tokenizer,
+        max_model_len=int(_worker_config["max_model_len"]),
+        primer_filename=str(prompt_files["primer"]),
+        question_filename=str(prompt_files["question"]),
+        margin_tokens=int(_worker_config["prompt_margin_tokens"]),
+        model_name=str(_worker_config["model_name"]),
+    )
+    prompt_text = cast(
+        str,
+        _worker_tokenizer.apply_chat_template(
+            conversation=messages,
+            add_generation_prompt=True,
+            tokenize=False,
+        ),
+    )
+    prompt_token_count = len(
+        _worker_tokenizer(prompt_text, add_special_tokens=False).input_ids
+    )
+    max_tokens = int(_worker_config["sampling_params"]["max_tokens"])
+    gen_tokens = max(
+        1,
+        min(int(_worker_config["max_model_len"]) - prompt_token_count, max_tokens),
+    )
+    return Prompt(
+        row_idx=item.row_idx,
+        prompt_text=prompt_text,
+        max_tokens=gen_tokens,
+    )
+
+
+def shutdown_prompt_pool(prompt_pool: PoolType) -> None:
+    """Shutdown the workers used for building prompts."""
+    prompt_pool.close()
+    prompt_pool.join()
+
+
 __all__ = [
+    "PromptWorkItem",
+    "build_prompt_worker",
     "format_serial_summary_text",
     "get_serial_patient_prompt",
     "load_prompt_text",
+    "prep_prompt_pool",
+    "shutdown_prompt_pool",
     "truncate_chunk_text",
 ]

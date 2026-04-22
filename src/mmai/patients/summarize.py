@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import Any, cast
 
 import pandas as pd
@@ -9,10 +10,16 @@ from transformers import AutoTokenizer
 
 from mmai.backends import get_backend
 from mmai.config import MMAIConfig, load_default_preset
+from mmai.prompt_rendering import Prompt
 
 from .postprocess import postprocess_patient_summaries
 from .prepare import prepare_patient_notes
-from .prompt_builder import get_serial_patient_prompt
+from .prompt_builder import (
+    PromptWorkItem,
+    build_prompt_worker,
+    prep_prompt_pool,
+    shutdown_prompt_pool,
+)
 
 
 def validate_existing_summaries(
@@ -66,6 +73,35 @@ def _build_rounds(prepared_chunks: pd.DataFrame) -> list[pd.DataFrame]:
     return rounds
 
 
+def _build_prompt_list(
+    round_df: pd.DataFrame,
+    *,
+    current_summaries: dict[str, str | None],
+    prompt_pool: Any,
+    n_prompt_workers: int,
+) -> tuple[list[Prompt], list[str]]:
+    work_items: list[PromptWorkItem] = []
+    round_patient_ids: list[str] = []
+    for row_idx, (_, row) in enumerate(round_df.iterrows()):
+        patient_id = str(row["patient_id"])
+        round_patient_ids.append(patient_id)
+        work_items.append(
+            PromptWorkItem(
+                row_idx=row_idx,
+                prior_summary_text=current_summaries.get(patient_id),
+                first_date=str(row["first_date"]),
+                last_date=str(row["last_date"]),
+                chunk_text=str(row["chunk_text"]),
+            )
+        )
+
+    chunksize = max(1, len(work_items) // (n_prompt_workers * 4)) if work_items else 1
+    return (
+        list(prompt_pool.map(build_prompt_worker, work_items, chunksize=chunksize)),
+        round_patient_ids,
+    )
+
+
 def summarize_patient_notes(
     notes: pd.DataFrame,
     config: MMAIConfig | None = None,
@@ -110,9 +146,6 @@ def summarize_patient_notes(
         raise TypeError("config must be an MMAIConfig instance or None.")
 
     patient_config = dict(resolved_config.patient)
-    prompt_files = dict(patient_config["prompt_files"])
-    primer_filename = prompt_files["primer"]
-    question_filename = prompt_files["question"]
 
     # Convert note-level input into patient-level metadata plus chunk-level
     # rows. The chunk rows are what drive the serial summarization loop.
@@ -134,42 +167,45 @@ def summarize_patient_notes(
         patient_id: summary for patient_id, summary in existing_summary_lookup.items()
     }
     model_metadata: dict[str, Any] = {}
+    prompt_pool = None
 
     # Round N contains the Nth chunk for every patient that still has one.
     # Processing by rounds ensures each patient's next chunk sees the most
     # recent summary generated from prior chunks.
-    for round_df in rounds:
-        messages_list: list[list[dict[str, str]]] = []
-        round_patient_ids: list[str] = []
-        for _, row in round_df.iterrows():
-            patient_id = str(row["patient_id"])
-            round_patient_ids.append(patient_id)
-            messages_list.append(
-                get_serial_patient_prompt(
-                    prior_summary=current_summaries.get(patient_id),
-                    first_date=str(row["first_date"]),
-                    last_date=str(row["last_date"]),
-                    chunk_text=str(row["chunk_text"]),
-                    tokenizer=tokenizer,
-                    max_model_len=int(patient_config["max_model_len"]),
-                    primer_filename=primer_filename,
-                    question_filename=question_filename,
-                    margin_tokens=int(patient_config["prompt_margin_tokens"]),
-                    model_name=str(patient_config["model_name"]),
-                )
+    n_prompt_workers = max(
+        1,
+        int(patient_config.get("prompt_build_workers", min(os.cpu_count() or 4, 32))),
+    )
+    try:
+        if rounds:
+            prompt_pool = prep_prompt_pool(
+                patient_config=patient_config,
+                n_workers=n_prompt_workers,
             )
 
-        summaries, round_model_metadata, _finish_reasons = backend.generate_llm_outputs(
-            messages_list=messages_list,
-            llm_config=patient_config,
-            model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
-        )
-        if not model_metadata:
-            model_metadata = round_model_metadata
-        # Persist each round's output so it becomes the prior summary for the
-        # next chunk from that same patient.
-        for patient_id, summary in zip(round_patient_ids, summaries, strict=False):
-            current_summaries[patient_id] = summary
+        for round_df in rounds:
+            prompt_list, round_patient_ids = _build_prompt_list(
+                round_df,
+                current_summaries=current_summaries,
+                prompt_pool=prompt_pool,
+                n_prompt_workers=n_prompt_workers,
+            )
+            summaries, round_model_metadata, _finish_reasons = (
+                backend.generate_llm_outputs(
+                    prompt_list=prompt_list,
+                    llm_config=patient_config,
+                    model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+                )
+            )
+            if not model_metadata:
+                model_metadata = round_model_metadata
+            # Persist each round's output so it becomes the prior summary for the
+            # next chunk from that same patient.
+            for patient_id, summary in zip(round_patient_ids, summaries, strict=False):
+                current_summaries[patient_id] = summary
+    finally:
+        if prompt_pool is not None:
+            shutdown_prompt_pool(prompt_pool)
 
     # Collapse the running patient state back to one final row per patient,
     # then do postprocessing and QC report generation.
