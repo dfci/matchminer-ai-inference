@@ -3,6 +3,7 @@ import pandas as pd
 
 from mmai.config import MMAIConfig
 from mmai.backends import LocalBackend
+from mmai.prompt_rendering import Prompt
 from mmai.trials.postprocess import flatten_trial_to_spaces
 from mmai.trials.prompt_builder import build_trial_text, get_filled_trial_prompt
 from mmai.trials import summarize_trials
@@ -157,9 +158,9 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_trial_config):
 
     backend = LocalBackend()
     summaries, metadata, finish_reasons = backend.generate_llm_outputs(
-        messages_list=[
-            [{"role": "user", "content": "a"}],
-            [{"role": "user", "content": "b"}],
+        prompt_list=[
+            Prompt(row_idx=0, prompt_text="p1", max_tokens=10),
+            Prompt(row_idx=1, prompt_text="p2", max_tokens=10),
         ],
         llm_config=default_trial_config,
     )
@@ -238,13 +239,13 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
 def test_summarize_trials_lightweight_integration(monkeypatch):
     """Run summarize_trials end-to-end with a mocked LLM call (backend.generate_llm_outputs)."""
 
-    captured_messages = {}
+    captured_prompts = {}
 
     class MockBackend:
         def generate_llm_outputs(
-            self, *, messages_list, llm_config, model_metadata_cache_dir=None
+            self, *, prompt_list, llm_config, model_metadata_cache_dir=None
         ):
-            captured_messages["messages_list"] = messages_list
+            captured_prompts["prompt_list"] = prompt_list
             return (
                 [
                     "assistantfinal\n"
@@ -281,8 +282,7 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
         "Prior treatment excluded: None. Biomarkers required: None. "
         "Biomarkers excluded: None."
     )
-    assert captured_messages["messages_list"][0][1]["role"] == "user"
     assert (
         "Here is a clinical trial document"
-        in captured_messages["messages_list"][0][1]["content"]
+        in captured_prompts["prompt_list"][0].prompt_text
     )
