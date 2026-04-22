@@ -4,6 +4,12 @@ backend: local
 model_metadata_cache_dir: ".mmai_cache/model_metadata"
 trial:
   model_name: openai/gpt-oss-120b
+  server_urls:
+    - http://localhost:8000/v1
+  max_concurrent_requests: 16
+  request_timeout: 600
+  max_retries: 6
+  batch_size: 1000
   max_model_len: 10000
   tensor_parallel_size: 1
   gpu_memory_utilization: 0.9
