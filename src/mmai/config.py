@@ -16,9 +16,10 @@ class MMAIConfig:
 
     preset_name: str
     debug_mode: bool
-    backend: str
     trial: dict[str, Any]
     patient: dict[str, Any]
+    local: dict[str, Any]
+    remote: dict[str, Any]
     embedding: dict[str, Any]
     model_metadata_cache_dir: str | None
     raw: dict[str, Any]
@@ -39,9 +40,10 @@ def load_preset(name: str) -> MMAIConfig:
     return MMAIConfig(
         preset_name=name,
         debug_mode=bool(data["debug_mode"]),
-        backend=str(data["backend"]),
         trial=dict(data["trial"]),
         patient=dict(data["patient"]),
+        local=dict(data.get("local", {})),
+        remote=dict(data.get("remote", {})),
         embedding=dict(data["embedding"]),
         model_metadata_cache_dir=data["model_metadata_cache_dir"],
         raw=data,
