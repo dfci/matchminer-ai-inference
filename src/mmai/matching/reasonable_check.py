@@ -8,8 +8,8 @@ from importlib import resources
 import pandas as pd
 import torch
 
-from mmai.backends import get_backend
 from mmai.config import load_default_preset
+from .inference import run_checker
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -117,8 +117,7 @@ def reasonable_match_check(
     prompts = _build_reasonable_match_prompts(candidate_pairs, template=template)
 
     # Run the backend text-classification model over all prompts.
-    backend = get_backend("local")
-    predictions, model_metadata = backend.run_checker(
+    predictions, model_metadata = run_checker(
         prompts,
         checker_config=checker_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,

@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from importlib import resources
 
-from mmai.backends import get_backend
 from mmai.config import load_default_preset
+from .inference import run_checker
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -112,8 +112,7 @@ def exclusion_criteria_check(
     prompts = _build_exclusion_criteria_prompts(matches, template=template)
 
     # Run the backend text-classification model over all prompts.
-    backend = get_backend("local")
-    predictions, model_metadata = backend.run_checker(
+    predictions, model_metadata = run_checker(
         prompts,
         checker_config=checker_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,

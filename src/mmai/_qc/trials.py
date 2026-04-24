@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING, Iterable
 
 import pandas as pd
 
-from mmai.backends import get_backend
 from mmai._qc.common import (
     build_qc_artifact,
     normalize_series,
     qc_artifact_to_report_row,
 )
+from mmai.embedding.inference import count_embedding_tokens
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -140,10 +140,9 @@ def trial_qc_report(
 
     # QC metric for trial summaries exceeding embedding model token limit
     if config is not None and config.embedding:
-        backend = get_backend("local")
         embedding_config = dict(config.embedding)
         token_series = pd.Series(
-            backend.count_embedding_tokens(
+            count_embedding_tokens(
                 spaces["clinical_space_summary"].fillna("").astype(str).tolist(),
                 embedding_config=embedding_config,
             ),

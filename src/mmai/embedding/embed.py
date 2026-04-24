@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING, Literal
 
 import pandas as pd
 
-from mmai.backends import get_backend
 from mmai.config import load_default_preset
+from .inference import generate_embeddings
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig
@@ -105,8 +105,7 @@ def embed_for_matching(
     output = df.copy()
 
     summaries = output[text_col].fillna("").astype(str).tolist()
-    backend = get_backend("local")
-    embeddings, model_metadata = backend.generate_embeddings(
+    embeddings, model_metadata = generate_embeddings(
         summaries,
         embedding_config=embedding_config,
         model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
