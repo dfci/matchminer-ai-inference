@@ -105,7 +105,7 @@ def embed_for_matching(
     output = df.copy()
 
     summaries = output[text_col].fillna("").astype(str).tolist()
-    backend = get_backend(resolved_config.backend)
+    backend = get_backend("local")
     embeddings, model_metadata = backend.generate_embeddings(
         summaries,
         embedding_config=embedding_config,

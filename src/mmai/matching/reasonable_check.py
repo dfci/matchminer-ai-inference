@@ -117,7 +117,7 @@ def reasonable_match_check(
     prompts = _build_reasonable_match_prompts(candidate_pairs, template=template)
 
     # Run the backend text-classification model over all prompts.
-    backend = get_backend(resolved_config.backend)
+    backend = get_backend("local")
     predictions, model_metadata = backend.run_checker(
         prompts,
         checker_config=checker_config,

@@ -112,7 +112,7 @@ def exclusion_criteria_check(
     prompts = _build_exclusion_criteria_prompts(matches, template=template)
 
     # Run the backend text-classification model over all prompts.
-    backend = get_backend(resolved_config.backend)
+    backend = get_backend("local")
     predictions, model_metadata = backend.run_checker(
         prompts,
         checker_config=checker_config,
