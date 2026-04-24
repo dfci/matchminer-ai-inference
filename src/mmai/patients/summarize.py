@@ -187,7 +187,7 @@ def summarize_patient_notes(
     try:
         if rounds:
             prompt_pool = prep_prompt_pool(
-                patient_config=patient_config,
+                patient_config=runtime_patient_config,
                 n_workers=n_prompt_workers,
             )
 

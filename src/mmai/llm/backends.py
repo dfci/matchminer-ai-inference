@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gc
 import json
 import os
 from dataclasses import dataclass
@@ -79,6 +80,19 @@ def _get_local_llm(
         max_model_len=max_model_len,
         gpu_memory_utilization=gpu_memory_utilization,
     )
+
+
+def clear_local_llm_cache() -> None:
+    """Release cached local vLLM engine handles and clear Python/GPU caches."""
+    _get_local_llm.cache_clear()
+    gc.collect()
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    except Exception:
+        pass
 
 
 @dataclass
