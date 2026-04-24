@@ -3,14 +3,14 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 
-from mmai.backends import LocalBackend
+from mmai.llm.backends import LocalBackend
 from mmai.config import MMAIConfig
 from mmai.patients import summarize_patients
 from mmai.patients.postprocess import clean_bad_data, parse_boilerplate
 from mmai.patients.prompt_builder import get_serial_patient_prompt
 from mmai.patients.summarize import summarize_patient_notes
-from mmai.prompt_rendering import Prompt
-from mmai.remote_inference import generate_remote_llm_outputs
+from mmai.llm.prompt_rendering import Prompt
+from mmai.llm.remote_inference import generate_remote_llm_outputs
 
 
 class MockTokenResult:
@@ -467,7 +467,7 @@ def test_generate_remote_llm_outputs_handles_running_event_loop(monkeypatch):
         return ["assistantfinal\nSummary"], ["stop"]
 
     monkeypatch.setattr(
-        "mmai.remote_inference.generate_remote_llm_outputs_async",
+        "mmai.llm.remote_inference.generate_remote_llm_outputs_async",
         fake_generate_remote_llm_outputs_async,
     )
 

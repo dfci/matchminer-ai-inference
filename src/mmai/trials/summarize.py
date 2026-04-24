@@ -7,11 +7,11 @@ from typing import Any, TYPE_CHECKING, cast
 import pandas as pd
 
 from mmai._qc.trials import build_qc_artifact
-from mmai.backends import (
+from mmai.llm.backends import (
     build_summarization_runtime_config,
     get_summarization_backend,
 )
-from mmai.prompt_rendering import build_prompt_list
+from mmai.llm.prompt_rendering import build_prompt_list
 
 from .prompt_builder import build_trial_text, get_filled_trial_prompt
 

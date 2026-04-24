@@ -8,9 +8,12 @@ from typing import Any, cast
 import pandas as pd
 from transformers import AutoTokenizer
 
-from mmai.backends import build_summarization_runtime_config, get_summarization_backend
+from mmai.llm.backends import (
+    build_summarization_runtime_config,
+    get_summarization_backend,
+)
 from mmai.config import MMAIConfig, load_default_preset
-from mmai.prompt_rendering import Prompt
+from mmai.llm.prompt_rendering import Prompt
 
 from .postprocess import postprocess_patient_summaries
 from .prepare import prepare_patient_notes

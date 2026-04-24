@@ -2,8 +2,8 @@ from unittest.mock import MagicMock
 import pandas as pd
 
 from mmai.config import MMAIConfig
-from mmai.backends import LocalBackend, build_summarization_runtime_config
-from mmai.prompt_rendering import Prompt
+from mmai.llm.backends import LocalBackend, build_summarization_runtime_config
+from mmai.llm.prompt_rendering import Prompt
 from mmai.trials.postprocess import flatten_trial_to_spaces
 from mmai.trials.prompt_builder import build_trial_text, get_filled_trial_prompt
 from mmai.trials import summarize_trials
@@ -154,7 +154,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     mock_vllm.SamplingParams = MagicMock()
     monkeypatch.setitem(__import__("sys").modules, "vllm", mock_vllm)
     monkeypatch.setattr(
-        "mmai.backends.get_model_metadata",
+        "mmai.llm.backends.get_model_metadata",
         lambda model_name, cache_dir=None: {
             "model_sha": "sha",
             "created_at": "now",

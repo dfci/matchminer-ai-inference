@@ -8,9 +8,9 @@ from dataclasses import dataclass
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Dict, Tuple, cast
 
-from mmai.prompt_rendering import Prompt
-from mmai.remote_inference import generate_remote_llm_outputs
-from mmai.remote_inference import normalize_remote_server_urls
+from mmai.llm.prompt_rendering import Prompt
+from mmai.llm.remote_inference import generate_remote_llm_outputs
+from mmai.llm.remote_inference import normalize_remote_server_urls
 
 if TYPE_CHECKING:
     from mmai.config import MMAIConfig

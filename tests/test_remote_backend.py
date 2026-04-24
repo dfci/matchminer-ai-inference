@@ -3,8 +3,8 @@ import sys
 from types import SimpleNamespace
 from typing import Any, ClassVar, Callable, Awaitable
 
-from mmai.backends import RemoteBackend
-from mmai.prompt_rendering import Prompt
+from mmai.llm.backends import RemoteBackend
+from mmai.llm.prompt_rendering import Prompt
 
 
 class FakeCompletions:
@@ -86,7 +86,7 @@ def _install_fakes(monkeypatch):
         SimpleNamespace(AsyncOpenAI=FakeAsyncOpenAI),
     )
     monkeypatch.setattr(
-        "mmai.backends.get_model_metadata",
+        "mmai.llm.backends.get_model_metadata",
         lambda model_name, cache_dir=None: {
             "model_name": model_name,
             "model_sha": "sha",

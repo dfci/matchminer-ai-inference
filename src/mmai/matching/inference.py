@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, cast
 
-from mmai.backends import get_model_metadata
+from mmai.llm.backends import get_model_metadata
 
 
 def run_checker(

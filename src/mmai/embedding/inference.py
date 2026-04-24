@@ -6,7 +6,7 @@ from functools import lru_cache
 from importlib import resources
 from typing import Any, Dict, cast
 
-from mmai.backends import get_model_metadata
+from mmai.llm.backends import get_model_metadata
 
 
 def _load_prompt_text(filename: str) -> str:

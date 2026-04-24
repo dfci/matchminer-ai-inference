@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Coroutine, Dict, TypeVar, cast
 from urllib.parse import urlparse
 
-from mmai.prompt_rendering import Prompt
+from mmai.llm.prompt_rendering import Prompt
 
 
 logger = logging.getLogger(__name__)

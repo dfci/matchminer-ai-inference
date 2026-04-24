@@ -13,7 +13,7 @@ from typing import cast
 
 from transformers import AutoTokenizer
 
-from mmai.prompt_rendering import Prompt
+from mmai.llm.prompt_rendering import Prompt
 
 
 _worker_tokenizer: Any = None
