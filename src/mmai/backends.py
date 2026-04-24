@@ -7,11 +7,14 @@ import os
 from dataclasses import dataclass
 from functools import lru_cache
 from importlib import resources
-from typing import Any, Dict, Tuple, cast
+from typing import TYPE_CHECKING, Any, Dict, Tuple, cast
 
 from mmai.prompt_rendering import Prompt
 from mmai.remote_inference import generate_remote_llm_outputs
 from mmai.remote_inference import normalize_remote_server_urls
+
+if TYPE_CHECKING:
+    from mmai.config import MMAIConfig
 
 
 def _default_metadata_cache_dir() -> str:
@@ -346,3 +349,32 @@ def get_backend(name: str) -> LocalBackend | RemoteBackend:
     if name == "remote":
         return RemoteBackend()
     raise ValueError(f"Unsupported backend: {name}")
+
+
+def remote_enabled(config: "MMAIConfig") -> bool:
+    """Return whether remote LLM inference is enabled for summarization."""
+    return bool(getattr(config, "remote", {}).get("enabled", False))
+
+
+def build_summarization_runtime_config(
+    task_name: str,
+    llm_config: Dict[str, Any],
+    *,
+    config: "MMAIConfig",
+) -> Dict[str, Any]:
+    """Merge task LLM settings with mode-specific runtime settings."""
+    runtime_config = dict(llm_config)
+    local_config = dict(getattr(config, "local", {}).get(task_name, {}))
+    runtime_config.update(local_config)
+    if remote_enabled(config):
+        remote_config = dict(getattr(config, "remote", {}))
+        remote_config.pop("enabled", None)
+        runtime_config.update(remote_config)
+    return runtime_config
+
+
+def get_summarization_backend(config: "MMAIConfig") -> LocalBackend | RemoteBackend:
+    """Return the backend used for trial/patient LLM summarization."""
+    if remote_enabled(config):
+        return RemoteBackend()
+    return LocalBackend()
