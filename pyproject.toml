@@ -8,6 +8,9 @@ version = "0.0.0"
 description = "MatchMiner-AI package"
 readme = "README.md"
 requires-python = ">=3.12"
+maintainers = [
+  { name = "Sabrina Camp", email = "sabrinay_camp@dfci.harvard.edu" },
+]
 classifiers = [
   "Programming Language :: Python :: 3.12",
 ]
@@ -18,6 +21,10 @@ dependencies = [
   "pyyaml>=6.0",
   "sentence-transformers>=3.0.0",
   "torch>=2.2.0",
+  "vllm>=0.6.3",
+  "huggingface_hub>=0.24.0",
+  "transformers>=4.44.0",
+  "openai>=1.40.0",
 ]
 
 [project.optional-dependencies]
@@ -28,11 +35,6 @@ dev = [
   "ruff>=0.6.0",
   "mypy>=1.10",
   "types-PyYAML"
-]
-local = [
-  "vllm>=0.6.3",
-  "huggingface_hub>=0.24.0",
-  "transformers>=4.44.0",
 ]
 
 [tool.setuptools]
