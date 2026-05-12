@@ -1,76 +1,59 @@
 # matchminer-ai
 
-MatchMiner-AI Python package.
+## Overview
 
-This repository contains the Python package that implements the MatchMiner-AI
-pipeline.
+`matchminer-ai` is a Python package for running the clinical trial matching inference workflow described in [Altreuter et al., MatchMiner-AI: An Open-Source Solution for Cancer Clinical Trial Matching](https://doi.org/10.48550/arXiv.2412.17228). The package provides modular functions for the core MatchMiner-AI workflow: summarizing trials and patient histories, generating embeddings of each, retrieving candidate matches, checking whether matches are clinically reasonable, and assessing exclusion criteria.
 
-Requires Python 3.12+.
+This package is currently pre-v1 and under active development. APIs, configuration options, and outputs may change.
 
-Install the package as `matchminer-ai`; import it in Python as `matchminer_ai`.
+## Compute requirements
 
-## Development
+The most compute-intensive step is summarizing patient notes with the language model. Full pipeline runs can use either a local high-memory GPU environment, such as an NVIDIA H100 80GB, or a compatible remote inference server. See the \[example notebook\](examples/run\_examples.ipynb) for details on these two options.
 
-Clone the repository and work from the repo root:
+Other entry points, such as running from precomputed summaries, may require less compute.
 
-```sh
-git clone https://gitlab.dfci.harvard.edu/ksg/trial-matching/hf-stage/mmai-package.git
-cd mmai-package
+## Installation
+
+This package requires Python 3.13+. Clone this repository and install the package in editable mode:
+
+```shell
+git clone https://github.com/dfci/matchminer-ai-inference.git
+cd matchminer-ai-inference
+pip install -e .
 ```
 
-We recommend working in a virtual environment:
+## Quickstart
 
-```sh
+See the example notebook for a full walkthrough using sample input data:
+\[example notebook\](examples/run\_examples.ipynb)
+
+## Citation
+
+If you use `matchminer-ai`, please cite:
+[Altreuter J, Trukhanov P, Paul MA, Hassett MJ, Riaz IB, Afzal MU, Mohammed AA, Sammons S, Lindsay J, Mallaber E, Klein HR, Gungor G, Galvin M, Deletto M, Van Nostrand SC, Provencher J, Yu J, Tahir N, Wischhusen J, Kozyreva O, Ortiz T, Tuncer H, Masri JE, Malcolm A, Mazor T, Cerami E, Kehl KL. MatchMiner-AI: An Open-Source Solution for Cancer Clinical Trial Matching. *arXiv*. 2026](http://paperpile.com/b/cnsk1c/TSmi). doi: 10.48550/arXiv.2412.17228
+
+## Contributing
+
+We recommend working in a virtual or conda environment.
+Using `venv`:
+
+```shell
 python -m venv .venv
 source .venv/bin/activate
+pip install -e ".[dev]"
 ```
 
-Install the package with development dependencies:
+This repository uses pre-commit for local code quality checks. To enable the hooks:
 
-```sh
-python -m pip install -e ".[dev]"
-```
-
-Install optional local LLM dependencies:
-
-```sh
-python -m pip install -e ".[local]"
-```
-
-Note: the first local LLM run will download large model weights and can be slow.
-If you already have the weights cached, point Hugging Face to that location, e.g.:
-
-```sh
-export HF_HOME=/path/to/hf_cache
-```
-
-## Code quality checks
-This repository uses `pre-commit` for local checks at commit time, including:
-
-- Python formatting and linting
-- Static type checking
-- Basic repository hygiene (whitespace, file size)
-- Detection of accidentally committed secrets
-
-To enable the hooks (recommended):
-```sh
+```shell
 pre-commit install
 ```
 
-Hooks run automatically on `git commit`.
-
-## Tests
 Run the test suite with:
 
-```sh
+```shell
+# lightweight tests
 pytest
-```
-
-GPU integration tests (requires CUDA + model downloads):
-
-```sh
+# tests requiring GPU
 pytest -m resource_heavy
 ```
-
-## QC metrics
-See `mmai-package/src/matchminer_ai/_qc/README.md`.
