@@ -158,13 +158,15 @@ def start_vllm_server(
     extra_args: Sequence[str] | None = None,
     stdout: int | None = None,
     stderr: int | None = None,
+    print_url: bool = True,
 ) -> subprocess.Popen[str]:
     """
     Start one local OpenAI-compatible vLLM server from config.
 
     Returns the ``subprocess.Popen`` handle so callers can monitor or terminate
     the server process. Additional vLLM server CLI flags are not read from the
-    config; pass them explicitly with ``extra_args``.
+    config; pass them explicitly with ``extra_args``. By default, prints the
+    remote base URL that should be used in ``config.remote["server_urls"]``.
     """
     command = build_vllm_server_command(
         config=config,
@@ -172,6 +174,8 @@ def start_vllm_server(
         server_index=server_index,
         extra_args=extra_args,
     )
+    if print_url:
+        print(f"vLLM server URL: {command.base_url}")
     return subprocess.Popen(
         command.command,
         text=True,
@@ -187,6 +191,7 @@ def start_vllm_servers(
     extra_args: Sequence[str] | None = None,
     stdout: int | None = None,
     stderr: int | None = None,
+    print_url: bool = True,
 ) -> list[subprocess.Popen[str]]:
     """Start one local vLLM server for each URL in ``config.remote.server_urls``."""
     resolved_config = config or load_default_preset()
@@ -198,6 +203,7 @@ def start_vllm_servers(
             extra_args=extra_args,
             stdout=stdout,
             stderr=stderr,
+            print_url=print_url,
         )
         for server_index, _url in enumerate(_remote_server_urls(resolved_config))
     ]

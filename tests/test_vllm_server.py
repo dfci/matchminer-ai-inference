@@ -77,7 +77,7 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
     assert command.command[command.command.index("--max-model-len") + 1] == "10000"
 
 
-def test_start_vllm_server_invokes_subprocess(monkeypatch):
+def test_start_vllm_server_invokes_subprocess(monkeypatch, capsys):
     calls = []
 
     class FakeProcess:
@@ -97,10 +97,29 @@ def test_start_vllm_server_invokes_subprocess(monkeypatch):
     )
 
     assert isinstance(process, FakeProcess)
+    assert "vLLM server URL: http://localhost:8000/v1" in capsys.readouterr().out
     assert calls[0][0][:3] == ["vllm", "serve", "patient-model"]
     assert calls[0][1]["text"] is True
     assert calls[0][1]["stdout"] == -1
     assert calls[0][1]["stderr"] == -1
+
+
+def test_start_vllm_server_can_suppress_url_print(monkeypatch, capsys):
+    class FakeProcess:
+        pass
+
+    def fake_popen(command, **kwargs):
+        return FakeProcess()
+
+    monkeypatch.setattr("matchminer_ai.llm.vllm_server.subprocess.Popen", fake_popen)
+
+    start_vllm_server(
+        config=_config(),
+        task="patient",
+        print_url=False,
+    )
+
+    assert capsys.readouterr().out == ""
 
 
 def test_plural_helpers_use_all_configured_server_urls(monkeypatch):
