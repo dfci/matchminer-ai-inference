@@ -40,6 +40,7 @@ def _config() -> MMAIConfig:
 
 
 def test_build_vllm_server_command_uses_task_model_and_local_runtime():
+    """Build a patient server command from task model and local runtime config."""
     command = build_vllm_server_command(config=_config(), task="patient")
 
     assert command.model_name == "patient-model"
@@ -64,6 +65,7 @@ def test_build_vllm_server_command_uses_task_model_and_local_runtime():
 
 
 def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
+    """Select the requested server URL and append caller-provided vLLM args."""
     command = build_vllm_server_command(
         config=_config(),
         task="trial",
@@ -79,6 +81,7 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
 
 
 def test_start_vllm_server_invokes_subprocess(monkeypatch, capsys):
+    """Start one server by invoking subprocess with the resolved command."""
     calls = []
 
     class FakeProcess:
@@ -107,6 +110,8 @@ def test_start_vllm_server_invokes_subprocess(monkeypatch, capsys):
 
 
 def test_start_vllm_server_can_suppress_url_print(monkeypatch, capsys):
+    """Allow callers to suppress the printed remote server URL."""
+
     class FakeProcess:
         pass
 
@@ -126,6 +131,7 @@ def test_start_vllm_server_can_suppress_url_print(monkeypatch, capsys):
 
 
 def test_plural_helpers_use_all_configured_server_urls(monkeypatch):
+    """Build and start one vLLM server for each configured remote URL."""
     commands = build_vllm_server_commands(config=_config(), task="trial")
 
     assert [command.port for command in commands] == [8000, 8001]
@@ -155,6 +161,7 @@ def test_plural_helpers_use_all_configured_server_urls(monkeypatch):
 
 
 def test_wait_for_vllm_server_polls_models_endpoint(monkeypatch):
+    """Poll the OpenAI-compatible models endpoint until the server is ready."""
     calls = []
 
     class FakeResponse:
