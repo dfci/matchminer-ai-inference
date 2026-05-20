@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
 
@@ -23,6 +24,24 @@ class MMAIConfig:
     embedding: dict[str, Any]
     model_metadata_cache_dir: str | None
     raw: dict[str, Any]
+
+
+def config_snapshot(config: MMAIConfig) -> dict[str, Any]:
+    """Build a metadata snapshot from the live config object."""
+    snapshot = deepcopy(config.raw)
+    snapshot.update(
+        {
+            "preset_name": config.preset_name,
+            "debug_mode": config.debug_mode,
+            "trial": deepcopy(config.trial),
+            "patient": deepcopy(config.patient),
+            "local": deepcopy(config.local),
+            "remote": deepcopy(config.remote),
+            "embedding": deepcopy(config.embedding),
+            "model_metadata_cache_dir": config.model_metadata_cache_dir,
+        }
+    )
+    return snapshot
 
 
 def _load_preset_data(name: str) -> dict[str, Any]:
