@@ -315,3 +315,56 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
         "Here is a clinical trial document"
         in captured_prompts["prompt_list"][0].prompt_text
     )
+
+
+def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config):
+    """Return metadata from the live config object after caller mutations."""
+
+    class MockBackend:
+        def generate_llm_outputs(
+            self, *, prompt_list, llm_config, model_metadata_cache_dir=None
+        ):
+            return (
+                [
+                    "assistantfinal\n"
+                    "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
+                    "Histology allowed: Any. Cancer burden allowed: Any. "
+                    "Prior treatment required: None. Prior treatment excluded: None. "
+                    "Biomarkers required: None. Biomarkers excluded: None.\n"
+                    "Boilerplate exclusions:\n"
+                    "None."
+                ],
+                {"model_sha": "sha"},
+                ["stop"],
+            )
+
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.get_summarization_backend",
+        lambda config: MockBackend(),
+    )
+
+    default_config.raw = {"remote": {"enabled": False}}
+    default_config.remote["enabled"] = True
+    default_config.remote["server_urls"] = ["http://localhost:8000/v1"]
+
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title",
+                "brief_summary": "Brief",
+                "eligibility_criteria": "Criteria",
+            }
+        ]
+    )
+
+    _result, metadata = summarize_trials(
+        trials,
+        config=default_config,
+        return_metadata=True,
+    )
+
+    assert metadata["config_snapshot"]["remote"]["enabled"] is True
+    assert metadata["config_snapshot"]["remote"]["server_urls"] == [
+        "http://localhost:8000/v1"
+    ]

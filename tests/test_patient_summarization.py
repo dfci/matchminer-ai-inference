@@ -537,5 +537,6 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
 
     assert result.equals(summaries_df)
     assert returned_qc.equals(qc_report)
-    assert metadata["config_snapshot"] == {"config": "snapshot"}
+    assert metadata["config_snapshot"]["config"] == "snapshot"
+    assert metadata["config_snapshot"]["patient"] == _config().patient
     assert metadata["model_metadata"]["patient_summarizer"]["model_sha"] == "sha"

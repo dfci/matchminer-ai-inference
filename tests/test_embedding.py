@@ -184,6 +184,7 @@ def test_embed_for_matching_return_metadata(monkeypatch):
     )
 
     assert list(result.columns) == ["patient_id", "embedding"]
-    assert metadata["config_snapshot"] == {"preset_name": "default"}
+    assert metadata["config_snapshot"]["preset_name"] == "default"
+    assert metadata["config_snapshot"]["embedding"]["model_path"] == "cfg-model"
     assert metadata["model_metadata"]["embedding_model"]["model_name"] == "cfg-model"
     assert backend.last_model_metadata_cache_dir == ".mmai_cache/model_metadata"
