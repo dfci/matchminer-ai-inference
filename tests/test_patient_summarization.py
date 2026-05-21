@@ -3,14 +3,18 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 
-from mmai.llm.backends import LocalBackend
-from mmai.config import MMAIConfig
-from mmai.patients import summarize_patients
-from mmai.patients.postprocess import clean_bad_data, parse_boilerplate
-from mmai.patients.prompt_builder import get_serial_patient_prompt
-from mmai.patients.summarize import summarize_patient_notes
-from mmai.llm.prompt_rendering import Prompt
-from mmai.llm.remote_inference import generate_remote_llm_outputs
+from matchminer_ai.llm.backends import LocalBackend
+from matchminer_ai.config import MMAIConfig
+from matchminer_ai.patients import summarize_patients
+from matchminer_ai.patients.postprocess import (
+    clean_bad_data,
+    parse_boilerplate,
+    split_reasoning_from_summary,
+)
+from matchminer_ai.patients.prompt_builder import get_serial_patient_prompt
+from matchminer_ai.patients.summarize import summarize_patient_notes
+from matchminer_ai.llm.prompt_rendering import Prompt
+from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 
 
 class MockTokenResult:
@@ -28,7 +32,7 @@ class MockTokenizer:
 
 def _stub_patient_qc(monkeypatch):
     monkeypatch.setattr(
-        "mmai._qc.patients.patient_summary_qc_report",
+        "matchminer_ai._qc.patients.patient_summary_qc_report",
         lambda *args, **kwargs: pd.DataFrame(),
     )
 
@@ -93,6 +97,17 @@ def _remote_config(debug_mode: bool = False) -> MMAIConfig:
         "prompt_build_workers": 2,
     }
     return config
+
+
+def test_split_reasoning_from_summary_matches_original_serial_script():
+    """Split raw model output before using it as serial prior summary state."""
+    reasoning, summary = split_reasoning_from_summary(
+        "analysis text\nassistantfinal\nAge: 70\nBoilerplate:\nNone",
+        "assistantfinal",
+    )
+
+    assert reasoning == "analysis text"
+    assert summary == "Age: 70\nBoilerplate:\nNone"
 
 
 def test_parse_boilerplate_splits_summary_and_exclusions():
@@ -195,11 +210,11 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
     """Carry each round's summary forward as prior state for the next chunk."""
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
-        "mmai.patients.summarize.AutoTokenizer.from_pretrained",
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
         lambda model_name: MockTokenizer(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.prepare_patient_notes",
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
         lambda notes, tokenizer, chunk_size, chunk_overlap: (
             pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-02"}]),
             pd.DataFrame(
@@ -234,11 +249,11 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
             ]
 
     monkeypatch.setattr(
-        "mmai.patients.summarize.prep_prompt_pool",
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
         lambda patient_config, n_workers: FakePromptPool(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.shutdown_prompt_pool",
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
         lambda prompt_pool: None,
     )
 
@@ -267,7 +282,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
             )
 
     monkeypatch.setattr(
-        "mmai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_summarization_backend",
         lambda config: MockBackend(),
     )
 
@@ -276,7 +291,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
     )
     result, metadata = summarize_patient_notes(notes, config=_config())
 
-    assert seen_prior_summaries == [None, "assistantfinal\nRound 1\nBoilerplate:\nNone"]
+    assert seen_prior_summaries == [None, "Round 1\nBoilerplate:\nNone"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Round 2"
     assert metadata["model_metadata"]["model_sha"] == "sha"
 
@@ -285,11 +300,11 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
     """Use a provided existing summary as the starting state for round 1."""
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
-        "mmai.patients.summarize.AutoTokenizer.from_pretrained",
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
         lambda model_name: MockTokenizer(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.prepare_patient_notes",
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
         lambda notes, tokenizer, chunk_size, chunk_overlap: (
             pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-02"}]),
             pd.DataFrame(
@@ -317,15 +332,15 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
             ]
 
     monkeypatch.setattr(
-        "mmai.patients.summarize.prep_prompt_pool",
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
         lambda patient_config, n_workers: FakePromptPool(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.shutdown_prompt_pool",
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
         lambda prompt_pool: None,
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_summarization_backend",
         lambda config: MagicMock(
             generate_llm_outputs=MagicMock(
                 return_value=(
@@ -358,11 +373,11 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
     """Remote patient summarization builds pre-rendered prompts via prompt pool."""
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
-        "mmai.patients.summarize.AutoTokenizer.from_pretrained",
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
         lambda model_name: MockTokenizer(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.prepare_patient_notes",
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
         lambda notes, tokenizer, chunk_size, chunk_overlap: (
             pd.DataFrame(
                 [
@@ -403,11 +418,11 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             ]
 
     monkeypatch.setattr(
-        "mmai.patients.summarize.prep_prompt_pool",
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
         lambda patient_config, n_workers: FakePromptPool(),
     )
     monkeypatch.setattr(
-        "mmai.patients.summarize.shutdown_prompt_pool",
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
         lambda prompt_pool: pool_calls.setdefault("shutdown", True),
     )
 
@@ -432,7 +447,7 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             )
 
     monkeypatch.setattr(
-        "mmai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_summarization_backend",
         lambda config: MockBackend(),
     )
 
@@ -467,7 +482,7 @@ def test_generate_remote_llm_outputs_handles_running_event_loop(monkeypatch):
         return ["assistantfinal\nSummary"], ["stop"]
 
     monkeypatch.setattr(
-        "mmai.llm.remote_inference.generate_remote_llm_outputs_async",
+        "matchminer_ai.llm.remote_inference.generate_remote_llm_outputs_async",
         fake_generate_remote_llm_outputs_async,
     )
 
@@ -518,7 +533,7 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     )
 
     monkeypatch.setattr(
-        "mmai.patients.summarize_patient_notes",
+        "matchminer_ai.patients.summarize_patient_notes",
         MagicMock(
             return_value=(
                 summaries_df,
@@ -537,5 +552,6 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
 
     assert result.equals(summaries_df)
     assert returned_qc.equals(qc_report)
-    assert metadata["config_snapshot"] == {"config": "snapshot"}
+    assert metadata["config_snapshot"]["config"] == "snapshot"
+    assert metadata["config_snapshot"]["patient"] == _config().patient
     assert metadata["model_metadata"]["patient_summarizer"]["model_sha"] == "sha"

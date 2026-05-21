@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from mmai.config import MMAIConfig
-from mmai.embedding.embed import embed_for_matching
+from matchminer_ai.config import MMAIConfig
+from matchminer_ai.embedding.embed import embed_for_matching
 
 
 class MockBackend:
@@ -27,7 +27,7 @@ def test_embed_for_matching_patient(monkeypatch):
     """Embed patient summaries and pass embedding config through to backend."""
     backend = MockBackend()
     monkeypatch.setattr(
-        "mmai.embedding.embed.generate_embeddings", backend.generate_embeddings
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
     )
     config = MMAIConfig(
         preset_name="default",
@@ -59,7 +59,7 @@ def test_embed_for_matching_trial(monkeypatch):
     """Embed trial space summaries using the trial summary text column."""
     backend = MockBackend()
     monkeypatch.setattr(
-        "mmai.embedding.embed.generate_embeddings", backend.generate_embeddings
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
     )
     config = MMAIConfig(
         preset_name="default",
@@ -95,7 +95,7 @@ def test_embed_for_matching_missing_column(monkeypatch):
     """Raise a clear error when the required summary column is missing."""
     backend = MockBackend()
     monkeypatch.setattr(
-        "mmai.embedding.embed.generate_embeddings", backend.generate_embeddings
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
     )
     config = MMAIConfig(
         preset_name="default",
@@ -125,7 +125,7 @@ def test_embed_for_matching_reads_config(monkeypatch):
     """Read embedding model/device/prompt settings from config."""
     backend = MockBackend()
     monkeypatch.setattr(
-        "mmai.embedding.embed.generate_embeddings", backend.generate_embeddings
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
     )
 
     config = MMAIConfig(
@@ -158,7 +158,7 @@ def test_embed_for_matching_return_metadata(monkeypatch):
     """Return embedding metadata payload when requested."""
     backend = MockBackend()
     monkeypatch.setattr(
-        "mmai.embedding.embed.generate_embeddings", backend.generate_embeddings
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
     )
     config = MMAIConfig(
         preset_name="default",
@@ -184,6 +184,7 @@ def test_embed_for_matching_return_metadata(monkeypatch):
     )
 
     assert list(result.columns) == ["patient_id", "embedding"]
-    assert metadata["config_snapshot"] == {"preset_name": "default"}
+    assert metadata["config_snapshot"]["preset_name"] == "default"
+    assert metadata["config_snapshot"]["embedding"]["model_path"] == "cfg-model"
     assert metadata["model_metadata"]["embedding_model"]["model_name"] == "cfg-model"
     assert backend.last_model_metadata_cache_dir == ".mmai_cache/model_metadata"

@@ -3,21 +3,27 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mmai"
-version = "0.0.0"
+name = "matchminer-ai"
+version = "0.1.0"
 description = "MatchMiner-AI package"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
+maintainers = [
+  { name = "Sabrina Camp", email = "sabrinay_camp@dfci.harvard.edu" },
+]
 classifiers = [
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-  "numpy>=1.26",
-  "pandas>=2.0",
-  "pyarrow>=15.0.0",
+  "numpy>=2.4.4",
+  "pandas>=3.0.2",
+  "pyarrow>=24.0.0",
   "pyyaml>=6.0",
-  "sentence-transformers>=3.0.0",
-  "torch>=2.2.0",
+  "sentence-transformers>=5.4.1",
+  "torch>=2.11.0",
+  "vllm>=0.20.2",
+  "huggingface_hub>=1.14.0",
+  "transformers>=5.8.0",
 ]
 
 [project.optional-dependencies]
@@ -29,11 +35,6 @@ dev = [
   "mypy>=1.10",
   "types-PyYAML"
 ]
-local = [
-  "vllm>=0.6.3",
-  "huggingface_hub>=0.24.0",
-  "transformers>=4.44.0",
-]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -42,7 +43,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-mmai = ["presets/*.yaml", "prompts/*.txt"]
+matchminer_ai = ["presets/*.yaml", "prompts/*.txt"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
@@ -53,7 +54,7 @@ line-length = 88
 target-version = "py312"
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 mypy_path = ["src"]
 warn_unused_ignores = true
 warn_redundant_casts = true

@@ -10,13 +10,13 @@
         "gpu_memory_utilization": 0.9
       },
       "patient": {
-        "max_model_len": 100000,
+        "max_model_len": 70000,
         "tensor_parallel_size": 1,
         "gpu_memory_utilization": 0.9
       }
     },
     "remote": {
-      "enabled": false,
+      "enabled": true,
       "server_urls": [
         "http://localhost:8000/v1"
       ],
@@ -65,17 +65,18 @@
       "device": "cpu",
       "prompt_file": "embedding.txt"
     },
-    "reasonable_match": {
+    "match_quality": {
       "model_name": "ksg-dfci/TrialChecker-0426",
       "device": "cuda",
-      "prompt_file": "reasonable_match_checker_template.txt",
+      "prompt_file": "match_quality_checker_template.txt",
       "score_cutoff": 0.2
     },
     "exclusion_criteria": {
       "model_name": "ksg-dfci/BoilerPlateChecker-0426",
       "device": "cuda",
       "prompt_file": "exclusion_criteria_checker_template.txt"
-    }
+    },
+    "preset_name": "default"
   },
   "model_metadata": {
     "patient_summarizer": {

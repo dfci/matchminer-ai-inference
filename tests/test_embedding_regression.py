@@ -20,12 +20,12 @@ import pandas as pd
 import pytest
 import torch
 
-from mmai.embedding import embed_for_matching
-from mmai.patients import summarize_patients
-from mmai.trials import summarize_trials
+from matchminer_ai.embedding import embed_for_matching
+from matchminer_ai.patients import summarize_patients
+from matchminer_ai.trials import summarize_trials
 
 if TYPE_CHECKING:
-    from mmai.config import MMAIConfig
+    from matchminer_ai.config import MMAIConfig
 
 
 REGRESSION_DATA_DIR = (

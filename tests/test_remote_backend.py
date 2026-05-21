@@ -3,8 +3,8 @@ import sys
 from types import SimpleNamespace
 from typing import Any, ClassVar, Callable, Awaitable
 
-from mmai.llm.backends import RemoteBackend
-from mmai.llm.prompt_rendering import Prompt
+from matchminer_ai.llm.backends import RemoteBackend
+from matchminer_ai.llm.prompt_rendering import Prompt
 
 
 class FakeCompletions:
@@ -31,7 +31,11 @@ class FakeAsyncOpenAI:
         self.timeout = timeout
         self.completions = FakeCompletions(self)
         self.calls: list[dict[str, Any]] = []
+        self.closed = False
         FakeAsyncOpenAI.clients.append(self)
+
+    async def aclose(self):
+        self.closed = True
 
     async def create(self, **kwargs):
         self.calls.append(kwargs)
@@ -86,7 +90,7 @@ def _install_fakes(monkeypatch):
         SimpleNamespace(AsyncOpenAI=FakeAsyncOpenAI),
     )
     monkeypatch.setattr(
-        "mmai.llm.backends.get_model_metadata",
+        "matchminer_ai.llm.backends.get_model_metadata",
         lambda model_name, cache_dir=None: {
             "model_name": model_name,
             "model_sha": "sha",
@@ -111,6 +115,7 @@ def test_remote_backend_single_server_preserves_order(monkeypatch):
     assert metadata["model_sha"] == "sha"
     assert finish_reasons == ["stop", "stop", "stop"]
     assert FakeAsyncOpenAI.clients[0].timeout == 183
+    assert FakeAsyncOpenAI.clients[0].closed is True
 
 
 def test_remote_backend_multiple_servers_distributes_and_preserves_order(monkeypatch):
@@ -136,6 +141,7 @@ def test_remote_backend_multiple_servers_distributes_and_preserves_order(monkeyp
     }
     assert calls_by_server["http://server-a/v1"] == ["p0", "p2"]
     assert calls_by_server["http://server-b/v1"] == ["p1", "p3"]
+    assert all(client.closed for client in FakeAsyncOpenAI.clients)
 
 
 def test_remote_backend_uses_env_var_api_key(monkeypatch):

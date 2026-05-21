@@ -1,7 +1,7 @@
 import pandas as pd
 
-from mmai._qc.patients import patient_summary_qc_report
-from mmai.config import MMAIConfig
+from matchminer_ai._qc.patients import patient_summary_qc_report
+from matchminer_ai.config import MMAIConfig
 
 
 def test_patient_summary_qc_report_metrics(monkeypatch):
@@ -26,7 +26,7 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
         ]
     )
     monkeypatch.setattr(
-        "mmai._qc.patients.count_embedding_tokens",
+        "matchminer_ai._qc.patients.count_embedding_tokens",
         lambda texts, *, embedding_config: [100, 3001, 50],
     )
     config = MMAIConfig(

@@ -1,11 +1,11 @@
 import pandas as pd
 import pytest
 
-from mmai.config import MMAIConfig
-from mmai.matching import (
+from matchminer_ai.config import MMAIConfig
+from matchminer_ai.matching import (
     exclusion_criteria_check,
     generate_candidate_matches,
-    reasonable_match_check,
+    score_match_quality,
 )
 
 
@@ -64,7 +64,7 @@ def test_generate_candidate_matches_returns_all_when_k_none():
     assert result["rank"].tolist() == [1, 2]
 
 
-class _MockReasonableBackend:
+class _MockCheckerBackend:
     def __init__(self, predictions):
         self.predictions = predictions
         self.last_prompts = None
@@ -78,16 +78,16 @@ class _MockReasonableBackend:
         return self.predictions, {"model_name": checker_config["model_name"]}
 
 
-def test_reasonable_match_check_maps_outputs_and_filters(monkeypatch):
+def test_score_match_quality_maps_outputs_and_filters(monkeypatch):
     """Map checker logits to confidence scores and apply cutoff-based filtering."""
-    backend = _MockReasonableBackend(
+    backend = _MockCheckerBackend(
         [
             {"score": 2.0},
             {"score": -2.0},
         ]
     )
     monkeypatch.setattr(
-        "mmai.matching.reasonable_check.run_checker", backend.run_checker
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
     )
     config = MMAIConfig(
         preset_name="default",
@@ -99,10 +99,10 @@ def test_reasonable_match_check_maps_outputs_and_filters(monkeypatch):
         embedding={},
         model_metadata_cache_dir=None,
         raw={
-            "reasonable_match": {
+            "match_quality": {
                 "model_name": "ksg-dfci/TrialChecker-1225",
                 "device": "cpu",
-                "prompt_file": "reasonable_match_checker_template.txt",
+                "prompt_file": "match_quality_checker_template.txt",
                 "score_cutoff": 0.2,
             }
         },
@@ -124,35 +124,35 @@ def test_reasonable_match_check_maps_outputs_and_filters(monkeypatch):
         ]
     )
 
-    unfiltered = reasonable_match_check(pairs, config=config, filter_unreasonable=False)
+    unfiltered = score_match_quality(pairs, config=config, filter_low_quality=False)
     assert list(unfiltered.columns) == [
         "patient_id",
         "space_trial_id",
-        "reasonable_match_score",
-        "reasonable_match",
+        "match_quality_score",
+        "match_quality_pass",
     ]
-    assert unfiltered["reasonable_match"].tolist() == [True, False]
-    assert unfiltered["reasonable_match_score"].tolist() == pytest.approx(
+    assert unfiltered["match_quality_pass"].tolist() == [True, False]
+    assert unfiltered["match_quality_score"].tolist() == pytest.approx(
         [0.880797, 0.119203],
         abs=1e-6,
     )
     assert backend.last_checker_config["model_name"] == "ksg-dfci/TrialChecker-1225"
 
-    filtered = reasonable_match_check(pairs, config=config, filter_unreasonable=True)
+    filtered = score_match_quality(pairs, config=config, filter_low_quality=True)
     assert len(filtered) == 1
     assert filtered.loc[0, "patient_id"] == "P1"
-    assert bool(filtered.loc[0, "reasonable_match"]) is True
+    assert bool(filtered.loc[0, "match_quality_pass"]) is True
 
 
-def test_reasonable_match_check_return_metadata(monkeypatch):
+def test_score_match_quality_return_metadata(monkeypatch):
     """Return config snapshot and checker model metadata when requested."""
-    backend = _MockReasonableBackend(
+    backend = _MockCheckerBackend(
         [
             {"score": 2.0},
         ]
     )
     monkeypatch.setattr(
-        "mmai.matching.reasonable_check.run_checker", backend.run_checker
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
     )
     config = MMAIConfig(
         preset_name="default",
@@ -164,10 +164,10 @@ def test_reasonable_match_check_return_metadata(monkeypatch):
         embedding={},
         model_metadata_cache_dir=".mmai_cache/model_metadata",
         raw={
-            "reasonable_match": {
+            "match_quality": {
                 "model_name": "ksg-dfci/TrialChecker-1225",
                 "device": "cpu",
-                "prompt_file": "reasonable_match_checker_template.txt",
+                "prompt_file": "match_quality_checker_template.txt",
                 "score_cutoff": 0.2,
             }
         },
@@ -183,32 +183,32 @@ def test_reasonable_match_check_return_metadata(monkeypatch):
         ]
     )
 
-    result, metadata = reasonable_match_check(
+    result, metadata = score_match_quality(
         pairs,
         config=config,
-        filter_unreasonable=False,
+        filter_low_quality=False,
         return_metadata=True,
     )
 
     assert len(result) == 1
-    assert metadata["config_snapshot"]["reasonable_match"]["model_name"] == (
+    assert metadata["config_snapshot"]["match_quality"]["model_name"] == (
         "ksg-dfci/TrialChecker-1225"
     )
-    assert metadata["model_metadata"]["reasonable_match_checker"]["model_name"] == (
+    assert metadata["model_metadata"]["match_quality_checker"]["model_name"] == (
         "ksg-dfci/TrialChecker-1225"
     )
 
 
 def test_exclusion_criteria_check_maps_outputs_and_filters(monkeypatch):
     """Map boilerplate checker outputs and apply optional pass filtering."""
-    backend = _MockReasonableBackend(
+    backend = _MockCheckerBackend(
         [
             {"label": "NEGATIVE", "score": 0.81},
             {"label": "POSITIVE", "score": 0.66},
         ]
     )
     monkeypatch.setattr(
-        "mmai.matching.exclusion_check.run_checker", backend.run_checker
+        "matchminer_ai.matching.exclusion_check.run_checker", backend.run_checker
     )
     config = MMAIConfig(
         preset_name="default",
@@ -269,13 +269,13 @@ def test_exclusion_criteria_check_maps_outputs_and_filters(monkeypatch):
 
 def test_exclusion_criteria_check_return_metadata(monkeypatch):
     """Return config snapshot and exclusion-checker model metadata."""
-    backend = _MockReasonableBackend(
+    backend = _MockCheckerBackend(
         [
             {"label": "NEGATIVE", "score": 0.81},
         ]
     )
     monkeypatch.setattr(
-        "mmai.matching.exclusion_check.run_checker", backend.run_checker
+        "matchminer_ai.matching.exclusion_check.run_checker", backend.run_checker
     )
     config = MMAIConfig(
         preset_name="default",

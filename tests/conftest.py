@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from mmai.config import MMAIConfig
-from mmai.trials.postprocess import _strip_numerical_prefix
+from matchminer_ai.config import MMAIConfig
+from matchminer_ai.trials.postprocess import _strip_numerical_prefix
 
 
 TRIAL_SPACE_1 = (

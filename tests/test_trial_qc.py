@@ -1,7 +1,7 @@
 import pandas as pd
 
-from mmai._qc.trials import trial_qc_report
-from mmai.config import MMAIConfig
+from matchminer_ai._qc.trials import trial_qc_report
+from matchminer_ai.config import MMAIConfig
 
 
 def test_trial_qc_report_metrics(monkeypatch):
@@ -53,7 +53,7 @@ def test_trial_qc_report_metrics(monkeypatch):
         "ids": ["T2"],
     }
     monkeypatch.setattr(
-        "mmai._qc.trials.count_embedding_tokens",
+        "matchminer_ai._qc.trials.count_embedding_tokens",
         lambda texts, *, embedding_config: [120, 10, 3400],
     )
     config = MMAIConfig(

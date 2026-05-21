@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from mmai.trials import summarize_trials
+from matchminer_ai.trials import summarize_trials
 
 
 def _require_cuda() -> None:
