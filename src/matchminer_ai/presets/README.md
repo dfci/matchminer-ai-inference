@@ -126,9 +126,9 @@ Prompt template filenames loaded from `matchminer_ai.prompts`.
 
 ### `trial.reasoning_parser`
 
-vLLM reasoning parser name. The default `auto` resolves
-`google/gemma-4-31B-it` to `gemma4`. Use `none` to disable reasoning parsing
-for a non-reasoning model.
+vLLM reasoning parser name. The default is `gemma4` for
+`google/gemma-4-31B-it`. Set this explicitly when changing summarization
+models, or use `none` to disable reasoning parsing for a non-reasoning model.
 
 ### `trial.chat_template_kwargs`
 
@@ -192,9 +192,9 @@ Prompt template filenames loaded from `matchminer_ai.prompts`.
 
 ### `patient.reasoning_parser`
 
-vLLM reasoning parser name. The default `auto` resolves
-`google/gemma-4-31B-it` to `gemma4`. Use `none` to disable reasoning parsing
-for a non-reasoning model.
+vLLM reasoning parser name. The default is `gemma4` for
+`google/gemma-4-31B-it`. Set this explicitly when changing summarization
+models, or use `none` to disable reasoning parsing for a non-reasoning model.
 
 ### `patient.chat_template_kwargs`
 

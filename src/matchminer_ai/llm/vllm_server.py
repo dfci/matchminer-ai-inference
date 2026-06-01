@@ -12,7 +12,6 @@ from urllib import error, request
 from urllib.parse import urlparse
 
 from matchminer_ai.config import MMAIConfig, load_default_preset
-from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 
 
 @dataclass(frozen=True)
@@ -123,9 +122,9 @@ def build_vllm_server_command(
         "--gpu-memory-utilization",
         str(local_config["gpu_memory_utilization"]),
     ]
-    reasoning_parser = resolve_reasoning_parser(
-        model_name,
-        str(llm_config.get("reasoning_parser", "auto")),
+    reasoning_parser = llm_config.get("reasoning_parser")
+    reasoning_parser = (
+        None if reasoning_parser in {None, "", "none"} else str(reasoning_parser)
     )
     if reasoning_parser:
         command.extend(["--reasoning-parser", reasoning_parser])

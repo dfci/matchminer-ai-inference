@@ -23,7 +23,7 @@ remote:
   retry_backoff_base: 1.0
 trial:
   model_name: google/gemma-4-31B-it
-  reasoning_parser: auto
+  reasoning_parser: gemma4
   chat_template_kwargs:
     enable_thinking: true
   sampling_params:
@@ -42,7 +42,7 @@ trial:
   boilerplate_marker: Boilerplate
 patient:
   model_name: google/gemma-4-31B-it
-  reasoning_parser: auto
+  reasoning_parser: gemma4
   chat_template_kwargs:
     enable_thinking: true
   chunk_size: 50000

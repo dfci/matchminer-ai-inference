@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING, Any, Dict, Tuple, cast
 
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.reasoning import parse_reasoning_output
-from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.llm.remote_inference import normalize_remote_server_urls
 
@@ -150,10 +149,8 @@ class LocalBackend:
             }
         }
         sampling_params = dict(llm_config["sampling_params"])
-        parser_name = resolve_reasoning_parser(
-            str(model_name),
-            str(llm_config.get("reasoning_parser", "auto")),
-        )
+        parser_name = llm_config.get("reasoning_parser")
+        parser_name = None if parser_name in {None, "", "none"} else str(parser_name)
 
         model_metadata = get_model_metadata(
             model_name,

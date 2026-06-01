@@ -1,9 +1,7 @@
 import sys
 from types import ModuleType
 
-import pytest
-
-from matchminer_ai.llm.reasoning import parse_reasoning_output, resolve_reasoning_parser
+from matchminer_ai.llm.reasoning import parse_reasoning_output
 
 
 def _module(name, **attrs):
@@ -11,31 +9,6 @@ def _module(name, **attrs):
     for key, value in attrs.items():
         setattr(module, key, value)
     return module
-
-
-def test_resolve_reasoning_parser_exact_gemma4():
-    assert resolve_reasoning_parser("google/gemma-4-31B-it") == "gemma4"
-
-
-def test_resolve_reasoning_parser_lowercase_variant():
-    assert resolve_reasoning_parser("google/gemma-4-31b-it") == "gemma4"
-
-
-def test_resolve_reasoning_parser_nvidia_gemma_variant():
-    assert resolve_reasoning_parser("nvidia/Gemma-4-31B-IT-NVFP4") == "gemma4"
-
-
-def test_resolve_reasoning_parser_explicit_override():
-    assert resolve_reasoning_parser("unknown/model", "qwen3") == "qwen3"
-
-
-def test_resolve_reasoning_parser_can_disable():
-    assert resolve_reasoning_parser("unknown/model", "none") is None
-
-
-def test_resolve_reasoning_parser_unknown_auto_raises():
-    with pytest.raises(ValueError, match="Cannot infer"):
-        resolve_reasoning_parser("unknown/model")
 
 
 def test_parse_reasoning_output_uses_gemma4_utility(monkeypatch):
