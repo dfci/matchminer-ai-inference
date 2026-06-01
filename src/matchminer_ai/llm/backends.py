@@ -135,7 +135,6 @@ class LocalBackend:
                 "model_name",
                 "sampling_params",
                 "prompt_files",
-                "reasoning_marker",
                 "reasoning_parser",
                 "chat_template_kwargs",
                 "boilerplate_marker",

@@ -12,32 +12,10 @@ if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
 
 
-def split_reasoning_from_summary(
-    raw_text: str,
-    reasoning_marker: str,
-) -> tuple[str, str]:
-    """
-    Split raw LLM output into reasoning and final patient summary text.
-
-    """
-    if not reasoning_marker:
-        return "", raw_text.strip()
-    if reasoning_marker in raw_text:
-        reasoning, summary = raw_text.split(reasoning_marker, 1)
-        return reasoning.strip(), summary.strip()
-    return "", raw_text.strip()
-
-
-def parse_boilerplate(
-    df: pd.DataFrame, reasoning_marker: str, boilerplate_marker: str
-) -> pd.DataFrame:
+def parse_boilerplate(df: pd.DataFrame, boilerplate_marker: str) -> pd.DataFrame:
     """Split final patient summary output into summary and boilerplate portions."""
     df = df.copy()
     summary_source = df["original_patient_summary"].fillna("").astype(str)
-    if reasoning_marker:
-        summary_source = summary_source.str.split(reasoning_marker, n=1).apply(
-            lambda parts: parts[-1]
-        )
     df["cleaned_patient_summary"] = summary_source.str.strip()
 
     split_df = df["cleaned_patient_summary"].str.split(
@@ -83,9 +61,8 @@ def postprocess_patient_summaries(
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     """Postprocess final serial patient summaries into clean outputs."""
     patient_config = dict(config.patient)
-    reasoning_marker = str(patient_config.get("reasoning_marker", ""))
     boilerplate_marker = patient_config["boilerplate_marker"]
-    parsed = parse_boilerplate(df, reasoning_marker, boilerplate_marker)
+    parsed = parse_boilerplate(df, boilerplate_marker)
     cleaned, qc_artifact = clean_bad_data(parsed)
     if not config.debug_mode:
         cleaned = cleaned.drop(

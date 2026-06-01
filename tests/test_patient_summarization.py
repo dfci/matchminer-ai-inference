@@ -11,7 +11,6 @@ from matchminer_ai.patients import summarize_patients
 from matchminer_ai.patients.postprocess import (
     clean_bad_data,
     parse_boilerplate,
-    split_reasoning_from_summary,
 )
 from matchminer_ai.patients.prompt_builder import get_serial_patient_prompt
 from matchminer_ai.patients.summarize import summarize_patient_notes
@@ -44,7 +43,6 @@ def _patient_config() -> dict:
             "primer": "patient.serial.user.primer.txt",
             "question": "patient.serial.user.question.txt",
         },
-        "reasoning_marker": "assistantfinal",
         "boilerplate_marker": "\\n.*Boilerplate.*\\n",
         "sampling_params": {
             "temperature": 0.0,
@@ -99,36 +97,21 @@ def _remote_config(debug_mode: bool = False) -> MMAIConfig:
     return config
 
 
-def test_split_reasoning_from_summary_matches_original_serial_script():
-    """Split raw model output before using it as serial prior summary state."""
-    reasoning, summary = split_reasoning_from_summary(
-        "analysis text\nassistantfinal\nAge: 70\nBoilerplate:\nNone",
-        "assistantfinal",
-    )
-
-    assert reasoning == "analysis text"
-    assert summary == "Age: 70\nBoilerplate:\nNone"
-
-
 def test_parse_boilerplate_splits_summary_and_exclusions():
     """Split patient summaries into cancer history vs exclusion evidence."""
     df = pd.DataFrame(
         [
             {
                 "original_patient_summary": (
-                    "assistantfinal\n"
-                    "Cancer history here.\n"
-                    "Boilerplate exclusions:\n"
-                    "No CNS mets."
+                    "Cancer history here.\n" "Boilerplate exclusions:\n" "No CNS mets."
                 )
             },
-            {"original_patient_summary": "assistantfinal\nCancer only."},
+            {"original_patient_summary": "Cancer only."},
         ]
     )
 
     parsed = parse_boilerplate(
         df,
-        reasoning_marker="assistantfinal",
         boilerplate_marker="Boilerplate exclusions:",
     )
 
@@ -154,7 +137,6 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
 
     parsed = parse_boilerplate(
         df,
-        reasoning_marker="",
         boilerplate_marker="\\s*Boilerplate conditions\\s*:?\\s*",
     )
 
@@ -301,12 +283,12 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
             self.calls += 1
             if self.calls == 1:
                 return (
-                    ["assistantfinal\nRound 1\nBoilerplate:\nNone"],
+                    ["Round 1\nBoilerplate:\nNone"],
                     {"model_name": "model", "model_sha": "sha"},
                     ["stop"],
                 )
             return (
-                ["assistantfinal\nRound 2\nBoilerplate:\nNone"],
+                ["Round 2\nBoilerplate:\nNone"],
                 {"model_name": "model", "model_sha": "sha"},
                 ["stop"],
             )
@@ -374,7 +356,7 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
         lambda config: MagicMock(
             generate_llm_outputs=MagicMock(
                 return_value=(
-                    ["assistantfinal\nUpdated\nBoilerplate:\nNone"],
+                    ["Updated\nBoilerplate:\nNone"],
                     {"model_name": "model", "model_sha": "sha"},
                     ["stop"],
                 )
@@ -469,8 +451,8 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             captured["prompt_list"] = prompt_list
             return (
                 [
-                    "assistantfinal\nRemote 1\nBoilerplate:\nNone",
-                    "assistantfinal\nRemote 2\nBoilerplate:\nNone",
+                    "Remote 1\nBoilerplate:\nNone",
+                    "Remote 2\nBoilerplate:\nNone",
                 ],
                 {"model_name": "model", "model_sha": "sha"},
                 ["stop", "stop"],

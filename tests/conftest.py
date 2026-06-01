@@ -47,7 +47,6 @@ def default_trial_config() -> dict:
             "primer": "trial.user.primer.txt",
             "question": "trial.user.question.txt",
         },
-        "reasoning_marker": "assistantfinal",
         "boilerplate_marker": "\\n.*Boilerplate.*\\n",
         "model_metadata_cache_dir": ".mmai_cache/model_metadata",
     }
@@ -86,7 +85,6 @@ def mock_summarized_data() -> pd.DataFrame:
                 "eligibility_criteria": "Criteria 1",
                 "trial_text": "Text 1",
                 "space_reasoning_and_output": (
-                    "assistantfinal\n"
                     f"{TRIAL_SPACE_1}\n"
                     f"{TRIAL_SPACE_2}\n"
                     f"{TRIAL_SPACE_3}\n"
@@ -101,10 +99,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "eligibility_criteria": "Criteria 2",
                 "trial_text": "Text 2",
                 "space_reasoning_and_output": (
-                    "assistantfinal\n"
-                    f"{TRIAL_SPACE_4}\n"
-                    "Boilerplate exclusions:\n"
-                    f"{BOILERPLATE_2}"
+                    f"{TRIAL_SPACE_4}\n" "Boilerplate exclusions:\n" f"{BOILERPLATE_2}"
                 ),
             },
         ]
@@ -115,11 +110,9 @@ def mock_summarized_data() -> pd.DataFrame:
 @pytest.fixture
 def expected_flattened_spaces(mock_summarized_data: pd.DataFrame) -> pd.DataFrame:
     with_summaries = mock_summarized_data.copy()
-    with_summaries["space_output_no_reasoning"] = (
-        with_summaries["space_reasoning_and_output"]
-        .str.split("assistantfinal", n=1)
-        .apply(lambda parts: parts[-1])
-    )
+    with_summaries["space_output_no_reasoning"] = with_summaries[
+        "space_reasoning_and_output"
+    ]
     with_summaries["space_text"] = [
         (TRIAL_SPACE_1 + "\n" + TRIAL_SPACE_2 + "\n" + TRIAL_SPACE_3).strip(),
         TRIAL_SPACE_4.strip(),

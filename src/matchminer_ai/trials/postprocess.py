@@ -37,24 +37,22 @@ REQUIRED_TRIAL_SPACE_KEYWORDS = [
 
 def _expand_trial_spaces(
     trials_with_summaries: pd.DataFrame,
-    reasoning_marker: str,
     boilerplate_marker: str,
 ) -> pd.DataFrame:
     """Expand LLM summaries into one row per clinical space."""
     trials_with_summaries = trials_with_summaries.copy()
     if "space_output_no_reasoning" not in trials_with_summaries.columns:
-        output = trials_with_summaries["space_reasoning_and_output"].astype(str)
-        if reasoning_marker:
-            output = output.str.split(reasoning_marker, n=1).apply(
-                lambda parts: parts[-1]
-            )
-        trials_with_summaries["space_output_no_reasoning"] = output
+        trials_with_summaries["space_output_no_reasoning"] = trials_with_summaries[
+            "space_reasoning_and_output"
+        ].astype(str)
 
     split_parts = trials_with_summaries["space_output_no_reasoning"].apply(
         lambda text: _split_boilerplate_section(str(text), boilerplate_marker)
     )
     trials_with_summaries["space_text"] = split_parts.apply(lambda parts: parts[0])
-    trials_with_summaries["boilerplate_text"] = split_parts.apply(lambda parts: parts[1])
+    trials_with_summaries["boilerplate_text"] = split_parts.apply(
+        lambda parts: parts[1]
+    )
 
     frames: list[pd.DataFrame] = []
     for i in range(trials_with_summaries.shape[0]):
@@ -130,13 +128,11 @@ def _split_boilerplate_section(text: str, boilerplate_marker: str) -> tuple[str,
 
 def flatten_trial_to_spaces(
     trials_with_summaries: pd.DataFrame,
-    reasoning_marker: str,
     boilerplate_marker: str,
 ) -> pd.DataFrame:
     """Split LLM summaries into individual clinical spaces and do keyword filtering."""
     cohort_level_trials = _expand_trial_spaces(
         trials_with_summaries,
-        reasoning_marker=reasoning_marker,
         boilerplate_marker=boilerplate_marker,
     )
     if cohort_level_trials.empty:
@@ -154,11 +150,9 @@ def postprocess_trial_summaries(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Postprocess trial summaries into clinical spaces."""
     trial_config = dict(config.trial)
-    reasoning_marker = str(trial_config.get("reasoning_marker", ""))
     boilerplate_marker = trial_config["boilerplate_marker"]
     unfiltered_spaces = _expand_trial_spaces(
         trials_with_summaries,
-        reasoning_marker=reasoning_marker,
         boilerplate_marker=boilerplate_marker,
     )
     spaces = unfiltered_spaces.loc[

@@ -15,7 +15,7 @@ from matchminer_ai.llm.backends import (
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
 from matchminer_ai.llm.prompt_rendering import Prompt
 
-from .postprocess import postprocess_patient_summaries, split_reasoning_from_summary
+from .postprocess import postprocess_patient_summaries
 from .prepare import prepare_patient_notes
 from .prompt_builder import (
     PromptWorkItem,
@@ -230,10 +230,7 @@ def summarize_patient_notes(
                 ["" for _summary in summaries],
             )
             # Persist each round's final summary, not the reasoning trace, so
-            # it becomes the prior summary for the next patient chunk. The
-            # split fallback supports older callers/tests that still return
-            # legacy assistantfinal-style raw text from a mocked backend.
-            reasoning_marker = str(patient_config.get("reasoning_marker", ""))
+            # it becomes the prior summary for the next patient chunk.
             for patient_id, summary, raw_output, reasoning in zip(
                 round_patient_ids,
                 summaries,
@@ -241,11 +238,6 @@ def summarize_patient_notes(
                 reasoning_outputs,
                 strict=False,
             ):
-                if reasoning_marker and reasoning_marker in str(summary):
-                    _, summary = split_reasoning_from_summary(
-                        str(summary),
-                        reasoning_marker,
-                    )
                 current_summaries[patient_id] = str(summary)
                 current_raw_outputs[patient_id] = str(raw_output)
                 current_reasoning_outputs[patient_id] = str(reasoning)

@@ -136,12 +136,6 @@ Keyword arguments passed to tokenizer chat-template rendering in local mode and
 to vLLM request `extra_body.chat_template_kwargs` in remote mode. The default
 sets `enable_thinking: true` for Gemma 4.
 
-### `trial.reasoning_marker`
-
-Legacy marker used only as a fallback when parsing outputs produced by older
-configs or mocked backends. The v22 default is empty because reasoning is
-handled by vLLM parsers.
-
 ### `trial.boilerplate_marker`
 
 Regular expression used by trial postprocessing to identify boilerplate
@@ -201,12 +195,6 @@ models, or use `none` to disable reasoning parsing for a non-reasoning model.
 Keyword arguments passed to tokenizer chat-template rendering in local mode and
 to vLLM request `extra_body.chat_template_kwargs` in remote mode. The default
 sets `enable_thinking: true` for Gemma 4.
-
-### `patient.reasoning_marker`
-
-Legacy marker used only as a fallback when parsing outputs produced by older
-configs or mocked backends. The v22 default is empty because reasoning is
-handled by vLLM parsers.
 
 ### `patient.boilerplate_marker`
 

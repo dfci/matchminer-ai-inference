@@ -133,7 +133,6 @@ def test_flatten_trial_to_spaces(
     """Validate postprocessing output against a fixture-based expected DataFrame."""
     result = flatten_trial_to_spaces(
         mock_summarized_data,
-        reasoning_marker="assistantfinal",
         boilerplate_marker="\\n.*Boilerplate.*\\n",
     )
     pd.testing.assert_frame_equal(
@@ -157,9 +156,7 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
                 "trial_text": "raw input",
                 "space_reasoning_and_output": "raw reasoning text",
                 "space_output_no_reasoning": (
-                    f"{trial_space}\n"
-                    "Boilerplate exclusions:\n"
-                    f"{boilerplate}"
+                    f"{trial_space}\n" "Boilerplate exclusions:\n" f"{boilerplate}"
                 ),
             }
         ]
@@ -167,7 +164,6 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
 
     result = flatten_trial_to_spaces(
         df,
-        reasoning_marker="",
         boilerplate_marker="Boilerplate",
     )
 
@@ -252,7 +248,6 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                     "trial_id": "T1",
                     "trial_text": "TEXT",
                     "space_reasoning_and_output": (
-                        "assistantfinal\n"
                         "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
                         "Histology allowed: Any. Cancer burden allowed: Any. "
                         "Prior treatment required: None. Prior treatment excluded: None. "
@@ -283,7 +278,6 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
         preset_name="default",
         debug_mode=True,
         trial={
-            "reasoning_marker": "assistantfinal",
             "boilerplate_marker": "\\n.*Boilerplate.*\\n",
         },
         patient={},
@@ -322,7 +316,6 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
             captured_prompts["prompt_list"] = prompt_list
             return (
                 [
-                    "assistantfinal\n"
                     "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
                     "Histology allowed: Any. Cancer burden allowed: Any. "
                     "Prior treatment required: None. Prior treatment excluded: None. "
@@ -389,7 +382,6 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
         ):
             return (
                 [
-                    "assistantfinal\n"
                     "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
                     "Histology allowed: Any. Cancer burden allowed: Any. "
                     "Prior treatment required: None. Prior treatment excluded: None. "
