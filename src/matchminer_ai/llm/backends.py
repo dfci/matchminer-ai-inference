@@ -5,9 +5,9 @@ from __future__ import annotations
 import gc
 import json
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Dict, Tuple, cast
+from typing import TYPE_CHECKING, Any, Dict, cast
 
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.reasoning import parse_reasoning_output
@@ -16,6 +16,17 @@ from matchminer_ai.llm.remote_inference import normalize_remote_server_urls
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
+
+
+@dataclass(frozen=True)
+class LLMGenerationResult:
+    """Structured output from one backend generation call."""
+
+    final_outputs: list[str]
+    model_metadata: Dict[str, Any]
+    finish_reasons: list[str]
+    reasoning_outputs: list[str]
+    raw_outputs: list[str]
 
 
 def _default_metadata_cache_dir() -> str:
@@ -96,16 +107,13 @@ def clear_local_llm_cache() -> None:
 class LocalBackend:
     """Local vLLM-backed implementation."""
 
-    last_raw_outputs: list[str] = field(default_factory=list, init=False)
-    last_reasoning_outputs: list[str] = field(default_factory=list, init=False)
-
     def generate_llm_outputs(
         self,
         *,
         prompt_list: list[Prompt],
         llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
-    ) -> Tuple[list[str], Dict[str, Any], list[str]]:
+    ) -> LLMGenerationResult:
         """
         Generate LLM outputs with a local vLLM model.
 
@@ -121,8 +129,9 @@ class LocalBackend:
 
         Returns
         -------
-        tuple
-            ``(texts, model_metadata, finish_reasons)``.
+        LLMGenerationResult
+            Final outputs, reasoning traces, raw local outputs, finish reasons,
+            and model metadata.
         """
         from vllm import SamplingParams
 
@@ -179,9 +188,13 @@ class LocalBackend:
         finish_reasons = [
             cast(str, response.outputs[0].finish_reason) for response in responses
         ]
-        self.last_raw_outputs = raw_texts
-        self.last_reasoning_outputs = reasonings
-        return texts, model_metadata, finish_reasons
+        return LLMGenerationResult(
+            final_outputs=texts,
+            model_metadata=model_metadata,
+            finish_reasons=finish_reasons,
+            reasoning_outputs=reasonings,
+            raw_outputs=raw_texts,
+        )
 
     def truncate_texts(
         self,
@@ -212,16 +225,13 @@ class LocalBackend:
 class RemoteBackend:
     """OpenAI-compatible remote vLLM HTTP backend."""
 
-    last_raw_outputs: list[str] = field(default_factory=list, init=False)
-    last_reasoning_outputs: list[str] = field(default_factory=list, init=False)
-
     def generate_llm_outputs(
         self,
         *,
         prompt_list: list[Prompt],
         llm_config: Dict[str, Any],
         model_metadata_cache_dir: str | None = None,
-    ) -> Tuple[list[str], Dict[str, Any], list[str]]:
+    ) -> LLMGenerationResult:
         """
         Generate LLM outputs through one or more remote vLLM servers.
 
@@ -242,13 +252,13 @@ class RemoteBackend:
             server_urls=server_urls,
             api_key=api_key,
         )
-        self.last_reasoning_outputs = reasonings
-        self.last_raw_outputs = [
-            f"{reasoning}\n{text}".strip() if reasoning else text
-            for reasoning, text in zip(reasonings, texts, strict=False)
-        ]
-
-        return texts, model_metadata, finish_reasons
+        return LLMGenerationResult(
+            final_outputs=texts,
+            model_metadata=model_metadata,
+            finish_reasons=finish_reasons,
+            reasoning_outputs=reasonings,
+            raw_outputs=[],
+        )
 
 
 def get_backend(name: str) -> LocalBackend | RemoteBackend:

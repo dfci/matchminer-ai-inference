@@ -117,18 +117,18 @@ def test_remote_backend_single_server_preserves_order(monkeypatch):
     """A single remote server returns outputs aligned to input prompt order."""
     _install_fakes(monkeypatch)
 
-    texts, metadata, finish_reasons = RemoteBackend().generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0", "p1", "p2"),
         llm_config=_llm_config(),
     )
 
-    assert texts == [
+    assert result.final_outputs == [
         "http://server-a/v1:p0",
         "http://server-a/v1:p1",
         "http://server-a/v1:p2",
     ]
-    assert metadata["model_sha"] == "sha"
-    assert finish_reasons == ["stop", "stop", "stop"]
+    assert result.model_metadata["model_sha"] == "sha"
+    assert result.finish_reasons == ["stop", "stop", "stop"]
     assert FakeAsyncOpenAI.clients[0].timeout == 183
     assert FakeAsyncOpenAI.clients[0].closed is True
 
@@ -137,14 +137,14 @@ def test_remote_backend_multiple_servers_distributes_and_preserves_order(monkeyp
     """Multiple remote servers receive round-robin prompts while output order holds."""
     _install_fakes(monkeypatch)
 
-    texts, _, _ = RemoteBackend().generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0", "p1", "p2", "p3"),
         llm_config=_llm_config(
             server_urls=["http://server-a/v1", "http://server-b/v1"]
         ),
     )
 
-    assert texts == [
+    assert result.final_outputs == [
         "http://server-a/v1:p0",
         "http://server-b/v1:p1",
         "http://server-a/v1:p2",
@@ -167,16 +167,15 @@ def test_remote_backend_captures_structured_reasoning(monkeypatch):
         return _response("final answer", reasoning="thinking text")
 
     FakeAsyncOpenAI.behavior = behavior
-    backend = RemoteBackend()
-    texts, _, finish_reasons = backend.generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(),
     )
 
-    assert texts == ["final answer"]
-    assert backend.last_reasoning_outputs == ["thinking text"]
-    assert backend.last_raw_outputs == ["thinking text\nfinal answer"]
-    assert finish_reasons == ["stop"]
+    assert result.final_outputs == ["final answer"]
+    assert result.reasoning_outputs == ["thinking text"]
+    assert result.raw_outputs == []
+    assert result.finish_reasons == ["stop"]
 
 
 def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
@@ -203,14 +202,13 @@ def test_remote_backend_accepts_legacy_reasoning_content(monkeypatch):
         return _response("final answer", reasoning="", reasoning_content="old thinking")
 
     FakeAsyncOpenAI.behavior = behavior
-    backend = RemoteBackend()
-    texts, _, _ = backend.generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(),
     )
 
-    assert texts == ["final answer"]
-    assert backend.last_reasoning_outputs == ["old thinking"]
+    assert result.final_outputs == ["final answer"]
+    assert result.reasoning_outputs == ["old thinking"]
 
 
 def test_remote_backend_uses_env_var_api_key(monkeypatch):
@@ -242,12 +240,12 @@ def test_remote_backend_allows_multiple_in_flight_and_respects_limit(monkeypatch
 
     FakeAsyncOpenAI.behavior = behavior
 
-    texts, _, _ = RemoteBackend().generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0", "p1", "p2", "p3", "p4"),
         llm_config=_llm_config(max_concurrent_requests=2),
     )
 
-    assert texts == ["p0", "p1", "p2", "p3", "p4"]
+    assert result.final_outputs == ["p0", "p1", "p2", "p3", "p4"]
     assert max_active == 2
 
 
@@ -265,11 +263,11 @@ def test_remote_backend_retries_transient_failures(monkeypatch):
 
     FakeAsyncOpenAI.behavior = behavior
 
-    texts, _, finish_reasons = RemoteBackend().generate_llm_outputs(
+    result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(max_retries=2),
     )
 
     assert attempts == 2
-    assert texts == ["recovered"]
-    assert finish_reasons == ["length"]
+    assert result.final_outputs == ["recovered"]
+    assert result.finish_reasons == ["length"]

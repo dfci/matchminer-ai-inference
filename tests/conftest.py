@@ -84,7 +84,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 1",
                 "eligibility_criteria": "Criteria 1",
                 "trial_text": "Text 1",
-                "space_reasoning_and_output": (
+                "space_output_no_reasoning": (
                     f"{TRIAL_SPACE_1}\n"
                     f"{TRIAL_SPACE_2}\n"
                     f"{TRIAL_SPACE_3}\n"
@@ -98,7 +98,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 2",
                 "eligibility_criteria": "Criteria 2",
                 "trial_text": "Text 2",
-                "space_reasoning_and_output": (
+                "space_output_no_reasoning": (
                     f"{TRIAL_SPACE_4}\n" "Boilerplate exclusions:\n" f"{BOILERPLATE_2}"
                 ),
             },
@@ -110,9 +110,6 @@ def mock_summarized_data() -> pd.DataFrame:
 @pytest.fixture
 def expected_flattened_spaces(mock_summarized_data: pd.DataFrame) -> pd.DataFrame:
     with_summaries = mock_summarized_data.copy()
-    with_summaries["space_output_no_reasoning"] = with_summaries[
-        "space_reasoning_and_output"
-    ]
     with_summaries["space_text"] = [
         (TRIAL_SPACE_1 + "\n" + TRIAL_SPACE_2 + "\n" + TRIAL_SPACE_3).strip(),
         TRIAL_SPACE_4.strip(),

@@ -76,17 +76,6 @@ def _build_rounds(prepared_chunks: pd.DataFrame) -> list[pd.DataFrame]:
     return rounds
 
 
-def _backend_outputs_or(
-    backend: Any,
-    attr_name: str,
-    fallback: list[str],
-) -> list[str]:
-    value = getattr(backend, attr_name, None)
-    if isinstance(value, list) and len(value) == len(fallback):
-        return value
-    return fallback
-
-
 def _build_prompt_list(
     round_df: pd.DataFrame,
     *,
@@ -214,21 +203,17 @@ def summarize_patient_notes(
                 prompt_pool=prompt_pool,
                 n_prompt_workers=n_prompt_workers,
             )
-            summaries, round_model_metadata, _finish_reasons = (
-                backend.generate_llm_outputs(
-                    prompt_list=prompt_list,
-                    llm_config=runtime_patient_config,
-                    model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
-                )
+            generation = backend.generate_llm_outputs(
+                prompt_list=prompt_list,
+                llm_config=runtime_patient_config,
+                model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
             )
             if not model_metadata:
-                model_metadata = round_model_metadata
-            raw_outputs = _backend_outputs_or(backend, "last_raw_outputs", summaries)
-            reasoning_outputs = _backend_outputs_or(
-                backend,
-                "last_reasoning_outputs",
-                ["" for _summary in summaries],
-            )
+                model_metadata = generation.model_metadata
+            summaries = generation.final_outputs
+            has_raw_outputs = bool(generation.raw_outputs)
+            raw_outputs = generation.raw_outputs if has_raw_outputs else summaries
+            reasoning_outputs = generation.reasoning_outputs
             # Persist each round's final summary, not the reasoning trace, so
             # it becomes the prior summary for the next patient chunk.
             for patient_id, summary, raw_output, reasoning in zip(
@@ -239,7 +224,8 @@ def summarize_patient_notes(
                 strict=False,
             ):
                 current_summaries[patient_id] = str(summary)
-                current_raw_outputs[patient_id] = str(raw_output)
+                if has_raw_outputs:
+                    current_raw_outputs[patient_id] = str(raw_output)
                 current_reasoning_outputs[patient_id] = str(reasoning)
     finally:
         if prompt_pool is not None:
@@ -252,12 +238,16 @@ def summarize_patient_notes(
         current_summaries
     )
     if resolved_config.debug_mode:
-        final_rows["patient_summary_raw_output"] = final_rows["patient_id"].map(
-            current_raw_outputs
-        )
-        final_rows["patient_summary_reasoning"] = final_rows["patient_id"].map(
-            current_reasoning_outputs
-        )
+        final_rows["final_round_patient_summary_output_no_reasoning"] = final_rows[
+            "original_patient_summary"
+        ]
+        if current_raw_outputs:
+            final_rows["final_round_patient_summary_raw_output"] = final_rows[
+                "patient_id"
+            ].map(current_raw_outputs)
+        final_rows["final_round_patient_summary_reasoning"] = final_rows[
+            "patient_id"
+        ].map(current_reasoning_outputs)
     final_rows = final_rows.dropna(subset=["original_patient_summary"]).copy()
 
     final_rows, noninformative_summary_qc_artifact = postprocess_patient_summaries(

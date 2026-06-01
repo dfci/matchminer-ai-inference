@@ -71,8 +71,12 @@ def summarize_trials(
         trial_text : str
             Concatenation of trial_title + brief_summary + eligibility_criteria.
             This is the raw input text fed into the LLM.
-        space_reasoning_and_output : str
-            Raw LLM response text.
+        space_output_no_reasoning : str
+            Final LLM output after reasoning parsing.
+        space_reasoning : str
+            Parsed reasoning text when the backend provides it.
+        space_raw_output : str
+            Raw generated text when available from local in-process inference.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]

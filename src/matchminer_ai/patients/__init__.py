@@ -76,7 +76,22 @@ def summarize_patients(
             Summary of conditions / findings that correspond to common
             clinical trial exclusion criteria.
 
-        Debug output columns for serial patient summarization will be added later.
+        Debug Columns
+        (Available only if pipeline initialized with debug_mode=True)
+        -------------------------------------------------------------
+        original_patient_summary : str
+            Final serial summary before boilerplate splitting.
+        cleaned_patient_summary : str
+            Final serial summary after whitespace cleanup.
+        final_round_patient_summary_output_no_reasoning : str
+            Final LLM output from the final serial summarization round after
+            reasoning parsing.
+        final_round_patient_summary_raw_output : str
+            Raw generated text from the final serial summarization round when
+            available.
+        final_round_patient_summary_reasoning : str
+            Parsed reasoning text from the final serial summarization round
+            when available.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]

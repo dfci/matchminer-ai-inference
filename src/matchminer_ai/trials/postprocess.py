@@ -56,10 +56,6 @@ def _expand_trial_spaces(
 ) -> pd.DataFrame:
     """Expand LLM summaries into one row per clinical space."""
     trials_with_summaries = trials_with_summaries.copy()
-    if "space_output_no_reasoning" not in trials_with_summaries.columns:
-        trials_with_summaries["space_output_no_reasoning"] = trials_with_summaries[
-            "space_reasoning_and_output"
-        ].astype(str)
 
     split_parts = trials_with_summaries["space_output_no_reasoning"].apply(
         lambda text: _split_boilerplate_section(str(text), boilerplate_marker)
@@ -169,8 +165,10 @@ def postprocess_trial_summaries(
 
     if config.debug_mode:
         output["trial_text"] = spaces["trial_text"]
-        output["space_reasoning_and_output"] = spaces["space_reasoning_and_output"]
+        output["space_output_no_reasoning"] = spaces["space_output_no_reasoning"]
         if "space_reasoning" in spaces.columns:
             output["space_reasoning"] = spaces["space_reasoning"]
+        if "space_raw_output" in spaces.columns:
+            output["space_raw_output"] = spaces["space_raw_output"]
     # qc spaces = unfiltered trial spaces
     return output, unfiltered_spaces

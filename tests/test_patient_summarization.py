@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 
 from matchminer_ai.config import MMAIConfig
-from matchminer_ai.llm.backends import LocalBackend
+from matchminer_ai.llm.backends import LLMGenerationResult, LocalBackend
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.patients import summarize_patients
@@ -282,15 +282,19 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
         ):
             self.calls += 1
             if self.calls == 1:
-                return (
-                    ["Round 1\nBoilerplate conditions:\nNone"],
-                    {"model_name": "model", "model_sha": "sha"},
-                    ["stop"],
+                return LLMGenerationResult(
+                    final_outputs=["Round 1\nBoilerplate conditions:\nNone"],
+                    model_metadata={"model_name": "model", "model_sha": "sha"},
+                    finish_reasons=["stop"],
+                    reasoning_outputs=[""],
+                    raw_outputs=[],
                 )
-            return (
-                ["Round 2\nBoilerplate conditions:\nNone"],
-                {"model_name": "model", "model_sha": "sha"},
-                ["stop"],
+            return LLMGenerationResult(
+                final_outputs=["Round 2\nBoilerplate conditions:\nNone"],
+                model_metadata={"model_name": "model", "model_sha": "sha"},
+                finish_reasons=["stop"],
+                reasoning_outputs=[""],
+                raw_outputs=[],
             )
 
     monkeypatch.setattr(
@@ -355,10 +359,12 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
         "matchminer_ai.patients.summarize.get_summarization_backend",
         lambda config: MagicMock(
             generate_llm_outputs=MagicMock(
-                return_value=(
-                    ["Updated\nBoilerplate conditions:\nNone"],
-                    {"model_name": "model", "model_sha": "sha"},
-                    ["stop"],
+                return_value=LLMGenerationResult(
+                    final_outputs=["Updated\nBoilerplate conditions:\nNone"],
+                    model_metadata={"model_name": "model", "model_sha": "sha"},
+                    finish_reasons=["stop"],
+                    reasoning_outputs=[""],
+                    raw_outputs=[],
                 )
             )
         ),
@@ -449,13 +455,15 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             model_metadata_cache_dir=None,
         ):
             captured["prompt_list"] = prompt_list
-            return (
-                [
+            return LLMGenerationResult(
+                final_outputs=[
                     "Remote 1\nBoilerplate conditions:\nNone",
                     "Remote 2\nBoilerplate conditions:\nNone",
                 ],
-                {"model_name": "model", "model_sha": "sha"},
-                ["stop", "stop"],
+                model_metadata={"model_name": "model", "model_sha": "sha"},
+                finish_reasons=["stop", "stop"],
+                reasoning_outputs=["", ""],
+                raw_outputs=[],
             )
 
     monkeypatch.setattr(
