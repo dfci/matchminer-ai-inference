@@ -83,9 +83,6 @@ def summarize_patients(
             Final serial summary before boilerplate splitting.
         cleaned_patient_summary : str
             Final serial summary after whitespace cleanup.
-        final_round_patient_summary_output_no_reasoning : str
-            Final LLM output from the final serial summarization round after
-            reasoning parsing.
         final_round_patient_summary_raw_output : str
             Raw generated text from the final serial summarization round when
             available.

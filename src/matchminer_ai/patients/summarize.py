@@ -238,9 +238,6 @@ def summarize_patient_notes(
         current_summaries
     )
     if resolved_config.debug_mode:
-        final_rows["final_round_patient_summary_output_no_reasoning"] = final_rows[
-            "original_patient_summary"
-        ]
         if current_raw_outputs:
             final_rows["final_round_patient_summary_raw_output"] = final_rows[
                 "patient_id"
