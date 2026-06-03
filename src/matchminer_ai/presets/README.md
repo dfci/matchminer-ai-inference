@@ -110,6 +110,10 @@ Model identifier used for:
 For remote mode, the vLLM server must expose a served model name matching this
 value.
 
+The default preset uses a Gemma 4 model for summarization. The specific Gemma
+variant that will run successfully may depend on the available GPU type and
+memory.
+
 ### `trial.sampling_params`
 
 Keyword arguments passed to `vllm.SamplingParams(...)` in local mode.
@@ -157,6 +161,10 @@ Model identifier used for:
 
 For remote mode, the vLLM server must expose a served model name matching this
 value.
+
+The default preset uses a Gemma 4 model for summarization. The specific Gemma
+variant that will run successfully may depend on the available GPU type and
+memory.
 
 ### `patient.chunk_size`
 
