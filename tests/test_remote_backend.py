@@ -194,6 +194,39 @@ def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
     ] == {"enable_thinking": True}
 
 
+def test_remote_backend_forwards_sampling_params(monkeypatch):
+    """Remote requests forward config sampling params to request args/extra_body."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            sampling_params={
+                "temperature": 0.7,
+                "top_p": 0.95,
+                "presence_penalty": 1.5,
+                "max_tokens": 99,
+                "top_k": 20,
+                "min_p": 0.0,
+                "repetition_penalty": 1.1,
+                "skip_special_tokens": False,
+            },
+        ),
+    )
+
+    call = FakeAsyncOpenAI.clients[0].calls[0]
+    assert call["temperature"] == 0.7
+    assert call["top_p"] == 0.95
+    assert call["presence_penalty"] == 1.5
+    assert call["max_tokens"] == 10
+    assert call["extra_body"] == {
+        "top_k": 20,
+        "min_p": 0.0,
+        "repetition_penalty": 1.1,
+        "skip_special_tokens": False,
+    }
+
+
 def test_remote_backend_accepts_legacy_reasoning_content(monkeypatch):
     """Older vLLM servers used message.reasoning_content."""
     _install_fakes(monkeypatch)

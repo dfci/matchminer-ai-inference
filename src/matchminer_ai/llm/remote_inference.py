@@ -100,13 +100,8 @@ async def single_inference_request(
     row_idx: int,
     messages: list[dict[str, str]],
     model: str,
-    temperature: float,
-    max_tokens: int,
-    top_k: int,
-    top_p: float = 1.0,
-    presence_penalty: float = 0.0,
-    min_p: float = 0.0,
-    repetition_penalty: float = 1.0,
+    request_params: dict[str, Any],
+    extra_body_params: dict[str, Any],
     chat_template_kwargs: dict[str, Any] | None = None,
     max_retries: int = 6,
     base_timeout: float = 600.0,
@@ -122,22 +117,14 @@ async def single_inference_request(
     """
     for attempt in range(max_retries):
         try:
-            extra: dict[str, Any] = {
-                "top_k": top_k,
-                "repetition_penalty": repetition_penalty,
-            }
-            if min_p > 0.0:
-                extra["min_p"] = min_p
+            extra = dict(extra_body_params)
             if chat_template_kwargs:
                 extra["chat_template_kwargs"] = dict(chat_template_kwargs)
             response = await asyncio.wait_for(
                 client.chat.completions.create(
                     model=model,
                     messages=messages,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                    top_p=top_p,
-                    presence_penalty=presence_penalty,
+                    **request_params,
                     extra_body=extra,
                 ),
                 timeout=base_timeout,
@@ -197,12 +184,8 @@ async def run_inference_batch(
     client: Any,
     prompts: list[Prompt],
     model: str,
-    temperature: float,
-    top_k: int,
-    top_p: float = 1.0,
-    presence_penalty: float = 0.0,
-    min_p: float = 0.0,
-    repetition_penalty: float = 1.0,
+    request_params: dict[str, Any],
+    extra_body_params: dict[str, Any],
     chat_template_kwargs: dict[str, Any] | None = None,
     max_concurrent: int = 16,
     batch_size: int = 1000,
@@ -243,13 +226,11 @@ async def run_inference_batch(
                     row_idx=prompt.row_idx,
                     messages=messages,
                     model=model,
-                    temperature=temperature,
-                    max_tokens=prompt.max_tokens,
-                    top_k=top_k,
-                    top_p=top_p,
-                    presence_penalty=presence_penalty,
-                    min_p=min_p,
-                    repetition_penalty=repetition_penalty,
+                    request_params={
+                        **request_params,
+                        "max_tokens": prompt.max_tokens,
+                    },
+                    extra_body_params=extra_body_params,
                     chat_template_kwargs=chat_template_kwargs,
                     max_retries=max_retries,
                     base_timeout=base_timeout,
@@ -303,6 +284,24 @@ async def generate_remote_llm_outputs_async(
     retry_backoff_base = float(llm_config.get("retry_backoff_base", 1.0))
     batch_size = max(1, int(llm_config["batch_size"]))
     chat_template_kwargs = llm_config.get("chat_template_kwargs")
+    request_param_keys = {
+        "temperature",
+        "top_p",
+        "presence_penalty",
+        "frequency_penalty",
+        "stop",
+        "seed",
+    }
+    request_params = {
+        key: value
+        for key, value in sampling_params.items()
+        if key in request_param_keys
+    }
+    extra_body_params = {
+        key: value
+        for key, value in sampling_params.items()
+        if key not in request_param_keys and key != "max_tokens"
+    }
     server_clients = connect_to_remote_servers(
         server_urls=server_urls,
         request_timeout=request_timeout,
@@ -323,14 +322,8 @@ async def generate_remote_llm_outputs_async(
                         client=client,
                         prompts=prompt_group,
                         model=model_name,
-                        temperature=float(sampling_params["temperature"]),
-                        top_k=int(sampling_params["top_k"]),
-                        top_p=float(sampling_params.get("top_p", 1.0)),
-                        presence_penalty=float(
-                            sampling_params.get("presence_penalty", 0.0)
-                        ),
-                        min_p=float(sampling_params.get("min_p", 0.0)),
-                        repetition_penalty=float(sampling_params["repetition_penalty"]),
+                        request_params=request_params,
+                        extra_body_params=extra_body_params,
                         chat_template_kwargs=chat_template_kwargs,
                         max_concurrent=max_concurrent_requests,
                         batch_size=batch_size,
