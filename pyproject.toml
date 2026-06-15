@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,11 +8,26 @@ version = "0.1.0"
 description = "MatchMiner-AI package"
 readme = "README.md"
 requires-python = ">=3.13"
+license = "GPL-2.0-only"
+license-files = ["LICENSE"]
 maintainers = [
   { name = "Sabrina Camp", email = "sabrinay_camp@dfci.harvard.edu" },
+  { name = "Ken Kehl", email = "Kenneth_Kehl@dfci.harvard.edu" },
+]
+keywords = [
+  "clinical-trials",
+  "oncology",
+  "trial-matching",
+  "natural-language-processing",
+  "large-language-models",
 ]
 classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]
 dependencies = [
   "numpy>=2.4.4",
@@ -34,8 +49,17 @@ dev = [
   "pytest-cov>=5.0",
   "ruff>=0.6.0",
   "mypy>=1.10",
-  "types-PyYAML"
+  "types-PyYAML",
 ]
+release = [
+  "build>=1.2",
+  "twine>=5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/dfci/matchminer-ai-inference"
+Repository = "https://github.com/dfci/matchminer-ai-inference"
+Issues = "https://github.com/dfci/matchminer-ai-inference/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
