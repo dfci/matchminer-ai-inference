@@ -14,12 +14,10 @@ Other entry points, such as running from precomputed summaries, may require less
 
 ## Installation
 
-This package requires Python 3.13+. Clone this repository and install the package in editable mode:
+This package requires Python 3.13+.
 
 ```shell
-git clone https://github.com/dfci/matchminer-ai-inference.git
-cd matchminer-ai-inference
-pip install -e .
+pip install matchminer-ai
 ```
 
 ## Quickstart
@@ -34,10 +32,11 @@ If you use `matchminer-ai`, please cite:
 
 ## Contributing
 
-We recommend working in a virtual or conda environment.
-Using `venv`:
+Clone the repository and install the package in editable mode. We recommend working in a virtual or conda environment.
 
 ```shell
+git clone https://github.com/dfci/matchminer-ai-inference.git
+cd matchminer-ai-inference
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"

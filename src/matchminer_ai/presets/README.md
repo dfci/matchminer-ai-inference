@@ -3,6 +3,18 @@
 Preset files are YAML mappings loaded by `matchminer_ai.config.load_preset`.
 `default.yaml` is loaded by `load_default_preset()`.
 
+## Custom Config Files
+
+For package installs, treat the built-in preset files as read-only package data.
+To customize configuration, copy the default preset values into a YAML file in
+your project, edit them, and load that file by path:
+
+```python
+from matchminer_ai import load_config
+
+config = load_config("my_config.yaml")
+```
+
 ## Root Keys
 
 ### `version`
