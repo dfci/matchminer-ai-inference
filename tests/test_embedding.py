@@ -47,6 +47,7 @@ def test_embed_for_matching_patient(monkeypatch):
             "model_path": "mock-model",
             "device": "cpu",
             "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
         },
     )
 
@@ -79,6 +80,7 @@ def test_embed_for_matching_trial(monkeypatch):
             "model_path": "mock-model",
             "device": "cpu",
             "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
         },
     )
 
@@ -115,6 +117,7 @@ def test_embed_for_matching_missing_column(monkeypatch):
             "model_path": "mock-model",
             "device": "cpu",
             "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
         },
     )
 
@@ -146,6 +149,7 @@ def test_embed_for_matching_reads_config(monkeypatch):
             "model_path": "cfg-model",
             "device": "cpu",
             "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
         },
     )
     result = embed_for_matching(
@@ -178,6 +182,7 @@ def test_embed_for_matching_return_metadata(monkeypatch):
             "model_path": "cfg-model",
             "device": "cpu",
             "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
         },
     )
 

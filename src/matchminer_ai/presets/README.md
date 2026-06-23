@@ -263,10 +263,10 @@ query prompt.
 
 ### `embedding.max_seq_length`
 
-Runtime truncation cutoff for embedding inputs. `SentenceTransformer` uses this
-value during `encode()`, so inputs longer than this limit are truncated before
-embedding generation. Keep this aligned with the intended TrialSpace runtime
-defaults.
+Runtime truncation cutoff for embedding inputs. `SentenceTransformer`
+uses this value during `encode()`, so inputs longer than this limit are
+truncated before embedding generation. QC reports use the same value when
+flagging summaries that exceed the embedding input limit.
 
 ## `match_quality`
 

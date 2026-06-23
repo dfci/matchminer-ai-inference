@@ -36,7 +36,12 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
         patient={},
         local={},
         remote={},
-        embedding={"model_path": "m", "device": "cpu", "prompt_file": "embedding.txt"},
+        embedding={
+            "model_path": "m",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
+        },
         model_metadata_cache_dir=None,
         raw={},
     )
@@ -50,7 +55,6 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
             "ids": ["P2"],
         },
         config=config,
-        max_embedding_input_tokens=2500,
         expected_keywords=["Cancer type", "Histology"],
     ).set_index("metric")
 

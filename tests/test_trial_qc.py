@@ -63,7 +63,12 @@ def test_trial_qc_report_metrics(monkeypatch):
         patient={},
         local={},
         remote={},
-        embedding={"model_path": "m", "device": "cpu", "prompt_file": "embedding.txt"},
+        embedding={
+            "model_path": "m",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
+        },
         model_metadata_cache_dir=None,
         raw={},
     )
@@ -74,7 +79,6 @@ def test_trial_qc_report_metrics(monkeypatch):
         unfiltered_spaces=trial_spaces,
         truncated_llm_qc_artifact=truncated_llm_qc_artifact,
         config=config,
-        max_embedding_input_tokens=2500,
     ).set_index("metric")
 
     assert report.loc["trials_missing_in_output", "value"] == 1

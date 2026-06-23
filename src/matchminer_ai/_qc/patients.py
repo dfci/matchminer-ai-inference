@@ -37,7 +37,6 @@ def patient_summary_qc_report(
     *,
     noninformative_summary_qc_artifact: dict[str, object],
     config: MMAIConfig | None = None,
-    max_embedding_input_tokens: int | None = None,
     expected_keywords: list[str] | None = None,
 ) -> pd.DataFrame:
     """
@@ -55,9 +54,6 @@ def patient_summary_qc_report(
     config : MMAIConfig | None, optional
         Config used to resolve backend and embedding settings when token counts
         are computed inside this QC function.
-    max_embedding_input_tokens : int
-        Maximum token length accepted by the embedding model. Defaults to
-        config.embedding["max_seq_length"] when available, otherwise 2500.
     expected_keywords : list[str], optional
         Keywords expected in each cancer_history_summary.
 
@@ -94,11 +90,7 @@ def patient_summary_qc_report(
     # QC metric for summaries that exceed embedding model token limit
     if config is not None and config.embedding:
         embedding_config = dict(config.embedding)
-        embedding_token_limit = (
-            int(max_embedding_input_tokens)
-            if max_embedding_input_tokens is not None
-            else int(embedding_config.get("max_seq_length", 2500))
-        )
+        embedding_token_limit = int(embedding_config["max_seq_length"])
         token_series = pd.Series(
             count_embedding_tokens(
                 summaries["cancer_history_summary"].fillna("").astype(str).tolist(),

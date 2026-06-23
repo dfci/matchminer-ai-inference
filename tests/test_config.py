@@ -37,6 +37,7 @@ embedding:
   model_path: custom-embedding-model
   device: cpu
   prompt_file: embedding.txt
+  max_seq_length: 2500
 match_quality:
   model_name: custom-match-model
 exclusion_criteria:
@@ -53,6 +54,7 @@ exclusion_criteria:
     assert config.trial["model_name"] == "custom-trial-model"
     assert config.patient["model_name"] == "custom-patient-model"
     assert config.embedding["device"] == "cpu"
+    assert config.embedding["max_seq_length"] == 2500
     assert config.raw["match_quality"]["model_name"] == "custom-match-model"
 
 

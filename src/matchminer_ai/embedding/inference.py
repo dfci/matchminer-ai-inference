@@ -18,13 +18,12 @@ def _load_prompt_text(filename: str) -> str:
 
 def _resolve_embedding_runtime(
     embedding_config: Dict[str, Any],
-) -> tuple[str, str, str, int | None]:
+) -> tuple[str, str, str, int]:
     """Resolve embedding model path, device, query prompt text, and length."""
     model_path = str(embedding_config.get("model_path", "")).strip()
     device = str(embedding_config.get("device", "cpu")).strip() or "cpu"
     prompt_filename = str(embedding_config.get("prompt_file", "")).strip()
-    max_seq_length_value = embedding_config.get("max_seq_length")
-    max_seq_length = None if max_seq_length_value is None else int(max_seq_length_value)
+    max_seq_length = int(embedding_config["max_seq_length"])
     query_prompt = _load_prompt_text(prompt_filename).strip()
     return model_path, device, query_prompt, max_seq_length
 
@@ -34,16 +33,15 @@ def _get_embedding_model(
     model_path: str,
     device: str,
     prompt: str,
-    max_seq_length: int | None,
+    max_seq_length: int,
 ):
     """Load and cache a SentenceTransformer embedding model."""
     from sentence_transformers import SentenceTransformer
 
     model = SentenceTransformer(model_path, device=device)
     model.prompts["query"] = prompt
-    if max_seq_length is not None:
-        # SentenceTransformer uses this as the truncation cutoff during encode().
-        model.max_seq_length = max_seq_length
+    # SentenceTransformer uses this as the truncation cutoff during encode().
+    model.max_seq_length = max_seq_length
     return model
 
 
