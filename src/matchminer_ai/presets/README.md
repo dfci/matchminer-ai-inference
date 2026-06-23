@@ -34,7 +34,7 @@ metadata JSON files.
 ## `local`
 
 Configuration used when `remote.enabled` is false and trial/patient
-summarization runs through an in-process vLLM engine.
+summarization and LLM-based checker tasks run through an in-process vLLM engine.
 
 ### `local.trial`
 
@@ -66,6 +66,34 @@ vLLM validates those keys when the engine is created.
 
 `max_model_len` is also read by patient prompt construction to determine the
 maximum context window used for chunk truncation.
+
+### `local.llm_match_quality`
+
+Keyword arguments passed to `vllm.LLM(...)` for the LLM-based match-quality
+checker. The package adds `model=llm_match_quality.model_name` separately.
+
+Required by the default preset:
+
+- `max_model_len`
+- `tensor_parallel_size`
+- `gpu_memory_utilization`
+
+Additional keys may be included if they are valid `vllm.LLM` keyword arguments.
+vLLM validates those keys when the engine is created.
+
+### `local.llm_exclusion_criteria`
+
+Keyword arguments passed to `vllm.LLM(...)` for the LLM-based exclusion-criteria
+checker. The package adds `model=llm_exclusion_criteria.model_name` separately.
+
+Required by the default preset:
+
+- `max_model_len`
+- `tensor_parallel_size`
+- `gpu_memory_utilization`
+
+Additional keys may be included if they are valid `vllm.LLM` keyword arguments.
+vLLM validates those keys when the engine is created.
 
 ## `remote`
 
@@ -285,6 +313,10 @@ Device passed to the checker pipeline.
 
 Prompt template filename loaded from `matchminer_ai.prompts`.
 
+### `match_quality.max_length`
+
+Maximum token length passed to the text-classification checker pipeline.
+
 ### `match_quality.score_cutoff`
 
 Minimum sigmoid-transformed checker score required for
@@ -306,3 +338,69 @@ Device passed to the checker pipeline.
 ### `exclusion_criteria.prompt_file`
 
 Prompt template filename loaded from `matchminer_ai.prompts`.
+
+### `exclusion_criteria.max_length`
+
+Maximum token length passed to the text-classification checker pipeline.
+
+## `llm_match_quality`
+
+Configuration for the LLM-based match-quality checker.
+
+### `llm_match_quality.model_name`
+
+Model identifier used for tokenizer/chat-template rendering, local vLLM
+execution, and model metadata lookup. In remote mode, this is also the
+OpenAI-compatible request model unless `remote.served_model_name` is set.
+
+### `llm_match_quality.sampling_params`
+
+Keyword arguments passed to `vllm.SamplingParams(...)` in local mode.
+
+Remote mode maps known OpenAI-compatible fields and selected vLLM-specific
+fields from this mapping into chat completion request parameters.
+
+### `llm_match_quality.prompt_file`
+
+Prompt template filename loaded from `matchminer_ai.prompts`.
+
+### `llm_match_quality.reasoning_parser`
+
+vLLM reasoning parser name. The default `auto` resolves known model names,
+including `google/gemma-4-31B-it` to `gemma4`.
+
+### `llm_match_quality.chat_template_kwargs`
+
+Keyword arguments passed to tokenizer chat-template rendering in local mode and
+to vLLM request `extra_body.chat_template_kwargs` in remote mode.
+
+## `llm_exclusion_criteria`
+
+Configuration for the LLM-based exclusion-criteria checker.
+
+### `llm_exclusion_criteria.model_name`
+
+Model identifier used for tokenizer/chat-template rendering, local vLLM
+execution, and model metadata lookup. In remote mode, this is also the
+OpenAI-compatible request model unless `remote.served_model_name` is set.
+
+### `llm_exclusion_criteria.sampling_params`
+
+Keyword arguments passed to `vllm.SamplingParams(...)` in local mode.
+
+Remote mode maps known OpenAI-compatible fields and selected vLLM-specific
+fields from this mapping into chat completion request parameters.
+
+### `llm_exclusion_criteria.prompt_file`
+
+Prompt template filename loaded from `matchminer_ai.prompts`.
+
+### `llm_exclusion_criteria.reasoning_parser`
+
+vLLM reasoning parser name. The default `auto` resolves known model names,
+including `google/gemma-4-31B-it` to `gemma4`.
+
+### `llm_exclusion_criteria.chat_template_kwargs`
+
+Keyword arguments passed to tokenizer chat-template rendering in local mode and
+to vLLM request `extra_body.chat_template_kwargs` in remote mode.
