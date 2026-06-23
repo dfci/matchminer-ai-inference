@@ -10,7 +10,7 @@ import pandas as pd
 
 from matchminer_ai.config import config_snapshot, load_default_preset
 from matchminer_ai.llm.backends import (
-    build_summarization_runtime_config,
+    build_llm_runtime_config,
     get_summarization_backend,
 )
 from matchminer_ai.llm.prompt_rendering import build_prompt_list
@@ -75,7 +75,7 @@ def _run_llm_check(
     llm_config = dict(config.raw.get(section_name, {}))
     if not llm_config:
         raise ValueError(f"Config is missing '{section_name}' settings.")
-    runtime_config = build_summarization_runtime_config(
+    runtime_config = build_llm_runtime_config(
         section_name,
         llm_config,
         config=config,

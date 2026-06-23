@@ -9,7 +9,7 @@ import pandas as pd
 from transformers import AutoTokenizer
 
 from matchminer_ai.llm.backends import (
-    build_summarization_runtime_config,
+    build_llm_runtime_config,
     get_summarization_backend,
 )
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
@@ -149,7 +149,7 @@ def summarize_patient_notes(
         raise TypeError("config must be an MMAIConfig instance or None.")
 
     patient_config = dict(resolved_config.patient)
-    runtime_patient_config = build_summarization_runtime_config(
+    runtime_patient_config = build_llm_runtime_config(
         "patient",
         patient_config,
         config=resolved_config,

@@ -11,7 +11,7 @@ from matchminer_ai.llm.backends import (
     LLMGenerationResult,
     LocalBackend,
     RemoteBackend,
-    build_summarization_runtime_config,
+    build_llm_runtime_config,
     get_summarization_backend,
 )
 from matchminer_ai.llm.prompt_rendering import build_prompt_list
@@ -49,7 +49,7 @@ def run_llm_summarization(
 ) -> tuple[pd.DataFrame, dict[str, Any], dict[str, object]]:
     """Run LLM-based trial summarization."""
     trial_config = dict(config.trial)
-    runtime_trial_config = build_summarization_runtime_config(
+    runtime_trial_config = build_llm_runtime_config(
         "trial",
         trial_config,
         config=config,

@@ -302,11 +302,11 @@ def get_backend(name: str) -> LocalBackend | RemoteBackend:
 
 
 def remote_enabled(config: "MMAIConfig") -> bool:
-    """Return whether remote LLM inference is enabled for summarization."""
+    """Return whether remote LLM inference is enabled."""
     return bool(getattr(config, "remote", {}).get("enabled", False))
 
 
-def build_summarization_runtime_config(
+def build_llm_runtime_config(
     task_name: str,
     llm_config: Dict[str, Any],
     *,

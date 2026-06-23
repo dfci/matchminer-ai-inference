@@ -5,7 +5,7 @@ from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.backends import (
     LLMGenerationResult,
     LocalBackend,
-    build_summarization_runtime_config,
+    build_llm_runtime_config,
 )
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.trials.postprocess import flatten_trial_to_spaces
@@ -222,7 +222,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     default_config.trial["reasoning_parser"] = "gemma4"
     default_config.trial["prompt_file"] = "llm_match_quality.user.txt"
     default_config.trial["sampling_params"]["seed"] = 123
-    llm_config = build_summarization_runtime_config(
+    llm_config = build_llm_runtime_config(
         "trial",
         default_config.trial,
         config=default_config,
