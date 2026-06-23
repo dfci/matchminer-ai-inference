@@ -49,7 +49,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     """Verify LLM summarization wiring and metadata return."""
     mock_backend = MagicMock()
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: mock_backend,
     )
 
@@ -93,7 +93,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
     """Ensure LLM outputs are aligned with the input trial order."""
     mock_backend = MagicMock()
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: mock_backend,
     )
 
@@ -340,7 +340,7 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
     monkeypatch.setattr(
@@ -408,7 +408,7 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
     monkeypatch.setattr(

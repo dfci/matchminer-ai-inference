@@ -11,7 +11,7 @@ import pandas as pd
 from matchminer_ai.config import config_snapshot, load_default_preset
 from matchminer_ai.llm.backends import (
     build_llm_runtime_config,
-    get_summarization_backend,
+    get_llm_backend,
 )
 from matchminer_ai.llm.prompt_rendering import build_prompt_list
 
@@ -81,7 +81,7 @@ def _run_llm_check(
         config=config,
     )
     prompt_list = build_prompt_list(messages_list, llm_config=runtime_config)
-    backend = get_summarization_backend(config)
+    backend = get_llm_backend(config)
     generation = backend.generate_llm_outputs(
         prompt_list=prompt_list,
         llm_config=runtime_config,

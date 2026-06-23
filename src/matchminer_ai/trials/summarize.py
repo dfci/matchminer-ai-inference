@@ -12,7 +12,7 @@ from matchminer_ai.llm.backends import (
     LocalBackend,
     RemoteBackend,
     build_llm_runtime_config,
-    get_summarization_backend,
+    get_llm_backend,
 )
 from matchminer_ai.llm.prompt_rendering import build_prompt_list
 
@@ -58,7 +58,7 @@ def run_llm_summarization(
     primer_filename = prompt_files["primer"]
     question_filename = prompt_files["question"]
 
-    backend = get_summarization_backend(config)
+    backend = get_llm_backend(config)
 
     trials_with_summaries = trials_to_process.copy()
     trials_with_summaries["trial_text"] = build_trial_text(trials_to_process)

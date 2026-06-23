@@ -323,8 +323,8 @@ def build_llm_runtime_config(
     return runtime_config
 
 
-def get_summarization_backend(config: "MMAIConfig") -> LocalBackend | RemoteBackend:
-    """Return the backend used for trial/patient LLM summarization."""
+def get_llm_backend(config: "MMAIConfig") -> LocalBackend | RemoteBackend:
+    """Return the configured local or remote LLM backend."""
     if remote_enabled(config):
         return RemoteBackend()
     return LocalBackend()

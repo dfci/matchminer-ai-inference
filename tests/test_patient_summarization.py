@@ -346,7 +346,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
 
@@ -404,7 +404,7 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
         lambda prompt_pool: None,
     )
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MagicMock(
             generate_llm_outputs=MagicMock(
                 return_value=LLMGenerationResult(
@@ -515,7 +515,7 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
 

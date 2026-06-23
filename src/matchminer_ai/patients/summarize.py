@@ -10,7 +10,7 @@ from transformers import AutoTokenizer
 
 from matchminer_ai.llm.backends import (
     build_llm_runtime_config,
-    get_summarization_backend,
+    get_llm_backend,
 )
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
 from matchminer_ai.llm.prompt_rendering import Prompt
@@ -170,7 +170,7 @@ def summarize_patient_notes(
     existing_summary_lookup = _build_existing_summary_lookup(existing_summaries)
     rounds = _build_rounds(prepared_chunks)
 
-    backend = get_summarization_backend(resolved_config)
+    backend = get_llm_backend(resolved_config)
     # This dict holds the latest available summary for each patient. If the
     # caller provided an existing summary, that is used for round 1; after each
     # round, the newly generated summary overwrites the prior one.

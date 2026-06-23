@@ -517,7 +517,7 @@ def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypa
         fake_build_prompt_list,
     )
     monkeypatch.setattr(
-        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
         lambda config: backend,
     )
     pairs = pd.DataFrame(
@@ -562,7 +562,7 @@ def test_score_match_quality_with_llm_includes_debug_columns(monkeypatch):
         fake_build_prompt_list,
     )
     monkeypatch.setattr(
-        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
         lambda config: backend,
     )
     pairs = pd.DataFrame(
@@ -600,7 +600,7 @@ def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
         fake_build_prompt_list,
     )
     monkeypatch.setattr(
-        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
         lambda config: backend,
     )
     matches = pd.DataFrame(
@@ -638,7 +638,7 @@ def test_exclusion_criteria_check_with_llm_includes_debug_columns(monkeypatch):
         fake_build_prompt_list,
     )
     monkeypatch.setattr(
-        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
         lambda config: backend,
     )
     matches = pd.DataFrame(
