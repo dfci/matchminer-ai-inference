@@ -12,10 +12,22 @@ local:
     tensor_parallel_size: 1
     gpu_memory_utilization: 0.9
     language_model_only: true
+  llm_match_quality:
+    max_model_len: 50000
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.95
+    language_model_only: true
+  llm_exclusion_criteria:
+    max_model_len: 50000
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.95
+    language_model_only: true
 remote:
   enabled: false
   server_urls:
     - http://localhost:8000/v1
+  served_model_name: google/gemma-4-31B-it
+  send_vllm_extra_body: true
   max_concurrent_requests: 16
   request_timeout: 600
   max_retries: 6
@@ -65,12 +77,45 @@ embedding:
   model_path: "ksg-dfci/TrialSpace-0526"
   device: cuda
   prompt_file: embedding.txt
+  max_seq_length: 2500
 match_quality:
   model_name: "ksg-dfci/TrialChecker-0526"
   device: cuda
   prompt_file: match_quality_checker_template.txt
+  max_length: 4096
   score_cutoff: 0.2
 exclusion_criteria:
-  model_name: "ksg-dfci/BoilerPlateChecker-0526"
+  model_name: "ksg-dfci/BoilerplateChecker-0526"
   device: cuda
   prompt_file: exclusion_criteria_checker_template.txt
+  max_length: 3192
+llm_match_quality:
+  model_name: google/gemma-4-31B-it
+  reasoning_parser: auto
+  chat_template_kwargs:
+    enable_thinking: true
+  sampling_params:
+    temperature: 0.0
+    top_k: 1
+    top_p: 1.0
+    presence_penalty: 0.0
+    min_p: 0.0
+    max_tokens: 15000
+    repetition_penalty: 1.1
+    skip_special_tokens: false
+  prompt_file: llm_match_quality.user.txt
+llm_exclusion_criteria:
+  model_name: google/gemma-4-31B-it
+  reasoning_parser: auto
+  chat_template_kwargs:
+    enable_thinking: true
+  sampling_params:
+    temperature: 0.0
+    top_k: 1
+    top_p: 1.0
+    presence_penalty: 0.0
+    min_p: 0.0
+    max_tokens: 20000
+    repetition_penalty: 1.1
+    skip_special_tokens: false
+  prompt_file: llm_exclusion_criteria.user.txt

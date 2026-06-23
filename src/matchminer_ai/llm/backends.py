@@ -5,6 +5,7 @@ from __future__ import annotations
 import gc
 import json
 import os
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Dict, cast
@@ -14,6 +15,7 @@ from matchminer_ai.llm.reasoning import parse_reasoning_output
 from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.llm.remote_inference import normalize_remote_server_urls
+from matchminer_ai.llm.remote_inference import remote_request_model_name
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
@@ -77,6 +79,31 @@ def get_model_metadata(
             json.dump(model_dict, handle)
 
     return model_dict
+
+
+def get_endpoint_model_metadata(
+    model_name: str,
+    *,
+    cache_dir: str | None = None,
+) -> Dict[str, Any]:
+    """
+    Return model metadata for a remote endpoint model name.
+
+    OpenAI-compatible endpoints can expose names that are not Hugging Face model
+    IDs. In that case, return synthetic provenance metadata instead of failing
+    the run before the endpoint is contacted.
+    """
+    try:
+        return get_model_metadata(model_name, cache_dir=cache_dir)
+    except Exception as exc:
+        now = datetime.now(timezone.utc).isoformat()
+        return {
+            "model_name": model_name,
+            "model_sha": "openai-compatible-endpoint",
+            "created_at": now,
+            "last_modified": now,
+            "metadata_error": str(exc),
+        }
 
 
 @lru_cache(maxsize=2)
@@ -144,6 +171,7 @@ class LocalBackend:
             not in {
                 "model_name",
                 "sampling_params",
+                "prompt_file",
                 "prompt_files",
                 "reasoning_parser",
                 "chat_template_kwargs",
@@ -242,10 +270,10 @@ class RemoteBackend:
         prompts across configured server URLs, and restores outputs to
         ``Prompt.row_idx`` order.
         """
-        model_name = str(llm_config["model_name"])
+        model_name = remote_request_model_name(llm_config)
         api_key = str(os.environ.get("OPENAI_API_KEY", "not-needed")).strip()
         server_urls = normalize_remote_server_urls(llm_config)
-        model_metadata = get_model_metadata(
+        model_metadata = get_endpoint_model_metadata(
             model_name,
             cache_dir=model_metadata_cache_dir,
         )

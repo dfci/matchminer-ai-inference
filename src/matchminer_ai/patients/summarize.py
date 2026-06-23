@@ -258,14 +258,14 @@ def summarize_patient_notes(
         "model_metadata": model_metadata,
     }
 
-    from matchminer_ai._qc.patients import patient_summary_qc_report
-
-    qc_report = patient_summary_qc_report(
-        final_rows,
-        noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
-        config=resolved_config,
-    )
     if return_qc:
+        from matchminer_ai._qc.patients import patient_summary_qc_report
+
+        qc_report = patient_summary_qc_report(
+            final_rows,
+            noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
+            config=resolved_config,
+        )
         return final_rows, metadata, qc_report
     return final_rows, metadata
 

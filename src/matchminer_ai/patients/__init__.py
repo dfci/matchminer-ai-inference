@@ -116,15 +116,23 @@ def summarize_patients(
         )
 
     logger.info("Preparing serial patient summarization for %d notes.", len(notes))
-    summaries, metadata, qc_report = cast(
-        tuple[pd.DataFrame, dict, pd.DataFrame],
-        summarize_patient_notes(
-            notes,
-            config=resolved_config,
-            existing_summaries=existing_summaries,
-            return_qc=True,
-        ),
+    summary_result = summarize_patient_notes(
+        notes,
+        config=resolved_config,
+        existing_summaries=existing_summaries,
+        return_qc=return_qc,
     )
+    if return_qc:
+        summaries, metadata, qc_report = cast(
+            tuple[pd.DataFrame, dict, pd.DataFrame],
+            summary_result,
+        )
+    else:
+        summaries, metadata = cast(
+            tuple[pd.DataFrame, dict],
+            summary_result,
+        )
+        qc_report = None
     logger.info("Patient summarization complete. Produced %d rows.", len(summaries))
 
     if return_metadata:

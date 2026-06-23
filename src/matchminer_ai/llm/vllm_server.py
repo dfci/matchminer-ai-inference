@@ -12,6 +12,7 @@ from urllib import error, request
 from urllib.parse import urlparse
 
 from matchminer_ai.config import MMAIConfig, load_default_preset
+from matchminer_ai.llm.remote_inference import normalize_openai_base_url
 from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 
 
@@ -24,6 +25,7 @@ class VLLMServerCommand:
     host: str
     port: int
     model_name: str
+    served_model_name: str
     task: str
 
 
@@ -58,10 +60,10 @@ def _remote_server_urls(config: MMAIConfig) -> list[str]:
     remote_config = dict(getattr(config, "remote", {}))
     raw_urls = remote_config.get("server_urls", ["http://localhost:8000/v1"])
     if isinstance(raw_urls, str):
-        urls = [url.strip() for url in raw_urls.split(",")]
+        urls = [url.strip() for url in raw_urls.replace("\n", ",").split(",")]
     else:
         urls = [str(url).strip() for url in raw_urls]
-    urls = [url for url in urls if url]
+    urls = [normalize_openai_base_url(url) for url in urls if url]
     if not urls:
         raise ValueError("config.remote.server_urls must contain at least one URL.")
     return urls
@@ -102,16 +104,18 @@ def build_vllm_server_command(
     """
     resolved_config = config or load_default_preset()
     llm_config, local_config = _resolve_task_config(resolved_config, task)
+    remote_config = dict(getattr(resolved_config, "remote", {}))
     base_url = _remote_server_url(resolved_config, server_index)
     host, port = _host_and_port(base_url)
     model_name = str(llm_config["model_name"])
+    served_model_name = str(remote_config.get("served_model_name") or model_name)
 
     command = [
         "vllm",
         "serve",
         model_name,
         "--served-model-name",
-        model_name,
+        served_model_name,
         "--host",
         host,
         "--port",
@@ -146,8 +150,45 @@ def build_vllm_server_command(
         host=host,
         port=port,
         model_name=model_name,
+        served_model_name=served_model_name,
         task=task,
     )
+
+
+def check_openai_endpoint(
+    server_urls: str | Sequence[str],
+    *,
+    api_key: str | None = None,
+    timeout: float = 10.0,
+) -> list[tuple[str, int | None, str]]:
+    """
+    Check one or more OpenAI-compatible endpoints by requesting ``/models``.
+
+    Returns ``(base_url, status_code, message)`` tuples. Failed requests use
+    ``None`` for the status code and the exception string as the message.
+    """
+    if isinstance(server_urls, str):
+        raw_urls = [url.strip() for url in server_urls.replace("\n", ",").split(",")]
+    else:
+        raw_urls = [str(url).strip() for url in server_urls]
+    urls = [normalize_openai_base_url(url) for url in raw_urls if url]
+    api_key = api_key or os.environ.get("OPENAI_API_KEY", "not-needed")
+    results: list[tuple[str, int | None, str]] = []
+    for base_url in urls:
+        models_url = f"{base_url.rstrip('/')}/models"
+        req = request.Request(
+            models_url,
+            headers={"Authorization": f"Bearer {api_key}"},
+            method="GET",
+        )
+        try:
+            with request.urlopen(req, timeout=timeout) as response:
+                results.append(
+                    (base_url, int(response.status), f"HTTP {response.status}")
+                )
+        except (OSError, error.URLError, error.HTTPError) as exc:
+            results.append((base_url, None, str(exc)))
+    return results
 
 
 def build_vllm_server_commands(
@@ -297,6 +338,8 @@ __all__ = [
     "VLLMServerCommand",
     "build_vllm_server_command",
     "build_vllm_server_commands",
+    "check_openai_endpoint",
+    "normalize_openai_base_url",
     "start_vllm_server",
     "start_vllm_servers",
     "wait_for_vllm_server",

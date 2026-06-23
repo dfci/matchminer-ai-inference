@@ -624,3 +624,41 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     assert metadata["config_snapshot"]["config"] == "snapshot"
     assert metadata["config_snapshot"]["patient"] == _config().patient
     assert metadata["model_metadata"]["patient_summarizer"]["model_sha"] == "sha"
+
+
+def test_summarize_patients_does_not_request_qc_by_default(monkeypatch):
+    """Default patient summarization should skip QC-only embedding token counts."""
+    notes = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "note_text": "Note text",
+                "note_type": "clinical_note",
+                "note_date": "2024-01-01",
+            }
+        ]
+    )
+    summaries_df = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "cancer_history_summary": "Summary",
+                "general_exclusion_criteria_evidence": "None",
+            }
+        ]
+    )
+    summarize_mock = MagicMock(
+        return_value=(
+            summaries_df,
+            {"model_metadata": {"model_name": "summ", "model_sha": "sha"}},
+        )
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize_patient_notes",
+        summarize_mock,
+    )
+
+    result = summarize_patients(notes, config=_config())
+
+    assert result.equals(summaries_df)
+    assert summarize_mock.call_args.kwargs["return_qc"] is False

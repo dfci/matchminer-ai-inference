@@ -37,10 +37,27 @@ def normalize_remote_server_urls(llm_config: Dict[str, Any]) -> list[str]:
     else:
         server_urls = [str(url).strip() for url in raw_server_urls]
 
-    server_urls = [url for url in server_urls if url]
+    server_urls = [normalize_openai_base_url(url) for url in server_urls if url]
     if not server_urls:
         raise ValueError("Remote backend requires at least one server URL.")
     return server_urls
+
+
+def normalize_openai_base_url(base_url: str) -> str:
+    """Normalize an OpenAI-compatible base URL, adding scheme and /v1 if needed."""
+    value = (base_url or "").strip() or "http://localhost:8000/v1"
+    if "://" not in value:
+        value = f"http://{value}"
+    value = value.rstrip("/")
+    parsed = urlparse(value)
+    if parsed.path in {"", "/"}:
+        value = f"{value}/v1"
+    return value
+
+
+def remote_request_model_name(llm_config: Dict[str, Any]) -> str:
+    """Return the model name to send to the OpenAI-compatible endpoint."""
+    return str(llm_config.get("served_model_name") or llm_config["model_name"])
 
 
 def _run_sync(awaitable_factory: Callable[[], Coroutine[Any, Any, T]]) -> T:
@@ -120,13 +137,15 @@ async def single_inference_request(
             extra = dict(extra_body_params)
             if chat_template_kwargs:
                 extra["chat_template_kwargs"] = dict(chat_template_kwargs)
+            request_kwargs = {
+                "model": model,
+                "messages": messages,
+                **request_params,
+            }
+            if extra:
+                request_kwargs["extra_body"] = extra
             response = await asyncio.wait_for(
-                client.chat.completions.create(
-                    model=model,
-                    messages=messages,
-                    **request_params,
-                    extra_body=extra,
-                ),
+                client.chat.completions.create(**request_kwargs),
                 timeout=base_timeout,
             )
             choice = response.choices[0]
@@ -262,7 +281,7 @@ async def generate_remote_llm_outputs_async(
     if not prompts:
         return [], [], []
 
-    model_name = str(llm_config["model_name"])
+    model_name = remote_request_model_name(llm_config)
     sampling_params = dict(llm_config["sampling_params"])
     required_remote_keys = [
         "server_urls",
@@ -283,7 +302,10 @@ async def generate_remote_llm_outputs_async(
     max_retries = max(1, int(llm_config["max_retries"]))
     retry_backoff_base = float(llm_config.get("retry_backoff_base", 1.0))
     batch_size = max(1, int(llm_config["batch_size"]))
-    chat_template_kwargs = llm_config.get("chat_template_kwargs")
+    send_vllm_extra_body = bool(llm_config.get("send_vllm_extra_body", True))
+    chat_template_kwargs = (
+        llm_config.get("chat_template_kwargs") if send_vllm_extra_body else None
+    )
     request_param_keys = {
         "temperature",
         "top_p",
@@ -297,11 +319,15 @@ async def generate_remote_llm_outputs_async(
         for key, value in sampling_params.items()
         if key in request_param_keys
     }
-    extra_body_params = {
-        key: value
-        for key, value in sampling_params.items()
-        if key not in request_param_keys and key != "max_tokens"
-    }
+    extra_body_params = (
+        {
+            key: value
+            for key, value in sampling_params.items()
+            if key not in request_param_keys and key != "max_tokens"
+        }
+        if send_vllm_extra_body
+        else {}
+    )
     server_clients = connect_to_remote_servers(
         server_urls=server_urls,
         request_timeout=request_timeout,
@@ -378,7 +404,9 @@ __all__ = [
     "connect_to_remote_servers",
     "generate_remote_llm_outputs",
     "generate_remote_llm_outputs_async",
+    "normalize_openai_base_url",
     "normalize_remote_server_urls",
+    "remote_request_model_name",
     "run_inference_batch",
     "single_inference_request",
 ]

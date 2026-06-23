@@ -7,8 +7,10 @@ import pytest
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.matching import (
     exclusion_criteria_check,
+    exclusion_criteria_check_with_llm,
     generate_candidate_matches,
     score_match_quality,
+    score_match_quality_with_llm,
 )
 
 
@@ -364,7 +366,11 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
         lambda model_name, cache_dir=None: {"model_name": model_name},
     )
 
-    checker_config = {"model_name": "checker/model", "device": "cpu"}
+    checker_config = {
+        "model_name": "checker/model",
+        "device": "cpu",
+        "max_length": 3192,
+    }
     first_outputs, first_metadata = inference.run_checker(
         ["prompt 1"],
         checker_config=checker_config,
@@ -388,6 +394,7 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
     assert pipeline_calls[0][0] == ("text-classification", "checker/model")
     assert pipeline_calls[0][1]["tokenizer"] == "tokenizer:checker/model"
     assert pipeline_calls[0][1]["device"] == "cpu"
+    assert pipeline_calls[0][1]["max_length"] == 3192
     assert pipeline_calls[0][2].prompt_batches == [
         ["prompt 1"],
         ["prompt 2", "prompt 3"],
@@ -430,3 +437,151 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
     assert len(pipeline_calls) == 2
 
     inference.clear_checker_pipeline_cache()
+
+
+class _MockLLMBackend:
+    def __init__(self, outputs):
+        self.outputs = outputs
+        self.last_prompt_list = None
+        self.last_llm_config = None
+        self.last_model_metadata_cache_dir = None
+
+    def generate_llm_outputs(
+        self,
+        *,
+        prompt_list,
+        llm_config,
+        model_metadata_cache_dir=None,
+    ):
+        self.last_prompt_list = prompt_list
+        self.last_llm_config = llm_config
+        self.last_model_metadata_cache_dir = model_metadata_cache_dir
+        return SimpleNamespace(
+            final_outputs=self.outputs,
+            reasoning_outputs=[f"reasoning {idx}" for idx, _ in enumerate(self.outputs)],
+            model_metadata={"model_name": llm_config["model_name"]},
+        )
+
+
+def _llm_config() -> MMAIConfig:
+    return MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        trial={},
+        patient={},
+        local={
+            "llm_match_quality": {
+                "max_model_len": 50000,
+                "tensor_parallel_size": 1,
+            },
+            "llm_exclusion_criteria": {
+                "max_model_len": 50000,
+                "tensor_parallel_size": 1,
+            },
+        },
+        remote={},
+        embedding={},
+        model_metadata_cache_dir=".mmai_cache/model_metadata",
+        raw={
+            "llm_match_quality": {
+                "model_name": "llm/model",
+                "reasoning_parser": "auto",
+                "chat_template_kwargs": {"enable_thinking": True},
+                "sampling_params": {"max_tokens": 15000},
+                "prompt_file": "llm_match_quality.user.txt",
+            },
+            "llm_exclusion_criteria": {
+                "model_name": "llm/model",
+                "reasoning_parser": "auto",
+                "chat_template_kwargs": {"enable_thinking": True},
+                "sampling_params": {"max_tokens": 20000},
+                "prompt_file": "llm_exclusion_criteria.user.txt",
+            },
+        },
+    )
+
+
+def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypatch):
+    """Run LLM match scoring through package backend config and score parser."""
+    captured_messages = []
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        captured_messages.extend(messages_list)
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
+
+    backend = _MockLLMBackend(["After review.\nFinal score: 4"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        lambda config: backend,
+    )
+    pairs = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "space_trial_id": "T1-1",
+                "cancer_history_summary": "Patient has metastatic lung cancer.",
+                "clinical_space_summary": "Trial for metastatic lung cancer.",
+            }
+        ]
+    )
+
+    result, metadata = score_match_quality_with_llm(
+        pairs,
+        config=_llm_config(),
+        return_metadata=True,
+    )
+
+    assert result["llm_match_quality_score"].tolist() == [4]
+    assert result["llm_match_quality_verdict"].tolist() == ["Score:4"]
+    assert result["llm_match_quality_reasoning"].tolist() == ["reasoning 0"]
+    assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
+    assert "metastatic lung cancer" in captured_messages[0][1]["content"]
+    assert backend.last_llm_config["max_model_len"] == 50000
+    assert backend.last_llm_config["sampling_params"]["max_tokens"] == 15000
+    assert metadata["model_metadata"]["llm_match_quality_checker"]["model_name"] == (
+        "llm/model"
+    )
+
+
+def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
+    monkeypatch,
+):
+    """Run LLM exclusion scoring through package backend config and yes/no parser."""
+    captured_messages = []
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        captured_messages.extend(messages_list)
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
+
+    backend = _MockLLMBackend(["No!"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        lambda config: backend,
+    )
+    matches = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "trial_id": "T1",
+                "general_exclusion_criteria": "Excludes uncontrolled brain mets.",
+                "general_exclusion_criteria_evidence": "No active brain mets.",
+            }
+        ]
+    )
+
+    result = exclusion_criteria_check_with_llm(matches, config=_llm_config())
+
+    assert result["llm_exclusion_criteria_pass"].tolist() == [True]
+    assert result["llm_exclusion_criteria_verdict"].tolist() == ["NO"]
+    assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
+    assert "uncontrolled brain mets" in captured_messages[0][1]["content"]
+    assert backend.last_llm_config["max_model_len"] == 50000
+    assert backend.last_llm_config["sampling_params"]["max_tokens"] == 20000

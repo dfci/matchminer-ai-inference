@@ -69,10 +69,11 @@ maximum context window used for chunk truncation.
 
 ## `remote`
 
-Configuration used when `remote.enabled` is true and trial/patient
-summarization sends OpenAI-compatible chat completion requests to external
-vLLM servers. The remote backend reads the API key from the `OPENAI_API_KEY`
-environment variable. API keys are not stored in preset files.
+Configuration used when `remote.enabled` is true and LLM tasks send
+OpenAI-compatible chat completion requests to external endpoints. This can be a
+vLLM server or any endpoint compatible with the OpenAI chat completions API. The
+remote backend reads the API key from the `OPENAI_API_KEY` environment variable.
+API keys are not stored in preset files.
 
 ### `remote.enabled`
 
@@ -85,6 +86,20 @@ List of OpenAI-compatible base URLs. Values are passed to the OpenAI client as
 chat endpoint launched with the `gemma4` reasoning parser; the package
 `start_vllm_server()` helper adds this flag from `trial.reasoning_parser` or
 `patient.reasoning_parser`.
+
+### `remote.served_model_name`
+
+Optional model name sent in OpenAI-compatible chat completion requests. This can
+differ from `trial.model_name` / `patient.model_name`, which remain the
+tokenizer and chat-template model names used while building prompts. This is
+useful for endpoints exposing aliases or non-Hugging-Face model names.
+
+### `remote.send_vllm_extra_body`
+
+When true, vLLM-specific sampling parameters such as `top_k`,
+`repetition_penalty`, and `chat_template_kwargs` are sent in request
+`extra_body`. Set this to false for standard OpenAI-compatible endpoints that
+reject vLLM-specific fields.
 
 ### `remote.max_concurrent_requests`
 
@@ -117,10 +132,11 @@ Model identifier used for:
 - tokenizer/chat-template rendering
 - Hugging Face model metadata lookup
 - `vllm.LLM(model=...)` in local mode
-- OpenAI-compatible request `model` in remote mode
+- OpenAI-compatible request `model` in remote mode unless
+  `remote.served_model_name` is set
 
-For remote mode, the vLLM server must expose a served model name matching this
-value.
+For remote mode, use `remote.served_model_name` when the endpoint exposes a
+different model alias.
 
 The default preset uses a Gemma 4 model for summarization. The specific Gemma
 variant that will run successfully may depend on the available GPU type and
@@ -169,10 +185,11 @@ Model identifier used for:
 - tokenizer/chat-template rendering
 - Hugging Face model metadata lookup
 - `vllm.LLM(model=...)` in local mode
-- OpenAI-compatible request `model` in remote mode
+- OpenAI-compatible request `model` in remote mode unless
+  `remote.served_model_name` is set
 
-For remote mode, the vLLM server must expose a served model name matching this
-value.
+For remote mode, use `remote.served_model_name` when the endpoint exposes a
+different model alias.
 
 The default preset uses a Gemma 4 model for summarization. The specific Gemma
 variant that will run successfully may depend on the available GPU type and

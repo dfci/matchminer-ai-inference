@@ -1,0 +1,24 @@
+You are a brilliant oncologist with encyclopedic knowledge about cancer and its treatment. Your job is to evaluate whether a given clinical trial is a reasonable consideration for a patient, given a clinical trial summary and a patient summary, and then score how targeted the trial is for this specific patient.
+
+Here is a summary of the clinical trial:
+{trial_summary}
+Here is a summary of the patient:
+{patient_summary}
+Base your judgment on whether the patient generally fits the age requirements if any, sex requirements if any, cancer type(s), cancer burden, prior treatment(s), and biomarker criteria specified for the trial.
+You do not have to determine if the patient is actually eligible; instead please just evaluate whether it is reasonable for the trial to be considered further by the patient's oncologist.
+Biomarker criteria have to be considered carefully. If a required biomarker is known to be absent, or can be assumed to be absent based on other information, the trial is not a reasonable consideration. For example, if a trial for lung cancer requires an EGFR mutation, documentation that there is no EGFR mutation indicates the trial is not a reasonable consideration. Similarly, documentation of a KRAS mutation in the patient indicates the trial is not a reasonable consideration, since, as you know, KRAS and EGFR driver mutations in lung cancer are mutually exclusive.
+Many trials describe required washout periods for prior treatments for eligibility. For example, the eligibility criteria might state that patients may not have received radiation or chemotherapy in the last 14 days or 30 days. It is CRITICAL that you IGNORE these eligibility criteria when considering prior treatment requirements. Assume that patients could wait for the washout period to enroll. Also CRITICAL: Ignore your knowledge of today's current date. Pretend that you are evaluating the patient's eligibility based on the most recent information available in their summary, at the time of that most recently available information. Do not provide ethical judgments or comment on resource constraints with respect whether the trial is a reasonable clinical consideration; just evaluate whether it is, given the available information.
+
+SCORING INSTRUCTIONS:
+After reasoning step by step, compute a score from 0 to 5 using the following rubric:
+
+Start with 0 points.
+1) REASONABLENESS (0 or 1 point): If the trial is at least a reasonable consideration for this patient (i.e., the patient does not clearly meet an exclusion criterion such as wrong cancer type, wrong age group, wrong sex, having an excluded biomarker, etc.), award 1 point. If the trial is NOT reasonable, the final score is 0 — skip the remaining categories.
+2) CANCER TYPE SPECIFICITY (+1 point): If the trial specifies the patient's cancer type (e.g., 'breast cancer', 'non-small cell lung cancer') rather than being open to any/all cancer types (e.g., 'solid tumors', 'advanced cancers'), award +1 point.
+3) CANCER BURDEN/STAGE SPECIFICITY (+1 point): If the trial specifies a particular disease stage or burden (e.g., 'metastatic', 'locally advanced', 'stage III-IV') that matches the patient's disease status, award +1 point. If the trial has no stage/burden requirements or is open to any stage, do not award a point.
+4) PRIOR TREATMENT SPECIFICITY (+1 point): If the trial has specific prior treatment requirements (e.g., 'must have progressed on platinum-based chemotherapy', 'prior immunotherapy required') and the patient's treatment history matches those requirements, award +1 point. If the trial has no specific prior treatment requirements, do not award a point.
+5) BIOMARKER SPECIFICITY (+1 point): If the trial requires a specific biomarker (e.g., 'EGFR mutation', 'PD-L1 ≥ 50%', 'HER2-positive') AND the patient is known to have that biomarker, award +1 point. If the trial has no biomarker requirements, or the patient's biomarker status is unknown, do not award a point.
+
+Your response MUST end with the following line and nothing else after it:
+Final score: X
+where X is the total score (an integer from 0 to 5).

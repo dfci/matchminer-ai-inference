@@ -220,6 +220,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
         "num_speculative_tokens": 4,
     }
     default_config.trial["reasoning_parser"] = "gemma4"
+    default_config.trial["prompt_file"] = "llm_match_quality.user.txt"
     default_config.trial["sampling_params"]["seed"] = 123
     llm_config = build_summarization_runtime_config(
         "trial",
@@ -243,6 +244,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     assert mock_vllm.LLM.call_args.kwargs["speculative_config"] == {
         "num_speculative_tokens": 4,
     }
+    assert "prompt_file" not in mock_vllm.LLM.call_args.kwargs
     assert mock_vllm.SamplingParams.call_args.kwargs["seed"] == 123
 
 

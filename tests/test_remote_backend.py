@@ -227,6 +227,72 @@ def test_remote_backend_forwards_sampling_params(monkeypatch):
     }
 
 
+def test_remote_backend_uses_served_model_name(monkeypatch):
+    """Use remote.served_model_name as the endpoint request model."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(served_model_name="endpoint-model"),
+    )
+
+    assert FakeAsyncOpenAI.clients[0].calls[0]["model"] == "endpoint-model"
+
+
+def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
+    """Endpoint model names do not have to be Hugging Face model IDs."""
+    _install_fakes(monkeypatch)
+
+    def raise_metadata(model_name, cache_dir=None):
+        raise RuntimeError("not a Hugging Face model")
+
+    monkeypatch.setattr(
+        "matchminer_ai.llm.backends.get_model_metadata",
+        raise_metadata,
+    )
+
+    result = RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(served_model_name="gpt-compatible-name"),
+    )
+
+    assert result.model_metadata["model_name"] == "gpt-compatible-name"
+    assert result.model_metadata["model_sha"] == "openai-compatible-endpoint"
+    assert "not a Hugging Face model" in result.model_metadata["metadata_error"]
+
+
+def test_remote_backend_can_skip_vllm_extra_body(monkeypatch):
+    """Allow standard OpenAI-compatible endpoints that reject vLLM-only fields."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            send_vllm_extra_body=False,
+            chat_template_kwargs={"enable_thinking": True},
+            sampling_params={
+                "temperature": 0.7,
+                "top_p": 0.95,
+                "presence_penalty": 1.5,
+                "max_tokens": 99,
+                "top_k": 20,
+                "min_p": 0.0,
+                "repetition_penalty": 1.1,
+                "skip_special_tokens": False,
+            },
+        ),
+    )
+
+    call = FakeAsyncOpenAI.clients[0].calls[0]
+    assert call["temperature"] == 0.7
+    assert call["top_p"] == 0.95
+    assert call["presence_penalty"] == 1.5
+    assert call["max_tokens"] == 10
+    assert "extra_body" not in call
+    assert "top_k" not in call
+    assert "repetition_penalty" not in call
+
+
 def test_remote_backend_accepts_legacy_reasoning_content(monkeypatch):
     """Older vLLM servers used message.reasoning_content."""
     _install_fakes(monkeypatch)
