@@ -24,9 +24,7 @@ def _resolve_embedding_runtime(
     device = str(embedding_config.get("device", "cpu")).strip() or "cpu"
     prompt_filename = str(embedding_config.get("prompt_file", "")).strip()
     max_seq_length_value = embedding_config.get("max_seq_length")
-    max_seq_length = (
-        None if max_seq_length_value is None else int(max_seq_length_value)
-    )
+    max_seq_length = None if max_seq_length_value is None else int(max_seq_length_value)
     query_prompt = _load_prompt_text(prompt_filename).strip()
     return model_path, device, query_prompt, max_seq_length
 
@@ -44,6 +42,7 @@ def _get_embedding_model(
     model = SentenceTransformer(model_path, device=device)
     model.prompts["query"] = prompt
     if max_seq_length is not None:
+        # SentenceTransformer uses this as the truncation cutoff during encode().
         model.max_seq_length = max_seq_length
     return model
 
@@ -90,9 +89,7 @@ def count_embedding_tokens(
     tokenizer = _get_embedding_tokenizer(model_path)
     prepared = [f"{query_prompt} {text}".strip() for text in texts]
     encoded = tokenizer(prepared, add_special_tokens=True, truncation=False)
-    input_ids = (
-        encoded["input_ids"] if isinstance(encoded, dict) else encoded.input_ids
-    )
+    input_ids = encoded["input_ids"] if isinstance(encoded, dict) else encoded.input_ids
     return [len(ids) for ids in input_ids]
 
 

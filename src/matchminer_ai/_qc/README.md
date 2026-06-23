@@ -14,7 +14,8 @@ Returned by `summarize_patients(..., return_qc=True)` and
 - `patients_exclusion_criteria_not_extracted`: exclusion criteria not successfully extracted.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.
 - `patients_exceed_embedding_token_limit`: summaries whose embedding-tokenized
-  length exceeds the allowable amount by the embedding model.
+  length exceeds `embedding.max_seq_length`, the configured truncation cutoff
+  used during embedding generation.
 
 ## Trial summarization QC
 Returned by `summarize_trials(..., return_qc=True)`.
@@ -29,4 +30,5 @@ Returned by `summarize_trials(..., return_qc=True)`.
 - `spaces_dropped_missing_keyword:<keyword>`: trial spaces dropped due to missing a required keyword.
 - `trials_exclusion_criteria_not_extracted`: trials whose exclusion criteria was not extracted.
 - `spaces_exceed_embedding_token_limit`: trial spaces whose embedding-tokenized
-  length exceeds the allowable amount by the embedding model.
+  length exceeds `embedding.max_seq_length`, the configured truncation cutoff
+  used during embedding generation.

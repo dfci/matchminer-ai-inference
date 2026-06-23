@@ -261,6 +261,13 @@ Device string passed to `SentenceTransformer(...)`.
 Prompt filename loaded from `matchminer_ai.prompts` and used as the embedding
 query prompt.
 
+### `embedding.max_seq_length`
+
+Runtime truncation cutoff for embedding inputs. `SentenceTransformer` uses this
+value during `encode()`, so inputs longer than this limit are truncated before
+embedding generation. Keep this aligned with the intended TrialSpace runtime
+defaults.
+
 ## `match_quality`
 
 Configuration for the match-quality checker model.
