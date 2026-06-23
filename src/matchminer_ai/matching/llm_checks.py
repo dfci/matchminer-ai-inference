@@ -105,8 +105,53 @@ def score_match_quality_with_llm(
     """
     Score candidate patient-trial matches with the configured LLM prompt.
 
-    Expected columns are ``patient_id``, ``space_trial_id``,
-    ``cancer_history_summary``, and ``clinical_space_summary``.
+    Parameters
+    ----------
+    candidate_pairs : pd.DataFrame
+        DataFrame of candidate patient-trial pairs.
+
+        Expected columns
+        ----------------
+        patient_id : str
+            Patient identifier.
+        space_trial_id : str
+            Trial-space identifier.
+        cancer_history_summary : str
+            Patient summary text.
+        clinical_space_summary : str
+            Trial clinical-space summary text.
+
+    config : MMAIConfig, optional
+        MMAI configuration containing LLM match-quality checker settings.
+        Uses default preset when omitted.
+    return_metadata : bool, default False
+        When True, also return a metadata dict containing the config snapshot
+        and model metadata for this run.
+
+    Returns
+    -------
+    pd.DataFrame
+        Derived output table containing:
+
+        Columns
+        -------
+        patient_id : str
+            Patient identifier.
+        space_trial_id : str
+            Trial-space identifier.
+        llm_match_quality_score : int
+            Parsed LLM score from 0 to 5, or -1 when parsing failed.
+        llm_match_quality_verdict : str
+            Parsed score label or parse-failure marker.
+
+        Debug Columns
+        -------------
+        llm_match_quality_response : str
+            Raw final LLM response. Included only when debug_mode is true.
+        llm_match_quality_reasoning : str
+            Parsed LLM reasoning trace. Included only when debug_mode is true.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus metadata.
     """
     required = [
         "patient_id",
@@ -143,8 +188,9 @@ def score_match_quality_with_llm(
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
     output["llm_match_quality_score"] = [score for score, _ in parsed]
     output["llm_match_quality_verdict"] = [verdict for _, verdict in parsed]
-    output["llm_match_quality_response"] = responses
-    output["llm_match_quality_reasoning"] = reasonings
+    if resolved_config.debug_mode:
+        output["llm_match_quality_response"] = responses
+        output["llm_match_quality_reasoning"] = reasonings
     output = output.reset_index(drop=True)
 
     if return_metadata:
@@ -167,9 +213,55 @@ def exclusion_criteria_check_with_llm(
     """
     Evaluate trial-level exclusion criteria with the configured LLM prompt.
 
-    Expected columns are ``patient_id``, ``trial_id``,
-    ``general_exclusion_criteria``, and
-    ``general_exclusion_criteria_evidence``.
+    Parameters
+    ----------
+    matches : pd.DataFrame
+        DataFrame of candidate patient-trial pairs to evaluate for exclusion
+        checks.
+
+        Expected columns
+        ----------------
+        patient_id : str
+            Patient identifier.
+        trial_id : str
+            Trial identifier.
+        general_exclusion_criteria : str
+            Trial-level exclusion criteria text.
+        general_exclusion_criteria_evidence : str
+            Patient-level evidence related to exclusion criteria.
+
+    config : MMAIConfig, optional
+        MMAI configuration containing LLM exclusion checker settings.
+        Uses default preset when omitted.
+    return_metadata : bool, default False
+        When True, also return a metadata dict containing the config snapshot
+        and model metadata for this run.
+
+    Returns
+    -------
+    pd.DataFrame
+        Derived output table containing:
+
+        Columns
+        -------
+        patient_id : str
+            Patient identifier.
+        trial_id : str
+            Trial identifier.
+        llm_exclusion_criteria_pass : bool | None
+            Whether the LLM judged that the patient passes exclusion criteria,
+            or None when parsing failed.
+        llm_exclusion_criteria_verdict : str
+            Parsed yes/no label or parse-failure marker.
+
+        Debug Columns
+        -------------
+        llm_exclusion_criteria_response : str
+            Raw final LLM response. Included only when debug_mode is true.
+        llm_exclusion_criteria_reasoning : str
+            Parsed LLM reasoning trace. Included only when debug_mode is true.
+    tuple[pd.DataFrame, dict]
+        When return_metadata is True, returns the DataFrame plus metadata.
     """
     required = [
         "patient_id",
@@ -204,8 +296,9 @@ def exclusion_criteria_check_with_llm(
     output = matches[["patient_id", "trial_id"]].copy()
     output["llm_exclusion_criteria_pass"] = [passed for passed, _ in parsed]
     output["llm_exclusion_criteria_verdict"] = [verdict for _, verdict in parsed]
-    output["llm_exclusion_criteria_response"] = responses
-    output["llm_exclusion_criteria_reasoning"] = reasonings
+    if resolved_config.debug_mode:
+        output["llm_exclusion_criteria_response"] = responses
+        output["llm_exclusion_criteria_reasoning"] = reasonings
     output = output.reset_index(drop=True)
 
     if return_metadata:

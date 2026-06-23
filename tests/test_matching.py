@@ -458,15 +458,17 @@ class _MockLLMBackend:
         self.last_model_metadata_cache_dir = model_metadata_cache_dir
         return SimpleNamespace(
             final_outputs=self.outputs,
-            reasoning_outputs=[f"reasoning {idx}" for idx, _ in enumerate(self.outputs)],
+            reasoning_outputs=[
+                f"reasoning {idx}" for idx, _ in enumerate(self.outputs)
+            ],
             model_metadata={"model_name": llm_config["model_name"]},
         )
 
 
-def _llm_config() -> MMAIConfig:
+def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
     return MMAIConfig(
         preset_name="default",
-        debug_mode=False,
+        debug_mode=debug_mode,
         trial={},
         patient={},
         local={
@@ -537,7 +539,8 @@ def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypa
 
     assert result["llm_match_quality_score"].tolist() == [4]
     assert result["llm_match_quality_verdict"].tolist() == ["Score:4"]
-    assert result["llm_match_quality_reasoning"].tolist() == ["reasoning 0"]
+    assert "llm_match_quality_response" not in result.columns
+    assert "llm_match_quality_reasoning" not in result.columns
     assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
     assert "metastatic lung cancer" in captured_messages[0][1]["content"]
     assert backend.last_llm_config["max_model_len"] == 50000
@@ -545,6 +548,40 @@ def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypa
     assert metadata["model_metadata"]["llm_match_quality_checker"]["model_name"] == (
         "llm/model"
     )
+
+
+def test_score_match_quality_with_llm_includes_debug_columns(monkeypatch):
+    """Include raw LLM response details only when debug mode is enabled."""
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
+
+    backend = _MockLLMBackend(["After review.\nFinal score: 4"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        lambda config: backend,
+    )
+    pairs = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "space_trial_id": "T1-1",
+                "cancer_history_summary": "Patient has metastatic lung cancer.",
+                "clinical_space_summary": "Trial for metastatic lung cancer.",
+            }
+        ]
+    )
+
+    result = score_match_quality_with_llm(pairs, config=_llm_config(debug_mode=True))
+
+    assert result["llm_match_quality_response"].tolist() == [
+        "After review.\nFinal score: 4"
+    ]
+    assert result["llm_match_quality_reasoning"].tolist() == ["reasoning 0"]
 
 
 def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
@@ -581,7 +618,44 @@ def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
 
     assert result["llm_exclusion_criteria_pass"].tolist() == [True]
     assert result["llm_exclusion_criteria_verdict"].tolist() == ["NO"]
+    assert "llm_exclusion_criteria_response" not in result.columns
+    assert "llm_exclusion_criteria_reasoning" not in result.columns
     assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
     assert "uncontrolled brain mets" in captured_messages[0][1]["content"]
     assert backend.last_llm_config["max_model_len"] == 50000
     assert backend.last_llm_config["sampling_params"]["max_tokens"] == 20000
+
+
+def test_exclusion_criteria_check_with_llm_includes_debug_columns(monkeypatch):
+    """Include raw LLM exclusion details only when debug mode is enabled."""
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
+
+    backend = _MockLLMBackend(["No!"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_summarization_backend",
+        lambda config: backend,
+    )
+    matches = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "trial_id": "T1",
+                "general_exclusion_criteria": "Excludes uncontrolled brain mets.",
+                "general_exclusion_criteria_evidence": "No active brain mets.",
+            }
+        ]
+    )
+
+    result = exclusion_criteria_check_with_llm(
+        matches,
+        config=_llm_config(debug_mode=True),
+    )
+
+    assert result["llm_exclusion_criteria_response"].tolist() == ["No!"]
+    assert result["llm_exclusion_criteria_reasoning"].tolist() == ["reasoning 0"]
