@@ -133,7 +133,10 @@ Supported task keys are:
 When true, vLLM-specific sampling parameters such as `top_k`,
 `repetition_penalty`, and `chat_template_kwargs` are sent in request
 `extra_body`. Set this to false for standard OpenAI-compatible endpoints that
-reject vLLM-specific fields.
+reject vLLM-specific fields. This option exists because the package supports
+both vLLM servers, which can use these extra fields, and stricter
+OpenAI-compatible services, which may only accept standard chat completion
+parameters.
 
 ### `remote.max_concurrent_requests`
 
