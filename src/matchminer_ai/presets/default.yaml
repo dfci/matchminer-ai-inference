@@ -26,7 +26,11 @@ remote:
   enabled: false
   server_urls:
     - http://localhost:8000/v1
-  served_model_name: google/gemma-4-31B-it
+  served_model_names:
+    trial: google/gemma-4-31B-it
+    patient: google/gemma-4-31B-it
+    llm_match_quality: google/gemma-4-31B-it
+    llm_exclusion_criteria: google/gemma-4-31B-it
   send_vllm_extra_body: true
   max_concurrent_requests: 16
   request_timeout: 600

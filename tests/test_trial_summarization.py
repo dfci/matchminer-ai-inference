@@ -45,6 +45,21 @@ def test_get_filled_trial_prompt_includes_trial_text():
     assert "Boilerplate exclusions:" in prompts[1]["content"]
 
 
+def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_config):
+    """Use remote task endpoint aliases before legacy remote-level aliases."""
+    default_config.remote["enabled"] = True
+    default_config.remote["served_model_name"] = "remote-alias"
+    default_config.remote["served_model_names"] = {"trial": "trial-alias"}
+
+    runtime_config = build_llm_runtime_config(
+        "trial",
+        default_config.trial,
+        config=default_config,
+    )
+
+    assert runtime_config["served_model_name"] == "trial-alias"
+
+
 def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     """Verify LLM summarization wiring and metadata return."""
     mock_backend = MagicMock()

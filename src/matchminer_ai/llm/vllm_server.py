@@ -96,8 +96,8 @@ def build_vllm_server_command(
     """
     Build a ``vllm serve`` command from MatchMiner-AI configuration.
 
-    The served model name is set to the configured model name so remote requests
-    using ``trial.model_name`` or ``patient.model_name`` match the running server.
+    The served model name defaults to the task model name so remote requests
+    match the running server unless a task-specific served model alias is set.
     The helper maps only the known local engine fields needed by the default
     config. Additional server-only CLI flags, such as speculative decoding
     options, should be supplied explicitly with ``extra_args``.
@@ -108,7 +108,12 @@ def build_vllm_server_command(
     base_url = _remote_server_url(resolved_config, server_index)
     host, port = _host_and_port(base_url)
     model_name = str(llm_config["model_name"])
-    served_model_name = str(remote_config.get("served_model_name") or model_name)
+    served_model_names = dict(remote_config.get("served_model_names", {}))
+    served_model_name = str(
+        served_model_names.get(task)
+        or remote_config.get("served_model_name")
+        or model_name
+    )
 
     command = [
         "vllm",

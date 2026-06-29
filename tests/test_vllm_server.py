@@ -97,7 +97,7 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
 def test_build_vllm_server_command_uses_served_model_alias():
     """Allow vLLM to load one model ID and expose a separate endpoint name."""
     config = _config()
-    config.remote["served_model_name"] = "endpoint-model"
+    config.remote["served_model_names"] = {"patient": "endpoint-model"}
 
     command = build_vllm_server_command(config=config, task="patient")
 

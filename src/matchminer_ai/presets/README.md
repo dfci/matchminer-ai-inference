@@ -115,12 +115,18 @@ chat endpoint launched with the `gemma4` reasoning parser; the package
 `start_vllm_server()` helper adds this flag from `trial.reasoning_parser` or
 `patient.reasoning_parser`.
 
-### `remote.served_model_name`
+### `remote.served_model_names`
 
-Optional model name sent in OpenAI-compatible chat completion requests. This can
-differ from `trial.model_name` / `patient.model_name`, which remain the
-tokenizer and chat-template model names used while building prompts. This is
-useful for endpoints exposing aliases or non-Hugging-Face model names.
+Optional mapping from LLM task name to the model name sent in
+OpenAI-compatible chat completion requests. Use this when a remote endpoint
+exposes a task's model under an alias that differs from the task's `model_name`.
+
+Supported task keys are:
+
+- `trial`
+- `patient`
+- `llm_match_quality`
+- `llm_exclusion_criteria`
 
 ### `remote.send_vllm_extra_body`
 
@@ -161,10 +167,7 @@ Model identifier used for:
 - Hugging Face model metadata lookup
 - `vllm.LLM(model=...)` in local mode
 - OpenAI-compatible request `model` in remote mode unless
-  `remote.served_model_name` is set
-
-For remote mode, use `remote.served_model_name` when the endpoint exposes a
-different model alias.
+  `remote.served_model_names.trial` is set
 
 The default preset uses a Gemma 4 model for summarization. The specific Gemma
 variant that will run successfully may depend on the available GPU type and
@@ -214,10 +217,7 @@ Model identifier used for:
 - Hugging Face model metadata lookup
 - `vllm.LLM(model=...)` in local mode
 - OpenAI-compatible request `model` in remote mode unless
-  `remote.served_model_name` is set
-
-For remote mode, use `remote.served_model_name` when the endpoint exposes a
-different model alias.
+  `remote.served_model_names.patient` is set
 
 The default preset uses a Gemma 4 model for summarization. The specific Gemma
 variant that will run successfully may depend on the available GPU type and
@@ -351,7 +351,8 @@ Configuration for the LLM-based match-quality checker.
 
 Model identifier used for tokenizer/chat-template rendering, local vLLM
 execution, and model metadata lookup. In remote mode, this is also the
-OpenAI-compatible request model unless `remote.served_model_name` is set.
+OpenAI-compatible request model unless
+`remote.served_model_names.llm_match_quality` is set.
 
 ### `llm_match_quality.sampling_params`
 
@@ -382,7 +383,8 @@ Configuration for the LLM-based exclusion-criteria checker.
 
 Model identifier used for tokenizer/chat-template rendering, local vLLM
 execution, and model metadata lookup. In remote mode, this is also the
-OpenAI-compatible request model unless `remote.served_model_name` is set.
+OpenAI-compatible request model unless
+`remote.served_model_names.llm_exclusion_criteria` is set.
 
 ### `llm_exclusion_criteria.sampling_params`
 

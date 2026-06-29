@@ -170,6 +170,7 @@ class LocalBackend:
             if key
             not in {
                 "model_name",
+                "served_model_name",
                 "sampling_params",
                 "prompt_file",
                 "prompt_files",
@@ -319,7 +320,19 @@ def build_llm_runtime_config(
     if remote_enabled(config):
         remote_config = dict(getattr(config, "remote", {}))
         remote_config.pop("enabled", None)
+        remote_served_model_names = dict(remote_config.pop("served_model_names", {}))
+        remote_served_model_name = remote_config.pop("served_model_name", None)
         runtime_config.update(remote_config)
+        if (
+            "served_model_name" not in runtime_config
+            and task_name in remote_served_model_names
+        ):
+            runtime_config["served_model_name"] = remote_served_model_names[task_name]
+        elif (
+            "served_model_name" not in runtime_config
+            and remote_served_model_name is not None
+        ):
+            runtime_config["served_model_name"] = remote_served_model_name
     return runtime_config
 
 

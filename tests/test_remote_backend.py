@@ -228,7 +228,7 @@ def test_remote_backend_forwards_sampling_params(monkeypatch):
 
 
 def test_remote_backend_uses_served_model_name(monkeypatch):
-    """Use remote.served_model_name as the endpoint request model."""
+    """Use served_model_name as the endpoint request model."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
