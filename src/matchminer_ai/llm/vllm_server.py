@@ -15,6 +15,13 @@ from matchminer_ai.config import MMAIConfig, load_default_preset
 from matchminer_ai.llm.remote_inference import normalize_openai_base_url
 from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 
+_VLLM_SERVER_TASKS = {
+    "trial",
+    "patient",
+    "llm_match_quality",
+    "llm_exclusion_criteria",
+}
+
 
 @dataclass(frozen=True)
 class VLLMServerCommand:
@@ -32,10 +39,13 @@ class VLLMServerCommand:
 def _resolve_task_config(
     config: MMAIConfig, task: str
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    if task not in {"trial", "patient"}:
-        raise ValueError("task must be 'trial' or 'patient'.")
+    if task not in _VLLM_SERVER_TASKS:
+        allowed = "', '".join(sorted(_VLLM_SERVER_TASKS))
+        raise ValueError(f"task must be one of: '{allowed}'.")
 
     llm_config = dict(getattr(config, task))
+    if not llm_config:
+        raise ValueError(f"Config is missing {task!r} settings.")
     task_local_config = dict(llm_config.get("local", {}))
     local_config = dict(task_local_config.get("engine", {}))
     missing = [

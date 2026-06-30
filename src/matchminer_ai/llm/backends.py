@@ -333,10 +333,7 @@ def build_llm_runtime_config(
             runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
         runtime_config.update(remote_config)
         runtime_config["remote"] = task_remote_config
-        runtime_config["max_tokens"] = int(task_remote_config["max_tokens"])
-        runtime_config["sampling_params"] = {
-            "max_tokens": int(task_remote_config["max_tokens"])
-        }
+        runtime_config["sampling_params"] = dict(task_remote_config["request_params"])
         runtime_config["served_model_name"] = task_remote_config["served_model_name"]
     else:
         runtime_config.update(engine_config)

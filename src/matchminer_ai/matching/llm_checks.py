@@ -72,7 +72,7 @@ def _run_llm_check(
     section_name: str,
     messages_list: list[list[dict[str, str]]],
 ) -> tuple[list[str], list[str], dict[str, Any]]:
-    llm_config = dict(config.raw.get(section_name, {}))
+    llm_config = dict(getattr(config, section_name))
     if not llm_config:
         raise ValueError(f"Config is missing '{section_name}' settings.")
     runtime_config = build_llm_runtime_config(
@@ -170,7 +170,7 @@ def score_match_quality_with_llm(
         )
 
     resolved_config = config or load_default_preset()
-    llm_config = dict(resolved_config.raw.get("llm_match_quality", {}))
+    llm_config = dict(resolved_config.llm_match_quality)
     prompt_template = _load_prompt_template(str(llm_config["prompt_file"]).strip())
     messages_list = [
         _build_messages(
@@ -284,7 +284,7 @@ def exclusion_criteria_check_with_llm(
         raise ValueError(f"matches is missing required columns: {', '.join(missing)}")
 
     resolved_config = config or load_default_preset()
-    llm_config = dict(resolved_config.raw.get("llm_exclusion_criteria", {}))
+    llm_config = dict(resolved_config.llm_exclusion_criteria)
     prompt_template = _load_prompt_template(str(llm_config["prompt_file"]).strip())
     messages_list = [
         _build_messages(

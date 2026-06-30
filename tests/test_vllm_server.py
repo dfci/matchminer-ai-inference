@@ -50,6 +50,32 @@ def _config() -> MMAIConfig:
         },
         embedding={},
         model_metadata_cache_dir=None,
+        llm_match_quality={
+            "model_name": "match-quality-model",
+            "reasoning_parser": "gemma4",
+            "local": {
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.95,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"served_model_name": "match-quality-model"},
+        },
+        llm_exclusion_criteria={
+            "model_name": "exclusion-model",
+            "reasoning_parser": "gemma4",
+            "local": {
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.95,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"served_model_name": "exclusion-model"},
+        },
         raw={},
     )
 
@@ -111,6 +137,16 @@ def test_build_vllm_server_command_uses_served_model_alias():
     assert command.command[command.command.index("--served-model-name") + 1] == (
         "endpoint-model"
     )
+
+
+def test_build_vllm_server_command_supports_llm_checker_tasks():
+    """Build server commands from LLM checker task configs."""
+    command = build_vllm_server_command(config=_config(), task="llm_match_quality")
+
+    assert command.model_name == "match-quality-model"
+    assert command.served_model_name == "match-quality-model"
+    assert command.task == "llm_match_quality"
+    assert command.command[command.command.index("--max-model-len") + 1] == "50000"
 
 
 def test_normalize_openai_base_url_adds_scheme_and_v1():

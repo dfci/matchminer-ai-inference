@@ -20,9 +20,8 @@ def test_default_preset_matches_training_runtime_defaults():
 
     assert config.trial["remote"] == {
         "served_model_name": "google/gemma-4-31B-it",
-        "max_tokens_param": "max_tokens",
-        "max_tokens": 20000,
         "request_params": {
+            "max_tokens": 20000,
             "temperature": 1.0,
             "top_p": 0.95,
             "presence_penalty": 1.5,
@@ -52,27 +51,16 @@ def test_default_preset_matches_training_runtime_defaults():
     )
     assert config.raw["exclusion_criteria"]["max_length"] == 3192
 
-    assert config.raw["llm_match_quality"]["local"]["engine"]["max_model_len"] == 50000
-    assert config.raw["llm_match_quality"]["local"]["generation"]["temperature"] == 0.0
-    assert config.raw["llm_match_quality"]["local"]["generation"]["max_tokens"] == (
-        15000
-    )
-    assert (
-        config.raw["llm_exclusion_criteria"]["local"]["engine"]["max_model_len"]
-        == 50000
-    )
-    assert (
-        config.raw["llm_exclusion_criteria"]["local"]["generation"]["temperature"]
-        == 0.0
-    )
-    assert (
-        config.raw["llm_exclusion_criteria"]["local"]["generation"]["max_tokens"]
-        == 20000
-    )
-    assert config.raw["llm_match_quality"]["remote"]["request_params"] == {
+    assert config.llm_match_quality["local"]["engine"]["max_model_len"] == 50000
+    assert config.llm_match_quality["local"]["generation"]["temperature"] == 0.0
+    assert config.llm_match_quality["local"]["generation"]["max_tokens"] == (15000)
+    assert config.llm_exclusion_criteria["local"]["engine"]["max_model_len"] == 50000
+    assert config.llm_exclusion_criteria["local"]["generation"]["temperature"] == 0.0
+    assert config.llm_exclusion_criteria["local"]["generation"]["max_tokens"] == 20000
+    assert config.llm_match_quality["remote"]["request_params"] == {
+        "max_tokens": 15000,
         "temperature": 0.0,
         "top_p": 1.0,
         "presence_penalty": 0.0,
     }
-    assert config.raw["llm_match_quality"]["remote"]["max_tokens"] == 15000
-    assert config.raw["llm_match_quality"]["remote"]["extra_body"]["top_k"] == 1
+    assert config.llm_match_quality["remote"]["extra_body"]["top_k"] == 1

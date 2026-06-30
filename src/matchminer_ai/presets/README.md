@@ -49,8 +49,8 @@ Selects the remote LLM backend when true.
 List of OpenAI-compatible base URLs. Values are passed to the OpenAI client as
 `base_url`. For the default Gemma 4 configuration, the server should be a vLLM
 chat endpoint launched with the `gemma4` reasoning parser; the package
-`start_vllm_server()` helper adds this flag from `trial.reasoning_parser` or
-`patient.reasoning_parser`.
+`start_vllm_server()` helper adds this flag from the selected LLM task's
+`reasoning_parser`.
 
 Model names and request parameters are configured per LLM task under that
 task's `remote` block. For example, `trial.remote.served_model_name` is the
@@ -134,18 +134,16 @@ Task-specific remote chat completion request settings:
 - `served_model_name`: model name sent in OpenAI-compatible chat completion
   requests. Use this when the endpoint exposes the model under an alias that
   differs from `trial.model_name`.
-- `max_tokens_param`: output-token parameter name, usually `max_tokens` for
-  vLLM and many compatible endpoints, or `max_completion_tokens` for endpoints
-  that require it.
-- `max_tokens`: remote output-token budget.
-- `request_params`: top-level chat completion request fields sent as-is.
+- `request_params`: top-level chat completion request fields sent as-is,
+  including the output-token budget. Use `max_tokens` for vLLM and many
+  compatible endpoints, or `max_completion_tokens` for endpoints that require
+  it.
 - `extra_body`: provider-specific fields sent as request `extra_body` when
   non-empty.
 
-The package interprets `served_model_name`, `max_tokens_param`, and
-`max_tokens`. Values inside `request_params` and `extra_body` are pass-through:
-the package does not validate those keys, and the remote endpoint is responsible
-for accepting or rejecting them.
+The package interprets `served_model_name`. Values inside `request_params` and
+`extra_body` are pass-through: the package does not validate those keys, and the
+OpenAI client or remote endpoint is responsible for accepting or rejecting them.
 
 ### `trial.boilerplate_marker`
 

@@ -50,9 +50,7 @@ def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_con
     default_config.remote["enabled"] = True
     default_config.trial["remote"] = {
         "served_model_name": "task-alias",
-        "max_tokens_param": "max_tokens",
-        "max_tokens": 10,
-        "request_params": {},
+        "request_params": {"max_tokens": 10},
         "extra_body": {},
     }
 

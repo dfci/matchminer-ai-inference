@@ -53,9 +53,7 @@ def default_trial_config() -> dict:
         },
         "remote": {
             "served_model_name": "model",
-            "max_tokens_param": "max_tokens",
-            "max_tokens": 10,
-            "request_params": {"temperature": 0.0},
+            "request_params": {"max_tokens": 10, "temperature": 0.0},
             "extra_body": {
                 "top_k": 1,
                 "repetition_penalty": 1.0,
@@ -80,6 +78,8 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         local={},
         remote={},
         model_metadata_cache_dir=None,
+        llm_match_quality={},
+        llm_exclusion_criteria={},
         raw={},
         embedding={},
     )

@@ -475,48 +475,43 @@ def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
         remote={},
         embedding={},
         model_metadata_cache_dir=".mmai_cache/model_metadata",
-        raw={
-            "llm_match_quality": {
-                "model_name": "llm/model",
-                "reasoning_parser": "auto",
-                "local": {
-                    "engine": {
-                        "max_model_len": 50000,
-                        "tensor_parallel_size": 1,
-                    },
-                    "generation": {"max_tokens": 15000},
-                    "chat_template_kwargs": {"enable_thinking": True},
+        llm_match_quality={
+            "model_name": "llm/model",
+            "reasoning_parser": "auto",
+            "local": {
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
                 },
-                "remote": {
-                    "served_model_name": "llm/model",
-                    "max_tokens_param": "max_tokens",
-                    "max_tokens": 15000,
-                    "request_params": {},
-                    "extra_body": {},
-                },
-                "prompt_file": "llm_match_quality.user.txt",
+                "generation": {"max_tokens": 15000},
+                "chat_template_kwargs": {"enable_thinking": True},
             },
-            "llm_exclusion_criteria": {
-                "model_name": "llm/model",
-                "reasoning_parser": "auto",
-                "local": {
-                    "engine": {
-                        "max_model_len": 50000,
-                        "tensor_parallel_size": 1,
-                    },
-                    "generation": {"max_tokens": 20000},
-                    "chat_template_kwargs": {"enable_thinking": True},
-                },
-                "remote": {
-                    "served_model_name": "llm/model",
-                    "max_tokens_param": "max_tokens",
-                    "max_tokens": 20000,
-                    "request_params": {},
-                    "extra_body": {},
-                },
-                "prompt_file": "llm_exclusion_criteria.user.txt",
+            "remote": {
+                "served_model_name": "llm/model",
+                "request_params": {"max_tokens": 15000},
+                "extra_body": {},
             },
+            "prompt_file": "llm_match_quality.user.txt",
         },
+        llm_exclusion_criteria={
+            "model_name": "llm/model",
+            "reasoning_parser": "auto",
+            "local": {
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                },
+                "generation": {"max_tokens": 20000},
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {
+                "served_model_name": "llm/model",
+                "request_params": {"max_tokens": 20000},
+                "extra_body": {},
+            },
+            "prompt_file": "llm_exclusion_criteria.user.txt",
+        },
+        raw={},
     )
 
 

@@ -23,9 +23,8 @@ trial:
       max_tokens: 128
   remote:
     served_model_name: custom-trial-model
-    max_tokens_param: max_tokens
-    max_tokens: 128
-    request_params: {}
+    request_params:
+      max_tokens: 128
     extra_body: {}
   prompt_files:
     primer: trial.user.primer.txt
@@ -40,9 +39,8 @@ patient:
       max_tokens: 256
   remote:
     served_model_name: custom-patient-model
-    max_tokens_param: max_tokens
-    max_tokens: 256
-    request_params: {}
+    request_params:
+      max_tokens: 256
     extra_body: {}
   prompt_files:
     primer: patient.serial.user.primer.txt

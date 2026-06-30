@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +25,8 @@ class MMAIConfig:
     embedding: dict[str, Any]
     model_metadata_cache_dir: str | None
     raw: dict[str, Any]
+    llm_match_quality: dict[str, Any] = field(default_factory=dict)
+    llm_exclusion_criteria: dict[str, Any] = field(default_factory=dict)
 
 
 def config_snapshot(config: MMAIConfig) -> dict[str, Any]:
@@ -39,6 +41,8 @@ def config_snapshot(config: MMAIConfig) -> dict[str, Any]:
             "local": deepcopy(config.local),
             "remote": deepcopy(config.remote),
             "embedding": deepcopy(config.embedding),
+            "llm_match_quality": deepcopy(config.llm_match_quality),
+            "llm_exclusion_criteria": deepcopy(config.llm_exclusion_criteria),
             "model_metadata_cache_dir": config.model_metadata_cache_dir,
         }
     )
@@ -63,6 +67,8 @@ def _config_from_data(data: dict[str, Any], preset_name: str) -> MMAIConfig:
         local=dict(data.get("local", {})),
         remote=dict(data.get("remote", {})),
         embedding=dict(data["embedding"]),
+        llm_match_quality=dict(data.get("llm_match_quality", {})),
+        llm_exclusion_criteria=dict(data.get("llm_exclusion_criteria", {})),
         model_metadata_cache_dir=data["model_metadata_cache_dir"],
         raw=deepcopy(data),
     )

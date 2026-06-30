@@ -60,9 +60,8 @@ def _patient_config() -> dict:
         },
         "remote": {
             "served_model_name": "model",
-            "max_tokens_param": "max_tokens",
-            "max_tokens": 10,
             "request_params": {
+                "max_tokens": 10,
                 "temperature": 0.0,
             },
             "extra_body": {

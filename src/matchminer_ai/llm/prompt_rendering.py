@@ -107,15 +107,16 @@ def build_prompt_list(
         chat_template_kwargs=llm_config.get("chat_template_kwargs"),
     )
     sampling_params = dict(llm_config.get("sampling_params", {}))
-    max_tokens = int(
-        llm_config.get(
-            "max_tokens",
-            sampling_params.get(
-                "max_tokens",
-                sampling_params.get("max_completion_tokens"),
-            ),
-        )
+    configured_max_tokens = sampling_params.get(
+        "max_tokens",
+        sampling_params.get("max_completion_tokens"),
     )
+    if configured_max_tokens is None:
+        raise ValueError(
+            "LLM config must include sampling_params['max_tokens'] or "
+            "sampling_params['max_completion_tokens']."
+        )
+    max_tokens = int(configured_max_tokens)
     return [
         Prompt(
             row_idx=row_idx,
