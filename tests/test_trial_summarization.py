@@ -129,7 +129,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     df, metadata, truncated_llm_qc_artifact = run_llm_summarization(
         trials, default_config
     )
-    assert df["space_output_no_reasoning"].iloc[0] == "SUM0"
+    assert df["trial_answer_text"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
     assert metadata["config_snapshot"]["trial"]["model_name"] == "model"
     assert metadata["model_metadata"]["model_sha"] == "sha"
@@ -178,7 +178,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
 
     df, _, truncated_llm_qc_artifact = run_llm_summarization(trials, default_config)
     assert df["trial_id"].tolist() == ["T1", "T2"]
-    assert df["space_output_no_reasoning"].tolist() == ["SUM0", "SUM1"]
+    assert df["trial_answer_text"].tolist() == ["SUM0", "SUM1"]
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
     assert truncated_llm_qc_artifact["denominator"] == 2
     assert truncated_llm_qc_artifact["numerator"] == 0
@@ -212,8 +212,7 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
             {
                 "trial_id": "T1",
                 "trial_text": "raw input",
-                "space_raw_output": "raw reasoning text",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{trial_space}\n" "Boilerplate exclusions:\n" f"{boilerplate}"
                 ),
             }
@@ -311,7 +310,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                 {
                     "trial_id": "T1",
                     "trial_text": "TEXT",
-                    "space_output_no_reasoning": (
+                    "trial_answer_text": (
                         "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
                         "Histology allowed: Any. Cancer burden allowed: Any. "
                         "Prior treatment required: None. Prior treatment excluded: None. "
@@ -319,6 +318,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                         "Boilerplate exclusions:\n"
                         "Uncontrolled brain metastases."
                     ),
+                    "trial_reasoning_text": "trial reasoning",
                 }
             ]
         )
@@ -364,8 +364,9 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
     )
 
     result = summarize_trials(trials, config=config)
-    assert "trial_text" in result.columns
-    assert "space_output_no_reasoning" in result.columns
+    assert "trial_input_text" in result.columns
+    assert "trial_answer_text" in result.columns
+    assert result["trial_reasoning_text"].tolist() == ["trial reasoning"]
 
 
 def test_summarize_trials_lightweight_integration(monkeypatch):

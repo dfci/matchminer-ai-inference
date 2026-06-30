@@ -72,12 +72,10 @@ def run_llm_summarization(
     )
 
     trial_summaries = generation.final_outputs
-    # postprocessing consumes only the
-    # final content, while reasoning/raw text are debug artifacts when present.
-    trials_with_summaries["space_output_no_reasoning"] = trial_summaries
-    trials_with_summaries["space_reasoning"] = generation.reasoning_outputs
-    if generation.raw_outputs:
-        trials_with_summaries["space_raw_output"] = generation.raw_outputs
+    # Postprocessing consumes the answer text. Reasoning is optional
+    # backend-provided/debug context and is not required for parsing.
+    trials_with_summaries["trial_answer_text"] = trial_summaries
+    trials_with_summaries["trial_reasoning_text"] = generation.reasoning_outputs
     trial_ids = trials_with_summaries["trial_id"].astype(str).tolist()
     truncated_llm_qc_artifact = build_qc_artifact(
         metric="trials_truncated_llm_response",

@@ -96,7 +96,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 1",
                 "eligibility_criteria": "Criteria 1",
                 "trial_text": "Text 1",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{TRIAL_SPACE_1}\n"
                     f"{TRIAL_SPACE_2}\n"
                     f"{TRIAL_SPACE_3}\n"
@@ -110,7 +110,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 2",
                 "eligibility_criteria": "Criteria 2",
                 "trial_text": "Text 2",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{TRIAL_SPACE_4}\n" "Boilerplate exclusions:\n" f"{BOILERPLATE_2}"
                 ),
             },

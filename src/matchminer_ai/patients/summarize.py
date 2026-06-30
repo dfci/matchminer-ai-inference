@@ -177,7 +177,6 @@ def summarize_patient_notes(
     current_summaries = {
         patient_id: summary for patient_id, summary in existing_summary_lookup.items()
     }
-    current_raw_outputs: dict[str, str] = {}
     current_reasoning_outputs: dict[str, str] = {}
     model_metadata: dict[str, Any] = {}
     prompt_pool = None
@@ -211,21 +210,16 @@ def summarize_patient_notes(
             if not model_metadata:
                 model_metadata = generation.model_metadata
             summaries = generation.final_outputs
-            has_raw_outputs = bool(generation.raw_outputs)
-            raw_outputs = generation.raw_outputs if has_raw_outputs else summaries
             reasoning_outputs = generation.reasoning_outputs
             # Persist each round's final summary, not the reasoning trace, so
             # it becomes the prior summary for the next patient chunk.
-            for patient_id, summary, raw_output, reasoning in zip(
+            for patient_id, summary, reasoning in zip(
                 round_patient_ids,
                 summaries,
-                raw_outputs,
                 reasoning_outputs,
                 strict=False,
             ):
                 current_summaries[patient_id] = str(summary)
-                if has_raw_outputs:
-                    current_raw_outputs[patient_id] = str(raw_output)
                 current_reasoning_outputs[patient_id] = str(reasoning)
     finally:
         if prompt_pool is not None:
@@ -234,20 +228,14 @@ def summarize_patient_notes(
     # Collapse the running patient state back to one final row per patient,
     # then do postprocessing and QC report generation.
     final_rows = prepared_patients.copy()
-    final_rows["original_patient_summary"] = final_rows["patient_id"].map(
-        current_summaries
-    )
+    final_rows["patient_answer_text"] = final_rows["patient_id"].map(current_summaries)
     if resolved_config.debug_mode:
         # These columns preserve final-round debug traces without feeding them
         # back into the serial patient summary state.
-        if current_raw_outputs:
-            final_rows["final_round_patient_summary_raw_output"] = final_rows[
-                "patient_id"
-            ].map(current_raw_outputs)
-        final_rows["final_round_patient_summary_reasoning"] = final_rows[
-            "patient_id"
-        ].map(current_reasoning_outputs)
-    final_rows = final_rows.dropna(subset=["original_patient_summary"]).copy()
+        final_rows["patient_reasoning_text"] = final_rows["patient_id"].map(
+            current_reasoning_outputs
+        )
+    final_rows = final_rows.dropna(subset=["patient_answer_text"]).copy()
 
     final_rows, noninformative_summary_qc_artifact = postprocess_patient_summaries(
         final_rows, resolved_config

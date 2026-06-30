@@ -555,9 +555,12 @@ def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypa
     )
 
     assert result["llm_match_quality_score"].tolist() == [4]
-    assert result["llm_match_quality_verdict"].tolist() == ["Score:4"]
+    assert "llm_match_quality_verdict" not in result.columns
     assert "llm_match_quality_response" not in result.columns
     assert "llm_match_quality_reasoning" not in result.columns
+    assert "llm_match_quality_answer_text" not in result.columns
+    assert "llm_match_quality_reasoning_text" not in result.columns
+    assert "llm_match_quality_parse_status" not in result.columns
     assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
     assert "metastatic lung cancer" in captured_messages[0][1]["content"]
     assert backend.last_llm_config["max_model_len"] == 50000
@@ -595,10 +598,11 @@ def test_score_match_quality_with_llm_includes_debug_columns(monkeypatch):
 
     result = score_match_quality_with_llm(pairs, config=_llm_config(debug_mode=True))
 
-    assert result["llm_match_quality_response"].tolist() == [
+    assert result["llm_match_quality_answer_text"].tolist() == [
         "After review.\nFinal score: 4"
     ]
-    assert result["llm_match_quality_reasoning"].tolist() == ["reasoning 0"]
+    assert result["llm_match_quality_reasoning_text"].tolist() == ["reasoning 0"]
+    assert result["llm_match_quality_parse_status"].tolist() == ["parsed"]
 
 
 def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
@@ -634,9 +638,12 @@ def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
     result = exclusion_criteria_check_with_llm(matches, config=_llm_config())
 
     assert result["llm_exclusion_criteria_pass"].tolist() == [True]
-    assert result["llm_exclusion_criteria_verdict"].tolist() == ["NO"]
+    assert "llm_exclusion_criteria_verdict" not in result.columns
     assert "llm_exclusion_criteria_response" not in result.columns
     assert "llm_exclusion_criteria_reasoning" not in result.columns
+    assert "llm_exclusion_criteria_answer_text" not in result.columns
+    assert "llm_exclusion_criteria_reasoning_text" not in result.columns
+    assert "llm_exclusion_criteria_parse_status" not in result.columns
     assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
     assert "uncontrolled brain mets" in captured_messages[0][1]["content"]
     assert backend.last_llm_config["max_model_len"] == 50000
@@ -674,5 +681,6 @@ def test_exclusion_criteria_check_with_llm_includes_debug_columns(monkeypatch):
         config=_llm_config(debug_mode=True),
     )
 
-    assert result["llm_exclusion_criteria_response"].tolist() == ["No!"]
-    assert result["llm_exclusion_criteria_reasoning"].tolist() == ["reasoning 0"]
+    assert result["llm_exclusion_criteria_answer_text"].tolist() == ["No!"]
+    assert result["llm_exclusion_criteria_reasoning_text"].tolist() == ["reasoning 0"]
+    assert result["llm_exclusion_criteria_parse_status"].tolist() == ["parsed"]

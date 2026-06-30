@@ -57,7 +57,7 @@ def _expand_trial_spaces(
     """Expand LLM summaries into one row per clinical space."""
     trials_with_summaries = trials_with_summaries.copy()
 
-    split_parts = trials_with_summaries["space_output_no_reasoning"].apply(
+    split_parts = trials_with_summaries["trial_answer_text"].apply(
         lambda text: _split_boilerplate_section(str(text), boilerplate_marker)
     )
     trials_with_summaries["space_text"] = split_parts.apply(lambda parts: parts[0])
@@ -164,13 +164,9 @@ def postprocess_trial_summaries(
     )
 
     if config.debug_mode:
-        output["trial_text"] = spaces["trial_text"]
-        # Remote chat completions provide final content and reasoning separately;
-        # local in-process vLLM can also expose the raw generated text.
-        output["space_output_no_reasoning"] = spaces["space_output_no_reasoning"]
-        if "space_reasoning" in spaces.columns:
-            output["space_reasoning"] = spaces["space_reasoning"]
-        if "space_raw_output" in spaces.columns:
-            output["space_raw_output"] = spaces["space_raw_output"]
+        output["trial_input_text"] = spaces["trial_text"]
+        output["trial_answer_text"] = spaces["trial_answer_text"]
+        if "trial_reasoning_text" in spaces.columns:
+            output["trial_reasoning_text"] = spaces["trial_reasoning_text"]
     # qc spaces = unfiltered trial spaces
     return output, unfiltered_spaces

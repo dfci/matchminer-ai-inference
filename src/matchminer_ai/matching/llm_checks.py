@@ -40,29 +40,29 @@ def _parse_match_quality_score(response_text: str) -> tuple[int, str]:
     match = _TRIAL_CHECK_SCORE_PATTERN.search(tail)
     if match:
         score = min(int(match.group(1)), 5)
-        return score, f"Score:{score}"
+        return score, "parsed"
 
     tail_upper = tail.upper()
     fallback = re.search(r"SCORE\s*[:\-=]\s*(\d)", tail_upper)
     if fallback:
         score = min(int(fallback.group(1)), 5)
-        return score, f"Score:{score}"
+        return score, "parsed_fallback"
     if "NOT REASONABLE" in tail_upper or "NOT A REASONABLE" in tail_upper:
-        return 0, "Score:0"
-    return -1, "PARSE_FAILED"
+        return 0, "parsed_fallback"
+    return -1, "parse_failed"
 
 
 def _parse_exclusion_result(response_text: str) -> tuple[bool | None, str]:
     tail = response_text[-10:].upper()
     if "YES!" in tail:
-        return False, "YES"
+        return False, "parsed"
     if "NO!" in tail:
-        return True, "NO"
+        return True, "parsed"
     if "YES" in tail:
-        return False, "YES_FALLBACK"
+        return False, "parsed_fallback"
     if "NO" in tail:
-        return True, "NO_FALLBACK"
-    return None, "PARSE_FAILED"
+        return True, "parsed_fallback"
+    return None, "parse_failed"
 
 
 def _run_llm_check(
@@ -141,15 +141,19 @@ def score_match_quality_with_llm(
             Trial-space identifier.
         llm_match_quality_score : int
             Parsed LLM score from 0 to 5, or -1 when parsing failed.
-        llm_match_quality_verdict : str
-            Parsed score label or parse-failure marker.
-
         Debug Columns
         -------------
-        llm_match_quality_response : str
-            Raw final LLM response. Included only when debug_mode is true.
-        llm_match_quality_reasoning : str
-            Parsed LLM reasoning trace. Included only when debug_mode is true.
+        llm_match_quality_answer_text : str
+            Text the package treated as the LLM answer and used for parsing.
+            Included only when debug_mode is true.
+        llm_match_quality_reasoning_text : str
+            Optional separate reasoning trace returned by the backend or
+            extracted by the configured reasoning parser. Included only when
+            debug_mode is true.
+        llm_match_quality_parse_status : str
+            Whether the package could parse the answer text. Values are
+            ``parsed``, ``parsed_fallback``, or ``parse_failed``. Included only
+            when debug_mode is true.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus metadata.
     """
@@ -187,10 +191,12 @@ def score_match_quality_with_llm(
 
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
     output["llm_match_quality_score"] = [score for score, _ in parsed]
-    output["llm_match_quality_verdict"] = [verdict for _, verdict in parsed]
     if resolved_config.debug_mode:
-        output["llm_match_quality_response"] = responses
-        output["llm_match_quality_reasoning"] = reasonings
+        output["llm_match_quality_answer_text"] = responses
+        output["llm_match_quality_reasoning_text"] = reasonings
+        output["llm_match_quality_parse_status"] = [
+            parse_status for _, parse_status in parsed
+        ]
     output = output.reset_index(drop=True)
 
     if return_metadata:
@@ -251,15 +257,19 @@ def exclusion_criteria_check_with_llm(
         llm_exclusion_criteria_pass : bool | None
             Whether the LLM judged that the patient passes exclusion criteria,
             or None when parsing failed.
-        llm_exclusion_criteria_verdict : str
-            Parsed yes/no label or parse-failure marker.
-
         Debug Columns
         -------------
-        llm_exclusion_criteria_response : str
-            Raw final LLM response. Included only when debug_mode is true.
-        llm_exclusion_criteria_reasoning : str
-            Parsed LLM reasoning trace. Included only when debug_mode is true.
+        llm_exclusion_criteria_answer_text : str
+            Text the package treated as the LLM answer and used for parsing.
+            Included only when debug_mode is true.
+        llm_exclusion_criteria_reasoning_text : str
+            Optional separate reasoning trace returned by the backend or
+            extracted by the configured reasoning parser. Included only when
+            debug_mode is true.
+        llm_exclusion_criteria_parse_status : str
+            Whether the package could parse the answer text. Values are
+            ``parsed``, ``parsed_fallback``, or ``parse_failed``. Included only
+            when debug_mode is true.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus metadata.
     """
@@ -295,10 +305,12 @@ def exclusion_criteria_check_with_llm(
 
     output = matches[["patient_id", "trial_id"]].copy()
     output["llm_exclusion_criteria_pass"] = [passed for passed, _ in parsed]
-    output["llm_exclusion_criteria_verdict"] = [verdict for _, verdict in parsed]
     if resolved_config.debug_mode:
-        output["llm_exclusion_criteria_response"] = responses
-        output["llm_exclusion_criteria_reasoning"] = reasonings
+        output["llm_exclusion_criteria_answer_text"] = responses
+        output["llm_exclusion_criteria_reasoning_text"] = reasonings
+        output["llm_exclusion_criteria_parse_status"] = [
+            parse_status for _, parse_status in parsed
+        ]
     output = output.reset_index(drop=True)
 
     if return_metadata:

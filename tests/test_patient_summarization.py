@@ -121,11 +121,11 @@ def test_parse_boilerplate_splits_summary_and_exclusions():
     df = pd.DataFrame(
         [
             {
-                "original_patient_summary": (
+                "patient_answer_text": (
                     "Cancer history here.\n" "Boilerplate conditions:\n" "No CNS mets."
                 )
             },
-            {"original_patient_summary": "Cancer only."},
+            {"patient_answer_text": "Cancer only."},
         ]
     )
 
@@ -144,7 +144,7 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
     df = pd.DataFrame(
         [
             {
-                "original_patient_summary": (
+                "patient_answer_text": (
                     "Cancer history here.\n"
                     "\n"
                     "Boilerplate conditions:\n"
@@ -447,6 +447,73 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
 
     assert seen_prior_summaries == ["Existing summary"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Updated"
+
+
+def test_summarize_patient_notes_includes_standard_debug_columns(monkeypatch):
+    """Debug mode exposes standardized patient LLM answer/reasoning columns."""
+    _stub_patient_qc(monkeypatch)
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
+        lambda model_name, **kwargs: MockTokenizer(),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
+        lambda notes, tokenizer, chunk_size, chunk_overlap: (
+            pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-01"}]),
+            pd.DataFrame(
+                [
+                    {
+                        "patient_id": "P1",
+                        "chunk_index": 0,
+                        "first_date": "2024-01-01",
+                        "last_date": "2024-01-01",
+                        "chunk_text": "chunk",
+                    }
+                ]
+            ),
+        ),
+    )
+
+    class FakePromptPool:
+        def map(self, func, work_items, chunksize=1):
+            return [
+                Prompt(row_idx=item.row_idx, prompt_text=item.chunk_text, max_tokens=7)
+                for item in work_items
+            ]
+
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
+        lambda patient_config, n_workers: FakePromptPool(),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
+        lambda prompt_pool: None,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.get_llm_backend",
+        lambda config: MagicMock(
+            generate_llm_outputs=MagicMock(
+                return_value=LLMGenerationResult(
+                    final_outputs=["Debug summary\nBoilerplate conditions:\nNone"],
+                    model_metadata={"model_name": "model", "model_sha": "sha"},
+                    finish_reasons=["stop"],
+                    reasoning_outputs=["debug reasoning"],
+                    raw_outputs=["raw output"],
+                )
+            )
+        ),
+    )
+
+    notes = pd.DataFrame(
+        [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
+    )
+
+    result, _ = summarize_patient_notes(notes, config=_config(debug_mode=True))
+
+    assert result["patient_answer_text"].tolist() == [
+        "Debug summary\nBoilerplate conditions:\nNone"
+    ]
+    assert result["patient_reasoning_text"].tolist() == ["debug reasoning"]
 
 
 def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch):

@@ -31,9 +31,9 @@ def _split_boilerplate_section(text: str, boilerplate_marker: str) -> tuple[str,
 def parse_boilerplate(df: pd.DataFrame, boilerplate_marker: str) -> pd.DataFrame:
     """Split final patient summary output into summary and boilerplate portions."""
     df = df.copy()
-    summary_source = df["original_patient_summary"].fillna("").astype(str)
-    df["cleaned_patient_summary"] = summary_source.str.strip()
-    split_parts = df["cleaned_patient_summary"].apply(
+    summary_source = df["patient_answer_text"].fillna("").astype(str)
+    cleaned_summary = summary_source.str.strip()
+    split_parts = cleaned_summary.apply(
         lambda text: _split_boilerplate_section(str(text), boilerplate_marker)
     )
     df["cancer_history_summary"] = split_parts.apply(lambda parts: parts[0])
@@ -78,13 +78,8 @@ def postprocess_patient_summaries(
     boilerplate_marker = patient_config["boilerplate_marker"]
     parsed = parse_boilerplate(df, boilerplate_marker)
     cleaned, qc_artifact = clean_bad_data(parsed)
+    cleaned = cleaned.copy()
     if not config.debug_mode:
-        cleaned = cleaned.drop(
-            columns=[
-                "original_patient_summary",
-                "cleaned_patient_summary",
-            ],
-            errors="ignore",
-        )
+        cleaned = cleaned.drop(columns=["patient_answer_text"], errors="ignore")
     cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
     return cleaned, qc_artifact
