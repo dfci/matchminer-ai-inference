@@ -36,7 +36,8 @@ def _resolve_task_config(
         raise ValueError("task must be 'trial' or 'patient'.")
 
     llm_config = dict(getattr(config, task))
-    local_config = dict(getattr(config, "local", {}).get(task, {}))
+    task_local_config = dict(llm_config.get("local", {}))
+    local_config = dict(task_local_config.get("engine", {}))
     missing = [
         key
         for key in (
@@ -104,16 +105,12 @@ def build_vllm_server_command(
     """
     resolved_config = config or load_default_preset()
     llm_config, local_config = _resolve_task_config(resolved_config, task)
-    remote_config = dict(getattr(resolved_config, "remote", {}))
+    task_local_config = dict(llm_config.get("local", {}))
     base_url = _remote_server_url(resolved_config, server_index)
     host, port = _host_and_port(base_url)
     model_name = str(llm_config["model_name"])
-    served_model_names = dict(remote_config.get("served_model_names", {}))
-    served_model_name = str(
-        served_model_names.get(task)
-        or remote_config.get("served_model_name")
-        or model_name
-    )
+    task_remote_config = dict(llm_config.get("remote", {}))
+    served_model_name = str(task_remote_config.get("served_model_name") or model_name)
 
     command = [
         "vllm",
@@ -138,7 +135,10 @@ def build_vllm_server_command(
     )
     if reasoning_parser:
         command.extend(["--reasoning-parser", reasoning_parser])
-    chat_template_kwargs = llm_config.get("chat_template_kwargs")
+    chat_template_kwargs = task_local_config.get(
+        "chat_template_kwargs",
+        llm_config.get("chat_template_kwargs"),
+    )
     if chat_template_kwargs:
         command.extend(
             [

@@ -84,11 +84,15 @@ def _llm_config(**overrides):
         "max_retries": 3,
         "batch_size": 1000,
         "retry_backoff_base": 0.0,
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
+        "remote": {
+            "served_model_name": "model",
+            "max_tokens_param": "max_tokens",
             "max_tokens": 10,
-            "repetition_penalty": 1.0,
+            "request_params": {"temperature": 0.0},
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
         },
     }
     config.update(overrides)
@@ -178,14 +182,22 @@ def test_remote_backend_captures_structured_reasoning(monkeypatch):
     assert result.finish_reasons == ["stop"]
 
 
-def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
-    """Remote chat requests pass Gemma 4 thinking kwargs through vLLM extra_body."""
+def test_remote_backend_passes_extra_body(monkeypatch):
+    """Remote chat requests pass task remote extra_body through unchanged."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
-            chat_template_kwargs={"enable_thinking": True},
+            remote={
+                "served_model_name": "model",
+                "max_tokens_param": "max_tokens",
+                "max_tokens": 10,
+                "request_params": {},
+                "extra_body": {
+                    "chat_template_kwargs": {"enable_thinking": True},
+                },
+            },
         ),
     )
 
@@ -194,22 +206,28 @@ def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
     ] == {"enable_thinking": True}
 
 
-def test_remote_backend_forwards_sampling_params(monkeypatch):
-    """Remote requests forward config sampling params to request args/extra_body."""
+def test_remote_backend_forwards_remote_request_config(monkeypatch):
+    """Remote requests forward explicit task request params and extra body."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
-            sampling_params={
-                "temperature": 0.7,
-                "top_p": 0.95,
-                "presence_penalty": 1.5,
-                "max_tokens": 99,
-                "top_k": 20,
-                "min_p": 0.0,
-                "repetition_penalty": 1.1,
-                "skip_special_tokens": False,
+            remote={
+                "served_model_name": "model",
+                "max_tokens_param": "max_tokens",
+                "max_tokens": 10,
+                "request_params": {
+                    "temperature": 0.7,
+                    "top_p": 0.95,
+                    "presence_penalty": 1.5,
+                },
+                "extra_body": {
+                    "top_k": 20,
+                    "min_p": 0.0,
+                    "repetition_penalty": 1.1,
+                    "skip_special_tokens": False,
+                },
             },
         ),
     )
@@ -233,7 +251,15 @@ def test_remote_backend_uses_served_model_name(monkeypatch):
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
-        llm_config=_llm_config(served_model_name="endpoint-model"),
+        llm_config=_llm_config(
+            remote={
+                "served_model_name": "endpoint-model",
+                "max_tokens_param": "max_tokens",
+                "max_tokens": 10,
+                "request_params": {},
+                "extra_body": {},
+            },
+        ),
     )
 
     assert FakeAsyncOpenAI.clients[0].calls[0]["model"] == "endpoint-model"
@@ -253,7 +279,15 @@ def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
 
     result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
-        llm_config=_llm_config(served_model_name="gpt-compatible-name"),
+        llm_config=_llm_config(
+            remote={
+                "served_model_name": "gpt-compatible-name",
+                "max_tokens_param": "max_tokens",
+                "max_tokens": 10,
+                "request_params": {},
+                "extra_body": {},
+            },
+        ),
     )
 
     assert result.model_metadata["model_name"] == "gpt-compatible-name"
@@ -261,36 +295,69 @@ def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
     assert "not a Hugging Face model" in result.model_metadata["metadata_error"]
 
 
-def test_remote_backend_can_skip_vllm_extra_body(monkeypatch):
-    """Allow standard OpenAI-compatible endpoints that reject vLLM-only fields."""
+def test_remote_backend_can_use_max_completion_tokens(monkeypatch):
+    """Allow OpenAI models that reject the legacy max_tokens field."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
-            send_vllm_extra_body=False,
-            chat_template_kwargs={"enable_thinking": True},
-            sampling_params={
-                "temperature": 0.7,
-                "top_p": 0.95,
-                "presence_penalty": 1.5,
-                "max_tokens": 99,
-                "top_k": 20,
-                "min_p": 0.0,
-                "repetition_penalty": 1.1,
-                "skip_special_tokens": False,
+            remote={
+                "served_model_name": "model",
+                "max_tokens_param": "max_completion_tokens",
+                "max_tokens": 10,
+                "request_params": {},
+                "extra_body": {},
             },
         ),
     )
 
     call = FakeAsyncOpenAI.clients[0].calls[0]
-    assert call["temperature"] == 0.7
-    assert call["top_p"] == 0.95
-    assert call["presence_penalty"] == 1.5
+    assert call["max_completion_tokens"] == 10
+    assert "max_tokens" not in call
+
+
+def test_remote_backend_uses_task_remote_request_config(monkeypatch):
+    """Task remote config controls top-level params and extra body explicitly."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            remote={
+                "served_model_name": "model",
+                "request_params": {"temperature": 0.0, "seed": 123},
+                "extra_body": {"top_k": 1},
+                "max_tokens_param": "max_tokens",
+                "max_tokens": 10,
+            },
+        ),
+    )
+
+    call = FakeAsyncOpenAI.clients[0].calls[0]
     assert call["max_tokens"] == 10
-    assert "extra_body" not in call
-    assert "top_k" not in call
-    assert "repetition_penalty" not in call
+    assert "max_completion_tokens" not in call
+    assert call["temperature"] == 0.0
+    assert call["seed"] == 123
+    assert call["extra_body"] == {"top_k": 1}
+    assert "top_p" not in call
+
+
+def test_remote_backend_rejects_unknown_max_tokens_param(monkeypatch):
+    """Validate endpoint token-parameter overrides early."""
+    _install_fakes(monkeypatch)
+
+    try:
+        RemoteBackend().generate_llm_outputs(
+            prompt_list=_prompts("p0"),
+            llm_config=_llm_config(
+                remote={"max_tokens_param": "completion_tokens"},
+            ),
+        )
+    except ValueError as exc:
+        assert "max_tokens_param" in str(exc)
+    else:
+        raise AssertionError("Expected ValueError for invalid max_tokens_param.")
 
 
 def test_remote_backend_accepts_legacy_reasoning_content(monkeypatch):

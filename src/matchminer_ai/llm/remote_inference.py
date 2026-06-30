@@ -14,6 +14,7 @@ from matchminer_ai.llm.prompt_rendering import Prompt
 
 logger = logging.getLogger(__name__)
 T = TypeVar("T")
+_OUTPUT_TOKEN_PARAM_KEYS = {"max_tokens", "max_completion_tokens"}
 
 
 @dataclass
@@ -58,6 +59,36 @@ def normalize_openai_base_url(base_url: str) -> str:
 def remote_request_model_name(llm_config: Dict[str, Any]) -> str:
     """Return the model name to send to the OpenAI-compatible endpoint."""
     return str(llm_config.get("served_model_name") or llm_config["model_name"])
+
+
+def resolve_max_tokens_param(
+    llm_config: Dict[str, Any],
+) -> str:
+    """Return the output-token parameter name for remote chat completions."""
+    task_remote_config = dict(llm_config.get("remote", {}))
+    configured = str(task_remote_config["max_tokens_param"]).strip()
+    if configured not in _OUTPUT_TOKEN_PARAM_KEYS:
+        raise ValueError(
+            "remote max_tokens_param must be 'max_tokens' or "
+            "'max_completion_tokens'."
+        )
+    return configured
+
+
+def build_remote_request_config(
+    llm_config: Dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """
+    Build top-level and extra-body remote request params.
+
+    Task-level ``remote`` config specifies exactly which API-facing fields to
+    send. ``request_params`` and ``extra_body`` are pass-through mappings.
+    """
+    task_remote_config = dict(llm_config.get("remote", {}))
+    return (
+        dict(task_remote_config.get("request_params", {})),
+        dict(task_remote_config.get("extra_body", {})),
+    )
 
 
 def _run_sync(awaitable_factory: Callable[[], Coroutine[Any, Any, T]]) -> T:
@@ -206,6 +237,7 @@ async def run_inference_batch(
     request_params: dict[str, Any],
     extra_body_params: dict[str, Any],
     chat_template_kwargs: dict[str, Any] | None = None,
+    max_tokens_param: str = "max_tokens",
     max_concurrent: int = 16,
     batch_size: int = 1000,
     max_retries: int = 6,
@@ -247,7 +279,7 @@ async def run_inference_batch(
                     model=model,
                     request_params={
                         **request_params,
-                        "max_tokens": prompt.max_tokens,
+                        max_tokens_param: prompt.max_tokens,
                     },
                     extra_body_params=extra_body_params,
                     chat_template_kwargs=chat_template_kwargs,
@@ -282,7 +314,6 @@ async def generate_remote_llm_outputs_async(
         return [], [], []
 
     model_name = remote_request_model_name(llm_config)
-    sampling_params = dict(llm_config["sampling_params"])
     required_remote_keys = [
         "server_urls",
         "max_concurrent_requests",
@@ -302,32 +333,8 @@ async def generate_remote_llm_outputs_async(
     max_retries = max(1, int(llm_config["max_retries"]))
     retry_backoff_base = float(llm_config.get("retry_backoff_base", 1.0))
     batch_size = max(1, int(llm_config["batch_size"]))
-    send_vllm_extra_body = bool(llm_config.get("send_vllm_extra_body", True))
-    chat_template_kwargs = (
-        llm_config.get("chat_template_kwargs") if send_vllm_extra_body else None
-    )
-    request_param_keys = {
-        "temperature",
-        "top_p",
-        "presence_penalty",
-        "frequency_penalty",
-        "stop",
-        "seed",
-    }
-    request_params = {
-        key: value
-        for key, value in sampling_params.items()
-        if key in request_param_keys
-    }
-    extra_body_params = (
-        {
-            key: value
-            for key, value in sampling_params.items()
-            if key not in request_param_keys and key != "max_tokens"
-        }
-        if send_vllm_extra_body
-        else {}
-    )
+    max_tokens_param = resolve_max_tokens_param(llm_config)
+    request_params, extra_body_params = build_remote_request_config(llm_config)
     server_clients = connect_to_remote_servers(
         server_urls=server_urls,
         request_timeout=request_timeout,
@@ -350,7 +357,8 @@ async def generate_remote_llm_outputs_async(
                         model=model_name,
                         request_params=request_params,
                         extra_body_params=extra_body_params,
-                        chat_template_kwargs=chat_template_kwargs,
+                        chat_template_kwargs=None,
+                        max_tokens_param=max_tokens_param,
                         max_concurrent=max_concurrent_requests,
                         batch_size=batch_size,
                         max_retries=max_retries,
@@ -402,11 +410,13 @@ __all__ = [
     "ModelResult",
     "Prompt",
     "connect_to_remote_servers",
+    "build_remote_request_config",
     "generate_remote_llm_outputs",
     "generate_remote_llm_outputs_async",
     "normalize_openai_base_url",
     "normalize_remote_server_urls",
     "remote_request_model_name",
+    "resolve_max_tokens_param",
     "run_inference_batch",
     "single_inference_request",
 ]

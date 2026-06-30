@@ -98,8 +98,7 @@ def build_prompt_list(
     Build indexed ``Prompt`` objects from chat-style message lists.
 
     The rendered prompts keep input ordering through ``Prompt.row_idx`` and use
-    ``llm_config["sampling_params"]["max_tokens"]`` as the per-prompt generation
-    limit.
+    the configured generation token limit for each prompt.
     """
     prompt_texts = build_chat_prompts(
         messages_list,
@@ -107,11 +106,21 @@ def build_prompt_list(
         prompt_build_workers=llm_config.get("prompt_build_workers"),
         chat_template_kwargs=llm_config.get("chat_template_kwargs"),
     )
+    sampling_params = dict(llm_config.get("sampling_params", {}))
+    max_tokens = int(
+        llm_config.get(
+            "max_tokens",
+            sampling_params.get(
+                "max_tokens",
+                sampling_params.get("max_completion_tokens"),
+            ),
+        )
+    )
     return [
         Prompt(
             row_idx=row_idx,
             prompt_text=prompt_text,
-            max_tokens=int(llm_config["sampling_params"]["max_tokens"]),
+            max_tokens=max_tokens,
             messages=messages,
         )
         for row_idx, (messages, prompt_text) in enumerate(

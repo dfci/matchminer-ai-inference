@@ -46,10 +46,15 @@ def test_get_filled_trial_prompt_includes_trial_text():
 
 
 def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_config):
-    """Use remote task endpoint aliases before legacy remote-level aliases."""
+    """Use the task-level remote served model name for endpoint requests."""
     default_config.remote["enabled"] = True
-    default_config.remote["served_model_name"] = "remote-alias"
-    default_config.remote["served_model_names"] = {"trial": "trial-alias"}
+    default_config.trial["remote"] = {
+        "served_model_name": "task-alias",
+        "max_tokens_param": "max_tokens",
+        "max_tokens": 10,
+        "request_params": {},
+        "extra_body": {},
+    }
 
     runtime_config = build_llm_runtime_config(
         "trial",
@@ -57,7 +62,37 @@ def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_con
         config=default_config,
     )
 
-    assert runtime_config["served_model_name"] == "trial-alias"
+    assert runtime_config["served_model_name"] == "task-alias"
+
+
+def test_build_llm_runtime_config_flattens_task_local_config(default_config):
+    """Task-local runtime config drives local engine and generation settings."""
+    default_config.local = {}
+    default_config.trial["local"] = {
+        "engine": {
+            "max_model_len": 1234,
+            "tensor_parallel_size": 1,
+            "gpu_memory_utilization": 0.8,
+        },
+        "generation": {
+            "max_tokens": 99,
+            "temperature": 0.2,
+        },
+        "chat_template_kwargs": {"enable_thinking": True},
+    }
+
+    runtime_config = build_llm_runtime_config(
+        "trial",
+        default_config.trial,
+        config=default_config,
+    )
+
+    assert runtime_config["max_model_len"] == 1234
+    assert runtime_config["sampling_params"] == {
+        "max_tokens": 99,
+        "temperature": 0.2,
+    }
+    assert runtime_config["chat_template_kwargs"] == {"enable_thinking": True}
 
 
 def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
@@ -230,13 +265,17 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     )
 
     backend = LocalBackend()
-    default_config.local["trial"]["trust_remote_code"] = True
-    default_config.local["trial"]["speculative_config"] = {
+    default_config.trial.setdefault("local", {}).setdefault("engine", {})[
+        "trust_remote_code"
+    ] = True
+    default_config.trial["local"]["engine"]["speculative_config"] = {
         "num_speculative_tokens": 4,
     }
     default_config.trial["reasoning_parser"] = "gemma4"
     default_config.trial["prompt_file"] = "llm_match_quality.user.txt"
-    default_config.trial["sampling_params"]["seed"] = 123
+    default_config.trial.setdefault("local", {}).setdefault("generation", {})[
+        "seed"
+    ] = 123
     llm_config = build_llm_runtime_config(
         "trial",
         default_config.trial,

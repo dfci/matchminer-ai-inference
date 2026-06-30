@@ -44,17 +44,37 @@ def _stub_patient_qc(monkeypatch):
 def _patient_config() -> dict:
     return {
         "model_name": "model",
+        "local": {
+            "engine": {
+                "max_model_len": 100,
+                "tensor_parallel_size": 1,
+                "gpu_memory_utilization": 0.9,
+            },
+            "generation": {
+                "temperature": 0.0,
+                "top_k": 1,
+                "max_tokens": 10,
+                "repetition_penalty": 1.0,
+            },
+            "chat_template_kwargs": {},
+        },
+        "remote": {
+            "served_model_name": "model",
+            "max_tokens_param": "max_tokens",
+            "max_tokens": 10,
+            "request_params": {
+                "temperature": 0.0,
+            },
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
+        },
         "prompt_files": {
             "primer": "patient.serial.user.primer.txt",
             "question": "patient.serial.user.question.txt",
         },
         "boilerplate_marker": "Boilerplate conditions",
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
-            "max_tokens": 10,
-            "repetition_penalty": 1.0,
-        },
         "chunk_size": 50,
         "chunk_overlap": 5,
         "prompt_margin_tokens": 10,
@@ -67,13 +87,7 @@ def _config(debug_mode: bool = False) -> MMAIConfig:
         debug_mode=debug_mode,
         trial={},
         patient=_patient_config(),
-        local={
-            "patient": {
-                "max_model_len": 100,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.9,
-            }
-        },
+        local={},
         remote={},
         model_metadata_cache_dir=None,
         raw={"config": "snapshot"},
@@ -247,7 +261,7 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
             "model_name": "google/gemma-4-31B-it",
             "max_model_len": 1000,
             "sampling_params": {
-                **_patient_config()["sampling_params"],
+                **_patient_config()["local"]["generation"],
                 "max_tokens": 900,
             },
         },

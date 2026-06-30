@@ -150,10 +150,9 @@ class LocalBackend:
         prompt_list
             Rendered prompts to send to vLLM. Output order follows this list.
         llm_config
-            Model and sampling configuration. Local-engine fields from
-            ``config.local.<task>`` are passed through to ``vllm.LLM`` as
-            keyword arguments, and ``sampling_params`` is passed through to
-            ``vllm.SamplingParams`` as keyword arguments.
+            Runtime model configuration. Task-local engine fields are passed
+            through to ``vllm.LLM`` as keyword arguments, and generation
+            settings are passed through to ``vllm.SamplingParams``.
 
         Returns
         -------
@@ -172,6 +171,7 @@ class LocalBackend:
                 "model_name",
                 "served_model_name",
                 "sampling_params",
+                "remote",
                 "prompt_file",
                 "prompt_files",
                 "reasoning_parser",
@@ -314,25 +314,35 @@ def build_llm_runtime_config(
     config: "MMAIConfig",
 ) -> Dict[str, Any]:
     """Merge task LLM settings with mode-specific runtime settings."""
-    runtime_config = dict(llm_config)
-    local_config = dict(getattr(config, "local", {}).get(task_name, {}))
-    runtime_config.update(local_config)
+    runtime_config = {
+        key: value
+        for key, value in llm_config.items()
+        if key not in {"local", "remote"}
+    }
+    task_local_config = dict(llm_config.get("local", {}))
+    task_remote_config = dict(llm_config.get("remote", {}))
+    engine_config = dict(task_local_config.get("engine", {}))
+    generation_config = dict(task_local_config.get("generation", {}))
+    local_chat_template_kwargs = task_local_config.get("chat_template_kwargs")
+
     if remote_enabled(config):
         remote_config = dict(getattr(config, "remote", {}))
         remote_config.pop("enabled", None)
-        remote_served_model_names = dict(remote_config.pop("served_model_names", {}))
-        remote_served_model_name = remote_config.pop("served_model_name", None)
+        runtime_config.update(engine_config)
+        if local_chat_template_kwargs is not None:
+            runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
         runtime_config.update(remote_config)
-        if (
-            "served_model_name" not in runtime_config
-            and task_name in remote_served_model_names
-        ):
-            runtime_config["served_model_name"] = remote_served_model_names[task_name]
-        elif (
-            "served_model_name" not in runtime_config
-            and remote_served_model_name is not None
-        ):
-            runtime_config["served_model_name"] = remote_served_model_name
+        runtime_config["remote"] = task_remote_config
+        runtime_config["max_tokens"] = int(task_remote_config["max_tokens"])
+        runtime_config["sampling_params"] = {
+            "max_tokens": int(task_remote_config["max_tokens"])
+        }
+        runtime_config["served_model_name"] = task_remote_config["served_model_name"]
+    else:
+        runtime_config.update(engine_config)
+        runtime_config["sampling_params"] = generation_config
+        if local_chat_template_kwargs is not None:
+            runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
     return runtime_config
 
 

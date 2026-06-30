@@ -10,25 +10,40 @@ def test_load_config_from_user_path(tmp_path):
         """
 debug_mode: true
 model_metadata_cache_dir: ".custom_cache/model_metadata"
-local:
-  trial:
-    max_model_len: 4096
 remote:
   enabled: true
   server_urls:
     - http://localhost:8000/v1
 trial:
   model_name: custom-trial-model
-  sampling_params:
+  local:
+    engine:
+      max_model_len: 4096
+    generation:
+      max_tokens: 128
+  remote:
+    served_model_name: custom-trial-model
+    max_tokens_param: max_tokens
     max_tokens: 128
+    request_params: {}
+    extra_body: {}
   prompt_files:
     primer: trial.user.primer.txt
     question: trial.user.question.txt
   boilerplate_marker: Boilerplate exclusions
 patient:
   model_name: custom-patient-model
-  sampling_params:
+  local:
+    engine:
+      max_model_len: 4096
+    generation:
+      max_tokens: 256
+  remote:
+    served_model_name: custom-patient-model
+    max_tokens_param: max_tokens
     max_tokens: 256
+    request_params: {}
+    extra_body: {}
   prompt_files:
     primer: patient.serial.user.primer.txt
     question: patient.serial.user.question.txt

@@ -17,25 +17,30 @@ def _config() -> MMAIConfig:
         trial={
             "model_name": "trial-model",
             "reasoning_parser": "gemma4",
-            "chat_template_kwargs": {"enable_thinking": True},
+            "local": {
+                "engine": {
+                    "max_model_len": 10000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.8,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"served_model_name": "trial-model"},
         },
         patient={
             "model_name": "patient-model",
             "reasoning_parser": "gemma4",
-            "chat_template_kwargs": {"enable_thinking": True},
-        },
-        local={
-            "trial": {
-                "max_model_len": 10000,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.8,
+            "local": {
+                "engine": {
+                    "max_model_len": 120000,
+                    "tensor_parallel_size": 2,
+                    "gpu_memory_utilization": 0.9,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
             },
-            "patient": {
-                "max_model_len": 120000,
-                "tensor_parallel_size": 2,
-                "gpu_memory_utilization": 0.9,
-            },
+            "remote": {"served_model_name": "patient-model"},
         },
+        local={},
         remote={
             "enabled": True,
             "server_urls": [
@@ -97,7 +102,7 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
 def test_build_vllm_server_command_uses_served_model_alias():
     """Allow vLLM to load one model ID and expose a separate endpoint name."""
     config = _config()
-    config.remote["served_model_names"] = {"patient": "endpoint-model"}
+    config.patient["remote"] = {"served_model_name": "endpoint-model"}
 
     command = build_vllm_server_command(config=config, task="patient")
 

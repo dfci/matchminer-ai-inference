@@ -471,16 +471,7 @@ def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
         debug_mode=debug_mode,
         trial={},
         patient={},
-        local={
-            "llm_match_quality": {
-                "max_model_len": 50000,
-                "tensor_parallel_size": 1,
-            },
-            "llm_exclusion_criteria": {
-                "max_model_len": 50000,
-                "tensor_parallel_size": 1,
-            },
-        },
+        local={},
         remote={},
         embedding={},
         model_metadata_cache_dir=".mmai_cache/model_metadata",
@@ -488,15 +479,41 @@ def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
             "llm_match_quality": {
                 "model_name": "llm/model",
                 "reasoning_parser": "auto",
-                "chat_template_kwargs": {"enable_thinking": True},
-                "sampling_params": {"max_tokens": 15000},
+                "local": {
+                    "engine": {
+                        "max_model_len": 50000,
+                        "tensor_parallel_size": 1,
+                    },
+                    "generation": {"max_tokens": 15000},
+                    "chat_template_kwargs": {"enable_thinking": True},
+                },
+                "remote": {
+                    "served_model_name": "llm/model",
+                    "max_tokens_param": "max_tokens",
+                    "max_tokens": 15000,
+                    "request_params": {},
+                    "extra_body": {},
+                },
                 "prompt_file": "llm_match_quality.user.txt",
             },
             "llm_exclusion_criteria": {
                 "model_name": "llm/model",
                 "reasoning_parser": "auto",
-                "chat_template_kwargs": {"enable_thinking": True},
-                "sampling_params": {"max_tokens": 20000},
+                "local": {
+                    "engine": {
+                        "max_model_len": 50000,
+                        "tensor_parallel_size": 1,
+                    },
+                    "generation": {"max_tokens": 20000},
+                    "chat_template_kwargs": {"enable_thinking": True},
+                },
+                "remote": {
+                    "served_model_name": "llm/model",
+                    "max_tokens_param": "max_tokens",
+                    "max_tokens": 20000,
+                    "request_params": {},
+                    "extra_body": {},
+                },
                 "prompt_file": "llm_exclusion_criteria.user.txt",
             },
         },

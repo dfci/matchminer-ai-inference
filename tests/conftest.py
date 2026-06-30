@@ -37,11 +37,29 @@ BOILERPLATE_2 = "History of pneumonitis."
 def default_trial_config() -> dict:
     return {
         "model_name": "model",
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
+        "local": {
+            "engine": {
+                "max_model_len": 100,
+                "tensor_parallel_size": 1,
+                "gpu_memory_utilization": 0.9,
+            },
+            "generation": {
+                "temperature": 0.0,
+                "top_k": 1,
+                "max_tokens": 10,
+                "repetition_penalty": 1.0,
+            },
+            "chat_template_kwargs": {},
+        },
+        "remote": {
+            "served_model_name": "model",
+            "max_tokens_param": "max_tokens",
             "max_tokens": 10,
-            "repetition_penalty": 1.0,
+            "request_params": {"temperature": 0.0},
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
         },
         "prompt_files": {
             "primer": "trial.user.primer.txt",
@@ -59,13 +77,7 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         debug_mode=False,
         trial=default_trial_config,
         patient={},
-        local={
-            "trial": {
-                "max_model_len": 100,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.9,
-            }
-        },
+        local={},
         remote={},
         model_metadata_cache_dir=None,
         raw={},
