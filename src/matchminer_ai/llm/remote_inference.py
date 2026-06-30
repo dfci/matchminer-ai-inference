@@ -58,7 +58,12 @@ def normalize_openai_base_url(base_url: str) -> str:
 
 def remote_request_model_name(llm_config: Dict[str, Any]) -> str:
     """Return the model name to send to the OpenAI-compatible endpoint."""
-    return str(llm_config.get("served_model_name") or llm_config["model_name"])
+    task_remote_config = dict(llm_config.get("remote", {}))
+    return str(
+        task_remote_config.get("served_model_name")
+        or llm_config.get("served_model_name")
+        or llm_config["model_name"]
+    )
 
 
 def resolve_max_tokens_param(
