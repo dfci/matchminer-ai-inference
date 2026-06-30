@@ -45,11 +45,11 @@ def test_get_filled_trial_prompt_includes_trial_text():
     assert "Boilerplate exclusions:" in prompts[1]["content"]
 
 
-def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_config):
-    """Use the task-level remote served model name for endpoint requests."""
+def test_build_llm_runtime_config_uses_remote_task_model_name(default_config):
+    """Use the task-level remote model name for endpoint requests."""
     default_config.remote["enabled"] = True
     default_config.trial["remote"] = {
-        "served_model_name": "task-alias",
+        "model_name": "task-alias",
         "request_params": {"max_tokens": 10},
         "extra_body": {},
     }
@@ -60,13 +60,15 @@ def test_build_llm_runtime_config_uses_remote_task_served_model_name(default_con
         config=default_config,
     )
 
-    assert runtime_config["served_model_name"] == "task-alias"
+    assert runtime_config["model_name"] == "task-alias"
+    assert runtime_config["backend_mode"] == "remote"
 
 
 def test_build_llm_runtime_config_flattens_task_local_config(default_config):
     """Task-local runtime config drives local engine and generation settings."""
     default_config.local = {}
     default_config.trial["local"] = {
+        "model_name": "local-model",
         "engine": {
             "max_model_len": 1234,
             "tensor_parallel_size": 1,
@@ -86,11 +88,13 @@ def test_build_llm_runtime_config_flattens_task_local_config(default_config):
     )
 
     assert runtime_config["max_model_len"] == 1234
+    assert runtime_config["model_name"] == "local-model"
     assert runtime_config["sampling_params"] == {
         "max_tokens": 99,
         "temperature": 0.2,
     }
     assert runtime_config["chat_template_kwargs"] == {"enable_thinking": True}
+    assert runtime_config["backend_mode"] == "local"
 
 
 def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
@@ -129,7 +133,7 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     )
     assert df["trial_answer_text"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
-    assert metadata["config_snapshot"]["trial"]["model_name"] == "model"
+    assert metadata["config_snapshot"]["trial"]["local"]["model_name"] == "model"
     assert metadata["model_metadata"]["model_sha"] == "sha"
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
     assert truncated_llm_qc_artifact["denominator"] == 1

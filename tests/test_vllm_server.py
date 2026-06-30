@@ -15,9 +15,9 @@ def _config() -> MMAIConfig:
         preset_name="test",
         debug_mode=False,
         trial={
-            "model_name": "trial-model",
             "reasoning_parser": "gemma4",
             "local": {
+                "model_name": "trial-model",
                 "engine": {
                     "max_model_len": 10000,
                     "tensor_parallel_size": 1,
@@ -25,12 +25,12 @@ def _config() -> MMAIConfig:
                 },
                 "chat_template_kwargs": {"enable_thinking": True},
             },
-            "remote": {"served_model_name": "trial-model"},
+            "remote": {"model_name": "trial-model"},
         },
         patient={
-            "model_name": "patient-model",
             "reasoning_parser": "gemma4",
             "local": {
+                "model_name": "patient-model",
                 "engine": {
                     "max_model_len": 120000,
                     "tensor_parallel_size": 2,
@@ -38,7 +38,10 @@ def _config() -> MMAIConfig:
                 },
                 "chat_template_kwargs": {"enable_thinking": True},
             },
-            "remote": {"served_model_name": "patient-model"},
+            "remote": {
+                "model_name": "patient-model",
+                "tokenizer_name": "patient-model",
+            },
         },
         local={},
         remote={
@@ -51,9 +54,9 @@ def _config() -> MMAIConfig:
         embedding={},
         model_metadata_cache_dir=None,
         llm_match_quality={
-            "model_name": "match-quality-model",
             "reasoning_parser": "gemma4",
             "local": {
+                "model_name": "match-quality-model",
                 "engine": {
                     "max_model_len": 50000,
                     "tensor_parallel_size": 1,
@@ -61,12 +64,12 @@ def _config() -> MMAIConfig:
                 },
                 "chat_template_kwargs": {"enable_thinking": True},
             },
-            "remote": {"served_model_name": "match-quality-model"},
+            "remote": {"model_name": "match-quality-model"},
         },
         llm_exclusion_criteria={
-            "model_name": "exclusion-model",
             "reasoning_parser": "gemma4",
             "local": {
+                "model_name": "exclusion-model",
                 "engine": {
                     "max_model_len": 50000,
                     "tensor_parallel_size": 1,
@@ -74,7 +77,7 @@ def _config() -> MMAIConfig:
                 },
                 "chat_template_kwargs": {"enable_thinking": True},
             },
-            "remote": {"served_model_name": "exclusion-model"},
+            "remote": {"model_name": "exclusion-model"},
         },
         raw={},
     )
@@ -128,7 +131,10 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
 def test_build_vllm_server_command_uses_served_model_alias():
     """Allow vLLM to load one model ID and expose a separate endpoint name."""
     config = _config()
-    config.patient["remote"] = {"served_model_name": "endpoint-model"}
+    config.patient["remote"] = {
+        "model_name": "endpoint-model",
+        "tokenizer_name": "patient-model",
+    }
 
     command = build_vllm_server_command(config=config, task="patient")
 

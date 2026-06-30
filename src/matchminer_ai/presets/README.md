@@ -53,10 +53,11 @@ chat endpoint launched with the `gemma4` reasoning parser; the package
 `reasoning_parser`.
 
 Model names and request parameters are configured per LLM task under that
-task's `remote` block. For example, `trial.remote.served_model_name` is the
-model string sent to the endpoint, `trial.remote.request_params` contains
-top-level chat completion request fields, and `trial.remote.extra_body`
-contains fields sent through request `extra_body`.
+task's backend block. For example, `trial.local.model_name` is the model loaded
+by local vLLM, `trial.remote.model_name` is the model string sent to the
+endpoint, `trial.remote.request_params` contains top-level chat completion
+request fields, and `trial.remote.extra_body` contains fields sent through
+request `extra_body`.
 
 Separate reasoning output is backend-dependent. The default vLLM/Gemma setup
 can expose reasoning via vLLM reasoning parser support. Other
@@ -87,26 +88,14 @@ Base value, in seconds, for exponential retry backoff.
 
 Task configuration for trial summarization.
 
-### `trial.model_name`
-
-Model identifier used for:
-
-- tokenizer/chat-template rendering
-- Hugging Face model metadata lookup
-- `vllm.LLM(model=...)` in local mode
-- remote model metadata fallback; the API request model is
-  `trial.remote.served_model_name` when set
-
-The default preset uses a Gemma 4 model for summarization. The specific Gemma
-variant that will run successfully may depend on the available GPU type and
-memory.
-
 ### `trial.local`
 
 Local in-process vLLM runtime settings:
 
-- `engine`: keyword arguments passed to `vllm.LLM(...)`; the package adds
-  `model=trial.model_name` separately.
+- `model_name`: model identifier loaded by local vLLM and used for local
+  tokenizer/chat-template rendering and model metadata lookup.
+- `engine`: keyword arguments passed to `vllm.LLM(...)`; the package passes
+  `model=trial.local.model_name` separately.
 - `generation`: keyword arguments passed to `vllm.SamplingParams(...)`.
 - `chat_template_kwargs`: keyword arguments passed to tokenizer chat-template
   rendering.
@@ -131,9 +120,8 @@ return no separate reasoning field.
 
 Task-specific remote chat completion request settings:
 
-- `served_model_name`: model name sent in OpenAI-compatible chat completion
-  requests. Use this when the endpoint exposes the model under an alias that
-  differs from `trial.model_name`.
+- `model_name`: model name sent in OpenAI-compatible chat completion requests
+  and used for remote endpoint metadata.
 - `request_params`: top-level chat completion request fields sent as-is,
   including the output-token budget. Use `max_tokens` for vLLM and many
   compatible endpoints, or `max_completion_tokens` for endpoints that require
@@ -141,9 +129,10 @@ Task-specific remote chat completion request settings:
 - `extra_body`: provider-specific fields sent as request `extra_body` when
   non-empty.
 
-The package interprets `served_model_name`. Values inside `request_params` and
-`extra_body` are pass-through: the package does not validate those keys, and the
-OpenAI client or remote endpoint is responsible for accepting or rejecting them.
+The package interprets `model_name`. Values inside `request_params` and
+`extra_body` are pass-through: the package does not validate those keys, and
+the OpenAI client or remote endpoint is responsible for accepting or rejecting
+them.
 
 ### `trial.boilerplate_marker`
 
@@ -153,20 +142,6 @@ section heading.
 ## `patient`
 
 Task configuration for patient summarization.
-
-### `patient.model_name`
-
-Model identifier used for:
-
-- tokenizer/chat-template rendering
-- Hugging Face model metadata lookup
-- `vllm.LLM(model=...)` in local mode
-- remote model metadata fallback; the API request model is
-  `patient.remote.served_model_name` when set
-
-The default preset uses a Gemma 4 model for summarization. The specific Gemma
-variant that will run successfully may depend on the available GPU type and
-memory.
 
 ### `patient.chunk_size`
 
@@ -200,6 +175,10 @@ separate reasoning field.
 ### `patient.remote`
 
 Task-specific remote chat completion request settings. See `trial.remote`.
+Patient summarization also supports `tokenizer_name`, which is the local
+tokenizer used for patient chunk truncation and prompt sizing before sending
+requests to the remote endpoint. For self-hosted vLLM this is usually the same
+as `patient.remote.model_name`.
 
 ### `patient.boilerplate_marker`
 
@@ -285,12 +264,6 @@ Maximum token length passed to the text-classification checker pipeline.
 
 Configuration for the LLM-based match-quality checker.
 
-### `llm_match_quality.model_name`
-
-Model identifier used for tokenizer/chat-template rendering, local vLLM
-execution, and model metadata lookup. In remote mode,
-`llm_match_quality.remote.served_model_name` is the API request model when set.
-
 ### `llm_match_quality.local`
 
 Local in-process vLLM runtime settings. See `trial.local`.
@@ -312,13 +285,6 @@ Task-specific remote chat completion request settings. See `trial.remote`.
 ## `llm_exclusion_criteria`
 
 Configuration for the LLM-based exclusion-criteria checker.
-
-### `llm_exclusion_criteria.model_name`
-
-Model identifier used for tokenizer/chat-template rendering, local vLLM
-execution, and model metadata lookup. In remote mode,
-`llm_exclusion_criteria.remote.served_model_name` is the API request model when
-set.
 
 ### `llm_exclusion_criteria.local`
 

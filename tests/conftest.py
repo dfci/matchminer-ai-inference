@@ -36,8 +36,8 @@ BOILERPLATE_2 = "History of pneumonitis."
 @pytest.fixture
 def default_trial_config() -> dict:
     return {
-        "model_name": "model",
         "local": {
+            "model_name": "model",
             "engine": {
                 "max_model_len": 100,
                 "tensor_parallel_size": 1,
@@ -52,7 +52,7 @@ def default_trial_config() -> dict:
             "chat_template_kwargs": {},
         },
         "remote": {
-            "served_model_name": "model",
+            "model_name": "model",
             "request_params": {"max_tokens": 10, "temperature": 0.0},
             "extra_body": {
                 "top_k": 1,

@@ -11,9 +11,9 @@ remote:
   batch_size: 1000
   retry_backoff_base: 1.0
 trial:
-  model_name: google/gemma-4-31B-it
   reasoning_parser: auto
   local:
+    model_name: google/gemma-4-31B-it
     engine:
       max_model_len: 30000
       tensor_parallel_size: 1
@@ -31,7 +31,7 @@ trial:
       repetition_penalty: 1.0
       skip_special_tokens: false
   remote:
-    served_model_name: google/gemma-4-31B-it
+    model_name: google/gemma-4-31B-it
     request_params:
       max_tokens: 20000
       temperature: 1.0
@@ -49,12 +49,12 @@ trial:
     question: trial.user.question.txt
   boilerplate_marker: Boilerplate exclusions
 patient:
-  model_name: google/gemma-4-31B-it
   reasoning_parser: auto
   chunk_size: 50000
   chunk_overlap: 500
   prompt_margin_tokens: 5000
   local:
+    model_name: google/gemma-4-31B-it
     engine:
       max_model_len: 100000
       tensor_parallel_size: 1
@@ -72,7 +72,8 @@ patient:
       repetition_penalty: 1.1
       skip_special_tokens: false
   remote:
-    served_model_name: google/gemma-4-31B-it
+    model_name: google/gemma-4-31B-it
+    tokenizer_name: google/gemma-4-31B-it
     request_params:
       max_tokens: 20000
       temperature: 0.0
@@ -107,9 +108,9 @@ exclusion_criteria:
   prompt_file: exclusion_criteria_checker_template.txt
   max_length: 3192
 llm_match_quality:
-  model_name: google/gemma-4-31B-it
   reasoning_parser: auto
   local:
+    model_name: google/gemma-4-31B-it
     engine:
       max_model_len: 50000
       tensor_parallel_size: 1
@@ -127,7 +128,7 @@ llm_match_quality:
       repetition_penalty: 1.1
       skip_special_tokens: false
   remote:
-    served_model_name: google/gemma-4-31B-it
+    model_name: google/gemma-4-31B-it
     request_params:
       max_tokens: 15000
       temperature: 0.0
@@ -142,9 +143,9 @@ llm_match_quality:
         enable_thinking: true
   prompt_file: llm_match_quality.user.txt
 llm_exclusion_criteria:
-  model_name: google/gemma-4-31B-it
   reasoning_parser: auto
   local:
+    model_name: google/gemma-4-31B-it
     engine:
       max_model_len: 50000
       tensor_parallel_size: 1
@@ -162,7 +163,7 @@ llm_exclusion_criteria:
       repetition_penalty: 1.1
       skip_special_tokens: false
   remote:
-    served_model_name: google/gemma-4-31B-it
+    model_name: google/gemma-4-31B-it
     request_params:
       max_tokens: 20000
       temperature: 0.0

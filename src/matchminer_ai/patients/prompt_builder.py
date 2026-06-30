@@ -140,7 +140,7 @@ def _init_prompt_worker(patient_config: dict[str, Any]) -> None:
     global _worker_tokenizer, _worker_config
     _worker_config = dict(patient_config)
     _worker_tokenizer = AutoTokenizer.from_pretrained(
-        _worker_config["model_name"],
+        _worker_config.get("tokenizer_name", _worker_config["model_name"]),
         trust_remote_code=True,
     )
 

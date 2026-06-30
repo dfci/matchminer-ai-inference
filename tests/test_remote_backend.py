@@ -85,7 +85,7 @@ def _llm_config(**overrides):
         "batch_size": 1000,
         "retry_backoff_base": 0.0,
         "remote": {
-            "served_model_name": "model",
+            "model_name": "model",
             "request_params": {"max_tokens": 10, "temperature": 0.0},
             "extra_body": {
                 "top_k": 1,
@@ -188,7 +188,7 @@ def test_remote_backend_passes_extra_body(monkeypatch):
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
             remote={
-                "served_model_name": "model",
+                "model_name": "model",
                 "request_params": {"max_tokens": 10},
                 "extra_body": {
                     "chat_template_kwargs": {"enable_thinking": True},
@@ -210,7 +210,7 @@ def test_remote_backend_forwards_remote_request_config(monkeypatch):
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
             remote={
-                "served_model_name": "model",
+                "model_name": "model",
                 "request_params": {
                     "max_tokens": 10,
                     "temperature": 0.7,
@@ -240,15 +240,16 @@ def test_remote_backend_forwards_remote_request_config(monkeypatch):
     }
 
 
-def test_remote_backend_uses_served_model_name(monkeypatch):
-    """Use served_model_name as the endpoint request model."""
+def test_remote_backend_uses_runtime_model_name(monkeypatch):
+    """Use runtime model_name as the endpoint request model."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
+            model_name="endpoint-model",
             remote={
-                "served_model_name": "endpoint-model",
+                "model_name": "endpoint-model",
                 "request_params": {"max_tokens": 10},
                 "extra_body": {},
             },
@@ -273,8 +274,9 @@ def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
     result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
+            model_name="gpt-compatible-name",
             remote={
-                "served_model_name": "gpt-compatible-name",
+                "model_name": "gpt-compatible-name",
                 "request_params": {"max_tokens": 10},
                 "extra_body": {},
             },
@@ -294,7 +296,7 @@ def test_remote_backend_forwards_max_completion_tokens(monkeypatch):
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
             remote={
-                "served_model_name": "model",
+                "model_name": "model",
                 "request_params": {"max_completion_tokens": 10},
                 "extra_body": {},
             },
@@ -314,7 +316,7 @@ def test_remote_backend_uses_task_remote_request_config(monkeypatch):
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
             remote={
-                "served_model_name": "model",
+                "model_name": "model",
                 "request_params": {"max_tokens": 10, "temperature": 0.0, "seed": 123},
                 "extra_body": {"top_k": 1},
             },

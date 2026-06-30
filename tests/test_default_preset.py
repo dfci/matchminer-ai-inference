@@ -6,6 +6,7 @@ def test_default_preset_matches_training_runtime_defaults():
     config = load_default_preset()
 
     assert config.local == {}
+    assert config.trial["local"]["model_name"] == "google/gemma-4-31B-it"
     assert config.trial["local"]["engine"]["max_model_len"] == 30000
     assert config.trial["local"]["generation"] == {
         "temperature": 1.0,
@@ -19,7 +20,7 @@ def test_default_preset_matches_training_runtime_defaults():
     }
 
     assert config.trial["remote"] == {
-        "served_model_name": "google/gemma-4-31B-it",
+        "model_name": "google/gemma-4-31B-it",
         "request_params": {
             "max_tokens": 20000,
             "temperature": 1.0,
@@ -35,6 +36,9 @@ def test_default_preset_matches_training_runtime_defaults():
         },
     }
 
+    assert config.patient["local"]["model_name"] == "google/gemma-4-31B-it"
+    assert config.patient["remote"]["model_name"] == "google/gemma-4-31B-it"
+    assert config.patient["remote"]["tokenizer_name"] == "google/gemma-4-31B-it"
     assert config.patient["local"]["engine"]["max_model_len"] == 100000
     assert config.patient["chunk_size"] == 50000
     assert config.patient["chunk_overlap"] == 500
@@ -52,9 +56,17 @@ def test_default_preset_matches_training_runtime_defaults():
     assert config.raw["exclusion_criteria"]["max_length"] == 3192
 
     assert config.llm_match_quality["local"]["engine"]["max_model_len"] == 50000
+    assert config.llm_match_quality["local"]["model_name"] == "google/gemma-4-31B-it"
+    assert config.llm_match_quality["remote"]["model_name"] == "google/gemma-4-31B-it"
     assert config.llm_match_quality["local"]["generation"]["temperature"] == 0.0
     assert config.llm_match_quality["local"]["generation"]["max_tokens"] == (15000)
     assert config.llm_exclusion_criteria["local"]["engine"]["max_model_len"] == 50000
+    assert config.llm_exclusion_criteria["local"]["model_name"] == (
+        "google/gemma-4-31B-it"
+    )
+    assert config.llm_exclusion_criteria["remote"]["model_name"] == (
+        "google/gemma-4-31B-it"
+    )
     assert config.llm_exclusion_criteria["local"]["generation"]["temperature"] == 0.0
     assert config.llm_exclusion_criteria["local"]["generation"]["max_tokens"] == 20000
     assert config.llm_match_quality["remote"]["request_params"] == {

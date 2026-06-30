@@ -157,10 +157,11 @@ def summarize_patient_notes(
 
     # Convert note-level input into patient-level metadata plus chunk-level
     # rows. The chunk rows are what drive the serial summarization loop.
-    tokenizer = AutoTokenizer.from_pretrained(
-        patient_config["model_name"],
-        trust_remote_code=True,
+    tokenizer_name = runtime_patient_config.get(
+        "tokenizer_name",
+        runtime_patient_config["model_name"],
     )
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, trust_remote_code=True)
     prepared_patients, prepared_chunks = prepare_patient_notes(
         notes,
         tokenizer,

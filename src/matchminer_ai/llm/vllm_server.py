@@ -47,17 +47,22 @@ def _resolve_task_config(
     if not llm_config:
         raise ValueError(f"Config is missing {task!r} settings.")
     task_local_config = dict(llm_config.get("local", {}))
+    task_remote_config = dict(llm_config.get("remote", {}))
     local_config = dict(task_local_config.get("engine", {}))
-    missing = [
-        key
+    missing = []
+    if "model_name" not in task_local_config:
+        missing.append("local.model_name")
+    if "model_name" not in task_remote_config:
+        missing.append("remote.model_name")
+    missing.extend(
+        f"local.engine.{key}"
         for key in (
-            "model_name",
             "max_model_len",
             "tensor_parallel_size",
             "gpu_memory_utilization",
         )
-        if key not in {**llm_config, **local_config}
-    ]
+        if key not in local_config
+    )
     if missing:
         raise ValueError(
             f"Config for {task!r} is missing required vLLM server keys: "
@@ -107,9 +112,9 @@ def build_vllm_server_command(
     """
     Build a ``vllm serve`` command from MatchMiner-AI configuration.
 
-    The served model name defaults to the task model name so remote requests
-    match the running server unless a task-specific served model alias is set.
-    The helper maps only the known local engine fields needed by the default
+    The helper loads the task's local model and exposes the task's remote model
+    name as the OpenAI-compatible endpoint model. The helper maps only the
+    known local engine fields needed by the default
     config. Additional server-only CLI flags, such as speculative decoding
     options, should be supplied explicitly with ``extra_args``.
     """
@@ -118,9 +123,9 @@ def build_vllm_server_command(
     task_local_config = dict(llm_config.get("local", {}))
     base_url = _remote_server_url(resolved_config, server_index)
     host, port = _host_and_port(base_url)
-    model_name = str(llm_config["model_name"])
+    model_name = str(task_local_config["model_name"])
     task_remote_config = dict(llm_config.get("remote", {}))
-    served_model_name = str(task_remote_config.get("served_model_name") or model_name)
+    served_model_name = str(task_remote_config["model_name"])
 
     command = [
         "vllm",

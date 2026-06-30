@@ -169,7 +169,7 @@ class LocalBackend:
             if key
             not in {
                 "model_name",
-                "served_model_name",
+                "tokenizer_name",
                 "sampling_params",
                 "remote",
                 "prompt_file",
@@ -177,6 +177,7 @@ class LocalBackend:
                 "reasoning_parser",
                 "chat_template_kwargs",
                 "boilerplate_marker",
+                "backend_mode",
                 "chunk_size",
                 "chunk_overlap",
                 "prompt_margin_tokens",
@@ -237,7 +238,7 @@ class LocalBackend:
         """Truncate long texts using the model tokenizer."""
         from transformers import AutoTokenizer
 
-        model_name = patient_config["model_name"]
+        model_name = patient_config.get("tokenizer_name", patient_config["model_name"])
         text_token_threshold = int(patient_config["text_token_threshold"])
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         truncated: list[str] = []
@@ -326,6 +327,7 @@ def build_llm_runtime_config(
     local_chat_template_kwargs = task_local_config.get("chat_template_kwargs")
 
     if remote_enabled(config):
+        runtime_config["backend_mode"] = "remote"
         remote_config = dict(getattr(config, "remote", {}))
         remote_config.pop("enabled", None)
         runtime_config.update(engine_config)
@@ -334,9 +336,15 @@ def build_llm_runtime_config(
         runtime_config.update(remote_config)
         runtime_config["remote"] = task_remote_config
         runtime_config["sampling_params"] = dict(task_remote_config["request_params"])
-        runtime_config["served_model_name"] = task_remote_config["served_model_name"]
+        runtime_config["model_name"] = task_remote_config["model_name"]
+        if "tokenizer_name" in task_remote_config:
+            runtime_config["tokenizer_name"] = task_remote_config["tokenizer_name"]
     else:
+        runtime_config["backend_mode"] = "local"
         runtime_config.update(engine_config)
+        runtime_config["model_name"] = task_local_config["model_name"]
+        if "tokenizer_name" in task_local_config:
+            runtime_config["tokenizer_name"] = task_local_config["tokenizer_name"]
         runtime_config["sampling_params"] = generation_config
         if local_chat_template_kwargs is not None:
             runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
