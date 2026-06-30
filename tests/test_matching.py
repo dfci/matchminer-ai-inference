@@ -70,13 +70,17 @@ def test_generate_candidate_matches_returns_all_when_k_none():
 
 
 class _MockCheckerBackend:
+    """Minimal checker backend that records calls and returns fixed predictions."""
+
     def __init__(self, predictions):
+        """Store fixed predictions and initialize call capture fields."""
         self.predictions = predictions
         self.last_prompts = None
         self.last_checker_config = None
         self.last_model_metadata_cache_dir = None
 
     def run_checker(self, prompts, *, checker_config, model_metadata_cache_dir=None):
+        """Record checker inputs and return configured predictions."""
         self.last_prompts = prompts
         self.last_checker_config = checker_config
         self.last_model_metadata_cache_dir = model_metadata_cache_dir
@@ -335,16 +339,23 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
     pipeline_calls = []
 
     class FakeTokenizer:
+        """Fake tokenizer factory used by the checker pipeline."""
+
         @staticmethod
         def from_pretrained(model_name, **kwargs):
+            """Record tokenizer construction and return a sentinel tokenizer."""
             tokenizer_calls.append((model_name, kwargs))
             return f"tokenizer:{model_name}"
 
     class FakePipeline:
+        """Fake text-classification pipeline that records prompt batches."""
+
         def __init__(self):
+            """Initialize prompt batch capture."""
             self.prompt_batches = []
 
         def __call__(self, prompts):
+            """Return deterministic positive-label outputs for each prompt."""
             self.prompt_batches.append(list(prompts))
             return [
                 {"label": "POSITIVE", "score": float(index)}
@@ -352,6 +363,7 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
             ]
 
     def fake_pipeline(*args, **kwargs):
+        """Build and record a fake checker pipeline."""
         checker_pipeline = FakePipeline()
         pipeline_calls.append((args, kwargs, checker_pipeline))
         return checker_pipeline
@@ -411,11 +423,15 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
     pipeline_calls = []
 
     class FakeTokenizer:
+        """Fake tokenizer factory for checker cache reload tests."""
+
         @staticmethod
         def from_pretrained(model_name, **kwargs):
+            """Return a sentinel tokenizer value."""
             return f"tokenizer:{model_name}"
 
     def fake_pipeline(*args, **kwargs):
+        """Record checker pipeline construction and return fixed outputs."""
         pipeline_calls.append((args, kwargs))
         return lambda prompts: [{"label": "NEGATIVE", "score": 0.5} for _ in prompts]
 
@@ -440,7 +456,10 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
 
 
 class _MockLLMBackend:
+    """Minimal LLM backend that records calls and returns fixed outputs."""
+
     def __init__(self, outputs):
+        """Store fixed outputs and initialize call capture fields."""
         self.outputs = outputs
         self.last_prompt_list = None
         self.last_llm_config = None
@@ -453,6 +472,7 @@ class _MockLLMBackend:
         llm_config,
         model_metadata_cache_dir=None,
     ):
+        """Record generation inputs and return deterministic LLM outputs."""
         self.last_prompt_list = prompt_list
         self.last_llm_config = llm_config
         self.last_model_metadata_cache_dir = model_metadata_cache_dir
@@ -466,6 +486,7 @@ class _MockLLMBackend:
 
 
 def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
+    """Build a minimal config for LLM checker tests."""
     return MMAIConfig(
         preset_name="default",
         debug_mode=debug_mode,
@@ -520,6 +541,7 @@ def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypa
     captured_messages = []
 
     def fake_build_prompt_list(messages_list, *, llm_config):
+        """Capture match-quality messages and return one rendered prompt."""
         captured_messages.extend(messages_list)
         return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
 
@@ -569,6 +591,7 @@ def test_score_match_quality_with_llm_includes_debug_columns(monkeypatch):
     """Include raw LLM response details only when debug mode is enabled."""
 
     def fake_build_prompt_list(messages_list, *, llm_config):
+        """Return one rendered prompt for match-quality debug output tests."""
         return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
 
     backend = _MockLLMBackend(["After review.\nFinal score: 4"])
@@ -607,6 +630,7 @@ def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
     captured_messages = []
 
     def fake_build_prompt_list(messages_list, *, llm_config):
+        """Capture exclusion-check messages and return one rendered prompt."""
         captured_messages.extend(messages_list)
         return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
 
@@ -649,6 +673,7 @@ def test_exclusion_criteria_check_with_llm_includes_debug_columns(monkeypatch):
     """Include raw LLM exclusion details only when debug mode is enabled."""
 
     def fake_build_prompt_list(messages_list, *, llm_config):
+        """Return one rendered prompt for exclusion debug output tests."""
         return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
 
     backend = _MockLLMBackend(["No!"])

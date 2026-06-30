@@ -23,12 +23,14 @@ _TRIAL_CHECK_SCORE_PATTERN = re.compile(r"[Ff]inal\s+[Ss]core\s*:\s*(\d)")
 
 
 def _load_prompt_template(filename: str) -> str:
+    """Load an LLM checker prompt template from package prompt resources."""
     prompt_path = resources.files("matchminer_ai.prompts").joinpath(filename)
     with prompt_path.open("r", encoding="utf-8") as handle:
         return handle.read().strip()
 
 
 def _build_messages(user_content: str) -> list[dict[str, str]]:
+    """Wrap task-specific user text in the chat message format used by checks."""
     return [
         {"role": "system", "content": "Reasoning: high"},
         {"role": "user", "content": user_content},
@@ -36,6 +38,7 @@ def _build_messages(user_content: str) -> list[dict[str, str]]:
 
 
 def _parse_match_quality_score(response_text: str) -> tuple[int, str]:
+    """Parse an LLM match-quality answer into a score and parse status."""
     tail = response_text[-60:].replace("*", "").replace("\u202f", " ")
     match = _TRIAL_CHECK_SCORE_PATTERN.search(tail)
     if match:
@@ -53,6 +56,7 @@ def _parse_match_quality_score(response_text: str) -> tuple[int, str]:
 
 
 def _parse_exclusion_result(response_text: str) -> tuple[bool | None, str]:
+    """Parse an LLM exclusion answer into pass/fail/unknown and parse status."""
     tail = response_text[-10:].upper()
     if "YES!" in tail:
         return False, "parsed"
@@ -72,6 +76,7 @@ def _run_llm_check(
     section_name: str,
     messages_list: list[list[dict[str, str]]],
 ) -> tuple[list[str], list[str], dict[str, Any]]:
+    """Render prompts and run the configured LLM backend for one check task."""
     llm_config = dict(getattr(config, section_name))
     if not llm_config:
         raise ValueError(f"Config is missing '{section_name}' settings.")
