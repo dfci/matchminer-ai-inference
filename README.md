@@ -32,38 +32,7 @@ If you use `matchminer-ai`, please cite:
 
 ## Contributing
 
-Clone the repository and install the package in editable mode. We recommend working in a virtual or conda environment.
+Contributions are welcome through GitHub pull requests. See
+[CONTRIBUTING.md][contributing] for more information.
 
-```shell
-git clone https://github.com/dfci/matchminer-ai-inference.git
-cd matchminer-ai-inference
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-This repository uses pre-commit for local code quality checks. To enable the hooks:
-
-```shell
-pre-commit install
-```
-
-The pre-commit suite includes secret and PHI/PII scanning via Gitleaks. These
-patterns are configured in `.gitleaks.toml`. If the hook flags known synthetic
-data or a reviewed false positive, a maintainer can bypass the hook, but new
-findings should be reviewed before they are committed.
-
-To bypass after review:
-
-```shell
-SKIP=gitleaks git commit
-```
-
-Run the test suite with:
-
-```shell
-# lightweight tests
-pytest
-# tests requiring GPU
-pytest -m resource_heavy
-```
+[contributing]: https://github.com/dfci/matchminer-ai-inference/blob/main/CONTRIBUTING.md
