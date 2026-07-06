@@ -48,6 +48,17 @@ This repository uses pre-commit for local code quality checks. To enable the hoo
 pre-commit install
 ```
 
+The pre-commit suite includes secret and PHI/PII scanning via Gitleaks. These
+patterns are configured in `.gitleaks.toml`. If the hook flags known synthetic
+data or a reviewed false positive, a maintainer can bypass the hook, but new
+findings should be reviewed before they are committed.
+
+To bypass after review:
+
+```shell
+SKIP=gitleaks git commit
+```
+
 Run the test suite with:
 
 ```shell

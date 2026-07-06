@@ -1,0 +1,80 @@
+title = "MatchMiner-AI Gitleaks Policy"
+description = "Extends default Gitleaks secret detection with PHI/PII patterns."
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore generated, environment, and fixture files"
+paths = [
+    '''(^|/)\.git(/|$)''',
+    '''(^|/)\.venv(/|$)''',
+    '''(^|/)\.mmai_cache(/|$)''',
+    '''(^|/)\.mypy_cache(/|$)''',
+    '''(^|/)\.pytest_cache(/|$)''',
+    '''(^|/)\.ruff_cache(/|$)''',
+    '''(^|/)interactive(/|$)''',
+    '''(^|/)__pycache__(/|$)''',
+    '''(^|/)build(/|$)''',
+    '''(^|/)dist(/|$)''',
+    '''(^|/)examples(/|$)''',
+    '''(^|/)tests/data/embedding_regression(/|$)''',
+    '''\.egg-info(/|$)''',
+    '''\.pyc$''',
+    '''\.DS_Store$''',
+    '''(^|/)LICENSE$''',
+    '''\.gitleaks\.toml$''',
+    '''\.pre-commit-config\.yaml$''',
+]
+
+##############################################################
+# General Personally Identifiable Information (PII) Patterns #
+##############################################################
+
+# This policy is intentionally broad. It is meant to stop accidental commits of
+# patient data and other sensitive outputs produced while using the package.
+# Known synthetic fixtures or reviewed false positives can be bypassed by a
+# maintainer, but new findings should be reviewed before they are committed.
+
+[[rules]]
+id = "contextual-patient-name"
+description = "Potential patient name with medical context"
+regex = '''(?m)^(?:.*\b(?i:patient|patient_name|pt(?:\.|_)?name|mrn|dob|ssn|specimen|subject)\b[^.!?:;\n]{0,40}\b[A-Z][a-z]+(?:['-][A-Z][a-z]+)?(?:\s+[A-Z][a-z]+(?:['-][A-Z][a-z]+)?){1,2}\b.*)$'''
+tags = ["pii", "phi", "patient", "name"]
+
+[[rules]]
+id = "medical-record-number"
+description = """
+    Medical Record Number (MRN).
+    NOTE: In order to avoid false positives, this rule is designed to only match MRNs that are prefixed with 'MR' or 'MRN'.
+"""
+regex = '''(?i)\b(?:MR|MRN)\s*:?\s*\d{5,}\b'''
+tags = ["pii", "phi", "medical", "MRN"]
+
+[[rules]]
+id = "social-security-number"
+description = "Social Security Number"
+regex = '''\b\d{3}-\d{2}-\d{4}\b'''
+tags = ["pii", "phi", "ssn"]
+
+[[rules]]
+id = "phone-number"
+description = "Phone Number"
+regex = '''\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b'''
+tags = ["pii", "phi", "phone"]
+
+[[rules]]
+id = "birthdate-yyyy-mm-dd"
+description = "Birthdate (YYYY-MM-DD)"
+regex = '''\b(19|20)\d{2}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])\b'''
+tags = ["pii", "phi", "birthdate"]
+
+    [rules.allowlist]
+    description = "Allow synthetic date fixtures in patient summarization tests"
+    paths = ['''(^|/)tests/test_patient_summarization\.py$''']
+
+[[rules]]
+id = "birthdate-mm-dd-yyyy"
+description = "Birthdate (MM/DD/YYYY)"
+regex = '''\b(0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])[-/](19|20)\d{2}\b'''
+tags = ["pii", "phi", "birthdate"]
