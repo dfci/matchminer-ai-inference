@@ -8,10 +8,7 @@ from matchminer_ai.llm.backends import LLMGenerationResult, LocalBackend
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.patients import summarize_patients
-from matchminer_ai.patients.postprocess import (
-    clean_bad_data,
-    parse_boilerplate,
-)
+from matchminer_ai.patients.postprocess import parse_boilerplate
 from matchminer_ai.patients.prompt_builder import (
     PromptWorkItem,
     _RESPONSE_TOKEN_MARGIN,
@@ -164,23 +161,6 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
         parsed.loc[0, "general_exclusion_criteria_evidence"]
         == "Remote inactive prostate cancer."
     )
-
-
-def test_clean_bad_data_filters_invalid_summaries():
-    """Drop rows with empty or invalid patient summaries."""
-    df = pd.DataFrame(
-        [
-            {"cancer_history_summary": "No evidence of malignancy"},
-            {"cancer_history_summary": "No primary identified"},
-            {"cancer_history_summary": "No information"},
-            {"cancer_history_summary": "Valid summary"},
-        ]
-    )
-
-    cleaned, qc_artifact = clean_bad_data(df)
-
-    assert cleaned["cancer_history_summary"].tolist() == ["Valid summary"]
-    assert qc_artifact["metric"] == "patients_dropped_noninformative_summary"
 
 
 def test_local_backend_truncate_texts_splits_long_inputs(monkeypatch):
@@ -674,7 +654,7 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     qc_report = pd.DataFrame(
         [
             {
-                "metric": "patients_dropped_noninformative_summary",
+                "metric": "patients_exclusion_criteria_not_extracted",
                 "value": 0,
                 "percent": 0.0,
                 "ids": [],

@@ -9,8 +9,6 @@ prompts, filters, and postprocessing rules. Metrics are returned as rows with
 Returned by `summarize_patients(..., return_qc=True)` and
 `summarize_patient_notes(..., return_qc=True)`.
 
-- `patients_dropped_noninformative_summary`: summaries dropped because they match non-informative patterns (e.g.,
-  "no information", "no malignancy").
 - `patients_exclusion_criteria_not_extracted`: exclusion criteria not successfully extracted.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.
 - `patients_exceed_embedding_token_limit`: summaries whose embedding-tokenized

@@ -238,9 +238,7 @@ def summarize_patient_notes(
         )
     final_rows = final_rows.dropna(subset=["patient_answer_text"]).copy()
 
-    final_rows, noninformative_summary_qc_artifact = postprocess_patient_summaries(
-        final_rows, resolved_config
-    )
+    final_rows = postprocess_patient_summaries(final_rows, resolved_config)
 
     metadata = {
         "config_snapshot": config_snapshot(resolved_config),
@@ -252,7 +250,6 @@ def summarize_patient_notes(
 
         qc_report = patient_summary_qc_report(
             final_rows,
-            noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
             config=resolved_config,
         )
         return final_rows, metadata, qc_report
