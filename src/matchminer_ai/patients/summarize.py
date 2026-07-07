@@ -9,8 +9,8 @@ import pandas as pd
 from transformers import AutoTokenizer
 
 from matchminer_ai.llm.backends import (
-    build_summarization_runtime_config,
-    get_summarization_backend,
+    build_llm_runtime_config,
+    get_llm_backend,
 )
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
 from matchminer_ai.llm.prompt_rendering import Prompt
@@ -149,7 +149,7 @@ def summarize_patient_notes(
         raise TypeError("config must be an MMAIConfig instance or None.")
 
     patient_config = dict(resolved_config.patient)
-    runtime_patient_config = build_summarization_runtime_config(
+    runtime_patient_config = build_llm_runtime_config(
         "patient",
         patient_config,
         config=resolved_config,
@@ -157,10 +157,11 @@ def summarize_patient_notes(
 
     # Convert note-level input into patient-level metadata plus chunk-level
     # rows. The chunk rows are what drive the serial summarization loop.
-    tokenizer = AutoTokenizer.from_pretrained(
-        patient_config["model_name"],
-        trust_remote_code=True,
+    tokenizer_name = runtime_patient_config.get(
+        "tokenizer_name",
+        runtime_patient_config["model_name"],
     )
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, trust_remote_code=True)
     prepared_patients, prepared_chunks = prepare_patient_notes(
         notes,
         tokenizer,
@@ -170,14 +171,13 @@ def summarize_patient_notes(
     existing_summary_lookup = _build_existing_summary_lookup(existing_summaries)
     rounds = _build_rounds(prepared_chunks)
 
-    backend = get_summarization_backend(resolved_config)
+    backend = get_llm_backend(resolved_config)
     # This dict holds the latest available summary for each patient. If the
     # caller provided an existing summary, that is used for round 1; after each
     # round, the newly generated summary overwrites the prior one.
     current_summaries = {
         patient_id: summary for patient_id, summary in existing_summary_lookup.items()
     }
-    current_raw_outputs: dict[str, str] = {}
     current_reasoning_outputs: dict[str, str] = {}
     model_metadata: dict[str, Any] = {}
     prompt_pool = None
@@ -211,21 +211,16 @@ def summarize_patient_notes(
             if not model_metadata:
                 model_metadata = generation.model_metadata
             summaries = generation.final_outputs
-            has_raw_outputs = bool(generation.raw_outputs)
-            raw_outputs = generation.raw_outputs if has_raw_outputs else summaries
             reasoning_outputs = generation.reasoning_outputs
             # Persist each round's final summary, not the reasoning trace, so
             # it becomes the prior summary for the next patient chunk.
-            for patient_id, summary, raw_output, reasoning in zip(
+            for patient_id, summary, reasoning in zip(
                 round_patient_ids,
                 summaries,
-                raw_outputs,
                 reasoning_outputs,
                 strict=False,
             ):
                 current_summaries[patient_id] = str(summary)
-                if has_raw_outputs:
-                    current_raw_outputs[patient_id] = str(raw_output)
                 current_reasoning_outputs[patient_id] = str(reasoning)
     finally:
         if prompt_pool is not None:
@@ -234,38 +229,29 @@ def summarize_patient_notes(
     # Collapse the running patient state back to one final row per patient,
     # then do postprocessing and QC report generation.
     final_rows = prepared_patients.copy()
-    final_rows["original_patient_summary"] = final_rows["patient_id"].map(
-        current_summaries
-    )
+    final_rows["patient_answer_text"] = final_rows["patient_id"].map(current_summaries)
     if resolved_config.debug_mode:
         # These columns preserve final-round debug traces without feeding them
         # back into the serial patient summary state.
-        if current_raw_outputs:
-            final_rows["final_round_patient_summary_raw_output"] = final_rows[
-                "patient_id"
-            ].map(current_raw_outputs)
-        final_rows["final_round_patient_summary_reasoning"] = final_rows[
-            "patient_id"
-        ].map(current_reasoning_outputs)
-    final_rows = final_rows.dropna(subset=["original_patient_summary"]).copy()
+        final_rows["patient_reasoning_text"] = final_rows["patient_id"].map(
+            current_reasoning_outputs
+        )
+    final_rows = final_rows.dropna(subset=["patient_answer_text"]).copy()
 
-    final_rows, noninformative_summary_qc_artifact = postprocess_patient_summaries(
-        final_rows, resolved_config
-    )
+    final_rows = postprocess_patient_summaries(final_rows, resolved_config)
 
     metadata = {
         "config_snapshot": config_snapshot(resolved_config),
         "model_metadata": model_metadata,
     }
 
-    from matchminer_ai._qc.patients import patient_summary_qc_report
-
-    qc_report = patient_summary_qc_report(
-        final_rows,
-        noninformative_summary_qc_artifact=noninformative_summary_qc_artifact,
-        config=resolved_config,
-    )
     if return_qc:
+        from matchminer_ai._qc.patients import patient_summary_qc_report
+
+        qc_report = patient_summary_qc_report(
+            final_rows,
+            config=resolved_config,
+        )
         return final_rows, metadata, qc_report
     return final_rows, metadata
 

@@ -2,6 +2,8 @@ from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.vllm_server import (
     build_vllm_server_command,
     build_vllm_server_commands,
+    check_openai_endpoint,
+    normalize_openai_base_url,
     start_vllm_server,
     start_vllm_servers,
     wait_for_vllm_server,
@@ -13,27 +15,35 @@ def _config() -> MMAIConfig:
         preset_name="test",
         debug_mode=False,
         trial={
-            "model_name": "trial-model",
             "reasoning_parser": "gemma4",
-            "chat_template_kwargs": {"enable_thinking": True},
+            "local": {
+                "model_name": "trial-model",
+                "engine": {
+                    "max_model_len": 10000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.8,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"model_name": "trial-model"},
         },
         patient={
-            "model_name": "patient-model",
             "reasoning_parser": "gemma4",
-            "chat_template_kwargs": {"enable_thinking": True},
-        },
-        local={
-            "trial": {
-                "max_model_len": 10000,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.8,
+            "local": {
+                "model_name": "patient-model",
+                "engine": {
+                    "max_model_len": 120000,
+                    "tensor_parallel_size": 2,
+                    "gpu_memory_utilization": 0.9,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
             },
-            "patient": {
-                "max_model_len": 120000,
-                "tensor_parallel_size": 2,
-                "gpu_memory_utilization": 0.9,
+            "remote": {
+                "model_name": "patient-model",
+                "tokenizer_name": "patient-model",
             },
         },
+        local={},
         remote={
             "enabled": True,
             "server_urls": [
@@ -43,6 +53,32 @@ def _config() -> MMAIConfig:
         },
         embedding={},
         model_metadata_cache_dir=None,
+        llm_match_quality={
+            "reasoning_parser": "gemma4",
+            "local": {
+                "model_name": "match-quality-model",
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.95,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"model_name": "match-quality-model"},
+        },
+        llm_exclusion_criteria={
+            "reasoning_parser": "gemma4",
+            "local": {
+                "model_name": "exclusion-model",
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                    "gpu_memory_utilization": 0.95,
+                },
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {"model_name": "exclusion-model"},
+        },
         raw={},
     )
 
@@ -90,6 +126,39 @@ def test_build_vllm_server_command_selects_server_url_and_allows_extra_args():
     assert command.command[-2:] == ["--dtype", "bfloat16"]
     assert "--max-model-len" in command.command
     assert command.command[command.command.index("--max-model-len") + 1] == "10000"
+
+
+def test_build_vllm_server_command_uses_served_model_alias():
+    """Allow vLLM to load one model ID and expose a separate endpoint name."""
+    config = _config()
+    config.patient["remote"] = {
+        "model_name": "endpoint-model",
+        "tokenizer_name": "patient-model",
+    }
+
+    command = build_vllm_server_command(config=config, task="patient")
+
+    assert command.model_name == "patient-model"
+    assert command.served_model_name == "endpoint-model"
+    assert command.command[command.command.index("--served-model-name") + 1] == (
+        "endpoint-model"
+    )
+
+
+def test_build_vllm_server_command_supports_llm_checker_tasks():
+    """Build server commands from LLM checker task configs."""
+    command = build_vllm_server_command(config=_config(), task="llm_match_quality")
+
+    assert command.model_name == "match-quality-model"
+    assert command.served_model_name == "match-quality-model"
+    assert command.task == "llm_match_quality"
+    assert command.command[command.command.index("--max-model-len") + 1] == "50000"
+
+
+def test_normalize_openai_base_url_adds_scheme_and_v1():
+    """Normalize user-entered OpenAI-compatible base URLs."""
+    assert normalize_openai_base_url("localhost:8000") == "http://localhost:8000/v1"
+    assert normalize_openai_base_url("http://host:9000/v1") == "http://host:9000/v1"
 
 
 def test_start_vllm_server_invokes_subprocess(monkeypatch, capsys):
@@ -205,3 +274,39 @@ def test_wait_for_vllm_server_polls_models_endpoint(monkeypatch):
             0.1,
         )
     ]
+
+
+def test_check_openai_endpoint_returns_statuses(monkeypatch):
+    """Check one or more OpenAI-compatible /models endpoints."""
+    calls = []
+
+    class FakeResponse:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return None
+
+    def fake_urlopen(req, timeout):
+        calls.append((req.full_url, req.headers, timeout))
+        return FakeResponse()
+
+    monkeypatch.setattr("matchminer_ai.llm.vllm_server.request.urlopen", fake_urlopen)
+
+    result = check_openai_endpoint(
+        "localhost:8000, http://127.0.0.1:8001/v1",
+        api_key="key",
+        timeout=3,
+    )
+
+    assert result == [
+        ("http://localhost:8000/v1", 200, "HTTP 200"),
+        ("http://127.0.0.1:8001/v1", 200, "HTTP 200"),
+    ]
+    assert calls[0] == (
+        "http://localhost:8000/v1/models",
+        {"Authorization": "Bearer key"},
+        3,
+    )

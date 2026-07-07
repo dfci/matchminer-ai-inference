@@ -5,7 +5,7 @@ from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.backends import (
     LLMGenerationResult,
     LocalBackend,
-    build_summarization_runtime_config,
+    build_llm_runtime_config,
 )
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.trials.postprocess import flatten_trial_to_spaces
@@ -45,11 +45,63 @@ def test_get_filled_trial_prompt_includes_trial_text():
     assert "Boilerplate exclusions:" in prompts[1]["content"]
 
 
+def test_build_llm_runtime_config_uses_remote_task_model_name(default_config):
+    """Use the task-level remote model name for endpoint requests."""
+    default_config.remote["enabled"] = True
+    default_config.trial["remote"] = {
+        "model_name": "task-alias",
+        "request_params": {"max_tokens": 10},
+        "extra_body": {},
+    }
+
+    runtime_config = build_llm_runtime_config(
+        "trial",
+        default_config.trial,
+        config=default_config,
+    )
+
+    assert runtime_config["model_name"] == "task-alias"
+    assert runtime_config["backend_mode"] == "remote"
+
+
+def test_build_llm_runtime_config_flattens_task_local_config(default_config):
+    """Task-local runtime config drives local engine and generation settings."""
+    default_config.local = {}
+    default_config.trial["local"] = {
+        "model_name": "local-model",
+        "engine": {
+            "max_model_len": 1234,
+            "tensor_parallel_size": 1,
+            "gpu_memory_utilization": 0.8,
+        },
+        "generation": {
+            "max_tokens": 99,
+            "temperature": 0.2,
+        },
+        "chat_template_kwargs": {"enable_thinking": True},
+    }
+
+    runtime_config = build_llm_runtime_config(
+        "trial",
+        default_config.trial,
+        config=default_config,
+    )
+
+    assert runtime_config["max_model_len"] == 1234
+    assert runtime_config["model_name"] == "local-model"
+    assert runtime_config["sampling_params"] == {
+        "max_tokens": 99,
+        "temperature": 0.2,
+    }
+    assert runtime_config["chat_template_kwargs"] == {"enable_thinking": True}
+    assert runtime_config["backend_mode"] == "local"
+
+
 def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     """Verify LLM summarization wiring and metadata return."""
     mock_backend = MagicMock()
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: mock_backend,
     )
 
@@ -79,9 +131,9 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     df, metadata, truncated_llm_qc_artifact = run_llm_summarization(
         trials, default_config
     )
-    assert df["space_output_no_reasoning"].iloc[0] == "SUM0"
+    assert df["trial_answer_text"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
-    assert metadata["config_snapshot"]["trial"]["model_name"] == "model"
+    assert metadata["config_snapshot"]["trial"]["local"]["model_name"] == "model"
     assert metadata["model_metadata"]["model_sha"] == "sha"
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
     assert truncated_llm_qc_artifact["denominator"] == 1
@@ -93,7 +145,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
     """Ensure LLM outputs are aligned with the input trial order."""
     mock_backend = MagicMock()
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: mock_backend,
     )
 
@@ -128,7 +180,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
 
     df, _, truncated_llm_qc_artifact = run_llm_summarization(trials, default_config)
     assert df["trial_id"].tolist() == ["T1", "T2"]
-    assert df["space_output_no_reasoning"].tolist() == ["SUM0", "SUM1"]
+    assert df["trial_answer_text"].tolist() == ["SUM0", "SUM1"]
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
     assert truncated_llm_qc_artifact["denominator"] == 2
     assert truncated_llm_qc_artifact["numerator"] == 0
@@ -162,8 +214,7 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
             {
                 "trial_id": "T1",
                 "trial_text": "raw input",
-                "space_raw_output": "raw reasoning text",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{trial_space}\n" "Boilerplate exclusions:\n" f"{boilerplate}"
                 ),
             }
@@ -215,13 +266,18 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     )
 
     backend = LocalBackend()
-    default_config.local["trial"]["trust_remote_code"] = True
-    default_config.local["trial"]["speculative_config"] = {
+    default_config.trial.setdefault("local", {}).setdefault("engine", {})[
+        "trust_remote_code"
+    ] = True
+    default_config.trial["local"]["engine"]["speculative_config"] = {
         "num_speculative_tokens": 4,
     }
     default_config.trial["reasoning_parser"] = "gemma4"
-    default_config.trial["sampling_params"]["seed"] = 123
-    llm_config = build_summarization_runtime_config(
+    default_config.trial["prompt_file"] = "llm_match_quality.user.txt"
+    default_config.trial.setdefault("local", {}).setdefault("generation", {})[
+        "seed"
+    ] = 123
+    llm_config = build_llm_runtime_config(
         "trial",
         default_config.trial,
         config=default_config,
@@ -243,6 +299,7 @@ def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
     assert mock_vllm.LLM.call_args.kwargs["speculative_config"] == {
         "num_speculative_tokens": 4,
     }
+    assert "prompt_file" not in mock_vllm.LLM.call_args.kwargs
     assert mock_vllm.SamplingParams.call_args.kwargs["seed"] == 123
 
 
@@ -255,7 +312,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                 {
                     "trial_id": "T1",
                     "trial_text": "TEXT",
-                    "space_output_no_reasoning": (
+                    "trial_answer_text": (
                         "1. Age: 18+. Sex: Any. Cancer type allowed: A. "
                         "Histology allowed: Any. Cancer burden allowed: Any. "
                         "Prior treatment required: None. Prior treatment excluded: None. "
@@ -263,6 +320,7 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
                         "Boilerplate exclusions:\n"
                         "Uncontrolled brain metastases."
                     ),
+                    "trial_reasoning_text": "trial reasoning",
                 }
             ]
         )
@@ -308,8 +366,9 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
     )
 
     result = summarize_trials(trials, config=config)
-    assert "trial_text" in result.columns
-    assert "space_output_no_reasoning" in result.columns
+    assert "trial_input_text" in result.columns
+    assert "trial_answer_text" in result.columns
+    assert result["trial_reasoning_text"].tolist() == ["trial reasoning"]
 
 
 def test_summarize_trials_lightweight_integration(monkeypatch):
@@ -338,7 +397,7 @@ def test_summarize_trials_lightweight_integration(monkeypatch):
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
     monkeypatch.setattr(
@@ -406,7 +465,7 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.trials.summarize.get_summarization_backend",
+        "matchminer_ai.trials.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
     monkeypatch.setattr(

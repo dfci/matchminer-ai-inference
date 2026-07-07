@@ -5,6 +5,7 @@ from __future__ import annotations
 import gc
 import json
 import os
+from datetime import datetime, timezone
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Dict, cast
@@ -14,6 +15,7 @@ from matchminer_ai.llm.reasoning import parse_reasoning_output
 from matchminer_ai.llm.reasoning import resolve_reasoning_parser
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.llm.remote_inference import normalize_remote_server_urls
+from matchminer_ai.llm.remote_inference import remote_request_model_name
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
@@ -79,6 +81,31 @@ def get_model_metadata(
     return model_dict
 
 
+def get_endpoint_model_metadata(
+    model_name: str,
+    *,
+    cache_dir: str | None = None,
+) -> Dict[str, Any]:
+    """
+    Return model metadata for a remote endpoint model name.
+
+    OpenAI-compatible endpoints can expose names that are not Hugging Face model
+    IDs. In that case, return synthetic provenance metadata instead of failing
+    the run before the endpoint is contacted.
+    """
+    try:
+        return get_model_metadata(model_name, cache_dir=cache_dir)
+    except Exception as exc:
+        now = datetime.now(timezone.utc).isoformat()
+        return {
+            "model_name": model_name,
+            "model_sha": "openai-compatible-endpoint",
+            "created_at": now,
+            "last_modified": now,
+            "metadata_error": str(exc),
+        }
+
+
 @lru_cache(maxsize=2)
 def _get_local_llm(
     model_name: str,
@@ -104,6 +131,11 @@ def clear_local_llm_cache() -> None:
         pass
 
 
+def _is_vllm_engine_dead_error(exc: Exception) -> bool:
+    """Return whether an exception came from vLLM's dead engine sentinel."""
+    return exc.__class__.__name__ == "EngineDeadError"
+
+
 @dataclass
 class LocalBackend:
     """Local vLLM-backed implementation."""
@@ -123,10 +155,9 @@ class LocalBackend:
         prompt_list
             Rendered prompts to send to vLLM. Output order follows this list.
         llm_config
-            Model and sampling configuration. Local-engine fields from
-            ``config.local.<task>`` are passed through to ``vllm.LLM`` as
-            keyword arguments, and ``sampling_params`` is passed through to
-            ``vllm.SamplingParams`` as keyword arguments.
+            Runtime model configuration. Task-local engine fields are passed
+            through to ``vllm.LLM`` as keyword arguments, and generation
+            settings are passed through to ``vllm.SamplingParams``.
 
         Returns
         -------
@@ -143,11 +174,15 @@ class LocalBackend:
             if key
             not in {
                 "model_name",
+                "tokenizer_name",
                 "sampling_params",
+                "remote",
+                "prompt_file",
                 "prompt_files",
                 "reasoning_parser",
                 "chat_template_kwargs",
                 "boilerplate_marker",
+                "backend_mode",
                 "chunk_size",
                 "chunk_overlap",
                 "prompt_margin_tokens",
@@ -167,15 +202,41 @@ class LocalBackend:
             model_name,
             cache_dir=model_metadata_cache_dir,
         )
+        llm_kwargs_json = json.dumps(llm_kwargs, sort_keys=True)
         llm = _get_local_llm(
             model_name,
-            json.dumps(llm_kwargs, sort_keys=True),
+            llm_kwargs_json,
         )
         prompts = [prompt.prompt_text for prompt in prompt_list]
-        responses = llm.generate(
-            prompts=prompts,
-            sampling_params=SamplingParams(**sampling_params),
-        )
+        vllm_sampling_params = SamplingParams(**sampling_params)
+        try:
+            responses = llm.generate(
+                prompts=prompts,
+                sampling_params=vllm_sampling_params,
+            )
+        except Exception as exc:
+            if not _is_vllm_engine_dead_error(exc):
+                raise
+
+            clear_local_llm_cache()
+            llm = _get_local_llm(
+                model_name,
+                llm_kwargs_json,
+            )
+            try:
+                responses = llm.generate(
+                    prompts=prompts,
+                    sampling_params=vllm_sampling_params,
+                )
+            except Exception as retry_exc:
+                if not _is_vllm_engine_dead_error(retry_exc):
+                    raise
+                raise RuntimeError(
+                    "The local vLLM engine died during generation and did not "
+                    "recover after restarting. Check the earlier vLLM logs for "
+                    "the root cause; common causes are GPU memory pressure, a "
+                    "too-large max_model_len, or oversized prompt batches."
+                ) from retry_exc
         raw_texts = [response.outputs[0].text for response in responses]
         tokenizer = llm.get_tokenizer()
         parsed_outputs = [
@@ -208,7 +269,7 @@ class LocalBackend:
         """Truncate long texts using the model tokenizer."""
         from transformers import AutoTokenizer
 
-        model_name = patient_config["model_name"]
+        model_name = patient_config.get("tokenizer_name", patient_config["model_name"])
         text_token_threshold = int(patient_config["text_token_threshold"])
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         truncated: list[str] = []
@@ -242,10 +303,10 @@ class RemoteBackend:
         prompts across configured server URLs, and restores outputs to
         ``Prompt.row_idx`` order.
         """
-        model_name = str(llm_config["model_name"])
+        model_name = remote_request_model_name(llm_config)
         api_key = str(os.environ.get("OPENAI_API_KEY", "not-needed")).strip()
         server_urls = normalize_remote_server_urls(llm_config)
-        model_metadata = get_model_metadata(
+        model_metadata = get_endpoint_model_metadata(
             model_name,
             cache_dir=model_metadata_cache_dir,
         )
@@ -274,29 +335,55 @@ def get_backend(name: str) -> LocalBackend | RemoteBackend:
 
 
 def remote_enabled(config: "MMAIConfig") -> bool:
-    """Return whether remote LLM inference is enabled for summarization."""
+    """Return whether remote LLM inference is enabled."""
     return bool(getattr(config, "remote", {}).get("enabled", False))
 
 
-def build_summarization_runtime_config(
+def build_llm_runtime_config(
     task_name: str,
     llm_config: Dict[str, Any],
     *,
     config: "MMAIConfig",
 ) -> Dict[str, Any]:
     """Merge task LLM settings with mode-specific runtime settings."""
-    runtime_config = dict(llm_config)
-    local_config = dict(getattr(config, "local", {}).get(task_name, {}))
-    runtime_config.update(local_config)
+    runtime_config = {
+        key: value
+        for key, value in llm_config.items()
+        if key not in {"local", "remote"}
+    }
+    task_local_config = dict(llm_config.get("local", {}))
+    task_remote_config = dict(llm_config.get("remote", {}))
+    engine_config = dict(task_local_config.get("engine", {}))
+    generation_config = dict(task_local_config.get("generation", {}))
+    local_chat_template_kwargs = task_local_config.get("chat_template_kwargs")
+
     if remote_enabled(config):
+        runtime_config["backend_mode"] = "remote"
         remote_config = dict(getattr(config, "remote", {}))
         remote_config.pop("enabled", None)
+        runtime_config.update(engine_config)
+        if local_chat_template_kwargs is not None:
+            runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
         runtime_config.update(remote_config)
+        runtime_config["remote"] = task_remote_config
+        runtime_config["sampling_params"] = dict(task_remote_config["request_params"])
+        runtime_config["model_name"] = task_remote_config["model_name"]
+        if "tokenizer_name" in task_remote_config:
+            runtime_config["tokenizer_name"] = task_remote_config["tokenizer_name"]
+    else:
+        runtime_config["backend_mode"] = "local"
+        runtime_config.update(engine_config)
+        runtime_config["model_name"] = task_local_config["model_name"]
+        if "tokenizer_name" in task_local_config:
+            runtime_config["tokenizer_name"] = task_local_config["tokenizer_name"]
+        runtime_config["sampling_params"] = generation_config
+        if local_chat_template_kwargs is not None:
+            runtime_config["chat_template_kwargs"] = dict(local_chat_template_kwargs)
     return runtime_config
 
 
-def get_summarization_backend(config: "MMAIConfig") -> LocalBackend | RemoteBackend:
-    """Return the backend used for trial/patient LLM summarization."""
+def get_llm_backend(config: "MMAIConfig") -> LocalBackend | RemoteBackend:
+    """Return the configured local or remote LLM backend."""
     if remote_enabled(config):
         return RemoteBackend()
     return LocalBackend()

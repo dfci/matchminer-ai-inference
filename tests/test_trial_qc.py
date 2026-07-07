@@ -63,7 +63,12 @@ def test_trial_qc_report_metrics(monkeypatch):
         patient={},
         local={},
         remote={},
-        embedding={"model_path": "m", "device": "cpu", "prompt_file": "embedding.txt"},
+        embedding={
+            "model_path": "m",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+            "max_seq_length": 2500,
+        },
         model_metadata_cache_dir=None,
         raw={},
     )
@@ -74,7 +79,6 @@ def test_trial_qc_report_metrics(monkeypatch):
         unfiltered_spaces=trial_spaces,
         truncated_llm_qc_artifact=truncated_llm_qc_artifact,
         config=config,
-        max_embedding_input_tokens=2500,
     ).set_index("metric")
 
     assert report.loc["trials_missing_in_output", "value"] == 1
@@ -87,3 +91,62 @@ def test_trial_qc_report_metrics(monkeypatch):
     assert report.loc["spaces_exceed_embedding_token_limit", "ids"] == ["T2-1"]
     assert report.loc["trials_exclusion_criteria_not_extracted", "value"] == 2
     assert report.loc["spaces_dropped_missing_keyword:Age", "value"] >= 1
+
+
+def test_trial_qc_uses_embedding_max_seq_length(monkeypatch):
+    """Use embedding.max_seq_length as the default QC token limit."""
+    trial_source = pd.DataFrame([{"trial_id": "T1"}])
+    trial_spaces = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "space_trial_id": "T1-1",
+                "clinical_space_number": 1,
+                "clinical_space_summary": "Cancer type allowed: Lung.",
+                "general_exclusion_criteria": "None",
+            },
+            {
+                "trial_id": "T1",
+                "space_trial_id": "T1-2",
+                "clinical_space_number": 2,
+                "clinical_space_summary": "Cancer type allowed: Breast.",
+                "general_exclusion_criteria": "None",
+            },
+        ]
+    )
+    monkeypatch.setattr(
+        "matchminer_ai._qc.trials.count_embedding_tokens",
+        lambda texts, *, embedding_config: [1999, 2001],
+    )
+    config = MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        trial={},
+        patient={},
+        local={},
+        remote={},
+        embedding={
+            "model_path": "m",
+            "device": "cpu",
+            "prompt_file": "embedding.txt",
+            "max_seq_length": 2000,
+        },
+        model_metadata_cache_dir=None,
+        raw={},
+    )
+
+    report = trial_qc_report(
+        trial_spaces,
+        trial_source=trial_source,
+        unfiltered_spaces=trial_spaces,
+        truncated_llm_qc_artifact={
+            "metric": "trials_truncated_llm_response",
+            "numerator": 0,
+            "denominator": 1,
+            "ids": [],
+        },
+        config=config,
+        expected_keywords=[],
+    ).set_index("metric")
+
+    assert report.loc["spaces_exceed_embedding_token_limit", "ids"] == ["T1-2"]

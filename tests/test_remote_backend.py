@@ -84,11 +84,13 @@ def _llm_config(**overrides):
         "max_retries": 3,
         "batch_size": 1000,
         "retry_backoff_base": 0.0,
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
-            "max_tokens": 10,
-            "repetition_penalty": 1.0,
+        "remote": {
+            "model_name": "model",
+            "request_params": {"max_tokens": 10, "temperature": 0.0},
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
         },
     }
     config.update(overrides)
@@ -178,14 +180,20 @@ def test_remote_backend_captures_structured_reasoning(monkeypatch):
     assert result.finish_reasons == ["stop"]
 
 
-def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
-    """Remote chat requests pass Gemma 4 thinking kwargs through vLLM extra_body."""
+def test_remote_backend_passes_extra_body(monkeypatch):
+    """Remote chat requests pass task remote extra_body through unchanged."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
-            chat_template_kwargs={"enable_thinking": True},
+            remote={
+                "model_name": "model",
+                "request_params": {"max_tokens": 10},
+                "extra_body": {
+                    "chat_template_kwargs": {"enable_thinking": True},
+                },
+            },
         ),
     )
 
@@ -194,22 +202,27 @@ def test_remote_backend_passes_chat_template_kwargs(monkeypatch):
     ] == {"enable_thinking": True}
 
 
-def test_remote_backend_forwards_sampling_params(monkeypatch):
-    """Remote requests forward config sampling params to request args/extra_body."""
+def test_remote_backend_forwards_remote_request_config(monkeypatch):
+    """Remote requests forward explicit task request params and extra body."""
     _install_fakes(monkeypatch)
 
     RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
         llm_config=_llm_config(
-            sampling_params={
-                "temperature": 0.7,
-                "top_p": 0.95,
-                "presence_penalty": 1.5,
-                "max_tokens": 99,
-                "top_k": 20,
-                "min_p": 0.0,
-                "repetition_penalty": 1.1,
-                "skip_special_tokens": False,
+            remote={
+                "model_name": "model",
+                "request_params": {
+                    "max_tokens": 10,
+                    "temperature": 0.7,
+                    "top_p": 0.95,
+                    "presence_penalty": 1.5,
+                },
+                "extra_body": {
+                    "top_k": 20,
+                    "min_p": 0.0,
+                    "repetition_penalty": 1.1,
+                    "skip_special_tokens": False,
+                },
             },
         ),
     )
@@ -225,6 +238,98 @@ def test_remote_backend_forwards_sampling_params(monkeypatch):
         "repetition_penalty": 1.1,
         "skip_special_tokens": False,
     }
+
+
+def test_remote_backend_uses_runtime_model_name(monkeypatch):
+    """Use runtime model_name as the endpoint request model."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            model_name="endpoint-model",
+            remote={
+                "model_name": "endpoint-model",
+                "request_params": {"max_tokens": 10},
+                "extra_body": {},
+            },
+        ),
+    )
+
+    assert FakeAsyncOpenAI.clients[0].calls[0]["model"] == "endpoint-model"
+
+
+def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
+    """Endpoint model names do not have to be Hugging Face model IDs."""
+    _install_fakes(monkeypatch)
+
+    def raise_metadata(model_name, cache_dir=None):
+        raise RuntimeError("not a Hugging Face model")
+
+    monkeypatch.setattr(
+        "matchminer_ai.llm.backends.get_model_metadata",
+        raise_metadata,
+    )
+
+    result = RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            model_name="gpt-compatible-name",
+            remote={
+                "model_name": "gpt-compatible-name",
+                "request_params": {"max_tokens": 10},
+                "extra_body": {},
+            },
+        ),
+    )
+
+    assert result.model_metadata["model_name"] == "gpt-compatible-name"
+    assert result.model_metadata["model_sha"] == "openai-compatible-endpoint"
+    assert "not a Hugging Face model" in result.model_metadata["metadata_error"]
+
+
+def test_remote_backend_forwards_max_completion_tokens(monkeypatch):
+    """Forward alternate top-level token-budget fields from request_params."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            remote={
+                "model_name": "model",
+                "request_params": {"max_completion_tokens": 10},
+                "extra_body": {},
+            },
+        ),
+    )
+
+    call = FakeAsyncOpenAI.clients[0].calls[0]
+    assert call["max_completion_tokens"] == 10
+    assert "max_tokens" not in call
+
+
+def test_remote_backend_uses_task_remote_request_config(monkeypatch):
+    """Task remote config controls top-level params and extra body explicitly."""
+    _install_fakes(monkeypatch)
+
+    RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=_llm_config(
+            remote={
+                "model_name": "model",
+                "request_params": {"max_tokens": 10, "temperature": 0.0, "seed": 123},
+                "extra_body": {"top_k": 1},
+            },
+        ),
+    )
+
+    call = FakeAsyncOpenAI.clients[0].calls[0]
+    assert call["max_tokens"] == 10
+    assert "max_completion_tokens" not in call
+    assert call["temperature"] == 0.0
+    assert call["seed"] == 123
+    assert call["extra_body"] == {"top_k": 1}
+    assert "top_p" not in call
 
 
 def test_remote_backend_accepts_legacy_reasoning_content(monkeypatch):

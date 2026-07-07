@@ -19,7 +19,8 @@ class Prompt:
         Original input position. Backends use it to restore output order after
         concurrent or distributed execution.
     prompt_text
-        Final text prompt after applying the model chat template.
+        Text prompt used by local generation. Remote chat backends keep a
+        human-readable fallback here and send ``messages`` instead.
     max_tokens
         Generation token limit for this specific prompt.
     messages
@@ -89,6 +90,29 @@ def build_chat_prompts(
         return list(executor.map(apply_template, messages_list))
 
 
+def _configured_max_tokens(llm_config: dict[str, Any]) -> int:
+    """Return the generation token limit from local or remote runtime config."""
+    sampling_params = dict(llm_config.get("sampling_params", {}))
+    configured_max_tokens = sampling_params.get(
+        "max_tokens",
+        sampling_params.get("max_completion_tokens"),
+    )
+    if configured_max_tokens is None:
+        raise ValueError(
+            "LLM config must include sampling_params['max_tokens'] or "
+            "sampling_params['max_completion_tokens']."
+        )
+    return int(configured_max_tokens)
+
+
+def _messages_to_fallback_text(messages: list[dict[str, str]]) -> str:
+    """Render messages into simple readable text for remote fallback/debug use."""
+    return "\n\n".join(
+        f"{message.get('role', 'user')}: {message.get('content', '')}"
+        for message in messages
+    )
+
+
 def build_prompt_list(
     messages_list: list[list[dict[str, str]]],
     *,
@@ -97,10 +121,23 @@ def build_prompt_list(
     """
     Build indexed ``Prompt`` objects from chat-style message lists.
 
-    The rendered prompts keep input ordering through ``Prompt.row_idx`` and use
-    ``llm_config["sampling_params"]["max_tokens"]`` as the per-prompt generation
-    limit.
+    Local configs render messages through the Hugging Face chat template and
+    store the result in ``Prompt.prompt_text``. Remote chat configs preserve the
+    original messages for the OpenAI-compatible endpoint and avoid client-side
+    chat-template rendering.
     """
+    max_tokens = _configured_max_tokens(llm_config)
+    if llm_config.get("backend_mode") == "remote":
+        return [
+            Prompt(
+                row_idx=row_idx,
+                prompt_text=_messages_to_fallback_text(messages),
+                max_tokens=max_tokens,
+                messages=messages,
+            )
+            for row_idx, messages in enumerate(messages_list)
+        ]
+
     prompt_texts = build_chat_prompts(
         messages_list,
         model_name=str(llm_config["model_name"]),
@@ -111,7 +148,7 @@ def build_prompt_list(
         Prompt(
             row_idx=row_idx,
             prompt_text=prompt_text,
-            max_tokens=int(llm_config["sampling_params"]["max_tokens"]),
+            max_tokens=max_tokens,
             messages=messages,
         )
         for row_idx, (messages, prompt_text) in enumerate(

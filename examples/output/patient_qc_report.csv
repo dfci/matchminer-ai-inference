@@ -1,5 +1,4 @@
 metric,value,denominator,percent,ids
-patients_dropped_noninformative_summary,0,12,0.0,[]
 patients_exceed_embedding_token_limit,0,12,0.0,[]
 patients_exclusion_criteria_not_extracted,0,12,0.0,[]
 patients_missing_keyword:Age,0,12,0.0,[]

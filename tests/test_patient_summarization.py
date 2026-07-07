@@ -8,10 +8,7 @@ from matchminer_ai.llm.backends import LLMGenerationResult, LocalBackend
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.patients import summarize_patients
-from matchminer_ai.patients.postprocess import (
-    clean_bad_data,
-    parse_boilerplate,
-)
+from matchminer_ai.patients.postprocess import parse_boilerplate
 from matchminer_ai.patients.prompt_builder import (
     PromptWorkItem,
     _RESPONSE_TOKEN_MARGIN,
@@ -43,18 +40,38 @@ def _stub_patient_qc(monkeypatch):
 
 def _patient_config() -> dict:
     return {
-        "model_name": "model",
+        "local": {
+            "model_name": "model",
+            "engine": {
+                "max_model_len": 100,
+                "tensor_parallel_size": 1,
+                "gpu_memory_utilization": 0.9,
+            },
+            "generation": {
+                "temperature": 0.0,
+                "top_k": 1,
+                "max_tokens": 10,
+                "repetition_penalty": 1.0,
+            },
+            "chat_template_kwargs": {},
+        },
+        "remote": {
+            "model_name": "model",
+            "tokenizer_name": "model",
+            "request_params": {
+                "max_tokens": 10,
+                "temperature": 0.0,
+            },
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
+        },
         "prompt_files": {
             "primer": "patient.serial.user.primer.txt",
             "question": "patient.serial.user.question.txt",
         },
         "boilerplate_marker": "Boilerplate conditions",
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
-            "max_tokens": 10,
-            "repetition_penalty": 1.0,
-        },
         "chunk_size": 50,
         "chunk_overlap": 5,
         "prompt_margin_tokens": 10,
@@ -67,13 +84,7 @@ def _config(debug_mode: bool = False) -> MMAIConfig:
         debug_mode=debug_mode,
         trial={},
         patient=_patient_config(),
-        local={
-            "patient": {
-                "max_model_len": 100,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.9,
-            }
-        },
+        local={},
         remote={},
         model_metadata_cache_dir=None,
         raw={"config": "snapshot"},
@@ -107,11 +118,11 @@ def test_parse_boilerplate_splits_summary_and_exclusions():
     df = pd.DataFrame(
         [
             {
-                "original_patient_summary": (
+                "patient_answer_text": (
                     "Cancer history here.\n" "Boilerplate conditions:\n" "No CNS mets."
                 )
             },
-            {"original_patient_summary": "Cancer only."},
+            {"patient_answer_text": "Cancer only."},
         ]
     )
 
@@ -130,7 +141,7 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
     df = pd.DataFrame(
         [
             {
-                "original_patient_summary": (
+                "patient_answer_text": (
                     "Cancer history here.\n"
                     "\n"
                     "Boilerplate conditions:\n"
@@ -150,23 +161,6 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
         parsed.loc[0, "general_exclusion_criteria_evidence"]
         == "Remote inactive prostate cancer."
     )
-
-
-def test_clean_bad_data_filters_invalid_summaries():
-    """Drop rows with empty or invalid patient summaries."""
-    df = pd.DataFrame(
-        [
-            {"cancer_history_summary": "No evidence of malignancy"},
-            {"cancer_history_summary": "No primary identified"},
-            {"cancer_history_summary": "No information"},
-            {"cancer_history_summary": "Valid summary"},
-        ]
-    )
-
-    cleaned, qc_artifact = clean_bad_data(df)
-
-    assert cleaned["cancer_history_summary"].tolist() == ["Valid summary"]
-    assert qc_artifact["metric"] == "patients_dropped_noninformative_summary"
 
 
 def test_local_backend_truncate_texts_splits_long_inputs(monkeypatch):
@@ -247,7 +241,7 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
             "model_name": "google/gemma-4-31B-it",
             "max_model_len": 1000,
             "sampling_params": {
-                **_patient_config()["sampling_params"],
+                **_patient_config()["local"]["generation"],
                 "max_tokens": 900,
             },
         },
@@ -346,7 +340,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
 
@@ -404,7 +398,7 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
         lambda prompt_pool: None,
     )
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MagicMock(
             generate_llm_outputs=MagicMock(
                 return_value=LLMGenerationResult(
@@ -433,6 +427,73 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
 
     assert seen_prior_summaries == ["Existing summary"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Updated"
+
+
+def test_summarize_patient_notes_includes_standard_debug_columns(monkeypatch):
+    """Debug mode exposes standardized patient LLM answer/reasoning columns."""
+    _stub_patient_qc(monkeypatch)
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
+        lambda model_name, **kwargs: MockTokenizer(),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
+        lambda notes, tokenizer, chunk_size, chunk_overlap: (
+            pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-01"}]),
+            pd.DataFrame(
+                [
+                    {
+                        "patient_id": "P1",
+                        "chunk_index": 0,
+                        "first_date": "2024-01-01",
+                        "last_date": "2024-01-01",
+                        "chunk_text": "chunk",
+                    }
+                ]
+            ),
+        ),
+    )
+
+    class FakePromptPool:
+        def map(self, func, work_items, chunksize=1):
+            return [
+                Prompt(row_idx=item.row_idx, prompt_text=item.chunk_text, max_tokens=7)
+                for item in work_items
+            ]
+
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
+        lambda patient_config, n_workers: FakePromptPool(),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
+        lambda prompt_pool: None,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.get_llm_backend",
+        lambda config: MagicMock(
+            generate_llm_outputs=MagicMock(
+                return_value=LLMGenerationResult(
+                    final_outputs=["Debug summary\nBoilerplate conditions:\nNone"],
+                    model_metadata={"model_name": "model", "model_sha": "sha"},
+                    finish_reasons=["stop"],
+                    reasoning_outputs=["debug reasoning"],
+                    raw_outputs=["raw output"],
+                )
+            )
+        ),
+    )
+
+    notes = pd.DataFrame(
+        [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
+    )
+
+    result, _ = summarize_patient_notes(notes, config=_config(debug_mode=True))
+
+    assert result["patient_answer_text"].tolist() == [
+        "Debug summary\nBoilerplate conditions:\nNone"
+    ]
+    assert result["patient_reasoning_text"].tolist() == ["debug reasoning"]
 
 
 def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch):
@@ -515,7 +576,7 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
             )
 
     monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_summarization_backend",
+        "matchminer_ai.patients.summarize.get_llm_backend",
         lambda config: MockBackend(),
     )
 
@@ -593,7 +654,7 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     qc_report = pd.DataFrame(
         [
             {
-                "metric": "patients_dropped_noninformative_summary",
+                "metric": "patients_exclusion_criteria_not_extracted",
                 "value": 0,
                 "percent": 0.0,
                 "ids": [],
@@ -624,3 +685,41 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     assert metadata["config_snapshot"]["config"] == "snapshot"
     assert metadata["config_snapshot"]["patient"] == _config().patient
     assert metadata["model_metadata"]["patient_summarizer"]["model_sha"] == "sha"
+
+
+def test_summarize_patients_does_not_request_qc_by_default(monkeypatch):
+    """Default patient summarization should skip QC-only embedding token counts."""
+    notes = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "note_text": "Note text",
+                "note_type": "clinical_note",
+                "note_date": "2024-01-01",
+            }
+        ]
+    )
+    summaries_df = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "cancer_history_summary": "Summary",
+                "general_exclusion_criteria_evidence": "None",
+            }
+        ]
+    )
+    summarize_mock = MagicMock(
+        return_value=(
+            summaries_df,
+            {"model_metadata": {"model_name": "summ", "model_sha": "sha"}},
+        )
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize_patient_notes",
+        summarize_mock,
+    )
+
+    result = summarize_patients(notes, config=_config())
+
+    assert result.equals(summaries_df)
+    assert summarize_mock.call_args.kwargs["return_qc"] is False

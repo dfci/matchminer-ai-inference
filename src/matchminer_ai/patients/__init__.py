@@ -79,16 +79,12 @@ def summarize_patients(
         Debug Columns
         (Available only if pipeline initialized with debug_mode=True)
         -------------------------------------------------------------
-        original_patient_summary : str
-            Final serial summary before boilerplate splitting.
-        cleaned_patient_summary : str
-            Final serial summary after whitespace cleanup.
-        final_round_patient_summary_raw_output : str
-            Raw generated text from the final serial summarization round when
-            available.
-        final_round_patient_summary_reasoning : str
-            Parsed reasoning text from the final serial summarization round
-            when available.
+        patient_answer_text : str
+            Text the package treated as the LLM answer and used for
+            postprocessing.
+        patient_reasoning_text : str
+            Optional separate reasoning trace returned by the backend or
+            extracted by the configured reasoning parser.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]
@@ -116,15 +112,23 @@ def summarize_patients(
         )
 
     logger.info("Preparing serial patient summarization for %d notes.", len(notes))
-    summaries, metadata, qc_report = cast(
-        tuple[pd.DataFrame, dict, pd.DataFrame],
-        summarize_patient_notes(
-            notes,
-            config=resolved_config,
-            existing_summaries=existing_summaries,
-            return_qc=True,
-        ),
+    summary_result = summarize_patient_notes(
+        notes,
+        config=resolved_config,
+        existing_summaries=existing_summaries,
+        return_qc=return_qc,
     )
+    if return_qc:
+        summaries, metadata, qc_report = cast(
+            tuple[pd.DataFrame, dict, pd.DataFrame],
+            summary_result,
+        )
+    else:
+        summaries, metadata = cast(
+            tuple[pd.DataFrame, dict],
+            summary_result,
+        )
+        qc_report = None
     logger.info("Patient summarization complete. Produced %d rows.", len(summaries))
 
     if return_metadata:

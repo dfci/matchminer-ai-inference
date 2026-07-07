@@ -55,7 +55,6 @@ def trial_qc_report(
     unfiltered_spaces: pd.DataFrame,
     truncated_llm_qc_artifact: dict[str, object],
     config: MMAIConfig | None = None,
-    max_embedding_input_tokens: int = 2500,
     expected_keywords: list[str] | None = None,
 ) -> pd.DataFrame:
     """
@@ -78,8 +77,6 @@ def trial_qc_report(
     config : MMAIConfig | None, optional
         Config used to resolve backend and embedding settings when token counts
         are computed inside this QC function.
-    max_embedding_input_tokens : int
-        Maximum token length accepted by the embedding model.
     expected_keywords : list[str], optional
         Keywords expected in each clinical_space_summary.
 
@@ -141,6 +138,7 @@ def trial_qc_report(
     # QC metric for trial summaries exceeding embedding model token limit
     if config is not None and config.embedding:
         embedding_config = dict(config.embedding)
+        embedding_token_limit = int(embedding_config["max_seq_length"])
         token_series = pd.Series(
             count_embedding_tokens(
                 spaces["clinical_space_summary"].fillna("").astype(str).tolist(),
@@ -149,7 +147,7 @@ def trial_qc_report(
             index=spaces["space_trial_id"].astype(str).tolist(),
         )
         token_series = pd.to_numeric(token_series, errors="coerce").fillna(0)
-        over_limit_ids = token_series[token_series > max_embedding_input_tokens].index
+        over_limit_ids = token_series[token_series > embedding_token_limit].index
         metrics.append(
             qc_artifact_to_report_row(
                 build_qc_artifact(

@@ -10,25 +10,39 @@ def test_load_config_from_user_path(tmp_path):
         """
 debug_mode: true
 model_metadata_cache_dir: ".custom_cache/model_metadata"
-local:
-  trial:
-    max_model_len: 4096
 remote:
   enabled: true
   server_urls:
     - http://localhost:8000/v1
 trial:
-  model_name: custom-trial-model
-  sampling_params:
-    max_tokens: 128
+  local:
+    model_name: custom-trial-model
+    engine:
+      max_model_len: 4096
+    generation:
+      max_tokens: 128
+  remote:
+    model_name: custom-trial-model
+    request_params:
+      max_tokens: 128
+    extra_body: {}
   prompt_files:
     primer: trial.user.primer.txt
     question: trial.user.question.txt
   boilerplate_marker: Boilerplate exclusions
 patient:
-  model_name: custom-patient-model
-  sampling_params:
-    max_tokens: 256
+  local:
+    model_name: custom-patient-model
+    engine:
+      max_model_len: 4096
+    generation:
+      max_tokens: 256
+  remote:
+    model_name: custom-patient-model
+    tokenizer_name: custom-patient-model
+    request_params:
+      max_tokens: 256
+    extra_body: {}
   prompt_files:
     primer: patient.serial.user.primer.txt
     question: patient.serial.user.question.txt
@@ -37,6 +51,7 @@ embedding:
   model_path: custom-embedding-model
   device: cpu
   prompt_file: embedding.txt
+  max_seq_length: 2500
 match_quality:
   model_name: custom-match-model
 exclusion_criteria:
@@ -50,9 +65,10 @@ exclusion_criteria:
     assert config.preset_name == str(config_path)
     assert config.debug_mode is True
     assert config.remote["enabled"] is True
-    assert config.trial["model_name"] == "custom-trial-model"
-    assert config.patient["model_name"] == "custom-patient-model"
+    assert config.trial["local"]["model_name"] == "custom-trial-model"
+    assert config.patient["remote"]["model_name"] == "custom-patient-model"
     assert config.embedding["device"] == "cpu"
+    assert config.embedding["max_seq_length"] == 2500
     assert config.raw["match_quality"]["model_name"] == "custom-match-model"
 
 
@@ -68,4 +84,4 @@ def test_load_preset_keeps_default_name():
     config = load_preset("default")
 
     assert config.preset_name == "default"
-    assert config.trial["model_name"]
+    assert config.trial["local"]["model_name"]

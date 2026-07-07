@@ -68,15 +68,15 @@ def summarize_trials(
         Debug Columns
         (Available only if pipeline initialized with debug_mode=True)
         -------------------------------------------------------------
-        trial_text : str
+        trial_input_text : str
             Concatenation of trial_title + brief_summary + eligibility_criteria.
             This is the raw input text fed into the LLM.
-        space_output_no_reasoning : str
-            Final LLM output after reasoning parsing.
-        space_reasoning : str
-            Parsed reasoning text when the backend provides it.
-        space_raw_output : str
-            Raw generated text when available from local in-process inference.
+        trial_answer_text : str
+            Text the package treated as the LLM answer and used for
+            postprocessing.
+        trial_reasoning_text : str
+            Optional separate reasoning trace returned by the backend or
+            extracted by the configured reasoning parser.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]

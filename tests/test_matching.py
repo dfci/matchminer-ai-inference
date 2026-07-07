@@ -7,8 +7,10 @@ import pytest
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.matching import (
     exclusion_criteria_check,
+    exclusion_criteria_check_with_llm,
     generate_candidate_matches,
     score_match_quality,
+    score_match_quality_with_llm,
 )
 
 
@@ -68,13 +70,17 @@ def test_generate_candidate_matches_returns_all_when_k_none():
 
 
 class _MockCheckerBackend:
+    """Minimal checker backend that records calls and returns fixed predictions."""
+
     def __init__(self, predictions):
+        """Store fixed predictions and initialize call capture fields."""
         self.predictions = predictions
         self.last_prompts = None
         self.last_checker_config = None
         self.last_model_metadata_cache_dir = None
 
     def run_checker(self, prompts, *, checker_config, model_metadata_cache_dir=None):
+        """Record checker inputs and return configured predictions."""
         self.last_prompts = prompts
         self.last_checker_config = checker_config
         self.last_model_metadata_cache_dir = model_metadata_cache_dir
@@ -333,16 +339,23 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
     pipeline_calls = []
 
     class FakeTokenizer:
+        """Fake tokenizer factory used by the checker pipeline."""
+
         @staticmethod
         def from_pretrained(model_name, **kwargs):
+            """Record tokenizer construction and return a sentinel tokenizer."""
             tokenizer_calls.append((model_name, kwargs))
             return f"tokenizer:{model_name}"
 
     class FakePipeline:
+        """Fake text-classification pipeline that records prompt batches."""
+
         def __init__(self):
+            """Initialize prompt batch capture."""
             self.prompt_batches = []
 
         def __call__(self, prompts):
+            """Return deterministic positive-label outputs for each prompt."""
             self.prompt_batches.append(list(prompts))
             return [
                 {"label": "POSITIVE", "score": float(index)}
@@ -350,6 +363,7 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
             ]
 
     def fake_pipeline(*args, **kwargs):
+        """Build and record a fake checker pipeline."""
         checker_pipeline = FakePipeline()
         pipeline_calls.append((args, kwargs, checker_pipeline))
         return checker_pipeline
@@ -364,7 +378,11 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
         lambda model_name, cache_dir=None: {"model_name": model_name},
     )
 
-    checker_config = {"model_name": "checker/model", "device": "cpu"}
+    checker_config = {
+        "model_name": "checker/model",
+        "device": "cpu",
+        "max_length": 3192,
+    }
     first_outputs, first_metadata = inference.run_checker(
         ["prompt 1"],
         checker_config=checker_config,
@@ -388,6 +406,7 @@ def test_run_checker_reuses_cached_pipeline(monkeypatch):
     assert pipeline_calls[0][0] == ("text-classification", "checker/model")
     assert pipeline_calls[0][1]["tokenizer"] == "tokenizer:checker/model"
     assert pipeline_calls[0][1]["device"] == "cpu"
+    assert pipeline_calls[0][1]["max_length"] == 3192
     assert pipeline_calls[0][2].prompt_batches == [
         ["prompt 1"],
         ["prompt 2", "prompt 3"],
@@ -404,11 +423,15 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
     pipeline_calls = []
 
     class FakeTokenizer:
+        """Fake tokenizer factory for checker cache reload tests."""
+
         @staticmethod
         def from_pretrained(model_name, **kwargs):
+            """Return a sentinel tokenizer value."""
             return f"tokenizer:{model_name}"
 
     def fake_pipeline(*args, **kwargs):
+        """Record checker pipeline construction and return fixed outputs."""
         pipeline_calls.append((args, kwargs))
         return lambda prompts: [{"label": "NEGATIVE", "score": 0.5} for _ in prompts]
 
@@ -430,3 +453,254 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
     assert len(pipeline_calls) == 2
 
     inference.clear_checker_pipeline_cache()
+
+
+class _MockLLMBackend:
+    """Minimal LLM backend that records calls and returns fixed outputs."""
+
+    def __init__(self, outputs):
+        """Store fixed outputs and initialize call capture fields."""
+        self.outputs = outputs
+        self.last_prompt_list = None
+        self.last_llm_config = None
+        self.last_model_metadata_cache_dir = None
+
+    def generate_llm_outputs(
+        self,
+        *,
+        prompt_list,
+        llm_config,
+        model_metadata_cache_dir=None,
+    ):
+        """Record generation inputs and return deterministic LLM outputs."""
+        self.last_prompt_list = prompt_list
+        self.last_llm_config = llm_config
+        self.last_model_metadata_cache_dir = model_metadata_cache_dir
+        return SimpleNamespace(
+            final_outputs=self.outputs,
+            reasoning_outputs=[
+                f"reasoning {idx}" for idx, _ in enumerate(self.outputs)
+            ],
+            model_metadata={"model_name": llm_config["model_name"]},
+        )
+
+
+def _llm_config(*, debug_mode: bool = False) -> MMAIConfig:
+    """Build a minimal config for LLM checker tests."""
+    return MMAIConfig(
+        preset_name="default",
+        debug_mode=debug_mode,
+        trial={},
+        patient={},
+        local={},
+        remote={},
+        embedding={},
+        model_metadata_cache_dir=".mmai_cache/model_metadata",
+        llm_match_quality={
+            "reasoning_parser": "auto",
+            "local": {
+                "model_name": "llm/model",
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                },
+                "generation": {"max_tokens": 15000},
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {
+                "model_name": "llm/model",
+                "request_params": {"max_tokens": 15000},
+                "extra_body": {},
+            },
+            "prompt_file": "llm_match_quality.user.txt",
+        },
+        llm_exclusion_criteria={
+            "reasoning_parser": "auto",
+            "local": {
+                "model_name": "llm/model",
+                "engine": {
+                    "max_model_len": 50000,
+                    "tensor_parallel_size": 1,
+                },
+                "generation": {"max_tokens": 20000},
+                "chat_template_kwargs": {"enable_thinking": True},
+            },
+            "remote": {
+                "model_name": "llm/model",
+                "request_params": {"max_tokens": 20000},
+                "extra_body": {},
+            },
+            "prompt_file": "llm_exclusion_criteria.user.txt",
+        },
+        raw={},
+    )
+
+
+def test_score_match_quality_with_llm_builds_training_prompt_and_parses(monkeypatch):
+    """Run LLM match scoring through package backend config and score parser."""
+    captured_messages = []
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        """Capture match-quality messages and return one rendered prompt."""
+        captured_messages.extend(messages_list)
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
+
+    backend = _MockLLMBackend(["After review.\nFinal score: 4"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
+        lambda config: backend,
+    )
+    pairs = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "space_trial_id": "T1-1",
+                "cancer_history_summary": "Patient has metastatic lung cancer.",
+                "clinical_space_summary": "Trial for metastatic lung cancer.",
+            }
+        ]
+    )
+
+    result, metadata = score_match_quality_with_llm(
+        pairs,
+        config=_llm_config(),
+        return_metadata=True,
+    )
+
+    assert result["llm_match_quality_score"].tolist() == [4]
+    assert "llm_match_quality_verdict" not in result.columns
+    assert "llm_match_quality_response" not in result.columns
+    assert "llm_match_quality_reasoning" not in result.columns
+    assert "llm_match_quality_answer_text" not in result.columns
+    assert "llm_match_quality_reasoning_text" not in result.columns
+    assert "llm_match_quality_parse_status" not in result.columns
+    assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
+    assert "metastatic lung cancer" in captured_messages[0][1]["content"]
+    assert backend.last_llm_config["max_model_len"] == 50000
+    assert backend.last_llm_config["sampling_params"]["max_tokens"] == 15000
+    assert metadata["model_metadata"]["llm_match_quality_checker"]["model_name"] == (
+        "llm/model"
+    )
+
+
+def test_score_match_quality_with_llm_includes_debug_columns(monkeypatch):
+    """Include raw LLM response details only when debug mode is enabled."""
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        """Return one rendered prompt for match-quality debug output tests."""
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=15000)]
+
+    backend = _MockLLMBackend(["After review.\nFinal score: 4"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
+        lambda config: backend,
+    )
+    pairs = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "space_trial_id": "T1-1",
+                "cancer_history_summary": "Patient has metastatic lung cancer.",
+                "clinical_space_summary": "Trial for metastatic lung cancer.",
+            }
+        ]
+    )
+
+    result = score_match_quality_with_llm(pairs, config=_llm_config(debug_mode=True))
+
+    assert result["llm_match_quality_answer_text"].tolist() == [
+        "After review.\nFinal score: 4"
+    ]
+    assert result["llm_match_quality_reasoning_text"].tolist() == ["reasoning 0"]
+    assert result["llm_match_quality_parse_status"].tolist() == ["parsed"]
+
+
+def test_exclusion_criteria_check_with_llm_builds_training_prompt_and_parses(
+    monkeypatch,
+):
+    """Run LLM exclusion scoring through package backend config and yes/no parser."""
+    captured_messages = []
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        """Capture exclusion-check messages and return one rendered prompt."""
+        captured_messages.extend(messages_list)
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
+
+    backend = _MockLLMBackend(["No!"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
+        lambda config: backend,
+    )
+    matches = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "trial_id": "T1",
+                "general_exclusion_criteria": "Excludes uncontrolled brain mets.",
+                "general_exclusion_criteria_evidence": "No active brain mets.",
+            }
+        ]
+    )
+
+    result = exclusion_criteria_check_with_llm(matches, config=_llm_config())
+
+    assert result["llm_exclusion_criteria_pass"].tolist() == [True]
+    assert "llm_exclusion_criteria_verdict" not in result.columns
+    assert "llm_exclusion_criteria_response" not in result.columns
+    assert "llm_exclusion_criteria_reasoning" not in result.columns
+    assert "llm_exclusion_criteria_answer_text" not in result.columns
+    assert "llm_exclusion_criteria_reasoning_text" not in result.columns
+    assert "llm_exclusion_criteria_parse_status" not in result.columns
+    assert captured_messages[0][0] == {"role": "system", "content": "Reasoning: high"}
+    assert "uncontrolled brain mets" in captured_messages[0][1]["content"]
+    assert backend.last_llm_config["max_model_len"] == 50000
+    assert backend.last_llm_config["sampling_params"]["max_tokens"] == 20000
+
+
+def test_exclusion_criteria_check_with_llm_includes_debug_columns(monkeypatch):
+    """Include raw LLM exclusion details only when debug mode is enabled."""
+
+    def fake_build_prompt_list(messages_list, *, llm_config):
+        """Return one rendered prompt for exclusion debug output tests."""
+        return [SimpleNamespace(prompt_text="rendered", max_tokens=20000)]
+
+    backend = _MockLLMBackend(["No!"])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.build_prompt_list",
+        fake_build_prompt_list,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.llm_checks.get_llm_backend",
+        lambda config: backend,
+    )
+    matches = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "trial_id": "T1",
+                "general_exclusion_criteria": "Excludes uncontrolled brain mets.",
+                "general_exclusion_criteria_evidence": "No active brain mets.",
+            }
+        ]
+    )
+
+    result = exclusion_criteria_check_with_llm(
+        matches,
+        config=_llm_config(debug_mode=True),
+    )
+
+    assert result["llm_exclusion_criteria_answer_text"].tolist() == ["No!"]
+    assert result["llm_exclusion_criteria_reasoning_text"].tolist() == ["reasoning 0"]
+    assert result["llm_exclusion_criteria_parse_status"].tolist() == ["parsed"]

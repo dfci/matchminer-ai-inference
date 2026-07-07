@@ -36,12 +36,28 @@ BOILERPLATE_2 = "History of pneumonitis."
 @pytest.fixture
 def default_trial_config() -> dict:
     return {
-        "model_name": "model",
-        "sampling_params": {
-            "temperature": 0.0,
-            "top_k": 1,
-            "max_tokens": 10,
-            "repetition_penalty": 1.0,
+        "local": {
+            "model_name": "model",
+            "engine": {
+                "max_model_len": 100,
+                "tensor_parallel_size": 1,
+                "gpu_memory_utilization": 0.9,
+            },
+            "generation": {
+                "temperature": 0.0,
+                "top_k": 1,
+                "max_tokens": 10,
+                "repetition_penalty": 1.0,
+            },
+            "chat_template_kwargs": {},
+        },
+        "remote": {
+            "model_name": "model",
+            "request_params": {"max_tokens": 10, "temperature": 0.0},
+            "extra_body": {
+                "top_k": 1,
+                "repetition_penalty": 1.0,
+            },
         },
         "prompt_files": {
             "primer": "trial.user.primer.txt",
@@ -59,15 +75,11 @@ def default_config(default_trial_config: dict) -> MMAIConfig:
         debug_mode=False,
         trial=default_trial_config,
         patient={},
-        local={
-            "trial": {
-                "max_model_len": 100,
-                "tensor_parallel_size": 1,
-                "gpu_memory_utilization": 0.9,
-            }
-        },
+        local={},
         remote={},
         model_metadata_cache_dir=None,
+        llm_match_quality={},
+        llm_exclusion_criteria={},
         raw={},
         embedding={},
     )
@@ -84,7 +96,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 1",
                 "eligibility_criteria": "Criteria 1",
                 "trial_text": "Text 1",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{TRIAL_SPACE_1}\n"
                     f"{TRIAL_SPACE_2}\n"
                     f"{TRIAL_SPACE_3}\n"
@@ -98,7 +110,7 @@ def mock_summarized_data() -> pd.DataFrame:
                 "brief_summary": "Brief 2",
                 "eligibility_criteria": "Criteria 2",
                 "trial_text": "Text 2",
-                "space_output_no_reasoning": (
+                "trial_answer_text": (
                     f"{TRIAL_SPACE_4}\n" "Boilerplate exclusions:\n" f"{BOILERPLATE_2}"
                 ),
             },
