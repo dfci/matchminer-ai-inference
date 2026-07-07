@@ -43,15 +43,31 @@ environments managed by pre-commit.
 
 ## Before Opening a Pull Request
 
-Make sure your commits pass the installed pre-commit hooks, then run the
-relevant tests from the repository root:
+Before opening a pull request, please confirm that:
+
+* the installed pre-commit hooks run successfully on your commit or commits;
+* the relevant tests pass from the repository root, for example:
 
 ```shell
 pytest
 ```
 
-Do not include PHI, PII, credentials, secrets, generated cache files, or
-model outputs containing sensitive data in commits.
+* your changes do not include PHI, PII, credentials, secrets, generated cache
+  files, or model outputs containing sensitive data.
 
-GitHub Actions runs automated checks on pull requests. These checks include the
-default test suite and must pass before merge.
+## Opening a Pull Request
+
+Open a pull request from your branch or fork to the main `matchminer-ai`
+repository.
+
+In the pull request description, please include:
+
+* a brief summary of the changes;
+* any relevant context or linked issue;
+* the tests or checks you ran; and
+* confirmation that the pull request does not include PHI, PII, credentials,
+  secrets, generated cache files, or model outputs containing sensitive data.
+
+GitHub Actions runs automated checks on pull requests. These checks include
+building the package and running the default test suite. The automated checks
+must pass before a pull request can be merged.
