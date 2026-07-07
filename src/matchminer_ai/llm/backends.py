@@ -131,6 +131,11 @@ def clear_local_llm_cache() -> None:
         pass
 
 
+def _is_vllm_engine_dead_error(exc: Exception) -> bool:
+    """Return whether an exception came from vLLM's dead engine sentinel."""
+    return exc.__class__.__name__ == "EngineDeadError"
+
+
 @dataclass
 class LocalBackend:
     """Local vLLM-backed implementation."""
@@ -197,15 +202,41 @@ class LocalBackend:
             model_name,
             cache_dir=model_metadata_cache_dir,
         )
+        llm_kwargs_json = json.dumps(llm_kwargs, sort_keys=True)
         llm = _get_local_llm(
             model_name,
-            json.dumps(llm_kwargs, sort_keys=True),
+            llm_kwargs_json,
         )
         prompts = [prompt.prompt_text for prompt in prompt_list]
-        responses = llm.generate(
-            prompts=prompts,
-            sampling_params=SamplingParams(**sampling_params),
-        )
+        vllm_sampling_params = SamplingParams(**sampling_params)
+        try:
+            responses = llm.generate(
+                prompts=prompts,
+                sampling_params=vllm_sampling_params,
+            )
+        except Exception as exc:
+            if not _is_vllm_engine_dead_error(exc):
+                raise
+
+            clear_local_llm_cache()
+            llm = _get_local_llm(
+                model_name,
+                llm_kwargs_json,
+            )
+            try:
+                responses = llm.generate(
+                    prompts=prompts,
+                    sampling_params=vllm_sampling_params,
+                )
+            except Exception as retry_exc:
+                if not _is_vllm_engine_dead_error(retry_exc):
+                    raise
+                raise RuntimeError(
+                    "The local vLLM engine died during generation and did not "
+                    "recover after restarting. Check the earlier vLLM logs for "
+                    "the root cause; common causes are GPU memory pressure, a "
+                    "too-large max_model_len, or oversized prompt batches."
+                ) from retry_exc
         raw_texts = [response.outputs[0].text for response in responses]
         tokenizer = llm.get_tokenizer()
         parsed_outputs = [
