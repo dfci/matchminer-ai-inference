@@ -10,6 +10,7 @@ dist/
 .ruff_cache/
 .coverage
 htmlcov/
+site/
 .DS_Store
 **/.DS_Store
 interactive/

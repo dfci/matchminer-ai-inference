@@ -25,6 +25,18 @@ pip install matchminer-ai
 See the example notebook for a full walkthrough using sample input data:
 [example notebook](https://github.com/dfci/matchminer-ai-inference/blob/main/examples/run_examples.ipynb)
 
+## Documentation
+
+This repository includes a MkDocs documentation site with tutorials, reference
+pages, and generated API docs.
+
+```shell
+pip install -e ".[docs]"
+mkdocs serve
+```
+
+The docs source lives in [`docs/`](docs/).
+
 ## Citation
 
 If you use `matchminer-ai`, please cite:

@@ -51,6 +51,12 @@ dev = [
   "mypy>=1.10",
   "types-PyYAML",
 ]
+docs = [
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocstrings>=0.26",
+  "mkdocstrings-python>=1.10",
+]
 release = [
   "build>=1.2",
   "twine>=5.0",

@@ -6,8 +6,7 @@ prompts, filters, and postprocessing rules. Metrics are returned as rows with
 
 ## Patient summarization QC
 
-Returned by `summarize_patients(..., return_qc=True)` and
-`summarize_patient_notes(..., return_qc=True)`.
+Returned by `summarize_patients(..., return_qc=True)`.
 
 - `patients_exclusion_criteria_not_extracted`: exclusion criteria not successfully extracted.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.

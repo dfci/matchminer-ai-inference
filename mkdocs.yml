@@ -1,0 +1,53 @@
+site_name: MatchMiner-AI
+site_description: Documentation for the matchminer-ai Python package
+repo_url: https://github.com/dfci/matchminer-ai-inference
+repo_name: dfci/matchminer-ai-inference
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Patient-Centric Matching: tutorials/patient-centric-matching.md
+      - Example Notebook: tutorials/example-notebook.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - QC Metrics: reference/qc-metrics.md
+  - Development:
+      - Contributing: development/contributing.md
+  - API:
+      - Overview: api/index.md
+      - Config: api/config.md
+      - Trials: api/trials.md
+      - Patients: api/patients.md
+      - Embedding: api/embedding.md
+      - Matching: api/matching.md
+      - LLM Utilities: api/llm.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          options:
+            docstring_style: numpy
+            show_source: true
+            show_root_heading: true
+            show_signature_annotations: true
+            separate_signature: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
