@@ -41,6 +41,11 @@ The installed pre-commit hooks run automatically when you commit and check the
 files included in that commit. The first hook run may download hook
 environments managed by pre-commit.
 
+> [!WARNING]
+> The hooks include sensitive data checks and are intentionally cautious. Please
+> review all flagged items carefully. To bypass the hook after review, use
+> `SKIP=gitleaks git commit`.
+
 ## Before Opening a Pull Request
 
 Before opening a pull request, please confirm that:
