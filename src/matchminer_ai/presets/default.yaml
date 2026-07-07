@@ -114,7 +114,7 @@ llm_match_quality:
     engine:
       max_model_len: 50000
       tensor_parallel_size: 1
-      gpu_memory_utilization: 0.95
+      gpu_memory_utilization: 0.9
       language_model_only: true
     chat_template_kwargs:
       enable_thinking: true
@@ -149,7 +149,7 @@ llm_exclusion_criteria:
     engine:
       max_model_len: 50000
       tensor_parallel_size: 1
-      gpu_memory_utilization: 0.95
+      gpu_memory_utilization: 0.9
       language_model_only: true
     chat_template_kwargs:
       enable_thinking: true

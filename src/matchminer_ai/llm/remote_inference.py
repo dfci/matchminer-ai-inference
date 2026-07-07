@@ -76,6 +76,19 @@ def build_remote_request_config(
     )
 
 
+def request_params_for_prompt(
+    request_params: dict[str, Any],
+    prompt: Prompt,
+) -> dict[str, Any]:
+    """Return request params with this prompt's token budget applied."""
+    params = dict(request_params)
+    token_param = (
+        "max_completion_tokens" if "max_completion_tokens" in params else "max_tokens"
+    )
+    params[token_param] = prompt.max_tokens
+    return params
+
+
 def _run_sync(awaitable_factory: Callable[[], Coroutine[Any, Any, T]]) -> T:
     """Run an async task from sync code, including notebook event loops."""
     try:
@@ -261,7 +274,7 @@ async def run_inference_batch(
                     row_idx=prompt.row_idx,
                     messages=messages,
                     model=model,
-                    request_params=request_params,
+                    request_params=request_params_for_prompt(request_params, prompt),
                     extra_body_params=extra_body_params,
                     chat_template_kwargs=chat_template_kwargs,
                     max_retries=max_retries,
