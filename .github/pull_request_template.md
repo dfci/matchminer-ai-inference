@@ -10,8 +10,8 @@ Add any relevant context, linked issues, or motivation for the change.
 
 Please confirm that:
 
-* [ ] I ran the relevant tests, for example `pytest`
-* [ ] I ran or confirmed the pre-commit hooks pass
+* [ ] I ran the relevant tests locally, for example `pytest`
+* [ ] I ran the pre-commit hooks locally
 * [ ] I manually checked that this PR does not include PHI, PII, credentials, secrets, generated cache files, or model outputs containing sensitive data
 
 ## Notes for Reviewers

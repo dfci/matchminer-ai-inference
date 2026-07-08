@@ -32,7 +32,7 @@ If you use `matchminer-ai`, please cite:
 
 ## Contributing
 
-Contributions are welcome through GitHub pull requests. See
-[CONTRIBUTING.md][contributing] for more information.
+Contributions are welcome! Please follow our
+[contribution instructions][contributing] if you are interested in contributing to this project.
 
 [contributing]: https://github.com/dfci/matchminer-ai-inference/blob/main/CONTRIBUTING.md
