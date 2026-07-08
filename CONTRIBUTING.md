@@ -2,16 +2,15 @@
 
 Thank you for your interest in contributing to `matchminer-ai`.
 
-Contributions are welcome through GitHub pull requests. If you do not have
-write access to the repository, please fork the repository and open a pull
+Contributions are welcome through GitHub pull requests. Please fork the repository and open a pull
 request from your fork.
 
 ## Local Setup
 
-Clone the repository and move into the repository root:
+Clone your fork and move into the repository root:
 
 ```shell
-git clone https://github.com/dfci/matchminer-ai-inference.git
+git clone https://github.com/<your-username>/matchminer-ai-inference.git
 cd matchminer-ai-inference
 ```
 
