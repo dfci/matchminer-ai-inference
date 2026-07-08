@@ -1,8 +1,12 @@
-# API Overview
+# API Reference
 
 The API pages are generated from package docstrings with `mkdocstrings`.
 
-Most external workflows should start with these import paths:
+For a guided workflow, start with the [quickstart](../getting-started/quickstart.md).
+The API reference is intended for looking up function signatures and parameter
+details.
+
+Most external workflows use these import paths:
 
 ```python
 from matchminer_ai import load_config, load_preset
@@ -16,5 +20,5 @@ from matchminer_ai.matching import (
 )
 ```
 
-The package also exposes lower-level LLM utilities for remote vLLM-compatible
-server handling.
+The LLM utilities page documents `start_vllm_server`, the public helper for
+starting a local OpenAI-compatible vLLM server from package configuration.

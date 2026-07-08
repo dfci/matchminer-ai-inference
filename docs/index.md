@@ -1,48 +1,35 @@
 # MatchMiner-AI
 
-`matchminer-ai` is a Python package for running the clinical trial matching
-inference workflow described in
-[Altreuter et al., MatchMiner-AI: An Open-Source Solution for Cancer Clinical Trial Matching](https://doi.org/10.48550/arXiv.2412.17228).
+Welcome to the `matchminer-ai` package documentation.
 
-The package provides modular functions for the core MatchMiner-AI workflow:
-summarizing trials and patient histories, generating embeddings of each,
-retrieving candidate matches, scoring match quality, and assessing exclusion
-criteria.
+`matchminer-ai` is a Python package for running clinical trial matching
+inference workflows. The package provides modular functions for summarizing
+trials and patient histories, generating embeddings of each, retrieving
+candidate matches, scoring match quality, and assessing exclusion criteria.
+
+This package is based on
+[Altreuter et al., MatchMiner-AI: An Open-Source Solution for Cancer Clinical Trial Matching](https://doi.org/10.48550/arXiv.2412.17228).
+If you use `matchminer-ai`, please cite the study below.
+
+Contributions to the package and documentation are welcome through GitHub. See our
+[contribution instructions](development/contributing.md) for more information.
 
 !!! warning "Pre-v1 package"
     This package is currently pre-v1 and under active development. APIs,
     configuration options, and outputs may change.
 
-## Compute Requirements
-
-The most compute-intensive step is summarizing patient notes with the default
-Gemma 4 language model. Full pipeline runs can use either a local high-memory
-GPU environment, such as an NVIDIA H100 80GB, or a compatible remote vLLM
-inference server configured with the Gemma 4 reasoning parser.
-
-Other entry points, such as running from precomputed summaries, may require
-less compute.
-
-## Installation
-
-This package requires Python 3.13+.
-
-```shell
-pip install matchminer-ai
-```
-
 ## Where To Start
 
-- Read the [patient-centric matching tutorial](tutorials/patient-centric-matching.md)
-  for workflow background and server-mode guidance.
-- Open the [example notebook](tutorials/example-notebook.md) for a runnable
-  walkthrough using sample input data.
-- Browse the [API reference](api/index.md) for importable functions and
-  parameters.
+- Read [requirements](getting-started/requirements.md) to understand compute
+  and data expectations before installing.
+- Follow [installation](getting-started/installation.md) once you have the
+  required environment.
+- Use the [quickstart](getting-started/quickstart.md) for the public function
+  sequence and runnable example notebook.
+- Read the [patient-centric matching workflow](user-guide/patient-centric-matching.md)
+  for background and workflow concepts.
 - Review the [configuration reference](reference/configuration.md) when editing
   preset YAML files.
-- See [contributing](development/contributing.md) for local development, checks,
-  and pull request guidance.
 
 ## Citation
 

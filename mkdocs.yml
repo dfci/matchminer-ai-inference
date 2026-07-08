@@ -12,9 +12,14 @@ theme:
 
 nav:
   - Home: index.md
-  - Tutorials:
-      - Patient-Centric Matching: tutorials/patient-centric-matching.md
-      - Example Notebook: tutorials/example-notebook.md
+  - Getting Started:
+      - Requirements: getting-started/requirements.md
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Example Notebook: getting-started/example-notebook.md
+  - User Guide:
+      - Patient-Centric Matching Workflow: user-guide/patient-centric-matching.md
+      - Local vs Remote Inference: user-guide/local-vs-remote.md
   - Reference:
       - Configuration: reference/configuration.md
       - QC Metrics: reference/qc-metrics.md
@@ -22,12 +27,14 @@ nav:
       - Contributing: development/contributing.md
   - API:
       - Overview: api/index.md
-      - Config: api/config.md
-      - Trials: api/trials.md
-      - Patients: api/patients.md
+      - Configuration: api/config.md
+      - Trial Summarization: api/trials.md
+      - Patient Summarization: api/patients.md
       - Embedding: api/embedding.md
-      - Matching: api/matching.md
-      - LLM Utilities: api/llm.md
+      - Candidate Matching: api/candidate-matching.md
+      - Match Quality: api/match-quality.md
+      - Exclusion Criteria: api/exclusion-criteria.md
+      - LLM Server Helper: api/llm.md
 
 plugins:
   - search

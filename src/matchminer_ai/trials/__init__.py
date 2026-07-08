@@ -1,4 +1,4 @@
-"""Trial-related stubs."""
+"""Trial summarization APIs."""
 
 from __future__ import annotations
 

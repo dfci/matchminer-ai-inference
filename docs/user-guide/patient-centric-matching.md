@@ -22,11 +22,9 @@ MatchMiner-AI has 6 main steps (Figure 1):
 
 ![Figure 1. MatchMiner-AI Process Overview](../assets/images/MM-AI_process-overview_publicpkg.png)
 
-Table 1 summarizes the models used for each step. For the most GPU-intensive steps (Trial and Patient Summarization), we offer two different server modes:
-1. Local Server Mode; and
-2. Remote Server Mode.
-
-These are described more in the [Server Handling](#server-handling) section below.
+Table 1 summarizes the models used for each step. For more on local and remote
+inference options for LLM-backed steps, see
+[Local vs Remote Inference](local-vs-remote.md).
 
 Table 1: MatchMiner-AI Steps and Models
 
@@ -42,18 +40,3 @@ Table 1: MatchMiner-AI Steps and Models
 ## Trial Spaces
 
 A Clinical Trial may have multiple arms with different target populations.  For each trial, MatchMiner-AI will extract a list of clinical “spaces” for the trial from its eligibility criteria, where each space is defined as a unique combination of core clinical concepts (age, sex, cancer type, histology, burden of disease, prior treatment, and biomarkers) that might render the patient eligible. Some trials have only one “space,” whereas others, such as basket or umbrella trials, have several. At the end of `summarize_trials`, each trial space is listed as a separate entity or cohort in the dataframe.
-
-## Server Handling
-
-For the most GPU-intensive steps (Trial and Patient Summarization), we offer two different server modes:
-1. Local mode (Figure 2): uses the local in-memory `vLLM` backend by default.
-
-![Figure 2: Trial and Patient Summarization can be run in Local Mode.](../assets/images/local_server_mode.png)
-
-2. Remote mode (Figure 3): sends summarization requests to an existing OpenAI-compatible vLLM chat endpoint. For the default Gemma 4 model, start the server with the `gemma4` reasoning parser, or use `start_vllm_server()` so the package builds the command from the preset.
-
-![Figure 3: Trial and Patient Summarization can be run in Remote Mode.](../assets/images/remote_server_mode.png)
-
-Remote mode can also be run with a server started on your local machine. (Figure 4) MatchMiner-AI provides the `start_vllm_server()` function to start a `vllm_server` on your machine. In this scenario, the URL would be a localhost URL.
-
-![Figure 4: Running Remote Mode with a server located on your Local Machine.](../assets/images/local_remote_server_mode.png)

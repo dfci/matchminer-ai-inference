@@ -1,5 +1,15 @@
 # Preset Configuration Reference
 
+Most package behavior is controlled through a configuration preset. The preset
+tells `matchminer-ai` which models to use, whether LLM calls should run locally
+or through a remote endpoint, where to cache model metadata, and how individual
+workflow steps should be run.
+
+Most users can start with the built-in default preset. You usually only need to
+edit configuration when you want to change models, switch between local and
+remote inference, adjust runtime settings, enable debug output, or point the
+package at a different endpoint.
+
 Preset files are YAML mappings loaded by `matchminer_ai.config.load_preset`.
 `default.yaml` is loaded by `load_default_preset()`.
 

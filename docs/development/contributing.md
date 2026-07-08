@@ -36,11 +36,6 @@ pre-commit install
 The pre-commit hooks run formatting, linting, type-checking, and sensitive data
 checks before commits.
 
-!!! warning
-    The hooks include sensitive data checks and are intentionally cautious.
-    Review all flagged items carefully. To bypass the hook after review, use
-    `SKIP=gitleaks git commit`.
-
 ## Before You Open a Pull Request
 
 Run the relevant tests from the repository root:
