@@ -46,7 +46,7 @@ jobs:
           go-version: stable
 
       - name: Install gitleaks
-        run: go install github.com/gitleaks/gitleaks/v8@v8.18.4
+        run: go install github.com/zricethezav/gitleaks/v8@v8.18.4
 
       - name: Run gitleaks
         run: gitleaks detect --no-git --source . --config .gitleaks.toml --redact
