@@ -25,6 +25,7 @@ repos:
     rev: v8.18.4
     hooks:
       - id: gitleaks
+        args: ["--config=.gitleaks.toml"]
   - repo: https://github.com/trufflesecurity/trufflehog
     rev: v3.92.4
     hooks:

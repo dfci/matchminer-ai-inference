@@ -8,7 +8,7 @@ version = "0.2.1"
 description = "MatchMiner-AI package"
 readme = "README.md"
 requires-python = ">=3.13"
-license = "GPL-2.0-only"
+license = "CC-BY-NC-ND-4.0"
 license-files = ["LICENSE"]
 maintainers = [
   { name = "Sabrina Camp", email = "sabrinay_camp@dfci.harvard.edu" },

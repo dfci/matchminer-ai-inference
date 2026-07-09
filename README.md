@@ -16,8 +16,15 @@ Other entry points, such as running from precomputed summaries, may require less
 
 This package requires Python 3.13+.
 
+The package has been tested in Linux environments.
+
+We recommend using [`uv`](https://docs.astral.sh/uv/) to create the Python
+environment and install the package:
+
 ```shell
-pip install matchminer-ai
+uv venv --python 3.13
+source .venv/bin/activate
+uv pip install matchminer-ai
 ```
 
 ## Quickstart
@@ -32,27 +39,7 @@ If you use `matchminer-ai`, please cite:
 
 ## Contributing
 
-Clone the repository and install the package in editable mode. We recommend working in a virtual or conda environment.
+Contributions are welcome! Please follow our
+[contribution instructions][contributing] if you are interested in contributing to this project.
 
-```shell
-git clone https://github.com/dfci/matchminer-ai-inference.git
-cd matchminer-ai-inference
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-This repository uses pre-commit for local code quality checks. To enable the hooks:
-
-```shell
-pre-commit install
-```
-
-Run the test suite with:
-
-```shell
-# lightweight tests
-pytest
-# tests requiring GPU
-pytest -m resource_heavy
-```
+[contributing]: https://github.com/dfci/matchminer-ai-inference/blob/main/CONTRIBUTING.md
