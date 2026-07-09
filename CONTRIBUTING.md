@@ -14,17 +14,19 @@ git clone https://github.com/<your-username>/matchminer-ai-inference.git
 cd matchminer-ai-inference
 ```
 
-Create and activate a virtual environment:
+We recommend using [`uv`](https://docs.astral.sh/uv/) to create the Python
+environment and install the package. Create and activate a Python 3.13 virtual
+environment:
 
 ```shell
-python -m venv .venv
+uv venv --python 3.13
 source .venv/bin/activate
 ```
 
 Install the package in editable mode with development dependencies:
 
 ```shell
-pip install -e ".[dev]"
+uv pip install -e ".[dev]"
 ```
 
 Install the pre-commit hooks:
