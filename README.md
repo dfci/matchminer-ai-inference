@@ -16,8 +16,15 @@ Other entry points, such as running from precomputed summaries, may require less
 
 This package requires Python 3.13+.
 
+The package has been tested in Linux environments.
+
+We recommend using [`uv`](https://docs.astral.sh/uv/) to create the Python
+environment and install the package:
+
 ```shell
-pip install matchminer-ai
+uv venv --python 3.13
+source .venv/bin/activate
+uv pip install matchminer-ai
 ```
 
 ## Quickstart
@@ -31,7 +38,7 @@ This repository includes a MkDocs documentation site with tutorials, reference
 pages, and generated API docs.
 
 ```shell
-pip install -e ".[docs]"
+uv pip install -e ".[docs]"
 mkdocs serve
 ```
 
