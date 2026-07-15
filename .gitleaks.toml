@@ -31,11 +31,6 @@ paths = [
 # General Personally Identifiable Information (PII) Patterns #
 ##############################################################
 
-# This policy is intentionally broad. It is meant to stop accidental commits of
-# patient data and other sensitive outputs produced while using the package.
-# Known synthetic fixtures or reviewed false positives can be bypassed by a
-# maintainer, but new findings should be reviewed before they are committed.
-
 [[rules]]
 id = "contextual-patient-name"
 description = "Potential patient name with medical context"
@@ -78,3 +73,13 @@ id = "birthdate-mm-dd-yyyy"
 description = "Birthdate (MM/DD/YYYY)"
 regex = '''\b(0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])[-/](19|20)\d{2}\b'''
 tags = ["pii", "phi", "birthdate"]
+
+####################################
+# Structured sample-level identifiers #
+####################################
+
+[[rules]]
+id = "structured-sample-id"
+description = "Potential structured sample identifier"
+regex = '''\b(?:[A-Z]{2}-\d{2}-[A-Z0-9]{6}|[A-Z]\d{10}|\d{2}[A-Z]{3}-\d{3}[A-Z]{2}\d{5}|[A-Z]{2,3}\d{6,7}\.\d{2}|[A-Z]\d{3}-\d{8}_\d{8})\b'''
+tags = ["phi", "sample_id"]
