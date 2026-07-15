@@ -18,7 +18,7 @@ nav:
       - Quickstart: getting-started/quickstart.md
       - Example Notebook: getting-started/example-notebook.md
   - User Guide:
-      - Patient-Centric Matching Workflow: user-guide/patient-centric-matching.md
+      - Patient-centric matching workflow: user-guide/patient-centric-matching.md
       - Local vs Remote Inference: user-guide/local-vs-remote.md
   - Reference:
       - Configuration: reference/configuration.md
