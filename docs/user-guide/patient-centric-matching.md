@@ -37,7 +37,7 @@ Table 1: MatchMiner-AI Steps and Models
 | 5. Evaluate Candidate Match Quality | `score_match_quality` | `TrialChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
 | 6. Check for Exclusions | `exclusion_criteria_check` | `BoilerplateChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
 
-[^2] for both score_match_quality and exclusion_criteria_check, we also offer alternative functions which perform these steps using an LLM. To run these steps with a LLM, use `score_match_quality_wth_LLM` and `exclusion_criteria_check_with_LLM`.
+[^2] for both score_match_quality and exclusion_criteria_check, we also offer alternative functions which perform these steps using a LLM. To run these steps with a LLM, use `score_match_quality_wth_LLM` and `exclusion_criteria_check_with_LLM`.
 
 ## Trial Spaces
 
