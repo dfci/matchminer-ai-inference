@@ -13,12 +13,12 @@ Currently, MatchMiner-AI is most fully developed for Patient-centric matching. T
 MatchMiner-AI has 6 main steps (Figure 1):
 1. Summarize Trials
 2. Summarize Patients
-3. Embed Trial Spaces[1] and Patient Summaries (TrialSpace Model)
+3. Embed Trial Spaces[^1] and Patient Summaries (TrialSpace Model)
 4. Generate Candidate Matches
 5. Evaluate Candidate Match Quality (TrialChecker Model)
 6. Check for Exclusions (Boilerplate Checker Model)
 
-[1] A clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
+[^1] A clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
 
 ![Figure 1. MatchMiner-AI Process Overview](../assets/images/MM-AI_process-overview_publicpkg.png)
 
@@ -34,8 +34,10 @@ Table 1: MatchMiner-AI Steps and Models
 | 2. Summarize Patients | `summarize_patients` | public LLM | by default, currently uses `google/gemma-4-31B-it` |
 | 3. Embed Trial Spaces and Patient Summaries | `embed_for_matching` | `TrialSpace`, a trained Sentence Transformers model | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
 | 4. Generate Candidate Matches | `generate_candidate_matches` | NA | |
-| 5. Evaluate Candidate Match Quality | `score_match_quality` | `TrialChecker`, a trained ModernBERT model | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
-| 6. Check for Exclusions | `exclusion_criteria_check` | `BoilerplateChecker`, a trained ModernBERT model | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
+| 5. Evaluate Candidate Match Quality | `score_match_quality` | `TrialChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
+| 6. Check for Exclusions | `exclusion_criteria_check` | `BoilerplateChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
+
+[^2] for both score_match_quality and exclusion_criteria_check, we also offer alternative models and functions which perform these steps using an LLM. To run these steps with a LLM, use `score_match_quality_wth_LLM` and `exclusion_criteria_check_with_LLM`.
 
 ## Trial Spaces
 
