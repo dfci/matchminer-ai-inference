@@ -11,7 +11,9 @@ where your GPUs are and whether you want a persistent server:
 
 The two remote setups configure identically — you provide an endpoint URL
 either way. The only difference is where that endpoint lives. Local mode is
-the odd one out: no URL, no server process, nothing to manage.
+the odd one out: no URL, no server process, nothing to manage. 
+
+While local mode is easiest to implement, there can be efficiency gains when using remote mode on a local vLLM server. Please see [Remote Package Mode](#remote-package-mode) for more information.
 
 ## Local Package Mode
 
