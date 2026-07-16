@@ -12,7 +12,7 @@ For detailed instructions, please see the
 
 ## Compute requirements
 
-To run the full inference pipeline, you will require access to GPU-backed model inference. Please see the
+You will need a GPU to run model inference for the full pipeline. Please see the
 [requirements documentation](https://dfci.github.io/matchminer-ai-inference/getting-started/requirements/)
 for more information on compute expectations and GPU recommendations.
 
