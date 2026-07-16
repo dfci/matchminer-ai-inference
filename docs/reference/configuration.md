@@ -35,10 +35,6 @@ config = load_config("my_config.yaml")
 
 ## Root Keys
 
-### `version`
-
-Preset schema version.
-
 ### `debug_mode`
 
 Boolean flag used by summarization postprocessing. When true, selected
