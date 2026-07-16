@@ -9,7 +9,7 @@ details.
 Most external workflows use these import paths:
 
 ```python
-from matchminer_ai import load_config, load_preset
+from matchminer_ai import load_config, load_default_preset, load_preset
 from matchminer_ai.trials import summarize_trials
 from matchminer_ai.patients import summarize_patients
 from matchminer_ai.embedding import embed_for_matching
