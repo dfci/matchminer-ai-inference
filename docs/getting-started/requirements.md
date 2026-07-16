@@ -9,7 +9,7 @@ This package requires Python 3.13+.
 
 Some parts of `matchminer-ai` are computationally intensive because they use
 large language models. For example, summarizing patient notes usually requires
-access to GPU-backed model inference. Please see our [GPU requirements](tmp.md) documentation for more information on which GPUs are compatible with this package workflow.
+access to GPU-backed model inference. Please see our [GPU requirements](GPU_requirements.md) documentation for more information on which GPUs are compatible with this package workflow.
 
 The GPU **does not need to be on the same computer running your workflow**.
 LLM-based steps can run with an in-process local vLLM backend, a local vLLM
