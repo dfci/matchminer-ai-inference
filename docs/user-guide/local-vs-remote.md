@@ -1,23 +1,71 @@
-# Local vs Remote Inference
+# Choosing an Inference Setup
 
-For LLM-backed steps, `matchminer-ai` supports local and remote inference modes.
+LLM-backed steps in `matchminer-ai` can run in three setups. Pick based on
+where your GPUs are and whether you want a persistent server:
 
-## Local Mode
+| Package mode | Setup                         | Use when                                                        |
+| ------------ | ------------------------------ | ----------------------------------------------------------------- |
+| Local        | Run the model directly         | You have local GPUs and want the simplest setup                  |
+| Remote       | Connect to a local vLLM server | You have local GPUs but want a persistent, reusable server        |
+| Remote       | Connect to another endpoint    | The model is hosted elsewhere (another machine, cluster, service) |
 
-Local mode uses the local in-memory `vLLM` backend by default.
+The two remote setups configure identically — you provide an endpoint URL
+either way. The only difference is where that endpoint lives. Local mode is
+the odd one out: no URL, no server process, nothing to manage.
 
-![Figure 2: Trial and patient summarization can be run in local mode.](../assets/images/local_server_mode.png)
+## Local Package Mode
 
-## Remote Mode
+### Run the Model Directly
 
-Remote mode sends requests to an existing OpenAI-compatible chat completions
-endpoint. That endpoint can be a vLLM server, but it does not have to be. Use
-an endpoint that is approved for your data and institution.
+`matchminer-ai` loads and runs the model in-process, using its built-in vLLM
+backend — no separate server to start or manage. This is the simplest option
+when the machine running `matchminer-ai` has enough GPU memory.
 
-![Figure 3: Trial and patient summarization can be run in remote mode.](../assets/images/remote_server_mode.png)
+The model unloads when the workflow process ends, so this fits one-off runs
+and testing better than long-running deployments.
 
-If you want to host the endpoint yourself, `matchminer-ai` provides the
-`start_vllm_server()` helper to start a local OpenAI-compatible vLLM server from
-package configuration. In that scenario, the remote URL is a localhost URL.
+Model and vLLM settings are provided through the package
+[configuration](../reference/configuration.md).
 
-![Figure 4: Running Remote Mode with a server located on your Local Machine.](../assets/images/local_remote_server_mode.png)
+![Figure 2: Trial and patient summarization using the in-process vLLM backend.](../assets/images/local_server_mode.png)
+
+## Remote Package Mode
+
+Both setups below use remote mode: `matchminer-ai` talks to the model over an
+OpenAI-compatible API instead of loading it in-process — even when the model
+is running on the same machine.
+
+### Connect to a Local vLLM Server
+
+Run the model in a separate vLLM server process on the same machine, and
+point `matchminer-ai` at it. This keeps the model loaded and reusable across
+multiple calls or workflows, rather than reloading it each run.
+
+It can also be faster for larger batches: the remote backend sends bounded
+concurrent requests and can distribute work across configured server URLs.
+Actual gains depend on the model, hardware, vLLM server settings, prompt
+sizes, and configured concurrency.
+
+`matchminer-ai` provides the
+[`start_vllm_server()`](../api/llm.md) helper to start a local
+OpenAI-compatible vLLM server from the package
+[configuration](../reference/configuration.md). The configured endpoint URL
+will typically use `localhost`.
+
+![Figure 3: Remote mode connecting to a vLLM server on the same machine.](../assets/images/local_remote_server_mode.png)
+
+### Connect to Another Endpoint
+
+Point `matchminer-ai` at a model hosted elsewhere — another machine, a
+compute cluster, or an approved service with an OpenAI-compatible chat
+completions API.
+
+The model host manages GPU resources and the inference server; you only
+configure the [endpoint URL](../reference/configuration.md). It doesn't have
+to be a vLLM server.
+
+!!! warning
+Before sending clinical text to an endpoint outside your local environment,
+confirm that the endpoint is approved for your data and institution.
+
+![Figure 4: Remote mode connecting to a model hosted on another machine, cluster, or approved service.](../assets/images/remote_server_mode.png)
