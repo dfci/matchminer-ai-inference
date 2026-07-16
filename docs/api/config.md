@@ -1,4 +1,4 @@
-# Configuration
+# Config Loading
 
 Most users only need these helpers:
 
