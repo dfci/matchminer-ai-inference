@@ -5,7 +5,7 @@ from __future__ import annotations
 from importlib import import_module
 from types import ModuleType
 
-from .config import load_config, load_preset
+from .config import load_config, load_default_preset, load_preset
 from .pipeline import MMAIPipeline
 
 _LAZY_SUBMODULES = {
@@ -16,7 +16,7 @@ _LAZY_SUBMODULES = {
     "trials",
 }
 
-__all__ = ["MMAIPipeline", "load_config", "load_preset"]
+__all__ = ["MMAIPipeline", "load_config", "load_default_preset", "load_preset"]
 
 
 def __getattr__(name: str) -> ModuleType:
