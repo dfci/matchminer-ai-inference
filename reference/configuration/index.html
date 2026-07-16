@@ -1,0 +1,2712 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the matchminer-ai Python package">
+      
+      
+      
+      
+        <link rel="prev" href="../../user-guide/local-vs-remote/">
+      
+      
+        <link rel="next" href="../qc-metrics/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Configuration - MatchMiner-AI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuration-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="MatchMiner-AI" class="md-header__button md-logo" aria-label="MatchMiner-AI" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MatchMiner-AI
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dfci/matchminer-ai-inference" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dfci/matchminer-ai-inference
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="MatchMiner-AI" class="md-nav__button md-logo" aria-label="MatchMiner-AI" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MatchMiner-AI
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dfci/matchminer-ai-inference" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dfci/matchminer-ai-inference
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/example-notebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example Notebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/patient-centric-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patient-centric matching workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/local-vs-remote/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Choosing an Inference Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#custom-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Config Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Root Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debug_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model_metadata_cache_dir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_metadata_cache_dir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="remote">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remoteenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.enabled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoteserver_urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.server_urls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotemax_concurrent_requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.max_concurrent_requests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoterequest_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.request_timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotemax_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.max_retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotebatch_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.batch_size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoteretry_backoff_base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.retry_backoff_base
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="trial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#triallocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialprompt_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.prompt_files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialboilerplate_marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.boilerplate_marker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="patient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patientchunk_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.chunk_size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientchunk_overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.chunk_overlap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientprompt_margin_tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.prompt_margin_tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientprompt_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.prompt_files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientboilerplate_marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.boilerplate_marker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patienttext_token_threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.text_token_threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="embedding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embeddingmodel_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.model_path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingdevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingmax_seq_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.max_seq_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#match_quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="match_quality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitymodel_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.model_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitydevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualityprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitymax_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.max_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualityscore_cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.score_cutoff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exclusion_criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="exclusion_criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriamodel_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.model_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriadevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriaprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriamax_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.max_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm_match_quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="llm_match_quality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualitylocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm_exclusion_criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="llm_exclusion_criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criterialocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriaprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriareasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriaremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qc-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QC Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Package API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config Loading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/trials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trial Summarization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/patients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patient Summarization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/candidate-matching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Candidate Matching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/match-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Match Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/exclusion-criteria/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exclusion Criteria
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Server Helper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#custom-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Config Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Root Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debug_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        debug_mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model_metadata_cache_dir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_metadata_cache_dir
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="remote">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remoteenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.enabled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoteserver_urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.server_urls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotemax_concurrent_requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.max_concurrent_requests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoterequest_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.request_timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotemax_retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.max_retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remotebatch_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.batch_size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remoteretry_backoff_base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote.retry_backoff_base
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="trial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#triallocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialprompt_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.prompt_files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trialboilerplate_marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial.boilerplate_marker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="patient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patientchunk_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.chunk_size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientchunk_overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.chunk_overlap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientprompt_margin_tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.prompt_margin_tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientlocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientprompt_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.prompt_files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patientboilerplate_marker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.boilerplate_marker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patienttext_token_threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        patient.text_token_threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="embedding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embeddingmodel_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.model_path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingdevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embeddingmax_seq_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        embedding.max_seq_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#match_quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="match_quality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitymodel_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.model_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitydevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualityprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualitymax_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.max_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#match_qualityscore_cutoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_quality.score_cutoff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exclusion_criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="exclusion_criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriamodel_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.model_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriadevice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.device
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriaprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exclusion_criteriamax_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exclusion_criteria.max_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm_match_quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="llm_match_quality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualitylocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityreasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_match_qualityremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_match_quality.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm_exclusion_criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="llm_exclusion_criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criterialocal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriaprompt_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.prompt_file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriareasoning_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.reasoning_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm_exclusion_criteriaremote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        llm_exclusion_criteria.remote
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h1>
+<p>Most package behavior is controlled through configuration. Configuration tells
+<code>matchminer-ai</code> which models to use, whether LLM calls should run locally or
+through a remote endpoint, where to cache model metadata, and how individual
+workflow steps should be run.</p>
+<p>Most users can start with the built-in default settings. You usually only need
+to change configuration when you want to change models, switch between local and
+remote inference, adjust runtime settings, enable debug output, or point the
+package at a different endpoint.</p>
+<p>Use <code>load_default_preset()</code> when you want to start from the package defaults and
+change a few values in Python:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_default_preset</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">load_default_preset</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">&quot;enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">&quot;server_urls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="custom-config-files">Custom Config Files<a class="headerlink" href="#custom-config-files" title="Permanent link">&para;</a></h2>
+<p>For package installs, treat the built-in preset files as read-only package data.
+For larger or reusable changes, copy the default preset values into a YAML file
+in your project, edit them, and load that file by path:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_config</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="s2">&quot;my_config.yaml&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="root-keys">Root Keys<a class="headerlink" href="#root-keys" title="Permanent link">&para;</a></h2>
+<h3 id="debug_mode"><code>debug_mode</code><a class="headerlink" href="#debug_mode" title="Permanent link">&para;</a></h3>
+<p>Boolean flag used by summarization postprocessing. When true, selected
+intermediate columns are retained in output tables.</p>
+<h3 id="model_metadata_cache_dir"><code>model_metadata_cache_dir</code><a class="headerlink" href="#model_metadata_cache_dir" title="Permanent link">&para;</a></h3>
+<p>Directory path used by model metadata helpers to cache Hugging Face model
+metadata JSON files.</p>
+<h2 id="remote"><code>remote</code><a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
+<p>Global transport settings used when <code>remote.enabled</code> is true and LLM tasks send
+OpenAI-compatible chat completion requests to external endpoints. This can be a
+vLLM server or any endpoint compatible with the OpenAI chat completions API.
+Task-specific request payload settings live under each task's <code>remote</code> block.
+The remote backend reads the API key from the <code>OPENAI_API_KEY</code> environment
+variable. API keys are not stored in preset files.</p>
+<h3 id="remoteenabled"><code>remote.enabled</code><a class="headerlink" href="#remoteenabled" title="Permanent link">&para;</a></h3>
+<p>Selects the remote LLM backend when true.</p>
+<h3 id="remoteserver_urls"><code>remote.server_urls</code><a class="headerlink" href="#remoteserver_urls" title="Permanent link">&para;</a></h3>
+<p>List of OpenAI-compatible base URLs. Values are passed to the OpenAI client as
+<code>base_url</code>. For the default Gemma 4 configuration, the server should be a vLLM
+chat endpoint launched with the <code>gemma4</code> reasoning parser; the package
+<code>start_vllm_servers()</code> helper adds this flag from the selected LLM task's
+<code>reasoning_parser</code>.</p>
+<p>Model names and request parameters are configured per LLM task under that
+task's backend block. For example, <code>trial.local.model_name</code> is the model loaded
+by local vLLM, <code>trial.remote.model_name</code> is the model string sent to the
+endpoint, <code>trial.remote.request_params</code> contains top-level chat completion
+request fields, and <code>trial.remote.extra_body</code> contains fields sent through
+request <code>extra_body</code>.</p>
+<p>Separate reasoning output is backend-dependent. The default vLLM/Gemma setup
+can expose reasoning via vLLM reasoning parser support. Other
+OpenAI-compatible endpoints may return only final message content, leaving
+reasoning output columns empty even when debug mode is enabled.</p>
+<h3 id="remotemax_concurrent_requests"><code>remote.max_concurrent_requests</code><a class="headerlink" href="#remotemax_concurrent_requests" title="Permanent link">&para;</a></h3>
+<p>Maximum number of concurrent requests per remote server.</p>
+<h3 id="remoterequest_timeout"><code>remote.request_timeout</code><a class="headerlink" href="#remoterequest_timeout" title="Permanent link">&para;</a></h3>
+<p>Request timeout in seconds.</p>
+<h3 id="remotemax_retries"><code>remote.max_retries</code><a class="headerlink" href="#remotemax_retries" title="Permanent link">&para;</a></h3>
+<p>Maximum retry attempts for a failed remote request.</p>
+<h3 id="remotebatch_size"><code>remote.batch_size</code><a class="headerlink" href="#remotebatch_size" title="Permanent link">&para;</a></h3>
+<p>Number of prompts processed per remote-server batch.</p>
+<h3 id="remoteretry_backoff_base"><code>remote.retry_backoff_base</code><a class="headerlink" href="#remoteretry_backoff_base" title="Permanent link">&para;</a></h3>
+<p>Base value, in seconds, for exponential retry backoff.</p>
+<h2 id="trial"><code>trial</code><a class="headerlink" href="#trial" title="Permanent link">&para;</a></h2>
+<p>Task configuration for trial summarization.</p>
+<h3 id="triallocal"><code>trial.local</code><a class="headerlink" href="#triallocal" title="Permanent link">&para;</a></h3>
+<p>Local in-process vLLM runtime settings:</p>
+<ul>
+<li><code>model_name</code>: model identifier loaded by local vLLM and used for local
+  tokenizer/chat-template rendering and model metadata lookup.</li>
+<li><code>engine</code>: keyword arguments passed to <code>vllm.LLM(...)</code>; the package passes
+  <code>model=trial.local.model_name</code> separately.</li>
+<li><code>generation</code>: keyword arguments passed to <code>vllm.SamplingParams(...)</code>.</li>
+<li><code>chat_template_kwargs</code>: keyword arguments passed to tokenizer chat-template
+  rendering.</li>
+</ul>
+<p>Additional <code>engine</code> and <code>generation</code> keys may be included if they are valid vLLM
+keyword arguments. vLLM validates those keys when the engine/request is created.</p>
+<h3 id="trialprompt_files"><code>trial.prompt_files</code><a class="headerlink" href="#trialprompt_files" title="Permanent link">&para;</a></h3>
+<p>Prompt template filenames loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="trialreasoning_parser"><code>trial.reasoning_parser</code><a class="headerlink" href="#trialreasoning_parser" title="Permanent link">&para;</a></h3>
+<p>vLLM reasoning parser name. The default <code>auto</code> resolves known model names,
+including <code>google/gemma-4-31B-it</code> to <code>gemma4</code>. Set this explicitly when using a
+model not covered by the package mapping, or use <code>none</code> to disable reasoning
+parsing for a non-reasoning model. This setting applies to local vLLM execution
+and vLLM server launch helpers; non-vLLM remote endpoints may ignore it or
+return no separate reasoning field.</p>
+<h3 id="trialremote"><code>trial.remote</code><a class="headerlink" href="#trialremote" title="Permanent link">&para;</a></h3>
+<p>Task-specific remote chat completion request settings:</p>
+<ul>
+<li><code>model_name</code>: model name sent in OpenAI-compatible chat completion requests
+  and used for remote endpoint metadata.</li>
+<li><code>request_params</code>: top-level chat completion request fields sent as-is,
+  including the output-token budget. Use <code>max_tokens</code> for vLLM and many
+  compatible endpoints, or <code>max_completion_tokens</code> for endpoints that require
+  it.</li>
+<li><code>extra_body</code>: provider-specific fields sent as request <code>extra_body</code> when
+  non-empty.</li>
+</ul>
+<p>The package interprets <code>model_name</code>. Values inside <code>request_params</code> and
+<code>extra_body</code> are pass-through: the package does not validate those keys, and
+the OpenAI client or remote endpoint is responsible for accepting or rejecting
+them.</p>
+<h3 id="trialboilerplate_marker"><code>trial.boilerplate_marker</code><a class="headerlink" href="#trialboilerplate_marker" title="Permanent link">&para;</a></h3>
+<p>Line marker used by trial postprocessing to identify the boilerplate exclusion
+section heading.</p>
+<h2 id="patient"><code>patient</code><a class="headerlink" href="#patient" title="Permanent link">&para;</a></h2>
+<p>Task configuration for patient summarization.</p>
+<h3 id="patientchunk_size"><code>patient.chunk_size</code><a class="headerlink" href="#patientchunk_size" title="Permanent link">&para;</a></h3>
+<p>Maximum character count used when splitting patient notes into serial summary
+chunks.</p>
+<h3 id="patientchunk_overlap"><code>patient.chunk_overlap</code><a class="headerlink" href="#patientchunk_overlap" title="Permanent link">&para;</a></h3>
+<p>Character overlap between adjacent patient-note chunks.</p>
+<h3 id="patientprompt_margin_tokens"><code>patient.prompt_margin_tokens</code><a class="headerlink" href="#patientprompt_margin_tokens" title="Permanent link">&para;</a></h3>
+<p>Token margin reserved when truncating patient chunks before prompt rendering.</p>
+<h3 id="patientlocal"><code>patient.local</code><a class="headerlink" href="#patientlocal" title="Permanent link">&para;</a></h3>
+<p>Local in-process vLLM runtime settings. See <code>trial.local</code>.</p>
+<h3 id="patientprompt_files"><code>patient.prompt_files</code><a class="headerlink" href="#patientprompt_files" title="Permanent link">&para;</a></h3>
+<p>Prompt template filenames loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="patientreasoning_parser"><code>patient.reasoning_parser</code><a class="headerlink" href="#patientreasoning_parser" title="Permanent link">&para;</a></h3>
+<p>vLLM reasoning parser name. The default <code>auto</code> resolves known model names,
+including <code>google/gemma-4-31B-it</code> to <code>gemma4</code>. Set this explicitly when using a
+model not covered by the package mapping, or use <code>none</code> to disable reasoning
+parsing for a non-reasoning model. Non-vLLM remote endpoints may return no
+separate reasoning field.</p>
+<h3 id="patientremote"><code>patient.remote</code><a class="headerlink" href="#patientremote" title="Permanent link">&para;</a></h3>
+<p>Task-specific remote chat completion request settings. See <code>trial.remote</code>.
+Patient summarization also supports <code>tokenizer_name</code>, which is the local
+tokenizer used for patient chunk truncation and prompt sizing before sending
+requests to the remote endpoint. For self-hosted vLLM this is usually the same
+as <code>patient.remote.model_name</code>.</p>
+<h3 id="patientboilerplate_marker"><code>patient.boilerplate_marker</code><a class="headerlink" href="#patientboilerplate_marker" title="Permanent link">&para;</a></h3>
+<p>Line marker used by patient postprocessing to identify the boilerplate
+conditions section heading.</p>
+<h3 id="patienttext_token_threshold"><code>patient.text_token_threshold</code><a class="headerlink" href="#patienttext_token_threshold" title="Permanent link">&para;</a></h3>
+<p>Maximum token count used by local truncation before patient summarization.</p>
+<h2 id="embedding"><code>embedding</code><a class="headerlink" href="#embedding" title="Permanent link">&para;</a></h2>
+<p>Configuration for summary embedding.</p>
+<h3 id="embeddingmodel_path"><code>embedding.model_path</code><a class="headerlink" href="#embeddingmodel_path" title="Permanent link">&para;</a></h3>
+<p>Sentence-transformer model path passed to <code>SentenceTransformer(...)</code>.</p>
+<h3 id="embeddingdevice"><code>embedding.device</code><a class="headerlink" href="#embeddingdevice" title="Permanent link">&para;</a></h3>
+<p>Device string passed to <code>SentenceTransformer(...)</code>.</p>
+<h3 id="embeddingprompt_file"><code>embedding.prompt_file</code><a class="headerlink" href="#embeddingprompt_file" title="Permanent link">&para;</a></h3>
+<p>Prompt filename loaded from <code>matchminer_ai.prompts</code> and used as the embedding
+query prompt.</p>
+<h3 id="embeddingmax_seq_length"><code>embedding.max_seq_length</code><a class="headerlink" href="#embeddingmax_seq_length" title="Permanent link">&para;</a></h3>
+<p>Runtime truncation cutoff for embedding inputs. <code>SentenceTransformer</code>
+uses this value during <code>encode()</code>, so inputs longer than this limit are
+truncated before embedding generation. QC reports use the same value when
+flagging summaries that exceed the embedding input limit.</p>
+<h2 id="match_quality"><code>match_quality</code><a class="headerlink" href="#match_quality" title="Permanent link">&para;</a></h2>
+<p>Configuration for the match-quality checker model.</p>
+<h3 id="match_qualitymodel_name"><code>match_quality.model_name</code><a class="headerlink" href="#match_qualitymodel_name" title="Permanent link">&para;</a></h3>
+<p>Text-classification model identifier used by the checker pipeline and model
+metadata lookup.</p>
+<h3 id="match_qualitydevice"><code>match_quality.device</code><a class="headerlink" href="#match_qualitydevice" title="Permanent link">&para;</a></h3>
+<p>Device passed to the checker pipeline.</p>
+<h3 id="match_qualityprompt_file"><code>match_quality.prompt_file</code><a class="headerlink" href="#match_qualityprompt_file" title="Permanent link">&para;</a></h3>
+<p>Prompt template filename loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="match_qualitymax_length"><code>match_quality.max_length</code><a class="headerlink" href="#match_qualitymax_length" title="Permanent link">&para;</a></h3>
+<p>Maximum token length passed to the text-classification checker pipeline.</p>
+<h3 id="match_qualityscore_cutoff"><code>match_quality.score_cutoff</code><a class="headerlink" href="#match_qualityscore_cutoff" title="Permanent link">&para;</a></h3>
+<p>Minimum sigmoid-transformed checker score required for
+<code>match_quality_pass == true</code>.</p>
+<h2 id="exclusion_criteria"><code>exclusion_criteria</code><a class="headerlink" href="#exclusion_criteria" title="Permanent link">&para;</a></h2>
+<p>Configuration for the exclusion-criteria checker model.</p>
+<h3 id="exclusion_criteriamodel_name"><code>exclusion_criteria.model_name</code><a class="headerlink" href="#exclusion_criteriamodel_name" title="Permanent link">&para;</a></h3>
+<p>Text-classification model identifier used by the checker pipeline and model
+metadata lookup.</p>
+<h3 id="exclusion_criteriadevice"><code>exclusion_criteria.device</code><a class="headerlink" href="#exclusion_criteriadevice" title="Permanent link">&para;</a></h3>
+<p>Device passed to the checker pipeline.</p>
+<h3 id="exclusion_criteriaprompt_file"><code>exclusion_criteria.prompt_file</code><a class="headerlink" href="#exclusion_criteriaprompt_file" title="Permanent link">&para;</a></h3>
+<p>Prompt template filename loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="exclusion_criteriamax_length"><code>exclusion_criteria.max_length</code><a class="headerlink" href="#exclusion_criteriamax_length" title="Permanent link">&para;</a></h3>
+<p>Maximum token length passed to the text-classification checker pipeline.</p>
+<h2 id="llm_match_quality"><code>llm_match_quality</code><a class="headerlink" href="#llm_match_quality" title="Permanent link">&para;</a></h2>
+<p>Configuration for the LLM-based match-quality checker.</p>
+<h3 id="llm_match_qualitylocal"><code>llm_match_quality.local</code><a class="headerlink" href="#llm_match_qualitylocal" title="Permanent link">&para;</a></h3>
+<p>Local in-process vLLM runtime settings. See <code>trial.local</code>.</p>
+<h3 id="llm_match_qualityprompt_file"><code>llm_match_quality.prompt_file</code><a class="headerlink" href="#llm_match_qualityprompt_file" title="Permanent link">&para;</a></h3>
+<p>Prompt template filename loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="llm_match_qualityreasoning_parser"><code>llm_match_quality.reasoning_parser</code><a class="headerlink" href="#llm_match_qualityreasoning_parser" title="Permanent link">&para;</a></h3>
+<p>vLLM reasoning parser name. The default <code>auto</code> resolves known model names,
+including <code>google/gemma-4-31B-it</code> to <code>gemma4</code>. Non-vLLM remote endpoints may
+return no separate reasoning field.</p>
+<h3 id="llm_match_qualityremote"><code>llm_match_quality.remote</code><a class="headerlink" href="#llm_match_qualityremote" title="Permanent link">&para;</a></h3>
+<p>Task-specific remote chat completion request settings. See <code>trial.remote</code>.</p>
+<h2 id="llm_exclusion_criteria"><code>llm_exclusion_criteria</code><a class="headerlink" href="#llm_exclusion_criteria" title="Permanent link">&para;</a></h2>
+<p>Configuration for the LLM-based exclusion-criteria checker.</p>
+<h3 id="llm_exclusion_criterialocal"><code>llm_exclusion_criteria.local</code><a class="headerlink" href="#llm_exclusion_criterialocal" title="Permanent link">&para;</a></h3>
+<p>Local in-process vLLM runtime settings. See <code>trial.local</code>.</p>
+<h3 id="llm_exclusion_criteriaprompt_file"><code>llm_exclusion_criteria.prompt_file</code><a class="headerlink" href="#llm_exclusion_criteriaprompt_file" title="Permanent link">&para;</a></h3>
+<p>Prompt template filename loaded from <code>matchminer_ai.prompts</code>.</p>
+<h3 id="llm_exclusion_criteriareasoning_parser"><code>llm_exclusion_criteria.reasoning_parser</code><a class="headerlink" href="#llm_exclusion_criteriareasoning_parser" title="Permanent link">&para;</a></h3>
+<p>vLLM reasoning parser name. The default <code>auto</code> resolves known model names,
+including <code>google/gemma-4-31B-it</code> to <code>gemma4</code>. Non-vLLM remote endpoints may
+return no separate reasoning field.</p>
+<h3 id="llm_exclusion_criteriaremote"><code>llm_exclusion_criteria.remote</code><a class="headerlink" href="#llm_exclusion_criteriaremote" title="Permanent link">&para;</a></h3>
+<p>Task-specific remote chat completion request settings. See <code>trial.remote</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
