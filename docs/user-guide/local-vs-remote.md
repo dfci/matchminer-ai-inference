@@ -47,10 +47,10 @@ Actual gains depend on the model, hardware, vLLM server settings, prompt
 sizes, and configured concurrency.
 
 `matchminer-ai` provides the
-[`start_vllm_server()`](../api/llm.md) helper to start a local
-OpenAI-compatible vLLM server from the package
-[configuration](../reference/configuration.md). The configured endpoint URL
-will typically use `localhost`.
+[`start_vllm_servers()`](../api/llm.md) helper to start one local
+OpenAI-compatible vLLM server for each endpoint URL in the package
+[configuration](../reference/configuration.md). With the default
+configuration, this starts one server at a `localhost` URL.
 
 ![Figure 3: Remote mode connecting to a vLLM server on the same machine.](../assets/images/local_remote_server_mode.png)
 

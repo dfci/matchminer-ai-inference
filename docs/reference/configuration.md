@@ -63,7 +63,7 @@ Selects the remote LLM backend when true.
 List of OpenAI-compatible base URLs. Values are passed to the OpenAI client as
 `base_url`. For the default Gemma 4 configuration, the server should be a vLLM
 chat endpoint launched with the `gemma4` reasoning parser; the package
-`start_vllm_server()` helper adds this flag from the selected LLM task's
+`start_vllm_servers()` helper adds this flag from the selected LLM task's
 `reasoning_parser`.
 
 Model names and request parameters are configured per LLM task under that
