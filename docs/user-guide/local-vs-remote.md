@@ -6,7 +6,7 @@ where your GPUs are and whether you want a persistent server:
 | Package mode | Setup                         | Use when                                                        |
 | ------------ | ------------------------------ | ----------------------------------------------------------------- |
 | Local        | Run the model directly         | You have local GPUs and want the simplest setup                  |
-| Remote       | Connect to a local vLLM server | You have local GPUs but want a persistent, reusable server        |
+| Remote       | Connect to a local vLLM server | You have local GPUs but want to run a persistent, reusable VLLM server on them to be used by MatchMiner-AI        |
 | Remote       | Connect to another endpoint    | The model is hosted elsewhere (another machine, cluster, service) |
 
 The two remote setups configure identically — you provide an endpoint URL
