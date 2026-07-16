@@ -1,4 +1,4 @@
-# GPU Requirements
+# GPU Recommendations
 
 Determining the type of GPUs needed to run an AI pipeline can be complicated.  The minimum GPU and compute requirements for matchminer-ai-inference also vary for each step. While we cannot summarize all factors which impact AI performance, this guide provides information on the following:
 
