@@ -65,7 +65,7 @@ configure the [endpoint URL](../reference/configuration.md). It doesn't have
 to be a vLLM server.
 
 !!! warning
-Before sending clinical text to an endpoint outside your local environment,
-confirm that the endpoint is approved for your data and institution.
+    Before sending clinical text to an endpoint outside your local environment,
+    confirm that the endpoint is approved for your data and institution.
 
 ![Figure 4: Remote mode connecting to a model hosted on another machine, cluster, or approved service.](../assets/images/remote_server_mode.png)

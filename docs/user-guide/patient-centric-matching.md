@@ -24,7 +24,7 @@ MatchMiner-AI has 6 main steps (Figure 1):
 
 Table 1 summarizes the models used for each step. For more on local and remote
 inference options for LLM-backed steps, see
-[Local vs Remote Inference](local-vs-remote.md).
+[Choosing an Inference Setup](local-vs-remote.md).
 
 Table 1: MatchMiner-AI Steps and Models
 

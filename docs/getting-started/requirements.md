@@ -9,17 +9,13 @@ This package requires Python 3.13+.
 
 Some parts of `matchminer-ai` are computationally intensive because they use
 large language models. For example, summarizing patient notes usually requires
-GPU-backed model inference.
+access to GPU-backed model inference. Please see our [GPU requirements](tmp.md) documentation for more information on which GPUs are compatible with this package workflow.
 
-The GPU does not need to be on your own computer. For LLM-based steps,
-`matchminer-ai` can send the text to a model running elsewhere and receive the
-result back through an OpenAI-compatible API.
+The GPU **does not need to be on the same computer running your workflow**.
+LLM-based steps can run with an in-process local vLLM backend, a local vLLM
+server, or another approved OpenAI-compatible endpoint. Please see our [documentation on choosing an inference set up](../user-guide/local-vs-remote.md).
 
-The model may be running:
 
-* on your own computer;
-* on another computer or computing cluster; or
-* through another approved service that provides an OpenAI-compatible API.
 
 
 !!! warning
@@ -28,11 +24,8 @@ The model may be running:
 
 If you do not have access to GPU-backed inference, you may still be able to use
 parts of the package that start from existing summaries, embeddings, or match
-results. A full end-to-end workflow will usually require access to GPU-backed
-model inference somewhere.
+results.
 
-For more detail, see [local vs remote inference](../user-guide/local-vs-remote.md)
-and the [configuration reference](../reference/configuration.md).
 
 ## Data
 
