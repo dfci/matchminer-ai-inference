@@ -19,15 +19,14 @@ nav:
       - Example Notebook: getting-started/example-notebook.md
   - User Guide:
       - Patient-centric matching workflow: user-guide/patient-centric-matching.md
-      - Local vs Remote Inference: user-guide/local-vs-remote.md
+      - Choosing an Inference Setup: user-guide/local-vs-remote.md
   - Reference:
       - Configuration: reference/configuration.md
       - QC Metrics: reference/qc-metrics.md
   - Development:
       - Contributing: development/contributing.md
-  - API:
-      - Overview: api/index.md
-      - Configuration: api/config.md
+  - Package API:
+      - Config Loading: api/config.md
       - Trial Summarization: api/trials.md
       - Patient Summarization: api/patients.md
       - Embedding: api/embedding.md
