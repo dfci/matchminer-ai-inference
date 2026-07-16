@@ -9,15 +9,18 @@ This package requires Python 3.13+.
 
 Some parts of `matchminer-ai` are computationally intensive because they use
 large language models. For example, summarizing patient notes usually requires
-GPU-backed inference.
+GPU-backed model inference.
 
-That GPU does not necessarily need to be on your own computer. For LLM-based
-steps, the package can send requests to an OpenAI-compatible endpoint. That
-endpoint could be:
+The GPU does not need to be on your own computer. For LLM-based steps,
+`matchminer-ai` can send the text to a model running elsewhere and receive the
+result back through an OpenAI-compatible API.
 
-- a vLLM server running on your own computer;
-- a vLLM server running on another computer or cluster; or
-- another approved OpenAI-compatible endpoint.
+The model may be running:
+
+* on your own computer;
+* on another computer or computing cluster; or
+* through another approved service that provides an OpenAI-compatible API.
+
 
 !!! warning
     Before sending clinical text to any remote endpoint, make sure the endpoint
