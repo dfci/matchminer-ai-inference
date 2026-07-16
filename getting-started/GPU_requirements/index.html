@@ -1146,18 +1146,22 @@
 
 
 <h1 id="gpu-requirements">GPU Requirements<a class="headerlink" href="#gpu-requirements" title="Permanent link">&para;</a></h1>
-<p>Determining the type of GPUs needed to run an AI pipeline can be complicated.  The minimum GPU and compute requirements for matchminer-ai-inference also vary for each step. While we cannot summarize all factors which impact AI performance, this guide provides information on the following:
-1. <a href="#models-used-in-our-pipeline">Models used in our pipeline</a>; 
-2. <a href="#minimum-gpu-memory">Estimating Minimum GPU memory for a LLM model</a>;
-3. <a href="#minimum-software-stack-requirements">Minimum requirements for the software stack</a>; and
-4. <a href="#our-experience">Our experience</a>. </p>
+<p>Determining the type of GPUs needed to run an AI pipeline can be complicated.  The minimum GPU and compute requirements for matchminer-ai-inference also vary for each step. While we cannot summarize all factors which impact AI performance, this guide provides information on the following:</p>
+<ol>
+<li><a href="#models-used-in-our-pipeline">Models used in our pipeline</a>; </li>
+<li><a href="#minimum-gpu-memory">Estimating Minimum GPU memory for a LLM model</a>;</li>
+<li><a href="#minimum-software-stack-requirements">Minimum requirements for the software stack</a>; and</li>
+<li><a href="#our-experience">Our experience</a>. </li>
+</ol>
 <h2 id="models-used-in-our-pipeline">Models Used In Our Pipeline<a class="headerlink" href="#models-used-in-our-pipeline" title="Permanent link">&para;</a></h2>
-<p>MatchMiner-AI is a pipeline which uses 4 different models:
-- An LLM for patient summarization and trial 'space' extraction. We currently use variants of Google's Gemma-4-31B-IT model.
-- 'TrialSpace' - an embedding model https://huggingface.co/ksg-dfci/TrialSpace-0526 , fine-tuned from Qwen 3 0.6B Embedding https://huggingface.co/Qwen/Qwen3-Embedding-0.6B.
-- 'TrialChecker' - a text classifier https://huggingface.co/ksg-dfci/TrialChecker-0526 , fine-tuned from ModernBERT-large https://huggingface.co/answerdotai/ModernBERT-large.
-- 'BoilerplateChecker' - another text classifier https://huggingface.co/ksg-dfci/BoilerplateChecker-0526 , fine-tuned from ModernBERT-large.</p>
-<p>For any given model, minimum compute/GPU requirements could be determined from others' experiences either with the model itself (e.g. Gemma-4-31B-IT) or with the base (pre-trained) models (Qwen 3 0.6B Embedding, ModernBert-large). </p>
+<p>MatchMiner-AI is a pipeline which uses 4 different models:</p>
+<ul>
+<li>An LLM for patient summarization and trial 'space' extraction. We currently use variants of Google's Gemma-4-31B-IT model.</li>
+<li>'TrialSpace' - an embedding model <a href="https://huggingface.co/ksg-dfci/TrialSpace-0526">https://huggingface.co/ksg-dfci/TrialSpace-0526</a> , fine-tuned from Qwen 3 0.6B Embedding <a href="https://huggingface.co/Qwen/Qwen3-Embedding-0.6B">https://huggingface.co/Qwen/Qwen3-Embedding-0.6B</a>.</li>
+<li>'TrialChecker' - a text classifier <a href="https://huggingface.co/ksg-dfci/TrialChecker-0526">https://huggingface.co/ksg-dfci/TrialChecker-0526</a> , fine-tuned from ModernBERT-large <a href="https://huggingface.co/answerdotai/ModernBERT-large">https://huggingface.co/answerdotai/ModernBERT-large</a>.</li>
+<li>'BoilerplateChecker' - another text classifier <a href="https://huggingface.co/ksg-dfci/BoilerplateChecker-0526">https://huggingface.co/ksg-dfci/BoilerplateChecker-0526</a> , fine-tuned from ModernBERT-large.</li>
+</ul>
+<p>For any given model, minimum compute/GPU requirements could be determined from others' experiences either with the model itself (e.g. Gemma-4-31B-IT) or with the base (pre-trained) models (Qwen 3 0.6B Embedding, ModernBERT-large). </p>
 <h2 id="minimum-gpu-memory">Minimum GPU Memory<a class="headerlink" href="#minimum-gpu-memory" title="Permanent link">&para;</a></h2>
 <p>Nvidia provides some guidance and a short-hand metric for determining how much GPU VRAM is required to run a given LLM. (See <a href="https://developer.nvidia.com/blog/gpu-memory-essentials-for-ai-performance/">GPU Memory Essentials for AI Performance</a>).  Specifically, it recommends having at least Parameter * Precision * 2 VRAM. Where Parameter is the number of parameters in the model and Precision is the bytes per parameter for the model's precision format -- FP32, FP16, FP8 or FP4.  (See conversion table below.)</p>
 <p>Precision Bytes per Parameter. From <a href="https://developer.nvidia.com/blog/gpu-memory-essentials-for-ai-performance/">GPU Memory Essentials for AI Performance</a></p>
@@ -1187,13 +1191,15 @@
 </tr>
 </tbody>
 </table>
-<p>For example, when we run <a href="https://huggingface.co/RedHatAI/gemma-4-31B-it-FP8-Dynamic">RedHatAI/gemma-4-31B-it-FP8-Dynamic</a> for patient and trial summarization, we should have at least \
-31,000,000,000 parameter (31 billion parameters) * 1 byte/parameter * 2 VRAM (~62 GB).</p>
+<p>For example, when we run <a href="https://huggingface.co/RedHatAI/gemma-4-31B-it-FP8-Dynamic">RedHatAI/gemma-4-31B-it-FP8-Dynamic</a> for patient and trial summarization, we should have at least</p>
+<p><em>31,000,000,000 parameter</em> (31 billion parameters) * <em>1 byte/parameter</em> * <em>2 VRAM</em> (~62 GB)</p>
 <p>In practice, we run RedHatAI/gemma-4-31B-it-FP8-Dynamic on H100 (NVL PCIe) GPUs with 94GB VRAM each. </p>
 <h2 id="minimum-software-stack-requirements">Minimum Software Stack Requirements<a class="headerlink" href="#minimum-software-stack-requirements" title="Permanent link">&para;</a></h2>
-<p>The <a href="https://github.com/dfci/matchminer-ai-inference/blob/main/pyproject.toml">dependencies in our pipeline</a> include packages which have particular compute/GPU requirments.  Currently these include:     <br />
-- "torch&gt;=2.11.0"
-- "vllm&gt;=0.20.2"</p>
+<p>The <a href="https://github.com/dfci/matchminer-ai-inference/blob/main/pyproject.toml">dependencies in our pipeline</a> include packages which have particular compute/GPU requirments.  Currently these include:   </p>
+<ul>
+<li>"torch&gt;=2.11.0"</li>
+<li>"vllm&gt;=0.20.2"</li>
+</ul>
 <p>Documentation for each package is available online: 
 - <a href="https://pytorch.org/get-started/locally/">PyTorch (torch)</a>
 - <a href="https://docs.vllm.ai/en/v0.6.5/getting_started/installation.html">vllm</a></p>
@@ -1222,7 +1228,7 @@
 </tr>
 </tbody>
 </table>
-<p>RedHatAI/gemma-4-31B-it-FP8-Dynamic at the context lengths we need runs slowly on our H100 machines. It runs faster as an NVFP4 quant (eg https://huggingface.co/nvidia/Gemma-4-31B-IT-NVFP4 ) on a Blackwell GPU, eg, the RTX Pro 6000.</p>
+<p>RedHatAI/gemma-4-31B-it-FP8-Dynamic at the context lengths we need runs slowly on our H100 machines. It runs faster as an NVFP4 quant (eg <a href="https://huggingface.co/nvidia/Gemma-4-31B-IT-NVFP4">https://huggingface.co/nvidia/Gemma-4-31B-IT-NVFP4</a> ) on a Blackwell GPU, eg, the RTX Pro 6000.</p>
 
 
 

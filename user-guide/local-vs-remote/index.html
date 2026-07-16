@@ -1319,7 +1319,8 @@ where your GPUs are and whether you want a persistent server:</p>
 </table>
 <p>The two remote setups configure identically — you provide an endpoint URL
 either way. The only difference is where that endpoint lives. Local mode is
-the odd one out: no URL, no server process, nothing to manage.</p>
+the odd one out: no URL, no server process, nothing to manage. </p>
+<p>While local mode is easiest to implement, there can be efficiency gains when using remote mode on a local vLLM server. Please see <a href="#remote-package-mode">Remote Package Mode</a> for more information.</p>
 <h2 id="local-package-mode">Local Package Mode<a class="headerlink" href="#local-package-mode" title="Permanent link">&para;</a></h2>
 <h3 id="run-the-model-directly">Run the Model Directly<a class="headerlink" href="#run-the-model-directly" title="Permanent link">&para;</a></h3>
 <p><code>matchminer-ai</code> loads and runs the model in-process, using its built-in vLLM
