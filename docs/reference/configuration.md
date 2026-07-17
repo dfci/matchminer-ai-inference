@@ -48,8 +48,8 @@ metadata JSON files.
 ## `remote`
 
 Global transport settings used when `remote.enabled` is true and LLM tasks send
-OpenAI-compatible chat completion requests to external endpoints. This can be a
-vLLM server or any endpoint compatible with the OpenAI chat completions API.
+OpenAI-compatible chat completion requests to external endpoints. The default
+tested setup is a vLLM server with a compatible reasoning parser.
 Task-specific request payload settings live under each task's `remote` block.
 The remote backend reads the API key from the `OPENAI_API_KEY` environment
 variable. API keys are not stored in preset files.
@@ -73,10 +73,11 @@ endpoint, `trial.remote.request_params` contains top-level chat completion
 request fields, and `trial.remote.extra_body` contains fields sent through
 request `extra_body`.
 
-Separate reasoning output is backend-dependent. The default vLLM/Gemma setup
-can expose reasoning via vLLM reasoning parser support. Other
-OpenAI-compatible endpoints may return only final message content, leaving
-reasoning output columns empty even when debug mode is enabled.
+Remote mode expects the endpoint to return final answer text in
+`message.content`. The default vLLM/Gemma setup can expose reasoning separately
+via vLLM reasoning parser support. Other OpenAI-compatible endpoints may work
+only if they return final answer text in `message.content`; endpoints that
+include reasoning text in `message.content` are not currently supported.
 
 ### `remote.max_concurrent_requests`
 
