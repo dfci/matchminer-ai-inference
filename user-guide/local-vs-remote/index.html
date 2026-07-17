@@ -1386,6 +1386,12 @@ completions API.</p>
 <p>The model host manages GPU resources and the inference server; you only
 configure the <a href="../../reference/configuration/">endpoint URL</a>. It doesn't have
 to be a vLLM server.</p>
+<p>Remote mode expects the endpoint to return the final answer text in
+<code>message.content</code>. The default tested setup is a vLLM server with a compatible
+reasoning parser, which separates reasoning text from final answer text. Other
+OpenAI-compatible endpoints may work only if they return final answer text in
+<code>message.content</code>; endpoints that include reasoning text in <code>message.content</code>
+are not currently supported.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Before sending clinical text to an endpoint outside your local environment,

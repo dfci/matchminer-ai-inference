@@ -2514,8 +2514,8 @@ intermediate columns are retained in output tables.</p>
 metadata JSON files.</p>
 <h2 id="remote"><code>remote</code><a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
 <p>Global transport settings used when <code>remote.enabled</code> is true and LLM tasks send
-OpenAI-compatible chat completion requests to external endpoints. This can be a
-vLLM server or any endpoint compatible with the OpenAI chat completions API.
+OpenAI-compatible chat completion requests to external endpoints. The default
+tested setup is a vLLM server with a compatible reasoning parser.
 Task-specific request payload settings live under each task's <code>remote</code> block.
 The remote backend reads the API key from the <code>OPENAI_API_KEY</code> environment
 variable. API keys are not stored in preset files.</p>
@@ -2533,10 +2533,11 @@ by local vLLM, <code>trial.remote.model_name</code> is the model string sent to 
 endpoint, <code>trial.remote.request_params</code> contains top-level chat completion
 request fields, and <code>trial.remote.extra_body</code> contains fields sent through
 request <code>extra_body</code>.</p>
-<p>Separate reasoning output is backend-dependent. The default vLLM/Gemma setup
-can expose reasoning via vLLM reasoning parser support. Other
-OpenAI-compatible endpoints may return only final message content, leaving
-reasoning output columns empty even when debug mode is enabled.</p>
+<p>Remote mode expects the endpoint to return final answer text in
+<code>message.content</code>. The default vLLM/Gemma setup can expose reasoning separately
+via vLLM reasoning parser support. Other OpenAI-compatible endpoints may work
+only if they return final answer text in <code>message.content</code>; endpoints that
+include reasoning text in <code>message.content</code> are not currently supported.</p>
 <h3 id="remotemax_concurrent_requests"><code>remote.max_concurrent_requests</code><a class="headerlink" href="#remotemax_concurrent_requests" title="Permanent link">&para;</a></h3>
 <p>Maximum number of concurrent requests per remote server.</p>
 <h3 id="remoterequest_timeout"><code>remote.request_timeout</code><a class="headerlink" href="#remoterequest_timeout" title="Permanent link">&para;</a></h3>
