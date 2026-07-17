@@ -33,8 +33,13 @@ If you are starting from the beginning of the patient-centric workflow, you
 need trial-level input data and note-level patient input data.
 
 Trial summarization expects one row per trial with trial identifiers, title,
-brief summary, and eligibility criteria. Patient summarization expects one row
-per note with patient identifiers, note text, and note dates. See the
+brief summary, and eligibility criteria. The package has been tested with trial
+text prepared from ClinicalTrials.gov records, but it does not currently include
+a helper for pulling ClinicalTrials.gov records or transforming them into
+package input format.
+
+Patient summarization expects one row per note with patient identifiers, note
+text, and note dates. See the
 [`summarize_trials`](../api/trials.md) and
 [`summarize_patients`](../api/patients.md) API docs for current DataFrame
 column requirements.
