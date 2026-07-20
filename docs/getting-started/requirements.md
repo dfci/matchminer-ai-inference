@@ -36,7 +36,7 @@ records as JSON and then build one row per study by selecting these fields:
 | `summarize_trials` column | ClinicalTrials.gov JSON field |
 | --- | --- |
 | `trial_id` | `protocolSection.identificationModule.nctId` |
-| `trial_title` | `protocolSection.identificationModule.briefTitle` or `officialTitle` |
+| `trial_title` | `protocolSection.identificationModule.briefTitle` |
 | `brief_summary` | `protocolSection.descriptionModule.briefSummary` |
 | `eligibility_criteria` | `protocolSection.eligibilityModule.eligibilityCriteria` |
 
