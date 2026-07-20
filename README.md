@@ -12,7 +12,7 @@ For detailed instructions, please see the
 
 ## Compute requirements
 
-You will need a GPU to run the full pipeline. Please see the
+A GPU is recommended for the clinical trial matching inference workflow. Please see the
 [requirements documentation](https://dfci.github.io/matchminer-ai-inference/getting-started/requirements/)
 for more information on compute expectations and GPU recommendations.
 
