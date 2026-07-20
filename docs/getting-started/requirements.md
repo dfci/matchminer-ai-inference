@@ -20,26 +20,47 @@ See our [GPU recommendations](gpu-recommendations.md) documentation for examples
 ## Data
 
 If you are starting from the beginning of the patient-centric workflow, you
-need trial-level input data and note-level patient input data.
+need two input tables:
+
+- trial-level data for `summarize_trials`
+- note-level patient data for `summarize_patients`
+
+### Trial input
 
 Trial summarization expects one row per trial with trial identifiers, title,
-brief summary, and eligibility criteria. The package has been tested with trial
-text prepared from ClinicalTrials.gov records, but it does not currently include
-a helper for pulling ClinicalTrials.gov records or transforming them into
-package input format.
+brief summary, and eligibility criteria.
 
-Patient summarization expects one row per note with patient identifiers, note
-text, and note dates. See the
+If you are preparing trial input from ClinicalTrials.gov, first obtain the study
+records as JSON and then build one row per study by selecting these fields:
+
+| `summarize_trials` column | ClinicalTrials.gov JSON field |
+| --- | --- |
+| `trial_id` | `protocolSection.identificationModule.nctId` |
+| `trial_title` | `protocolSection.identificationModule.briefTitle` or `officialTitle` |
+| `brief_summary` | `protocolSection.descriptionModule.briefSummary` |
+| `eligibility_criteria` | `protocolSection.eligibilityModule.eligibilityCriteria` |
+
+### Patient input
+
+Patient summarization expects one row per clinical note. Each row should include
+a patient identifier, note text, and note date.
+
+Users are responsible for preparing note-level input data approved for their
+environment.
+
+### Detailed input requirements
+
+See the
 [`summarize_trials`](../api/trials.md) and
 [`summarize_patients`](../api/patients.md) API docs for current DataFrame
 column requirements.
 
+The example notebook uses sample input data from
+[`examples/data/`](https://github.com/dfci/matchminer-ai-inference/tree/main/examples/data),
+which is the best place to inspect the expected input shape when preparing
+your own data.
+
 You do not always have to start at the beginning. There are entry points later
 in the workflow if you already have summaries, embeddings, candidate matches, or
 other intermediate results. The input requirements for those entry points are
-documented with the corresponding function APIs.
-
-The example notebook uses sample input data from
-[`examples/data/`](https://github.com/dfci/matchminer-ai-inference/tree/main/examples/data),
-which is the best place to inspect the expected input shape before preparing
-your own data.
+documented with the corresponding [Package API](../api/trials.md) pages.

@@ -20,13 +20,13 @@ from matchminer_ai.matching import (
 )
 ```
 
+Before starting, review the [data requirements](requirements.md#data) for the
+trial and patient input tables expected by the workflow.
+
 The patient-centric workflow has these main steps:
 
 1. Turn trial descriptions and eligibility criteria into structured trial
    summaries with `summarize_trials`.
-    - Initial trial input is expected as a DataFrame. The package has been
-      tested with trial text prepared from ClinicalTrials.gov records, but does
-      not currently provide a helper for preparing that input.
 2. Turn patient notes into cancer history summaries with `summarize_patients`.
 3. Convert the trial and patient summaries into embeddings with
    `embed_for_matching` so they can be compared.
