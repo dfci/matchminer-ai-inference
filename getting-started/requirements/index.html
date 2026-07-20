@@ -396,6 +396,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trial-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patient-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patient input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-input-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed input requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1206,6 +1245,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trial-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patient-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patient input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-input-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed input requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1243,25 +1321,60 @@ is approved for your data and institution.</p>
 <p>See our <a href="../gpu-recommendations/">GPU recommendations</a> documentation for examples of hardware we have used to run the full workflow.</p>
 <h2 id="data">Data<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
 <p>If you are starting from the beginning of the patient-centric workflow, you
-need trial-level input data and note-level patient input data.</p>
+need two input tables:</p>
+<ul>
+<li>trial-level data for <code>summarize_trials</code></li>
+<li>note-level patient data for <code>summarize_patients</code></li>
+</ul>
+<h3 id="trial-input">Trial input<a class="headerlink" href="#trial-input" title="Permanent link">&para;</a></h3>
 <p>Trial summarization expects one row per trial with trial identifiers, title,
-brief summary, and eligibility criteria. The package has been tested with trial
-text prepared from ClinicalTrials.gov records, but it does not currently include
-a helper for pulling ClinicalTrials.gov records or transforming them into
-package input format.</p>
-<p>Patient summarization expects one row per note with patient identifiers, note
-text, and note dates. See the
+brief summary, and eligibility criteria.</p>
+<p>If you are preparing trial input from ClinicalTrials.gov, first obtain the study
+records as JSON and then build one row per study by selecting these fields:</p>
+<table>
+<thead>
+<tr>
+<th><code>summarize_trials</code> column</th>
+<th>ClinicalTrials.gov JSON field</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trial_id</code></td>
+<td><code>protocolSection.identificationModule.nctId</code></td>
+</tr>
+<tr>
+<td><code>trial_title</code></td>
+<td><code>protocolSection.identificationModule.briefTitle</code></td>
+</tr>
+<tr>
+<td><code>brief_summary</code></td>
+<td><code>protocolSection.descriptionModule.briefSummary</code></td>
+</tr>
+<tr>
+<td><code>eligibility_criteria</code></td>
+<td><code>protocolSection.eligibilityModule.eligibilityCriteria</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="patient-input">Patient input<a class="headerlink" href="#patient-input" title="Permanent link">&para;</a></h3>
+<p>Patient summarization expects one row per clinical note. Each row should include
+a patient identifier, note text, and note date.</p>
+<p>Users are responsible for preparing note-level input data approved for their
+environment.</p>
+<h3 id="detailed-input-requirements">Detailed input requirements<a class="headerlink" href="#detailed-input-requirements" title="Permanent link">&para;</a></h3>
+<p>See the
 <a href="../../api/trials/"><code>summarize_trials</code></a> and
 <a href="../../api/patients/"><code>summarize_patients</code></a> API docs for current DataFrame
 column requirements.</p>
+<p>The example notebook uses sample input data from
+<a href="https://github.com/dfci/matchminer-ai-inference/tree/main/examples/data"><code>examples/data/</code></a>,
+which is the best place to inspect the expected input shape when preparing
+your own data.</p>
 <p>You do not always have to start at the beginning. There are entry points later
 in the workflow if you already have summaries, embeddings, candidate matches, or
 other intermediate results. The input requirements for those entry points are
-documented with the corresponding function APIs.</p>
-<p>The example notebook uses sample input data from
-<a href="https://github.com/dfci/matchminer-ai-inference/tree/main/examples/data"><code>examples/data/</code></a>,
-which is the best place to inspect the expected input shape before preparing
-your own data.</p>
+documented with the corresponding <a href="../../api/trials/">Package API</a> pages.</p>
 
 
 

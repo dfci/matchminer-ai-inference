@@ -1155,15 +1155,12 @@
     <span class="n">score_match_quality_with_llm</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
+<p>Before starting, review the <a href="../requirements/#data">data requirements</a> for the
+trial and patient input tables expected by the workflow.</p>
 <p>The patient-centric workflow has these main steps:</p>
 <ol>
 <li>Turn trial descriptions and eligibility criteria into structured trial
-   summaries with <code>summarize_trials</code>.<ul>
-<li>Initial trial input is expected as a DataFrame. The package has been
-  tested with trial text prepared from ClinicalTrials.gov records, but does
-  not currently provide a helper for preparing that input.</li>
-</ul>
-</li>
+   summaries with <code>summarize_trials</code>.</li>
 <li>Turn patient notes into cancer history summaries with <code>summarize_patients</code>.</li>
 <li>Convert the trial and patient summaries into embeddings with
    <code>embed_for_matching</code> so they can be compared.</li>
