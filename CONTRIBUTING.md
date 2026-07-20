@@ -1,8 +1,57 @@
 # Contributing
 
-Contributor documentation lives in the MkDocs source tree:
+Thank you for your interest in contributing to `matchminer-ai`.
 
-[docs/development/contributing.md](docs/development/contributing.md)
+Contributions are welcome through GitHub pull requests. Please fork the
+repository and open a pull request from your fork.
 
-The root `CONTRIBUTING.md` remains here so repository platforms and new
-contributors can find the contributor guide from the repository landing page.
+## Local Setup
+
+Clone your fork and move into the repository root:
+
+```shell
+git clone https://github.com/<your-username>/matchminer-ai-inference.git
+cd matchminer-ai-inference
+```
+
+We recommend using [`uv`](https://docs.astral.sh/uv/) to create the Python
+environment and install the package. Create and activate a Python 3.13 virtual
+environment:
+
+```shell
+uv venv --python 3.13
+source .venv/bin/activate
+```
+
+Install the package in editable mode with development dependencies:
+
+```shell
+uv pip install -e ".[dev]"
+```
+
+Install the pre-commit hooks:
+
+```shell
+pre-commit install
+```
+
+The pre-commit hooks run formatting, linting, type-checking, and sensitive data
+checks before commits.
+
+## Before You Open a Pull Request
+
+Run the relevant tests from the repository root:
+
+```shell
+pytest
+```
+
+!!! warning
+    Do not include PHI, PII, credentials, secrets, generated cache files, or
+    model outputs containing sensitive data.
+
+## Pull Request Checks
+
+GitHub Actions runs automated checks on pushes and pull requests. These checks
+install the package, run the pre-commit hooks, scan for sensitive data, and run
+the test suite. These checks **must** pass before merge.
