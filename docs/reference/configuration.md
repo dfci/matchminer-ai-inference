@@ -1,13 +1,31 @@
-# Preset Configuration Reference
+# Configuration Reference
 
-Preset files are YAML mappings loaded by `matchminer_ai.config.load_preset`.
-`default.yaml` is loaded by `load_default_preset()`.
+Most package behavior is controlled through configuration. Configuration tells
+`matchminer-ai` which models to use, whether LLM calls should run locally or
+through a remote endpoint, where to cache model metadata, and how individual
+workflow steps should be run.
+
+Most users can start with the built-in default settings. You usually only need
+to change configuration when you want to change models, switch between local and
+remote inference, adjust runtime settings, enable debug output, or point the
+package at a different endpoint.
+
+Use `load_default_preset()` when you want to start from the package defaults and
+change a few values in Python:
+
+```python
+from matchminer_ai import load_default_preset
+
+config = load_default_preset()
+config.remote["enabled"] = True
+config.remote["server_urls"] = ["http://localhost:8000/v1"]
+```
 
 ## Custom Config Files
 
 For package installs, treat the built-in preset files as read-only package data.
-To customize configuration, copy the default preset values into a YAML file in
-your project, edit them, and load that file by path:
+For larger or reusable changes, copy the default preset values into a YAML file
+in your project, edit them, and load that file by path:
 
 ```python
 from matchminer_ai import load_config
@@ -16,10 +34,6 @@ config = load_config("my_config.yaml")
 ```
 
 ## Root Keys
-
-### `version`
-
-Preset schema version.
 
 ### `debug_mode`
 
@@ -34,8 +48,8 @@ metadata JSON files.
 ## `remote`
 
 Global transport settings used when `remote.enabled` is true and LLM tasks send
-OpenAI-compatible chat completion requests to external endpoints. This can be a
-vLLM server or any endpoint compatible with the OpenAI chat completions API.
+OpenAI-compatible chat completion requests to external endpoints. The default
+tested setup is a vLLM server with a compatible reasoning parser.
 Task-specific request payload settings live under each task's `remote` block.
 The remote backend reads the API key from the `OPENAI_API_KEY` environment
 variable. API keys are not stored in preset files.
@@ -49,7 +63,7 @@ Selects the remote LLM backend when true.
 List of OpenAI-compatible base URLs. Values are passed to the OpenAI client as
 `base_url`. For the default Gemma 4 configuration, the server should be a vLLM
 chat endpoint launched with the `gemma4` reasoning parser; the package
-`start_vllm_server()` helper adds this flag from the selected LLM task's
+`start_vllm_servers()` helper adds this flag from the selected LLM task's
 `reasoning_parser`.
 
 Model names and request parameters are configured per LLM task under that
@@ -59,10 +73,11 @@ endpoint, `trial.remote.request_params` contains top-level chat completion
 request fields, and `trial.remote.extra_body` contains fields sent through
 request `extra_body`.
 
-Separate reasoning output is backend-dependent. The default vLLM/Gemma setup
-can expose reasoning via vLLM reasoning parser support. Other
-OpenAI-compatible endpoints may return only final message content, leaving
-reasoning output columns empty even when debug mode is enabled.
+Remote mode expects the endpoint to return final answer text in
+`message.content`. The default vLLM/Gemma setup can expose reasoning separately
+via vLLM reasoning parser support. Other OpenAI-compatible endpoints may work
+only if they return final answer text in `message.content`; endpoints that
+include reasoning text in `message.content` are not currently supported.
 
 ### `remote.max_concurrent_requests`
 

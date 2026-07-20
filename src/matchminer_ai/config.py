@@ -1,4 +1,4 @@
-"""Configuration stubs for MMAI."""
+"""Configuration helpers for MatchMiner-AI."""
 
 from __future__ import annotations
 

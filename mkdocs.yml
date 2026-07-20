@@ -1,0 +1,60 @@
+site_name: MatchMiner-AI
+site_description: Documentation for the matchminer-ai Python package
+repo_url: https://github.com/dfci/matchminer-ai-inference
+repo_name: dfci/matchminer-ai-inference
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Requirements: getting-started/requirements.md
+      - GPU Recommendations: getting-started/gpu-recommendations.md
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Example Notebook: getting-started/example-notebook.md
+  - User Guide:
+      - Patient-centric matching workflow: user-guide/patient-centric-matching.md
+      - Choosing an Inference Setup: user-guide/local-vs-remote.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - QC Metrics: reference/qc-metrics.md
+  - Development:
+      - Contributing: development/contributing.md
+  - Package API:
+      - Config Loading: api/config.md
+      - Trial Summarization: api/trials.md
+      - Patient Summarization: api/patients.md
+      - Embedding: api/embedding.md
+      - Candidate Matching: api/candidate-matching.md
+      - Match Quality: api/match-quality.md
+      - Exclusion Criteria: api/exclusion-criteria.md
+      - LLM Server Helper: api/llm.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          options:
+            docstring_style: numpy
+            show_source: true
+            show_root_heading: true
+            show_signature_annotations: true
+            separate_signature: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences

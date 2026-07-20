@@ -4,13 +4,17 @@
 
 `matchminer-ai` is a Python package for running the clinical trial matching inference workflow described in [Altreuter et al., MatchMiner-AI: An Open-Source Solution for Cancer Clinical Trial Matching](https://doi.org/10.48550/arXiv.2412.17228). The package provides modular functions for the core MatchMiner-AI workflow: summarizing trials and patient histories, generating embeddings of each, retrieving candidate matches, scoring match quality, and assessing exclusion criteria.
 
-This package is currently pre-v1 and under active development. APIs, configuration options, and outputs may change.
+For detailed instructions, please see the
+[documentation website](https://dfci.github.io/matchminer-ai-inference/).
+
+> [!WARNING]
+> This package is currently pre-v1 and under active development.
 
 ## Compute requirements
 
-The most compute-intensive step is summarizing patient notes with the default Gemma 4 language model. Full pipeline runs can use either a local high-memory GPU environment, such as an NVIDIA H100 80GB, or a compatible remote vLLM inference server configured with the Gemma 4 reasoning parser. See the [example notebook](https://github.com/dfci/matchminer-ai-inference/blob/main/examples/run_examples.ipynb) for details on these two options.
-
-Other entry points, such as running from precomputed summaries, may require less compute.
+A GPU is recommended for the clinical trial matching inference workflow. Please see the
+[requirements documentation](https://dfci.github.io/matchminer-ai-inference/getting-started/requirements/)
+for more information on compute expectations and GPU recommendations.
 
 ## Installation
 
@@ -28,7 +32,6 @@ uv pip install matchminer-ai
 ```
 
 ## Quickstart
-
 See the example notebook for a full walkthrough using sample input data:
 [example notebook](https://github.com/dfci/matchminer-ai-inference/blob/main/examples/run_examples.ipynb)
 
@@ -40,6 +43,7 @@ If you use `matchminer-ai`, please cite:
 ## Contributing
 
 Contributions are welcome! Please follow our
-[contribution instructions][contributing] if you are interested in contributing to this project.
+[contribution instructions][contributing] if you are interested in contributing
+to this project.
 
-[contributing]: https://github.com/dfci/matchminer-ai-inference/blob/main/CONTRIBUTING.md
+[contributing]: https://dfci.github.io/matchminer-ai-inference/development/contributing/

@@ -46,9 +46,9 @@ Run the relevant tests from the repository root:
 pytest
 ```
 
-> [!WARNING]
-> Do not include PHI, PII, credentials, secrets, generated cache files, or
-> model outputs containing sensitive data.
+!!! warning
+    Do not include PHI, PII, credentials, secrets, generated cache files, or
+    model outputs containing sensitive data.
 
 ## Pull Request Checks
 

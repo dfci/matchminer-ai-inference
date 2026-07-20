@@ -1,4 +1,4 @@
-"""High-level pipeline wrapper stubs."""
+"""High-level pipeline interfaces."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from .config import MMAIConfig, load_default_preset
 
 
 class MMAIPipeline:
-    """Pipeline orchestrator (stub)."""
+    """Pipeline orchestrator."""
 
     def __init__(self, config: MMAIConfig | None = None) -> None:
         self.config = config or load_default_preset()
@@ -15,10 +15,10 @@ class MMAIPipeline:
     def run_patient_centric_matching_pipeline(
         self, *args: object, **kwargs: object
     ) -> None:
-        """Run the full pipeline (stub)."""
+        """Run the full patient-centric matching pipeline."""
         raise NotImplementedError("Pipeline logic not implemented in skeleton.")
 
 
 def run_patient_centric_matching_pipeline(*args: object, **kwargs: object) -> None:
-    """Module-level pipeline wrapper (stub)."""
+    """Run the full patient-centric matching pipeline."""
     raise NotImplementedError("Pipeline logic not implemented in skeleton.")

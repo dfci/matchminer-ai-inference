@@ -1,13 +1,19 @@
 # QC metrics
 
+Patient and trial summarization can produce QC reports. These reports are meant
+to help you review how a summarization run behaved before using the outputs
+downstream.
+
+To request a QC report, pass `return_qc=True` to `summarize_patients` or
+`summarize_trials`.
+
 QC reports summarize how the current pipeline behaves, given the current
 prompts, filters, and postprocessing rules. Metrics are returned as rows with
 `metric`, `value`, `denominator`, `percent`, and `ids`.
 
 ## Patient summarization QC
 
-Returned by `summarize_patients(..., return_qc=True)` and
-`summarize_patient_notes(..., return_qc=True)`.
+Returned by `summarize_patients(..., return_qc=True)`.
 
 - `patients_exclusion_criteria_not_extracted`: exclusion criteria not successfully extracted.
 - `patients_missing_keyword:<keyword>`: summaries missing an expected keyword.
