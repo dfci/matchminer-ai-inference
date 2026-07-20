@@ -12,14 +12,9 @@ For detailed instructions, please see the
 
 ## Compute requirements
 
-You will need a GPU to run model inference for the full pipeline. Please see the
+You will need a GPU to run the full pipeline. Please see the
 [requirements documentation](https://dfci.github.io/matchminer-ai-inference/getting-started/requirements/)
 for more information on compute expectations and GPU recommendations.
-
-Note that the GPU does not need to be on the same computer running your
-workflow. Please see the documentation on
-[choosing an inference setup](https://dfci.github.io/matchminer-ai-inference/user-guide/local-vs-remote/)
-for more information.
 
 ## Installation
 
