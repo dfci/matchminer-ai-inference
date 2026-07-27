@@ -76,7 +76,7 @@ jobs:
           python -m pip install pytest
 
       - name: Import package
-        run: python -c "import matchminer_ai; print(matchminer_ai.__file__)"
+        run: python -c "import matchminer_ai; print(matchminer_ai.__file__); print(matchminer_ai.__version__)"
 
       - name: Run tests
         run: pytest
