@@ -15,11 +15,11 @@ cd matchminer-ai-inference
 ```
 
 We recommend using [`uv`](https://docs.astral.sh/uv/) to create the Python
-environment and install the package. Create and activate a Python 3.13 virtual
+environment and install the package. Create and activate a Python 3.12 virtual
 environment:
 
 ```shell
-uv venv --python 3.13
+uv venv --python 3.12
 source .venv/bin/activate
 ```
 
