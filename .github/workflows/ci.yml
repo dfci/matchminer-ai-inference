@@ -52,6 +52,32 @@ jobs:
       - name: Run gitleaks
         run: gitleaks detect --no-git --source . --config .gitleaks.toml --redact
 
+  package-install:
+    name: Package install (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package with dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+
+      - name: Import package
+        run: python -c "import matchminer_ai; print(matchminer_ai.__file__)"
+
   test:
     name: Tests
     runs-on: ubuntu-latest
