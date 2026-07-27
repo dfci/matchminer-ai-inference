@@ -7,7 +7,7 @@ name = "matchminer-ai"
 version = "0.3.0"
 description = "MatchMiner-AI package"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 license = "CC-BY-NC-ND-4.0"
 license-files = ["LICENSE"]
 maintainers = [
@@ -26,11 +26,12 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]
 dependencies = [
-  "numpy>=2.4.4",
+  "numpy>=2,<2.4",
   "pandas>=3.0.2",
   "pyarrow>=24.0.0",
   "pyyaml>=6.0",
@@ -85,7 +86,7 @@ line-length = 88
 target-version = "py312"
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 mypy_path = ["src"]
 warn_unused_ignores = true
 warn_redundant_casts = true
