@@ -32,7 +32,7 @@ classifiers = [
 ]
 dependencies = [
   "numpy>=2,<2.4",
-  "pandas>=3.0.2",
+  "pandas>=2.3",
   "pyarrow>=24.0.0",
   "pyyaml>=6.0",
   "sentence-transformers>=5.4.1",
