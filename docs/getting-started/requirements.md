@@ -5,7 +5,7 @@ and data needed for the workflow you want to run.
 
 ## Compute
 
-This package requires Python 3.13+.
+This package requires Python 3.12+.
 
 Steps that use an LLM, such as summarizing patient notes, can run using a model hosted locally or through a remote OpenAI-compatible endpoint. You therefore do not necessarily need a GPU on the computer running `matchminer-ai`. See our [documentation on choosing an inference setup](../user-guide/local-vs-remote.md) for more information.
 

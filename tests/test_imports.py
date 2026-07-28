@@ -12,6 +12,7 @@ from matchminer_ai.trials import summarize_trials
 
 def test_imports():
     assert matchminer_ai is not None
+    assert isinstance(matchminer_ai.__version__, str)
     assert MMAIPipeline is not None
     assert load_config is not None
     assert summarize_trials is not None

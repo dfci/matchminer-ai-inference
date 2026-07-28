@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from importlib import import_module
+from importlib.metadata import PackageNotFoundError, version
 from types import ModuleType
 
 from .config import load_config, load_default_preset, load_preset
@@ -16,7 +17,18 @@ _LAZY_SUBMODULES = {
     "trials",
 }
 
-__all__ = ["MMAIPipeline", "load_config", "load_default_preset", "load_preset"]
+try:
+    __version__ = version("matchminer-ai")
+except PackageNotFoundError:
+    __version__ = "0+unknown"
+
+__all__ = [
+    "MMAIPipeline",
+    "__version__",
+    "load_config",
+    "load_default_preset",
+    "load_preset",
+]
 
 
 def __getattr__(name: str) -> ModuleType:
