@@ -436,3 +436,61 @@ def test_remote_backend_returns_terminal_errors(monkeypatch):
     assert attempts == 2
     assert result.final_outputs == ["ERROR: permanent failure"]
     assert result.finish_reasons == ["error"]
+
+
+def test_remote_backend_preserves_mixed_success_and_failure(monkeypatch):
+    """One exhausted request does not prevent other outputs from returning."""
+    _install_fakes(monkeypatch)
+    failed_attempts = 0
+
+    async def behavior(client, kwargs):
+        nonlocal failed_attempts
+        content = kwargs["messages"][-1]["content"]
+        if content == "fails":
+            failed_attempts += 1
+            raise RuntimeError("permanent failure")
+        return _response("successful summary")
+
+    async def no_sleep(delay):
+        return None
+
+    FakeAsyncOpenAI.behavior = behavior
+    monkeypatch.setattr("matchminer_ai.llm.remote_inference.asyncio.sleep", no_sleep)
+
+    result = RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("succeeds", "fails"),
+        llm_config=_llm_config(max_retries=2),
+    )
+
+    assert failed_attempts == 2
+    assert result.final_outputs == [
+        "successful summary",
+        "ERROR: permanent failure",
+    ]
+    assert result.finish_reasons == ["stop", "error"]
+
+
+def test_remote_backend_returns_error_after_timeout_retries(monkeypatch):
+    """Exhausted timeout retries return the standard timeout error result."""
+    _install_fakes(monkeypatch)
+    attempts = 0
+
+    async def behavior(client, kwargs):
+        nonlocal attempts
+        attempts += 1
+        raise asyncio.TimeoutError
+
+    async def no_sleep(delay):
+        return None
+
+    FakeAsyncOpenAI.behavior = behavior
+    monkeypatch.setattr("matchminer_ai.llm.remote_inference.asyncio.sleep", no_sleep)
+
+    result = RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("times out"),
+        llm_config=_llm_config(max_retries=2),
+    )
+
+    assert attempts == 2
+    assert result.final_outputs == ["ERROR: timeout after all retries"]
+    assert result.finish_reasons == ["error"]
