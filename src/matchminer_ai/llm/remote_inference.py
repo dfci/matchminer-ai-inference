@@ -195,7 +195,7 @@ async def single_inference_request(
             )
 
         except asyncio.TimeoutError:
-            wait_time = min(retry_backoff_base * (2**attempt), 30.0)
+            wait_time = min((2**attempt) * 10, 300)
             if attempt < max_retries - 1:
                 logger.info(
                     "  Row %d: timeout (attempt %d/%d), retrying in %.1fs.",
@@ -207,10 +207,15 @@ async def single_inference_request(
                 await asyncio.sleep(wait_time)
             else:
                 logger.info("  Row %d: all retries exhausted (timeout)", row_idx)
-                raise
+                return ModelResult(
+                    row_idx=row_idx,
+                    reasoning="",
+                    summary="ERROR: timeout after all retries",
+                    finish_reason="error",
+                )
 
         except Exception as exc:
-            wait_time = min(retry_backoff_base * (2**attempt), 30.0)
+            wait_time = min((2**attempt) * 5, 120)
             if attempt < max_retries - 1:
                 logger.info(
                     "  Row %d: error '%s' (attempt %d/%d), retrying in %.1fs.",
@@ -223,9 +228,19 @@ async def single_inference_request(
                 await asyncio.sleep(wait_time)
             else:
                 logger.info("  Row %d: all retries exhausted", row_idx)
-                raise
+                return ModelResult(
+                    row_idx=row_idx,
+                    reasoning="",
+                    summary=f"ERROR: {exc}",
+                    finish_reason="error",
+                )
 
-    raise RuntimeError(f"Unexpected retry loop exit for row {row_idx}.")
+    return ModelResult(
+        row_idx=row_idx,
+        reasoning="",
+        summary="ERROR: unexpected retry loop exit",
+        finish_reason="error",
+    )
 
 
 async def run_inference_batch(
@@ -286,6 +301,18 @@ async def run_inference_batch(
             *[bounded_request(prompt) for prompt in batch_prompts]
         )
         all_results.extend(batch_results)
+        batch_errors = sum(
+            1 for result in batch_results if result.finish_reason == "error"
+        )
+        if batch_errors:
+            logger.info(
+                "  Progress: %d/%d completed (%d errors in this batch)",
+                batch_end,
+                total,
+                batch_errors,
+            )
+        else:
+            logger.info("  Progress: %d/%d completed", batch_end, total)
 
     return all_results
 

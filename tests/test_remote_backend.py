@@ -409,3 +409,30 @@ def test_remote_backend_retries_transient_failures(monkeypatch):
     assert attempts == 2
     assert result.final_outputs == ["recovered"]
     assert result.finish_reasons == ["length"]
+
+
+def test_remote_backend_returns_terminal_errors(monkeypatch):
+    """Exhausted request errors are returned without failing the whole batch."""
+    _install_fakes(monkeypatch)
+    attempts = 0
+
+    async def behavior(client, kwargs):
+        nonlocal attempts
+        attempts += 1
+        raise RuntimeError("permanent failure")
+
+    async def no_sleep(delay):
+        return None
+
+    FakeAsyncOpenAI.behavior = behavior
+    monkeypatch.setattr("matchminer_ai.llm.remote_inference.asyncio.sleep", no_sleep)
+    config = _llm_config(max_retries=2)
+
+    result = RemoteBackend().generate_llm_outputs(
+        prompt_list=_prompts("p0"),
+        llm_config=config,
+    )
+
+    assert attempts == 2
+    assert result.final_outputs == ["ERROR: permanent failure"]
+    assert result.finish_reasons == ["error"]

@@ -141,6 +141,48 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     assert truncated_llm_qc_artifact["ids"] == []
 
 
+def test_run_llm_summarization_preserves_terminal_error_output(
+    monkeypatch, default_config
+):
+    """Store terminal request errors in the answer column like the pipeline."""
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.get_llm_backend", lambda config: MagicMock()
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.summarize_trials_multi_cohort",
+        lambda *args, **kwargs: LLMGenerationResult(
+            final_outputs=["SUM0", "ERROR: timeout after all retries"],
+            model_metadata={"model_sha": "sha"},
+            finish_reasons=["stop", "error"],
+            reasoning_outputs=["", ""],
+            raw_outputs=[],
+        ),
+    )
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title 1",
+                "brief_summary": "Brief 1",
+                "eligibility_criteria": "Criteria 1",
+            },
+            {
+                "trial_id": "T2",
+                "trial_title": "Title 2",
+                "brief_summary": "Brief 2",
+                "eligibility_criteria": "Criteria 2",
+            },
+        ]
+    )
+
+    df, _, _ = run_llm_summarization(trials, default_config)
+
+    assert df["trial_answer_text"].tolist() == [
+        "SUM0",
+        "ERROR: timeout after all retries",
+    ]
+
+
 def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
     """Ensure LLM outputs are aligned with the input trial order."""
     mock_backend = MagicMock()
