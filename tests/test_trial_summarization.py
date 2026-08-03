@@ -287,6 +287,7 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
         "Biomarkers excluded: None."
     ]
     assert result["boilerplate_text"].tolist() == [boilerplate]
+    assert result["clinical_space_number"].tolist() == [0]
 
 
 def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
