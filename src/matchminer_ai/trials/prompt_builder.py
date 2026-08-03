@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from importlib import resources
 from typing import TYPE_CHECKING
 
@@ -51,12 +50,11 @@ Reasoning: high.
 
 
 def build_trial_text(trials: "pd.DataFrame") -> "pd.Series":
-    """Create the raw trial text used for LLM summarization."""
-    text = (
+    """Create trial text while preserving source-field formatting."""
+    return (
         trials["trial_title"].fillna("")
         + "\n"
         + trials["brief_summary"].fillna("")
         + "\n"
         + trials["eligibility_criteria"].fillna("")
     )
-    return text.apply(lambda value: re.sub(r"\s+", " ", value).strip())

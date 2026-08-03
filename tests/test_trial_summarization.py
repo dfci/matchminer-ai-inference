@@ -17,19 +17,31 @@ from matchminer_ai.trials import summarize_trials
 from matchminer_ai.trials.summarize import run_llm_summarization
 
 
-def test_build_trial_text_normalizes_whitespace():
-    """Ensure trial text normalization collapses whitespace across inputs."""
+def test_build_trial_text_preserves_formatting():
+    """Ensure trial text preserves whitespace and structure across inputs."""
     trials = pd.DataFrame(
         [
             {
-                "trial_title": "Title",
+                "trial_title": "Title  with repeated spaces",
                 "brief_summary": "Brief\nsummary",
-                "eligibility_criteria": "Eligibility   criteria",
+                "eligibility_criteria": (
+                    "Inclusion Criteria:\n"
+                    "  - Criterion one\n\n"
+                    "Exclusion Criteria:\n"
+                    "\t- Criterion two"
+                ),
             }
         ]
     )
     text = build_trial_text(trials).iloc[0]
-    assert text == "Title Brief summary Eligibility criteria"
+    assert text == (
+        "Title  with repeated spaces\n"
+        "Brief\nsummary\n"
+        "Inclusion Criteria:\n"
+        "  - Criterion one\n\n"
+        "Exclusion Criteria:\n"
+        "\t- Criterion two"
+    )
 
 
 def test_get_filled_trial_prompt_includes_trial_text():
