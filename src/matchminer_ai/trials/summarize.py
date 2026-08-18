@@ -74,7 +74,7 @@ def _filter_failed_trial_inference(
         else:
             successful_positions.append(position)
 
-    # Error strings are useful diagnostics but must not enter trial postprocessing.
+    # Get DF of trials that passed inference step
     successful_trials = trials_with_summaries.iloc[successful_positions].copy()
     successful_trials["trial_answer_text"] = [
         generation_rows[position][1] for position in successful_positions
@@ -117,8 +117,7 @@ def run_llm_summarization(
         model_metadata_cache_dir=config.model_metadata_cache_dir,
     )
 
-    # Keep error strings out of the answer text consumed by postprocessing.
-    # Reasoning remains optional backend-provided/debug context.
+    # Filter out trials that errored on the LLM inference step and record the trial IDs
     trials_with_summaries, failed_trial_ids = _filter_failed_trial_inference(
         trials_with_summaries,
         generation,
