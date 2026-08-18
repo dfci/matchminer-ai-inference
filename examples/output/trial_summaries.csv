@@ -1,482 +1,334 @@
 trial_id,clinical_space_number,clinical_space_summary,general_exclusion_criteria,space_trial_id
-NCT03319901,1,Age range allowed: >= 60 Years. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: B-cell. Cancer burden allowed: Bone marrow involvement with >= 20% lymphoblasts and no symptomatic or untreated leptomeningeal disease or spinal cord compression. Prior treatment required: NA. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG > 2)
-Hepatic dysfunction (eg serum total bilirubin > 1.5 x ULN or ALT or AST > 3.0 x ULN)
-Renal dysfunction (eg creatinine clearance <= 50 mL/min)
-Pregnancy or breastfeeding
+NCT03319901,0,Age range allowed: 60 years or older. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: B-cell. Cancer burden allowed: Bone marrow involvement with 20% or more lymphoblasts. Prior treatment required: NA. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG >2)
 Uncontrolled infection
-Hepatitis B or C infection, or known seropositivity for human immunodeficiency virus (HIV)
-Active heart disease (eg NYHA class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months, or cardiac ejection fraction < 40%)
-History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years
+Hepatitis B or C infection
+Known seropositivity for human immunodeficiency virus (HIV)
+Symptomatic or untreated leptomeningeal disease or spinal cord compression
+Active heart disease (eg New York Heart Association class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months)
+Cardiac ejection fraction < 40%
+History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years (excluding non-melanoma skin cancers or carcinomas in situ)
 Concurrent use of warfarin
-Malabsorption syndrome or other conditions that preclude enteral route of administration",NCT03319901-1
-NCT03319901,2,Age range allowed: >= 60 Years. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: T-cell. Cancer burden allowed: Bone marrow involvement with >= 20% lymphoblasts and no symptomatic or untreated leptomeningeal disease or spinal cord compression. Prior treatment required: NA. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG > 2)
-Hepatic dysfunction (eg serum total bilirubin > 1.5 x ULN or ALT or AST > 3.0 x ULN)
+Malabsorption syndrome or other conditions that preclude enteral route of administration
+Liver dysfunction (eg serum total bilirubin >1.5 x upper limit of normal, or ALT or AST >3.0 x upper limit of normal)
 Renal dysfunction (eg creatinine clearance <= 50 mL/min)
-Pregnancy or breastfeeding
+Pregnancy or breastfeeding",NCT03319901-0
+NCT03319901,1,Age range allowed: 60 years or older. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: T-cell. Cancer burden allowed: Bone marrow involvement with 20% or more lymphoblasts. Prior treatment required: NA. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG >2)
 Uncontrolled infection
-Hepatitis B or C infection, or known seropositivity for human immunodeficiency virus (HIV)
-Active heart disease (eg NYHA class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months, or cardiac ejection fraction < 40%)
-History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years
+Hepatitis B or C infection
+Known seropositivity for human immunodeficiency virus (HIV)
+Symptomatic or untreated leptomeningeal disease or spinal cord compression
+Active heart disease (eg New York Heart Association class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months)
+Cardiac ejection fraction < 40%
+History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years (excluding non-melanoma skin cancers or carcinomas in situ)
 Concurrent use of warfarin
-Malabsorption syndrome or other conditions that preclude enteral route of administration",NCT03319901-2
-NCT03319901,3,Age range allowed: >= 18 Years. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: B-cell. Cancer burden allowed: Bone marrow involvement with >= 5% lymphoblasts and no symptomatic or untreated leptomeningeal disease or spinal cord compression. Prior treatment required: One or more cytotoxic containing regimens. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG > 2)
-Hepatic dysfunction (eg serum total bilirubin > 1.5 x ULN or ALT or AST > 3.0 x ULN)
+Malabsorption syndrome or other conditions that preclude enteral route of administration
+Liver dysfunction (eg serum total bilirubin >1.5 x upper limit of normal, or ALT or AST >3.0 x upper limit of normal)
 Renal dysfunction (eg creatinine clearance <= 50 mL/min)
-Pregnancy or breastfeeding
+Pregnancy or breastfeeding",NCT03319901-1
+NCT03319901,2,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: B-cell. Cancer burden allowed: Bone marrow involvement with 5% or more lymphoblasts. Prior treatment required: One or more cytotoxic containing regimens. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG >2)
 Uncontrolled infection
-Hepatitis B or C infection, or known seropositivity for human immunodeficiency virus (HIV)
-Active heart disease (eg NYHA class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months, or cardiac ejection fraction < 40%)
-History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years
+Hepatitis B or C infection
+Known seropositivity for human immunodeficiency virus (HIV)
+Symptomatic or untreated leptomeningeal disease or spinal cord compression
+Active heart disease (eg New York Heart Association class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months)
+Cardiac ejection fraction < 40%
+History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years (excluding non-melanoma skin cancers or carcinomas in situ)
 Concurrent use of warfarin
-Malabsorption syndrome or other conditions that preclude enteral route of administration",NCT03319901-3
-NCT03319901,4,Age range allowed: >= 18 Years. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: T-cell. Cancer burden allowed: Bone marrow involvement with >= 5% lymphoblasts and no symptomatic or untreated leptomeningeal disease or spinal cord compression. Prior treatment required: One or more cytotoxic containing regimens. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG > 2)
-Hepatic dysfunction (eg serum total bilirubin > 1.5 x ULN or ALT or AST > 3.0 x ULN)
+Malabsorption syndrome or other conditions that preclude enteral route of administration
+Liver dysfunction (eg serum total bilirubin >1.5 x upper limit of normal, or ALT or AST >3.0 x upper limit of normal)
 Renal dysfunction (eg creatinine clearance <= 50 mL/min)
-Pregnancy or breastfeeding
+Pregnancy or breastfeeding",NCT03319901-2
+NCT03319901,3,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Acute lymphoblastic leukemia. Histology allowed: T-cell. Cancer burden allowed: Bone marrow involvement with 5% or more lymphoblasts. Prior treatment required: One or more cytotoxic containing regimens. Prior treatment excluded: Venetoclax. Biomarkers required: NA. Biomarkers excluded: Philadelphia chromosome positive.,"Poor performance status (eg ECOG >2)
 Uncontrolled infection
-Hepatitis B or C infection, or known seropositivity for human immunodeficiency virus (HIV)
-Active heart disease (eg NYHA class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months, or cardiac ejection fraction < 40%)
-History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years
+Hepatitis B or C infection
+Known seropositivity for human immunodeficiency virus (HIV)
+Symptomatic or untreated leptomeningeal disease or spinal cord compression
+Active heart disease (eg New York Heart Association class 3-4, unstable angina, stroke, or myocardial infarction within the last 6 months)
+Cardiac ejection fraction < 40%
+History of another primary invasive malignancy that has not been definitively treated or in remission for at least 2 years (excluding non-melanoma skin cancers or carcinomas in situ)
 Concurrent use of warfarin
-Malabsorption syndrome or other conditions that preclude enteral route of administration",NCT03319901-4
-NCT04792489,1,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: diffuse large B cell lymphoma. Histology allowed: not otherwise specified. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and (failed autologous stem cell transplant or ineligible for autologous stem cell transplant or not intended for autologous stem cell transplant or not consenting to autologous stem cell transplant). Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
+Malabsorption syndrome or other conditions that preclude enteral route of administration
+Liver dysfunction (eg serum total bilirubin >1.5 x upper limit of normal, or ALT or AST >3.0 x upper limit of normal)
+Renal dysfunction (eg creatinine clearance <= 50 mL/min)
+Pregnancy or breastfeeding",NCT03319901-3
+NCT04792489,0,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Diffuse large B cell lymphoma (including diffuse large B cell lymphoma not otherwise specified, high-grade B cell lymphoma with MYC and BCL2 and/or BCL6 rearrangements, high-grade B cell lymphoma not otherwise specified, primary mediastinal (thymic) large B cell lymphoma, or transformed lymphoma). Histology allowed: B-cell non-Hodgkin's lymphoma. Cancer burden allowed: Relapsed or refractory disease (defined as failure of 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and either having failed autologous stem cell transplant, or being ineligible, not intended for, or not consenting to autologous stem cell transplant). Prior treatment required: Rituximab or equivalent and anthracycline chemotherapy. Prior treatment excluded: Prior CAR-T therapy, systemic gene modifying therapy for B-cell lymphoma, prior allogeneic stem cell transplant, prior BITE antibodies for cancer therapy, or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.","Poor performance status (eg ECOG >1, or ECOG 2 if not due to lymphoma)
+Renal dysfunction (creatinine clearance <= 45mL/min)
+Cardiac dysfunction (ejection fraction < 45%)
+Low resting O2 saturation (<= 90% on room air)
+Liver dysfunction (ALT or AST >= 5 times Upper Limit of Normal, or total bilirubin >= 1.5 mg/dl except in individuals with Gilbert's syndrome)
+Severe cytopenia (absolute neutrophil count <= 1000/uL, absolute lymphocyte count <= 100/uL, or platelet count <= 50,000/uL)
+Short life expectancy (<= 3 months other than primary disease)
+HIV infection or active hepatitis B (HBsAg positive)
+Hepatitis C virus infection with detectable viral load per quantitative PCR and/or nucleic acid testing
 Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
+Autoimmune CNS disease (eg multiple sclerosis, optic neuritis) or other immunologic or inflammatory disease
+For CNS cohort: Midline shift on MRI, abnormal high CSF opening pressure, or CSF protein > 150 mg/dL
+Recent whole brain radiotherapy (within 3 months) for CNS cohort
 Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
+Pregnancy or breast-feeding
+Previous or concurrent malignancy (except adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively without recurrence for 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for 2 years, or a primary malignancy completely resected or treated with curative intent and in complete remission for 2 years)
+Severely immunocompromised subjects (eg due to current treatment of non-neurologic autoimmune disease)
+Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone > 10 mg/day
 History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
+Concurrent radiotherapy
 Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-1
-NCT04792489,2,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: high-grade B cell lymphoma. Histology allowed: MYC and BCL2 and/or BCL6 rearrangements. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and (failed autologous stem cell transplant or ineligible for autologous stem cell transplant or not intended for autologous stem cell transplant or not consenting to autologous stem cell transplant). Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
+History of severe immediate hypersensitivity reaction to any of the agents used in the study
+Refusal to participate in additional lentiviral gene therapy LTFU protocol",NCT04792489-0
+NCT04792489,1,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Primary central nervous system lymphoma. Histology allowed: B-cell non-Hodgkin's lymphoma. Cancer burden allowed: Relapsed or refractory. Prior treatment required: At least first-line therapy. Prior treatment excluded: Prior CAR-T therapy, systemic gene modifying therapy for B-cell lymphoma, prior allogeneic stem cell transplant, prior BITE antibodies for cancer therapy, or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.","Poor performance status (eg ECOG >1, or ECOG 2 if not due to lymphoma)
+Renal dysfunction (creatinine clearance <= 45mL/min)
+Cardiac dysfunction (ejection fraction < 45%)
+Low resting O2 saturation (<= 90% on room air)
+Liver dysfunction (ALT or AST >= 5 times Upper Limit of Normal, or total bilirubin >= 1.5 mg/dl except in individuals with Gilbert's syndrome)
+Severe cytopenia (absolute neutrophil count <= 1000/uL, absolute lymphocyte count <= 100/uL, or platelet count <= 50,000/uL)
+Short life expectancy (<= 3 months other than primary disease)
+HIV infection or active hepatitis B (HBsAg positive)
+Hepatitis C virus infection with detectable viral load per quantitative PCR and/or nucleic acid testing
 Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
+Autoimmune CNS disease (eg multiple sclerosis, optic neuritis) or other immunologic or inflammatory disease
+For CNS cohort: Midline shift on MRI, abnormal high CSF opening pressure, or CSF protein > 150 mg/dL
+Recent whole brain radiotherapy (within 3 months) for CNS cohort
 Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
+Pregnancy or breast-feeding
+Previous or concurrent malignancy (except adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively without recurrence for 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for 2 years, or a primary malignancy completely resected or treated with curative intent and in complete remission for 2 years)
+Severely immunocompromised subjects (eg due to current treatment of non-neurologic autoimmune disease)
+Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone > 10 mg/day
 History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
+Concurrent radiotherapy
 Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-2
-NCT04792489,3,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: high-grade B cell lymphoma. Histology allowed: not otherwise specified. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and (failed autologous stem cell transplant or ineligible for autologous stem cell transplant or not intended for autologous stem cell transplant or not consenting to autologous stem cell transplant). Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
+History of severe immediate hypersensitivity reaction to any of the agents used in the study
+Refusal to participate in additional lentiviral gene therapy LTFU protocol",NCT04792489-1
+NCT04792489,2,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Secondary central nervous system lymphoma. Histology allowed: B-cell non-Hodgkin's lymphoma. Cancer burden allowed: Relapsed or refractory. Prior treatment required: At least one prior line of systemic therapy including an anti-CD20 monoclonal antibody and anthracycline containing chemotherapy regimen. Prior treatment excluded: Prior CAR-T therapy, systemic gene modifying therapy for B-cell lymphoma, prior allogeneic stem cell transplant, prior BITE antibodies for cancer therapy, or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.","Poor performance status (eg ECOG >1, or ECOG 2 if not due to lymphoma)
+Renal dysfunction (creatinine clearance <= 45mL/min)
+Cardiac dysfunction (ejection fraction < 45%)
+Low resting O2 saturation (<= 90% on room air)
+Liver dysfunction (ALT or AST >= 5 times Upper Limit of Normal, or total bilirubin >= 1.5 mg/dl except in individuals with Gilbert's syndrome)
+Severe cytopenia (absolute neutrophil count <= 1000/uL, absolute lymphocyte count <= 100/uL, or platelet count <= 50,000/uL)
+Short life expectancy (<= 3 months other than primary disease)
+HIV infection or active hepatitis B (HBsAg positive)
+Hepatitis C virus infection with detectable viral load per quantitative PCR and/or nucleic acid testing
 Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
+Autoimmune CNS disease (eg multiple sclerosis, optic neuritis) or other immunologic or inflammatory disease
+For CNS cohort: Midline shift on MRI, abnormal high CSF opening pressure, or CSF protein > 150 mg/dL
+Recent whole brain radiotherapy (within 3 months) for CNS cohort
 Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
+Pregnancy or breast-feeding
+Previous or concurrent malignancy (except adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively without recurrence for 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for 2 years, or a primary malignancy completely resected or treated with curative intent and in complete remission for 2 years)
+Severely immunocompromised subjects (eg due to current treatment of non-neurologic autoimmune disease)
+Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone > 10 mg/day
 History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
+Concurrent radiotherapy
 Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-3
-NCT04792489,4,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: primary mediastinal (thymic) large B cell lymphoma. Histology allowed: NA. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and (failed autologous stem cell transplant or ineligible for autologous stem cell transplant or not intended for autologous stem cell transplant or not consenting to autologous stem cell transplant). Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
+History of severe immediate hypersensitivity reaction to any of the agents used in the study
+Refusal to participate in additional lentiviral gene therapy LTFU protocol",NCT04792489-2
+NCT04792489,3,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Mantle cell lymphoma. Histology allowed: B-cell non-Hodgkin's lymphoma. Cancer burden allowed: Relapsed or refractory. Prior treatment required: At least one prior systemic treatment including a cytotoxic rituximab-based chemotherapy regimen (such as rituximab bendamustine, R-CHOP, R-DHAP, or R-ARA-C) and a Bruton's tyrosine kinase inhibitor. Prior treatment excluded: Prior CAR-T therapy, systemic gene modifying therapy for B-cell lymphoma, prior allogeneic stem cell transplant, prior BITE antibodies for cancer therapy, or prior T cell receptor-engineered T cell therapy. Biomarkers required: Overexpression of cyclin D1 or presence of t(11;14) (q13; q32) translocation. Biomarkers excluded: NA.","Poor performance status (eg ECOG >1, or ECOG 2 if not due to lymphoma)
+Renal dysfunction (creatinine clearance <= 45mL/min)
+Cardiac dysfunction (ejection fraction < 45%)
+Low resting O2 saturation (<= 90% on room air)
+Liver dysfunction (ALT or AST >= 5 times Upper Limit of Normal, or total bilirubin >= 1.5 mg/dl except in individuals with Gilbert's syndrome)
+Severe cytopenia (absolute neutrophil count <= 1000/uL, absolute lymphocyte count <= 100/uL, or platelet count <= 50,000/uL)
+Short life expectancy (<= 3 months other than primary disease)
+HIV infection or active hepatitis B (HBsAg positive)
+Hepatitis C virus infection with detectable viral load per quantitative PCR and/or nucleic acid testing
 Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
+Autoimmune CNS disease (eg multiple sclerosis, optic neuritis) or other immunologic or inflammatory disease
+For CNS cohort: Midline shift on MRI, abnormal high CSF opening pressure, or CSF protein > 150 mg/dL
+Recent whole brain radiotherapy (within 3 months) for CNS cohort
 Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
+Pregnancy or breast-feeding
+Previous or concurrent malignancy (except adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively without recurrence for 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for 2 years, or a primary malignancy completely resected or treated with curative intent and in complete remission for 2 years)
+Severely immunocompromised subjects (eg due to current treatment of non-neurologic autoimmune disease)
+Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone > 10 mg/day
 History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
+Concurrent radiotherapy
 Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-4
-NCT04792489,5,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: transformed lymphoma. Histology allowed: transformed follicular lymphoma or transformed marginal zone lymphoma or follicular lymphoma Grade 3. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: 2 or more lines of chemotherapy including rituximab or equivalent and anthracycline and (failed autologous stem cell transplant or ineligible for autologous stem cell transplant or not intended for autologous stem cell transplant or not consenting to autologous stem cell transplant). Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
+History of severe immediate hypersensitivity reaction to any of the agents used in the study
+Refusal to participate in additional lentiviral gene therapy LTFU protocol",NCT04792489-3
+NCT04792489,4,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Richter's transformation to diffuse large B-cell lymphoma from underlying chronic lymphocytic leukemia. Histology allowed: B-cell non-Hodgkin's lymphoma. Cancer burden allowed: Relapsed or refractory. Prior treatment required: At least one prior systemic treatment following Richter's transformation. Prior treatment excluded: Prior CAR-T therapy, systemic gene modifying therapy for B-cell lymphoma, prior allogeneic stem cell transplant, prior BITE antibodies for cancer therapy, or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.","Poor performance status (eg ECOG >1, or ECOG 2 if not due to lymphoma)
+Renal dysfunction (creatinine clearance <= 45mL/min)
+Cardiac dysfunction (ejection fraction < 45%)
+Low resting O2 saturation (<= 90% on room air)
+Liver dysfunction (ALT or AST >= 5 times Upper Limit of Normal, or total bilirubin >= 1.5 mg/dl except in individuals with Gilbert's syndrome)
+Severe cytopenia (absolute neutrophil count <= 1000/uL, absolute lymphocyte count <= 100/uL, or platelet count <= 50,000/uL)
+Short life expectancy (<= 3 months other than primary disease)
+HIV infection or active hepatitis B (HBsAg positive)
+Hepatitis C virus infection with detectable viral load per quantitative PCR and/or nucleic acid testing
 Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
+Autoimmune CNS disease (eg multiple sclerosis, optic neuritis) or other immunologic or inflammatory disease
+For CNS cohort: Midline shift on MRI, abnormal high CSF opening pressure, or CSF protein > 150 mg/dL
+Recent whole brain radiotherapy (within 3 months) for CNS cohort
 Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
+Pregnancy or breast-feeding
+Previous or concurrent malignancy (except adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively without recurrence for 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for 2 years, or a primary malignancy completely resected or treated with curative intent and in complete remission for 2 years)
+Severely immunocompromised subjects (eg due to current treatment of non-neurologic autoimmune disease)
+Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone > 10 mg/day
 History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
+Concurrent radiotherapy
 Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-5
-NCT04792489,6,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: primary central nervous system lymphoma. Histology allowed: B-cell. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: failure of at least first-line therapy. Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
-Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
-Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
-History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
-Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-6
-NCT04792489,7,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: secondary central nervous system lymphoma. Histology allowed: B-cell. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: at least one prior line of systemic therapy including an anti-CD20 monoclonal antibody and anthracycline containing chemotherapy regimen. Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
-Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
-Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
-History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
-Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-7
-NCT04792489,8,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: mantle cell lymphoma. Histology allowed: overexpression of cyclin D1 or presence of t(11;14) (q13; q32) translocation. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: at least one prior systemic treatment including a cytotoxic rituximab-based chemotherapy regimen and a BTK inhibitor. Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
-Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
-Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
-History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
-Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-8
-NCT04792489,9,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Richter's transformation. Histology allowed: diffuse large B-cell lymphoma subtype arising from underlying chronic lymphocytic leukemia. Cancer burden allowed: relapsed or refractory disease. Prior treatment required: at least one prior systemic treatment following Richter's transformation. Prior treatment excluded: prior chimeric antigen receptor T-cell therapy for any indication or systemic gene modifying therapy for B-cell lymphoma or prior allogeneic stem cell transplant for any indication or prior bispecific T-cell engager antibodies for cancer therapy or prior T cell receptor-engineered T cell therapy. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG greater than 1, unless ECOG 2 is due to lymphoma)
-Renal dysfunction (creatinine clearance less than or equal to 45 mL/min)
-Cardiac dysfunction (ejection fraction less than 45%)
-Respiratory dysfunction (resting O2 saturation less than or equal to 90% on room air)
-Liver dysfunction (ALT or AST greater than or equal to 5 times the Upper Limit of Normal or total bilirubin greater than or equal to 1.5 mg/dl, except in individuals with Gilbert syndrome)
-Hematologic dysfunction (absolute neutrophil count less than or equal to 1000/uL or absolute lymphocyte count less than or equal to 100/uL or platelet count less than or equal to 50,000/uL)
-Short life expectancy (estimated life expectancy of 3 months or less other than primary disease)
-Known history of infection with human immunodeficiency virus (HIV) or active hepatitis B (HBsAg positive)
-Known history of infection with hepatitis C virus unless viral load is undetectable per quantitative PCR and/or nucleic acid testing
-Pharmacologically uncontrolled seizures
-Known history or presence of autoimmune central nervous system disease or other immunologic or inflammatory disease
-Presence of central nervous system disorder that may impair the ability to evaluate neurotoxicity
-For central nervous system cohort: midline shift on MRI or abnormal high CSF opening pressure or CSF protein greater than 150 mg/dL
-Recent whole brain radiotherapy (within 3 months)
-Active systemic fungal, viral, or bacterial infection
-Pregnant or breast-feeding women
-Previous or concurrent malignancy (excluding adequately treated basal cell or squamous cell carcinoma, in situ carcinoma of the cervix or breast treated curatively and recurrence-free for at least 2 years, adequately treated breast or prostate carcinoma on hormonal therapies in remission for at least 2 years, or primary malignancy completely resected/treated with curative intent and in complete remission for at least 2 years)
-Severely immunocompromised subjects
-Medical condition requiring prolonged use of systemic corticosteroids equivalent to prednisone greater than 10 mg/day (for central nervous system cohort, dexamethasone up to 2 mg/day is allowed)
-History of myocardial infarction, cardiac angioplasty or stenting, unstable angina, or other clinically significant cardiac disease within 6 months of enrollment
-Concurrent radiotherapy (excluding normal tissue sparing palliative radiotherapy)
-Baseline dementia that would interfere with therapy or monitoring
-History of severe immediate hypersensitivity reaction to any of the agents used in the study",NCT04792489-9
-NCT06234423,1,Age range allowed: >=18 years. Sex allowed: Female. Cancer type allowed: Ovarian cancer. Histology allowed: NA. Cancer burden allowed: Platinum-refractory or platinum-resistant and advanced. Prior treatment required: Standard of care systemic therapy or no standard therapy available. Prior treatment excluded: Antibody-drug conjugate with a topoisomerase I payload. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
+History of severe immediate hypersensitivity reaction to any of the agents used in the study
+Refusal to participate in additional lentiviral gene therapy LTFU protocol",NCT04792489-4
+NCT06234423,0,Age range allowed: >=18 years. Sex allowed: Female. Cancer type allowed: Ovarian cancer. Histology allowed: NA. Cancer burden allowed: Advanced and platinum-refractory or platinum-resistant. Prior treatment required: Standard of care systemic therapy or no standard therapy available. Prior treatment excluded: Antibody-drug conjugate with a topoisomerase I payload. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (eg ECOG >1).
 Active or progressing brain metastases or evidence of leptomeningeal disease.
-Persistent toxicities from previous systemic antineoplastic treatments of Grade > 1, excluding alopecia and vitiligo.
-Clinically significant lung disease requiring systemic corticosteroid treatment (e.g., interstitial pneumonia, pneumonitis, pulmonary fibrosis, and severe radiation pneumonitis) or suspected such diseases by imaging at screening.
+Persistent toxicities from previous systemic antineoplastic treatments of Grade >1 (excluding alopecia and vitiligo).
+Clinically significant lung disease requiring systemic corticosteroid treatment within the last 6 months (eg interstitial pneumonia, pneumonitis, pulmonary fibrosis, and severe radiation pneumonitis) or suspected such diseases by imaging at screening.
 Acute or chronic pancreatitis and/or any cirrhosis except Child-Pugh class A.
-Hepatic insufficiency manifesting as clinical jaundice, hepatic encephalopathy, and/or variceal bleed.
+Hepatic insufficiency manifesting as clinical jaundice, hepatic encephalopathy, and/or variceal bleed within 60 days prior to study entry.
 History of liver transplant.
 Prior allogeneic bone marrow transplantation.
-Significant cardiac disease (e.g., recent myocardial infarction, acute coronary syndromes, congestive heart failure New York Heart Association class III or IV, uncontrolled hypertension, uncontrolled cardiac arrhythmias, severe aortic stenosis).
-History of thromboembolic or cerebrovascular events (e.g., transient ischemic attacks, cerebrovascular accidents, deep vein thrombosis, or pulmonary emboli).
-Acute and/or clinically significant bacterial, fungal, or viral infection including hepatitis B, hepatitis C, or human immunodeficiency virus (unless meeting specific stability criteria).
-Known or suspected allergy to the study drug or its components.
-Concurrent participation in another investigational clinical trial.
+Significant cardiac disease including recent myocardial infarction, acute coronary syndromes, congestive heart failure (NYHA class III or IV), uncontrolled hypertension, uncontrolled cardiac arrhythmias, or severe aortic stenosis.
+History of thromboembolic or cerebrovascular events including transient ischemic attacks, cerebrovascular accidents, deep vein thrombosis, or pulmonary emboli within 3 months prior to first dose.
+Acute and/or clinically significant bacterial, fungal, or viral infection including hepatitis B, hepatitis C, or human immunodeficiency virus (HIV), unless meeting specific stability and treatment criteria.
 Pregnancy or breast-feeding.
-Prior history of malignancy other than inclusion diagnosis within 3 years (excluding adequately treated basal cell or squamous cell skin cancer, non-invasive superficial bladder cancer, in situ cervical cancer, in situ breast cancer, or in situ prostate cancer).
-Any other severe acute or chronic medical or psychiatric conditions or laboratory abnormality that may increase risk or interfere with results.",NCT06234423-1
-NCT06234423,2,Age range allowed: >=18 years. Sex allowed: Male or female. Cancer type allowed: Solid tumor. Histology allowed: NA. Cancer burden allowed: Advanced. Prior treatment required: Standard of care systemic therapy or no standard therapy available. Prior treatment excluded: Antibody-drug conjugate with a topoisomerase I payload. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
+Prior history of malignancy other than inclusion diagnosis within 3 years prior to first dose (excluding adequately treated basal cell or squamous cell skin cancer, non-invasive superficial bladder cancer, in situ cervical cancer, in situ breast cancer, or in situ prostate cancer).
+Any other severe acute or chronic medical or psychiatric conditions or laboratory abnormality that would make the patient inappropriate for enrollment.",NCT06234423-0
+NCT06234423,1,Age range allowed: >=18 years. Sex allowed: Male or female. Cancer type allowed: Advanced solid tumors. Histology allowed: NA. Cancer burden allowed: Advanced. Prior treatment required: Standard of care systemic therapy or no standard therapy available. Prior treatment excluded: Antibody-drug conjugate with a topoisomerase I payload. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (eg ECOG >1).
 Active or progressing brain metastases or evidence of leptomeningeal disease.
-Persistent toxicities from previous systemic antineoplastic treatments of Grade > 1, excluding alopecia and vitiligo.
-Clinically significant lung disease requiring systemic corticosteroid treatment (e.g., interstitial pneumonia, pneumonitis, pulmonary fibrosis, and severe radiation pneumonitis) or suspected such diseases by imaging at screening.
+Persistent toxicities from previous systemic antineoplastic treatments of Grade >1 (excluding alopecia and vitiligo).
+Clinically significant lung disease requiring systemic corticosteroid treatment within the last 6 months (eg interstitial pneumonia, pneumonitis, pulmonary fibrosis, and severe radiation pneumonitis) or suspected such diseases by imaging at screening.
 Acute or chronic pancreatitis and/or any cirrhosis except Child-Pugh class A.
-Hepatic insufficiency manifesting as clinical jaundice, hepatic encephalopathy, and/or variceal bleed.
+Hepatic insufficiency manifesting as clinical jaundice, hepatic encephalopathy, and/or variceal bleed within 60 days prior to study entry.
 History of liver transplant.
 Prior allogeneic bone marrow transplantation.
-Significant cardiac disease (e.g., recent myocardial infarction, acute coronary syndromes, congestive heart failure New York Heart Association class III or IV, uncontrolled hypertension, uncontrolled cardiac arrhythmias, severe aortic stenosis).
-History of thromboembolic or cerebrovascular events (e.g., transient ischemic attacks, cerebrovascular accidents, deep vein thrombosis, or pulmonary emboli).
-Acute and/or clinically significant bacterial, fungal, or viral infection including hepatitis B, hepatitis C, or human immunodeficiency virus (unless meeting specific stability criteria).
-Known or suspected allergy to the study drug or its components.
-Concurrent participation in another investigational clinical trial.
+Significant cardiac disease including recent myocardial infarction, acute coronary syndromes, congestive heart failure (NYHA class III or IV), uncontrolled hypertension, uncontrolled cardiac arrhythmias, or severe aortic stenosis.
+History of thromboembolic or cerebrovascular events including transient ischemic attacks, cerebrovascular accidents, deep vein thrombosis, or pulmonary emboli within 3 months prior to first dose.
+Acute and/or clinically significant bacterial, fungal, or viral infection including hepatitis B, hepatitis C, or human immunodeficiency virus (HIV), unless meeting specific stability and treatment criteria.
 Pregnancy or breast-feeding.
-Prior history of malignancy other than inclusion diagnosis within 3 years (excluding adequately treated basal cell or squamous cell skin cancer, non-invasive superficial bladder cancer, in situ cervical cancer, in situ breast cancer, or in situ prostate cancer).
-Any other severe acute or chronic medical or psychiatric conditions or laboratory abnormality that may increase risk or interfere with results.",NCT06234423-2
-NCT05608252,1,Age range allowed: >18 years. Sex allowed: Male or Female. Cancer type allowed: invasive breast cancer. Histology allowed: NA. Cancer burden allowed: metastatic or locally recurrent unresectable. Prior treatment required: progression on a cyclin-dependent kinase 4/6 inhibitor-containing regimen (in the metastatic setting or relapse/progression during or within 12 months of completion of an adjuvant cyclin-dependent kinase 4/6 inhibitor-containing regimen) AND progression on fulvestrant (as a single agent or as a component of any multi-drug regimen) in the metastatic setting. Prior treatment excluded: MEK inhibitor. Biomarkers required: hormone receptor positive (assessed during screening) and HER2 negative (assessed during screening). Biomarkers excluded: NA.,"Poor performance status (ECOG >= 2).
-Active brain metastases or known carcinomatous meningitis.
-Discontinuation of prior abemaciclib for toxicity (at any dose for Phase I participants; at or above the RP2 dose level for Phase II participants).
-Discontinuation of prior fulvestrant for toxicity.
-Pre-existing ocular pathology (including glaucoma, retinal vein occlusion, retinal pathology, intraocular pressure > 21 mm Hg, corneal erosion, corneal degeneration, active or recurrent keratitis, or other serious ocular surface inflammatory conditions).
-History of rhabdomyolysis or neuromuscular disorders associated with elevated creatine phosphokinase (eg inflammatory myopathies, muscular dystrophy, amyotrophic lateral sclerosis, spinal muscular atrophy).
-Uncontrolled intercurrent illness (including uncontrolled hypertension, unstable angina pectoris, uncontrolled cardiac arrhythmia, congestive heart failure New York Heart Association Class III or IV, active ischemic heart disease, myocardial infarction within the previous six months, syncope of cardiovascular etiology, ventricular arrhythmia of pathological origin, uncontrolled diabetes mellitus, severe obstructive pulmonary disease, or severe chronic liver or renal disease).
-History of a second malignancy (unless disease-free for at least 5 years and low risk for recurrence, or cervical cancer in situ or non-melanoma skin cancer diagnosed and treated within 5 years with no recurrence for 1 year).
-History of allergic reactions to VS-6766, abemaciclib, or fulvestrant.
-Known history of HIV with an AIDS-defining opportunistic infection within the past 12 months or requiring strong CYP3A4 inhibitor/inducer antiretroviral therapy.
-Known active hepatitis B virus (HBV) or hepatitis C virus (HCV) infection (unless suppressive therapy is used for HBV or curative treatment was completed for HCV).
-Exposure to strong CYP3A4 inhibitors or inducers.
-Pregnancy or breastfeeding.
-Inability to swallow oral medications or impaired gastrointestinal absorption (eg gastrectomy, major surgical resection of stomach or small bowel, preexisting Crohn's disease, ulcerative colitis, or baseline Grade 2 or higher diarrhea).
-Active systemic bacterial infection requiring intravenous antibiotics, fungal infection requiring intravenous antifungals, or severe acute respiratory syndrome from coronavirus 2 (SARS-Cov2) infection <= 28 days prior to first dose.
-Treatment with warfarin.
-Other serious or uncontrolled preexisting medical conditions (eg interstitial lung disease, severe dyspnea at rest or requiring oxygen therapy, other cardiac, gastrointestinal, pulmonary, psychiatric, neurological, or genetic conditions).
-Marrow or organ dysfunction (including absolute neutrophil count < 1.5 x 10^9/L, platelets < 100,000/microliter, hemoglobin < 9 g/dL, total bilirubin > 1.5 mg/dL, AST/ALT > 2.5 x ULN, creatinine clearance rate < 50 mL/min, INR > 1.5, PTT > 1.5 x ULN, creatine phosphokinase > 2.5 x ULN, left ventricular ejection fraction < 50%, or baseline QTc interval >= 480 ms).",NCT05608252-1
-NCT04644211,1,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: Very low risk by IPSET criteria (no history of thrombosis and age <60) and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: Other investigational agents. Biomarkers required: NA. Biomarkers excluded: JAK2 mutation.,"Poor performance status (ECOG >2).
-Inadequate marrow function (leukocytes <3,000/mcL, absolute neutrophil count <1,500/mcL, or platelets <100,000/mcL).
-Inadequate liver function (total bilirubin > institutional upper limit of normal, or AST or ALT >3 x institutional upper limit of normal).
-Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <60 mL/min/1.73 m2).
-Presence of >5% blasts on baseline marrow exam or in peripheral blood.
-History of splenectomy.
-Prior or concurrent malignancy receiving treatment for concurrent cancer diagnosis and/or prior concurrent malignancy within 5 years (excluding basal cell carcinoma or squamous cell carcinoma of the skin).
-Cardiac disease with New York Heart Association Functional Classification worse than class 2B.
-Chronic hepatitis B virus (HBV) infection with detectable viral load on suppressive therapy.
-Chronic human immunodeficiency virus (HIV) infection that is positive for HBV DNA, HCV RNA, or hepatitis B surface antigen (BsAg) on suppressive therapy.
-Unwillingness to be vaccinated with the Herpes Zoster vaccine or unwilling to take prophylactic Acyclovir.
-History of allergic reactions to ruxolitinib or its excipients.
-Use of medications that are strong CYP3A4 inhibitors.
-Uncontrolled intercurrent illness.
-Psychiatric illness or social situations that would limit compliance with study requirements.
-Pregnancy or breastfeeding.",NCT04644211-1
-NCT04644211,2,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: Low risk by IPSET criteria (no history of thrombosis and age <60) and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: Other investigational agents. Biomarkers required: JAK2 mutation. Biomarkers excluded: NA.,"Poor performance status (ECOG >2).
-Inadequate marrow function (leukocytes <3,000/mcL, absolute neutrophil count <1,500/mcL, or platelets <100,000/mcL).
-Inadequate liver function (total bilirubin > institutional upper limit of normal, or AST or ALT >3 x institutional upper limit of normal).
-Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <60 mL/min/1.73 m2).
-Presence of >5% blasts on baseline marrow exam or in peripheral blood.
-History of splenectomy.
-Prior or concurrent malignancy receiving treatment for concurrent cancer diagnosis and/or prior concurrent malignancy within 5 years (excluding basal cell carcinoma or squamous cell carcinoma of the skin).
-Cardiac disease with New York Heart Association Functional Classification worse than class 2B.
-Chronic hepatitis B virus (HBV) infection with detectable viral load on suppressive therapy.
-Chronic human immunodeficiency virus (HIV) infection that is positive for HBV DNA, HCV RNA, or hepatitis B surface antigen (BsAg) on suppressive therapy.
-Unwillingness to be vaccinated with the Herpes Zoster vaccine or unwilling to take prophylactic Acyclovir.
-History of allergic reactions to ruxolitinib or its excipients.
-Use of medications that are strong CYP3A4 inhibitors.
-Uncontrolled intercurrent illness.
-Psychiatric illness or social situations that would limit compliance with study requirements.
-Pregnancy or breastfeeding.",NCT04644211-2
-NCT04644211,3,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: Intermediate risk by IPSET criteria (no history of thrombosis and age >60) and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: Other investigational agents. Biomarkers required: NA. Biomarkers excluded: JAK2 mutation.,"Poor performance status (ECOG >2).
-Inadequate marrow function (leukocytes <3,000/mcL, absolute neutrophil count <1,500/mcL, or platelets <100,000/mcL).
-Inadequate liver function (total bilirubin > institutional upper limit of normal, or AST or ALT >3 x institutional upper limit of normal).
-Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <60 mL/min/1.73 m2).
-Presence of >5% blasts on baseline marrow exam or in peripheral blood.
-History of splenectomy.
-Prior or concurrent malignancy receiving treatment for concurrent cancer diagnosis and/or prior concurrent malignancy within 5 years (excluding basal cell carcinoma or squamous cell carcinoma of the skin).
-Cardiac disease with New York Heart Association Functional Classification worse than class 2B.
-Chronic hepatitis B virus (HBV) infection with detectable viral load on suppressive therapy.
-Chronic human immunodeficiency virus (HIV) infection that is positive for HBV DNA, HCV RNA, or hepatitis B surface antigen (BsAg) on suppressive therapy.
-Unwillingness to be vaccinated with the Herpes Zoster vaccine or unwilling to take prophylactic Acyclovir.
-History of allergic reactions to ruxolitinib or its excipients.
-Use of medications that are strong CYP3A4 inhibitors.
-Uncontrolled intercurrent illness.
-Psychiatric illness or social situations that would limit compliance with study requirements.
-Pregnancy or breastfeeding.",NCT04644211-3
-NCT04644211,4,Age range allowed: 18 years or older. Sex allowed: Both. Cancer type allowed: Polycythemia vera. Histology allowed: NA. Cancer burden allowed: Low risk by NCCN guidelines (no history of thrombosis and age <60) and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: Other investigational agents. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG >2).
-Inadequate marrow function (leukocytes <3,000/mcL, absolute neutrophil count <1,500/mcL, or platelets <100,000/mcL).
-Inadequate liver function (total bilirubin > institutional upper limit of normal, or AST or ALT >3 x institutional upper limit of normal).
-Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <60 mL/min/1.73 m2).
-Presence of >5% blasts on baseline marrow exam or in peripheral blood.
-History of splenectomy.
-Prior or concurrent malignancy receiving treatment for concurrent cancer diagnosis and/or prior concurrent malignancy within 5 years (excluding basal cell carcinoma or squamous cell carcinoma of the skin).
-Cardiac disease with New York Heart Association Functional Classification worse than class 2B.
-Chronic hepatitis B virus (HBV) infection with detectable viral load on suppressive therapy.
-Chronic human immunodeficiency virus (HIV) infection that is positive for HBV DNA, HCV RNA, or hepatitis B surface antigen (BsAg) on suppressive therapy.
-Unwillingness to be vaccinated with the Herpes Zoster vaccine or unwilling to take prophylactic Acyclovir.
-History of allergic reactions to ruxolitinib or its excipients.
-Use of medications that are strong CYP3A4 inhibitors.
-Uncontrolled intercurrent illness.
-Psychiatric illness or social situations that would limit compliance with study requirements.
-Pregnancy or breastfeeding.",NCT04644211-4
-NCT06318871,1,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: clear cell renal cell carcinoma (rhabdoid or sarcomatoid differentiation is permitted if a clear cell component is also present). Cancer burden allowed: advanced or metastatic. Prior treatment required: at least one FDA approved PD-1/PD-L1 immune checkpoint inhibitor AND (at least one VEGFR TKI or contraindication to VEGFR TKIs). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
-Poor bone marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, or platelets < 75,000/mcL).
-Liver dysfunction (total bilirubin > 1.5 x institutional upper limit of normal, except if secondary to Gilbert's then < 3 x institutional upper limit of normal, or AST/ALT > 3.0 x institutional upper limit of normal).
-Renal dysfunction (creatinine > 2.0 AND glomerular filtration rate < 40 mL/min/1.73 m2).
-Poor pulmonary function (oxygen saturation < 90% on room air).
-Poor cardiac function (left ventricular ejection fraction <= 40%, NYHA Functional Classification worse than class 2B, or clinically significant active cardiovascular disease including cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, congestive heart failure NYHA Class II or worse, or unstable cardiac arrhythmia requiring medication).
-Leptomeningeal disease.
-History of inflammatory bowel disease (including ulcerative colitis and Crohn disease) or active autoimmune disease (e.g., rheumatoid arthritis, systemic progressive sclerosis, systemic lupus erythematosus, autoimmune vasculitis, Guillain-Barre syndrome, or myasthenia gravis).
-Ongoing or active infection requiring systemic therapy.
-Uncontrolled psychiatric conditions (including recent within the past year or active suicidal ideation or behavior).
-Other progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasm, carcinoma in situ of the cervix, other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after treatment with curative intent).
-Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications).
-Pregnancy or breastfeeding.
-Positive HIV testing.
-Hepatitis B virus infection (positive HBV surface antigen) or hepatitis C virus infection (positive HCV RNA).
-Prior recipients of solid organ transplantation.
-Known prior severe allergic/anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803.
-Prior history of Grade 2 or higher hemolytic anemia.",NCT06318871-1
-NCT06318871,2,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: translocation renal cell carcinoma. Cancer burden allowed: advanced or metastatic. Prior treatment required: at least one VEGFR TKI or contraindication to VEGFR TKIs. Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
-Poor bone marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, or platelets < 75,000/mcL).
-Liver dysfunction (total bilirubin > 1.5 x institutional upper limit of normal, except if secondary to Gilbert's then < 3 x institutional upper limit of normal, or AST/ALT > 3.0 x institutional upper limit of normal).
-Renal dysfunction (creatinine > 2.0 AND glomerular filtration rate < 40 mL/min/1.73 m2).
-Poor pulmonary function (oxygen saturation < 90% on room air).
-Poor cardiac function (left ventricular ejection fraction <= 40%, NYHA Functional Classification worse than class 2B, or clinically significant active cardiovascular disease including cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, congestive heart failure NYHA Class II or worse, or unstable cardiac arrhythmia requiring medication).
-Leptomeningeal disease.
-History of inflammatory bowel disease (including ulcerative colitis and Crohn disease) or active autoimmune disease (e.g., rheumatoid arthritis, systemic progressive sclerosis, systemic lupus erythematosus, autoimmune vasculitis, Guillain-Barre syndrome, or myasthenia gravis).
-Ongoing or active infection requiring systemic therapy.
-Uncontrolled psychiatric conditions (including recent within the past year or active suicidal ideation or behavior).
-Other progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasm, carcinoma in situ of the cervix, other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after treatment with curative intent).
-Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications).
-Pregnancy or breastfeeding.
-Positive HIV testing.
-Hepatitis B virus infection (positive HBV surface antigen) or hepatitis C virus infection (positive HCV RNA).
-Prior recipients of solid organ transplantation.
-Known prior severe allergic/anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803.
-Prior history of Grade 2 or higher hemolytic anemia.",NCT06318871-2
-NCT06318871,3,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: chromophobe renal cell carcinoma. Cancer burden allowed: advanced or metastatic. Prior treatment required: at least one VEGFR TKI or contraindication to VEGFR TKIs. Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
-Poor bone marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, or platelets < 75,000/mcL).
-Liver dysfunction (total bilirubin > 1.5 x institutional upper limit of normal, except if secondary to Gilbert's then < 3 x institutional upper limit of normal, or AST/ALT > 3.0 x institutional upper limit of normal).
-Renal dysfunction (creatinine > 2.0 AND glomerular filtration rate < 40 mL/min/1.73 m2).
-Poor pulmonary function (oxygen saturation < 90% on room air).
-Poor cardiac function (left ventricular ejection fraction <= 40%, NYHA Functional Classification worse than class 2B, or clinically significant active cardiovascular disease including cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, congestive heart failure NYHA Class II or worse, or unstable cardiac arrhythmia requiring medication).
-Leptomeningeal disease.
-History of inflammatory bowel disease (including ulcerative colitis and Crohn disease) or active autoimmune disease (e.g., rheumatoid arthritis, systemic progressive sclerosis, systemic lupus erythematosus, autoimmune vasculitis, Guillain-Barre syndrome, or myasthenia gravis).
-Ongoing or active infection requiring systemic therapy.
-Uncontrolled psychiatric conditions (including recent within the past year or active suicidal ideation or behavior).
-Other progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasm, carcinoma in situ of the cervix, other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after treatment with curative intent).
-Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications).
-Pregnancy or breastfeeding.
-Positive HIV testing.
-Hepatitis B virus infection (positive HBV surface antigen) or hepatitis C virus infection (positive HCV RNA).
-Prior recipients of solid organ transplantation.
-Known prior severe allergic/anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803.
-Prior history of Grade 2 or higher hemolytic anemia.",NCT06318871-3
-NCT06318871,4,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: urothelial carcinoma. Histology allowed: urothelial carcinoma (rhabdoid or sarcomatoid differentiation is permitted if a urothelial carcinoma component is also present). Cancer burden allowed: advanced or metastatic. Prior treatment required: at least one FDA approved PD-1/PD-L1 immune checkpoint inhibitor AND (at least one prior cytotoxic chemotherapy or at least one antibody-drug conjugate). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1).
-Poor bone marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, or platelets < 75,000/mcL).
-Liver dysfunction (total bilirubin > 1.5 x institutional upper limit of normal, except if secondary to Gilbert's then < 3 x institutional upper limit of normal, or AST/ALT > 3.0 x institutional upper limit of normal).
-Renal dysfunction (creatinine > 2.0 AND glomerular filtration rate < 40 mL/min/1.73 m2).
-Poor pulmonary function (oxygen saturation < 90% on room air).
-Poor cardiac function (left ventricular ejection fraction <= 40%, NYHA Functional Classification worse than class 2B, or clinically significant active cardiovascular disease including cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, congestive heart failure NYHA Class II or worse, or unstable cardiac arrhythmia requiring medication).
-Leptomeningeal disease.
-History of inflammatory bowel disease (including ulcerative colitis and Crohn disease) or active autoimmune disease (e.g., rheumatoid arthritis, systemic progressive sclerosis, systemic lupus erythematosus, autoimmune vasculitis, Guillain-Barre syndrome, or myasthenia gravis).
-Ongoing or active infection requiring systemic therapy.
-Uncontrolled psychiatric conditions (including recent within the past year or active suicidal ideation or behavior).
-Other progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasm, carcinoma in situ of the cervix, other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after treatment with curative intent).
-Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications).
-Pregnancy or breastfeeding.
-Positive HIV testing.
-Hepatitis B virus infection (positive HBV surface antigen) or hepatitis C virus infection (positive HCV RNA).
-Prior recipients of solid organ transplantation.
-Known prior severe allergic/anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803.
-Prior history of Grade 2 or higher hemolytic anemia.",NCT06318871-4
-NCT05785741,1,Age range allowed: 18 years or older. Sex allowed: Male or Female. Cancer type allowed: Solid tumors. Histology allowed: NA. Cancer burden allowed: Advanced or metastatic. Prior treatment required: Relapsed or progressed on or after standard systemic treatments or intolerable with standard treatment or no standard treatment available. Prior treatment excluded: Prior treatment with HER3 targeted therapy or prior treatment with antibody drug conjugate with topoisomerase I inhibitor. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (eg ECOG >1).
-Left ventricular ejection fraction (LVEF) < 50%.
+Prior history of malignancy other than inclusion diagnosis within 3 years prior to first dose (excluding adequately treated basal cell or squamous cell skin cancer, non-invasive superficial bladder cancer, in situ cervical cancer, in situ breast cancer, or in situ prostate cancer).
+Any other severe acute or chronic medical or psychiatric conditions or laboratory abnormality that would make the patient inappropriate for enrollment.",NCT06234423-1
+NCT05608252,0,"Age range allowed: >18 years. Sex allowed: Male or Female. Cancer type allowed: breast cancer. Histology allowed: invasive breast cancer. Cancer burden allowed: metastatic or locally recurrent unresectable. Prior treatment required: (progression on any CDK 4/6 inhibitor-containing regimen in the metastatic setting or relapse/progression during or within 12 months of completion of any CDK 4/6 inhibitor-containing regimen in the adjuvant setting) and progression on fulvestrant (as a single agent or as a component of any multi-drug regimen) in the metastatic setting. Prior treatment excluded: more than two prior chemotherapy regimens in the metastatic setting, any MEK inhibitor, prior abemaciclib discontinued for toxicity at any dose, and prior fulvestrant discontinued for toxicity. Biomarkers required: hormone receptor positive (HR+) and HER2 negative (assessed during screening). Biomarkers excluded: NA.","Poor performance status (ECOG >= 2). Active brain metastases or known carcinomatous meningitis. History of glaucoma, retinal vein occlusion, retinal pathology, corneal erosion, corneal degeneration, active or recurrent keratitis, or intraocular pressure > 21 mm Hg. History of rhabdomyolysis or neuromuscular disorders associated with elevated creatine kinase. Uncontrolled intercurrent illness including uncontrolled hypertension, unstable angina pectoris, uncontrolled cardiac arrhythmia, congestive heart failure (New York Heart Association Class III or IV), active ischemic heart disease, myocardial infarction within the previous six months, syncope of cardiovascular etiology, ventricular arrhythmia of pathological origin, uncontrolled diabetes mellitus, severe obstructive pulmonary disease, or severe chronic liver or renal disease. History of a second malignancy (except those deemed low risk for recurrence or specific types like cervical cancer in situ or non-melanoma skin cancer). History of allergic reactions to abemaciclib, fulvestrant, or VS-6766. Known history of HIV with an AIDS-defining opportunistic infection within the past 12 months or requirement for strong CYP3A4 inhibitors or inducers. Known active hepatitis B virus or hepatitis C virus infection (unless stable or cured per protocol). Use of strong CYP3A4 inhibitors or inducers. Pregnancy or breastfeeding. Inability to swallow oral medications, impaired gastrointestinal absorption, preexisting Crohn's disease, ulcerative colitis, or preexisting chronic condition resulting in baseline Grade 2 or higher diarrhea. Active systemic bacterial infection requiring intravenous antibiotics, active fungal infection requiring intravenous antifungal treatment, or SARS-CoV-2 infection within 28 days prior to first dose. Treatment with warfarin. Other serious or uncontrolled preexisting medical conditions such as interstitial lung disease or severe dyspnea.",NCT05608252-0
+NCT05608252,1,"Age range allowed: >18 years. Sex allowed: Male or Female. Cancer type allowed: breast cancer. Histology allowed: invasive breast cancer. Cancer burden allowed: metastatic or locally recurrent unresectable. Prior treatment required: (progression on any CDK 4/6 inhibitor-containing regimen in the metastatic setting or relapse/progression during or within 12 months of completion of any CDK 4/6 inhibitor-containing regimen in the adjuvant setting) and progression on fulvestrant (as a single agent or as a component of any multi-drug regimen) in the metastatic setting. Prior treatment excluded: more than two prior chemotherapy regimens in the metastatic setting, any MEK inhibitor, prior abemaciclib discontinued for toxicity if that toxicity occurred at or above the RP2 dose level, and prior fulvestrant discontinued for toxicity. Biomarkers required: hormone receptor positive (HR+) and HER2 negative (assessed during screening). Biomarkers excluded: NA.","Poor performance status (ECOG >= 2). Active brain metastases or known carcinomatous meningitis. History of glaucoma, retinal vein occlusion, retinal pathology, corneal erosion, corneal degeneration, active or recurrent keratitis, or intraocular pressure > 21 mm Hg. History of rhabdomyolysis or neuromuscular disorders associated with elevated creatine kinase. Uncontrolled intercurrent illness including uncontrolled hypertension, unstable angina pectoris, uncontrolled cardiac arrhythmia, congestive heart failure (New York Heart Association Class III or IV), active ischemic heart disease, myocardial infarction within the previous six months, syncope of cardiovascular etiology, ventricular arrhythmia of pathological origin, uncontrolled diabetes mellitus, severe obstructive pulmonary disease, or severe chronic liver or renal disease. History of a second malignancy (except those deemed low risk for recurrence or specific types like cervical cancer in situ or non-melanoma skin cancer). History of allergic reactions to abemaciclib, fulvestrant, or VS-6766. Known history of HIV with an AIDS-defining opportunistic infection within the past 12 months or requirement for strong CYP3A4 inhibitors or inducers. Known active hepatitis B virus or hepatitis C virus infection (unless stable or cured per protocol). Use of strong CYP3A4 inhibitors or inducers. Pregnancy or breastfeeding. Inability to swallow oral medications, impaired gastrointestinal absorption, preexisting Crohn's disease, ulcerative colitis, or preexisting chronic condition resulting in baseline Grade 2 or higher diarrhea. Active systemic bacterial infection requiring intravenous antibiotics, active fungal infection requiring intravenous antifungal treatment, or SARS-CoV-2 infection within 28 days prior to first dose. Treatment with warfarin. Other serious or uncontrolled preexisting medical conditions such as interstitial lung disease or severe dyspnea.",NCT05608252-1
+NCT04644211,0,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: no history of thrombosis and age <60 and very low risk by IPSET criteria and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: investigational agents. Biomarkers required: no JAK2 mutation. Biomarkers excluded: NA.,"Poor performance status (ECOG >2 or Karnofsky <60%); Inadequate marrow function (leukocytes <3,000/mcL or absolute neutrophil count <1,500/mcL or platelets <100,000/mcL); Inadequate liver function (total bilirubin > institutional upper limit of normal or AST(SGOT)/ALT(SGPT) >3 x institutional upper limit of normal); Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <30 mL/min/1.73 m2); Concurrent malignancy receiving treatment; Chronic hepatitis B virus infection with detectable viral load on suppressive therapy; Chronic human immunodeficiency virus infection with positive HBV DNA or HCV RNA or hepatitis B surface antigen on suppressive therapy; Cardiac dysfunction (NYHA Functional Classification > class 2B); Presence of >5% blasts on baseline marrow exam or in peripheral blood; History of splenectomy; Allergic reactions attributed to ruxolitinib or compounds of similar chemical or biologic composition; Use of medications that are strong inhibitors of CYP3A4 isozyme; Uncontrolled intercurrent illness; Psychiatric illness or social situations that limit compliance with study requirements; Pregnancy or breastfeeding; Unwillingness to use adequate contraception.",NCT04644211-0
+NCT04644211,1,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: no history of thrombosis and age <60 and low risk by IPSET criteria and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: investigational agents. Biomarkers required: JAK2 mutation. Biomarkers excluded: NA.,"Poor performance status (ECOG >2 or Karnofsky <60%); Inadequate marrow function (leukocytes <3,000/mcL or absolute neutrophil count <1,500/mcL or platelets <100,000/mcL); Inadequate liver function (total bilirubin > institutional upper limit of normal or AST(SGOT)/ALT(SGPT) >3 x institutional upper limit of normal); Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <30 mL/min/1.73 m2); Concurrent malignancy receiving treatment; Chronic hepatitis B virus infection with detectable viral load on suppressive therapy; Chronic human immunodeficiency virus infection with positive HBV DNA or HCV RNA or hepatitis B surface antigen on suppressive therapy; Cardiac dysfunction (NYHA Functional Classification > class 2B); Presence of >5% blasts on baseline marrow exam or in peripheral blood; History of splenectomy; Allergic reactions attributed to ruxolitinib or compounds of similar chemical or biologic composition; Use of medications that are strong inhibitors of CYP3A4 isozyme; Uncontrolled intercurrent illness; Psychiatric illness or social situations that limit compliance with study requirements; Pregnancy or breastfeeding; Unwillingness to use adequate contraception.",NCT04644211-1
+NCT04644211,2,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: essential thrombocythemia. Histology allowed: NA. Cancer burden allowed: no history of thrombosis and age >60 and intermediate risk by IPSET criteria and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: investigational agents. Biomarkers required: no JAK2 mutation. Biomarkers excluded: NA.,"Poor performance status (ECOG >2 or Karnofsky <60%); Inadequate marrow function (leukocytes <3,000/mcL or absolute neutrophil count <1,500/mcL or platelets <100,000/mcL); Inadequate liver function (total bilirubin > institutional upper limit of normal or AST(SGOT)/ALT(SGPT) >3 x institutional upper limit of normal); Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <30 mL/min/1.73 m2); Concurrent malignancy receiving treatment; Chronic hepatitis B virus infection with detectable viral load on suppressive therapy; Chronic human immunodeficiency virus infection with positive HBV DNA or HCV RNA or hepatitis B surface antigen on suppressive therapy; Cardiac dysfunction (NYHA Functional Classification > class 2B); Presence of >5% blasts on baseline marrow exam or in peripheral blood; History of splenectomy; Allergic reactions attributed to ruxolitinib or compounds of similar chemical or biologic composition; Use of medications that are strong inhibitors of CYP3A4 isozyme; Uncontrolled intercurrent illness; Psychiatric illness or social situations that limit compliance with study requirements; Pregnancy or breastfeeding; Unwillingness to use adequate contraception.",NCT04644211-2
+NCT04644211,3,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: polycythemia vera. Histology allowed: NA. Cancer burden allowed: no history of thrombosis and age <60 and low risk by NCCN guidelines and MPN-SAF TSS (MPN-10) score >10 and at least one individual feature >5. Prior treatment required: NA. Prior treatment excluded: investigational agents. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG >2 or Karnofsky <60%); Inadequate marrow function (leukocytes <3,000/mcL or absolute neutrophil count <1,500/mcL or platelets <100,000/mcL); Inadequate liver function (total bilirubin > institutional upper limit of normal or AST(SGOT)/ALT(SGPT) >3 x institutional upper limit of normal); Inadequate renal function (creatinine > institutional upper limit of normal and glomerular filtration rate <30 mL/min/1.73 m2); Concurrent malignancy receiving treatment; Chronic hepatitis B virus infection with detectable viral load on suppressive therapy; Chronic human immunodeficiency virus infection with positive HBV DNA or HCV RNA or hepatitis B surface antigen on suppressive therapy; Cardiac dysfunction (NYHA Functional Classification > class 2B); Presence of >5% blasts on baseline marrow exam or in peripheral blood; History of splenectomy; Allergic reactions attributed to ruxolitinib or compounds of similar chemical or biologic composition; Use of medications that are strong inhibitors of CYP3A4 isozyme; Uncontrolled intercurrent illness; Psychiatric illness or social situations that limit compliance with study requirements; Pregnancy or breastfeeding; Unwillingness to use adequate contraception.",NCT04644211-3
+NCT06318871,0,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: clear cell. Cancer burden allowed: advanced or metastatic. Prior treatment required: prior treatment failure with at least one PD-1/PD-L1 immune checkpoint inhibitor and (prior treatment failure with at least one VEGFR TKI or contraindication to VEGFR TKIs). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1)
+Inadequate organ or marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, platelets < 75,000/mcL, total bilirubin > 1.5 x ULN [or > 3 x ULN if Gilbert's], AST or ALT > 3.0 x ULN, creatinine > 2.0 with GFR < 40 mL/min/1.73 m2, oxygen saturation < 90% on room air, or left ventricular ejection fraction <= 40%)
+Clinically significant cardiac disease (New York Heart Association Functional Classification Class III or IV, or heart failure >= NYHA Class II)
+Prior solid organ transplantation
+Leptomeningeal disease
+Untreated or unstable brain metastases
+Autoimmune disease (including inflammatory bowel disease [ulcerative colitis or Crohn disease], rheumatoid arthritis, systemic progressive sclerosis [scleroderma], systemic lupus erythematosus, autoimmune vasculitis [Wegener's granulomatosis], or motor neuropathy of autoimmune origin [Guillain-Barre syndrome or myasthenia gravis])
+Active cardiovascular disease (cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, or unstable cardiac arrhythmia requiring medication)
+Other uncontrolled intercurrent illness (including ongoing or active infection requiring systemic therapy or uncontrolled psychiatric conditions)
+Additional progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasin, carcinoma in situ of the cervix, or other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after curative intent treatment)
+Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications)
+Pregnancy or breastfeeding
+HIV positive
+Hepatitis B virus or hepatitis C virus infection
+History of severe allergic or anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803
+Prior history of Grade 2 or higher hemolytic anemia",NCT06318871-0
+NCT06318871,1,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: translocation. Cancer burden allowed: advanced or metastatic. Prior treatment required: prior treatment failure with at least one PD-1/PD-L1 immune checkpoint inhibitor and (prior treatment failure with at least one VEGFR TKI or contraindication to VEGFR TKIs). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1)
+Inadequate organ or marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, platelets < 75,000/mcL, total bilirubin > 1.5 x ULN [or > 3 x ULN if Gilbert's], AST or ALT > 3.0 x ULN, creatinine > 2.0 with GFR < 40 mL/min/1.73 m2, oxygen saturation < 90% on room air, or left ventricular ejection fraction <= 40%)
+Clinically significant cardiac disease (New York Heart Association Functional Classification Class III or IV, or heart failure >= NYHA Class II)
+Prior solid organ transplantation
+Leptomeningeal disease
+Untreated or unstable brain metastases
+Autoimmune disease (including inflammatory bowel disease [ulcerative colitis or Crohn disease], rheumatoid arthritis, systemic progressive sclerosis [scleroderma], systemic lupus erythematosus, autoimmune vasculitis [Wegener's granulomatosis], or motor neuropathy of autoimmune origin [Guillain-Barre syndrome or myasthenia gravis])
+Active cardiovascular disease (cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, or unstable cardiac arrhythmia requiring medication)
+Other uncontrolled intercurrent illness (including ongoing or active infection requiring systemic therapy or uncontrolled psychiatric conditions)
+Additional progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasin, carcinoma in situ of the cervix, or other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after curative intent treatment)
+Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications)
+Pregnancy or breastfeeding
+HIV positive
+Hepatitis B virus or hepatitis C virus infection
+History of severe allergic or anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803
+Prior history of Grade 2 or higher hemolytic anemia",NCT06318871-1
+NCT06318871,2,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: renal cell carcinoma. Histology allowed: chromophobe. Cancer burden allowed: advanced or metastatic. Prior treatment required: prior treatment failure with at least one PD-1/PD-L1 immune checkpoint inhibitor and (prior treatment failure with at least one VEGFR TKI or contraindication to VEGFR TKIs). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1)
+Inadequate organ or marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, platelets < 75,000/mcL, total bilirubin > 1.5 x ULN [or > 3 x ULN if Gilbert's], AST or ALT > 3.0 x ULN, creatinine > 2.0 with GFR < 40 mL/min/1.73 m2, oxygen saturation < 90% on room air, or left ventricular ejection fraction <= 40%)
+Clinically significant cardiac disease (New York Heart Association Functional Classification Class III or IV, or heart failure >= NYHA Class II)
+Prior solid organ transplantation
+Leptomeningeal disease
+Untreated or unstable brain metastases
+Autoimmune disease (including inflammatory bowel disease [ulcerative colitis or Crohn disease], rheumatoid arthritis, systemic progressive sclerosis [scleroderma], systemic lupus erythematosus, autoimmune vasculitis [Wegener's granulomatosis], or motor neuropathy of autoimmune origin [Guillain-Barre syndrome or myasthenia gravis])
+Active cardiovascular disease (cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, or unstable cardiac arrhythmia requiring medication)
+Other uncontrolled intercurrent illness (including ongoing or active infection requiring systemic therapy or uncontrolled psychiatric conditions)
+Additional progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasin, carcinoma in situ of the cervix, or other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after curative intent treatment)
+Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications)
+Pregnancy or breastfeeding
+HIV positive
+Hepatitis B virus or hepatitis C virus infection
+History of severe allergic or anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803
+Prior history of Grade 2 or higher hemolytic anemia",NCT06318871-2
+NCT06318871,3,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: urothelial carcinoma. Histology allowed: urothelial carcinoma. Cancer burden allowed: advanced or metastatic. Prior treatment required: prior treatment failure with at least one PD-1/PD-L1 immune checkpoint inhibitor and (prior treatment failure with at least one cytotoxic chemotherapy or prior treatment failure with at least one antibody-drug conjugate). Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Poor performance status (ECOG > 1)
+Inadequate organ or marrow function (absolute neutrophil count < 1,000/mcL, hemoglobin < 8g/dL, platelets < 75,000/mcL, total bilirubin > 1.5 x ULN [or > 3 x ULN if Gilbert's], AST or ALT > 3.0 x ULN, creatinine > 2.0 with GFR < 40 mL/min/1.73 m2, oxygen saturation < 90% on room air, or left ventricular ejection fraction <= 40%)
+Clinically significant cardiac disease (New York Heart Association Functional Classification Class III or IV, or heart failure >= NYHA Class II)
+Prior solid organ transplantation
+Leptomeningeal disease
+Untreated or unstable brain metastases
+Autoimmune disease (including inflammatory bowel disease [ulcerative colitis or Crohn disease], rheumatoid arthritis, systemic progressive sclerosis [scleroderma], systemic lupus erythematosus, autoimmune vasculitis [Wegener's granulomatosis], or motor neuropathy of autoimmune origin [Guillain-Barre syndrome or myasthenia gravis])
+Active cardiovascular disease (cerebral vascular accident/stroke within 6 months, myocardial infarction within 6 months, unstable angina, or unstable cardiac arrhythmia requiring medication)
+Other uncontrolled intercurrent illness (including ongoing or active infection requiring systemic therapy or uncontrolled psychiatric conditions)
+Additional progressing malignancy or history of other malignancy within 2 years (except cured basal cell or squamous cell carcinoma of the skin, superficial bladder cancer, prostate intraepithelial neoplasin, carcinoma in situ of the cervix, or other non-invasive or indolent malignancy, or cancers from which the patient has been disease-free for > 1 year after curative intent treatment)
+Systemic corticosteroid therapy (>= 10 mg of prednisone or equivalent dose for non-autoimmune indications)
+Pregnancy or breastfeeding
+HIV positive
+Hepatitis B virus or hepatitis C virus infection
+History of severe allergic or anaphylactic reactions to murine-based antibody therapy, iron dextran, or compounds of similar chemical or biologic composition to N-803
+Prior history of Grade 2 or higher hemolytic anemia",NCT06318871-3
+NCT05785741,0,"Age range allowed: >= 18 years. Sex allowed: Male or Female. Cancer type allowed: Solid tumors. Histology allowed: NA. Cancer burden allowed: Advanced, unresectable, or metastatic disease. Prior treatment required: Relapsed or progressed on or after standard systemic treatments, or intolerable with standard treatment, or no standard treatment available. Prior treatment excluded: HER3 targeted therapy and antibody drug conjugate with topoisomerase I inhibitor. Biomarkers required: NA. Biomarkers excluded: NA.","Poor performance status (eg ECOG > 1).
+LVEF < 50%.
 Inadequate organ functions.
 Symptomatic congestive heart failure (New York Heart Association classes II-IV) or serious cardiac arrhythmia requiring treatment.
 Myocardial infarction or unstable angina within 6 months before enrollment.
-Clinically important abnormalities in rhythm, conduction or morphology of resting electrocardiogram (eg, complete left bundle branch block, third-degree heart block, second-degree heart block, or PR interval > 250 milliseconds).
-Average Fredericia's formula-QT corrected interval (QTcF) prolongation > 470 milliseconds.
+Clinically important abnormalities in rhythm, conduction or morphology of resting electrocardiogram (eg complete left bundle branch block, third-degree heart block, second-degree heart block, or PR interval > 250 milliseconds).
+QTcF prolongation > 470 milliseconds.
 Unable or unwilling to discontinue concomitant drugs known to prolong the QT interval.
-Current use of medications or herbal supplements known to be strong inducers of CYP3A4.
-History of (non-infectious) interstitial lung disease (ILD), pneumonitis, and/or radiation pneumonitis that required steroids, current ILD/pneumonitis and/or radiation pneumonitis, or suspected ILD/pneumonitis and/or radiation pneumonitis that cannot be ruled out by imaging.
-Lung-specific intercurrent clinically significant illness (eg, pulmonary emboli within 3 months prior to Cycle 1 Day 1, severe asthma, severe chronic obstructive pulmonary disorder, restrictive lung disease, significant pleural effusion, autoimmune, connective tissue or inflammatory disorder with pulmonary involvement, or prior complete pneumonectomy).
-Uncontrolled infection requiring intravenous injection of antibiotics, antivirals, or antifungals.
+History of non-infectious interstitial lung disease, pneumonitis, and/or radiation pneumonitis that required steroids, current interstitial lung disease, pneumonitis, and/or radiation pneumonitis, or suspected interstitial lung disease, pneumonitis, and/or radiation pneumonitis that cannot be ruled out by imaging.
+Lung-specific intercurrent clinically significant illness (eg pulmonary emboli within 3 months, severe asthma, severe chronic obstructive pulmonary disorder, restrictive lung disease, significant pleural effusion) or autoimmune, connective tissue or inflammatory disorder with pulmonary involvement, or prior complete pneumonectomy.
+Uncontrolled infection requiring intravenous antibiotics, antivirals, or antifungals.
 Clinically significant corneal disease.
 Known human immunodeficiency virus (HIV) infection.
-Active viral hepatitis (excluding HBsAg positive subjects with HBV DNA < 1000 cps/mL or 100 IU/mL and not on viral suppressive therapy, and excluding history of hepatitis C virus infection who completed curative treatment and have HCV RNA below the lower limit of quantification).
-Pregnant or lactating.
-Clinically active brain metastases (defined as untreated and symptomatic, or requiring therapy with steroids or anticonvulsants to control associated symptoms).
-Unresolved toxicities from previous anticancer therapy (grade > 1 per NCI-CTCAE version 5.0, except for alopecia).
-Multiple primary malignancies within 3 years before enrollment (except adequately resected non-melanoma skin cancer, curatively treated in-situ disease, other curatively treated solid tumors, or contralateral breast cancer).
-Substance abuse or other medical conditions that increase safety risk or interfere with participation.
-Known hypersensitivity to drug substances or inactive ingredients.",NCT05785741-1
-NCT06127407,1,"Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Conventional chondrosarcoma. Histology allowed: Conventional chondrosarcoma Grades 1 or 2 or 3. Cancer burden allowed: Locally advanced or metastatic, not eligible for curative resection, and radiographic progression or recurrence of disease according to RECIST v1.1. Prior treatment required: NA. Prior treatment excluded: More than 1 prior systemic treatment regimen and prior therapy with an IDH1 inhibitor. Biomarkers required: IDH1 gene mutation (R132C or R132L or R132G or R132H or R132S mutation variants), assessed during pre-screening/screening. Biomarkers excluded: NA.","Unable to swallow oral medication.
-Pregnant or lactating women.
+Active viral hepatitis (except for HBsAg positive subjects with HBV DNA < 1000 cps/mL or 100 IU/mL not on suppressive therapy, or HCV positive subjects who completed curative treatment with HCV RNA below the lower limit of quantification).
+Pregnancy or lactation.
+Clinically active brain metastases (untreated and symptomatic, or requiring steroids or anticonvulsants).
+Unresolved toxicities from previous anticancer therapy (NCI-CTCAE version 5.0 grade > 1, excluding alopecia and certain chronic Grade 2 toxicities).
+Multiple primary malignancies within 3 years before enrollment (except resected non-melanoma skin cancer, curatively treated in-situ disease, other curatively treated solid tumors, or contralateral breast cancer).
+Substance abuse or other medical conditions increasing safety risk.
+Hypersensitivity to drug substances or inactive ingredients.",NCT05785741-0
+NCT06127407,0,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Conventional chondrosarcoma. Histology allowed: Grade 1 or Grade 2 or Grade 3. Cancer burden allowed: Locally advanced or metastatic and not eligible for curative resection and radiographic progression or recurrence of disease according to RECIST v1.1. Prior treatment required: NA. Prior treatment excluded: IDH1 inhibitor and any prior systemic treatment regimen. Biomarkers required: IDH1 mutation (assessed during screening). Biomarkers excluded: NA.,"Unable to swallow oral medication.
+Pregnancy or lactation.
 Participation in another interventional study.
-Symptomatic brain metastases requiring steroids >10 mg per day prednisone (or equivalent).
+Symptomatic brain metastases requiring corticosteroids > 10 mg prednisone per day.
 History of another primary cancer (except curatively resected non-melanoma skin cancer, curatively treated carcinoma in situ, pT1-2 prostatic cancer Gleason score <6, or being free of other primary solid or liquid tumor for >= 1 year).
-Major surgery within 4 weeks prior to randomization.
-Significant active cardiac disease (including New York Heart Association Class III or IV congestive heart failure, myocardial infarction, unstable angina, and/or stroke).
-Left ventricular ejection fraction (LVEF) <40%.
+Major surgery within 4 weeks.
+Significant active cardiac disease within 6 months (including New York Heart Association Class III or IV congestive heart failure, myocardial infarction, unstable angina, or stroke).
+LVEF < 40%.
+Heart-rate corrected QT interval (QTcF) >= 450 msec or other factors that increase the risk of QT prolongation or arrhythmic events.
+Known medical history of progressive multifocal leukoencephalopathy (PML).",NCT06127407-0
+NCT06127407,1,Age range allowed: >=18 years. Sex allowed: Both. Cancer type allowed: Conventional chondrosarcoma. Histology allowed: Grade 1 or Grade 2 or Grade 3. Cancer burden allowed: Locally advanced or metastatic and not eligible for curative resection and radiographic progression or recurrence of disease according to RECIST v1.1. Prior treatment required: 1 prior systemic treatment regimen. Prior treatment excluded: IDH1 inhibitor. Biomarkers required: IDH1 mutation (assessed during screening). Biomarkers excluded: NA.,"Unable to swallow oral medication.
+Pregnancy or lactation.
+Participation in another interventional study.
+Symptomatic brain metastases requiring corticosteroids > 10 mg prednisone per day.
+History of another primary cancer (except curatively resected non-melanoma skin cancer, curatively treated carcinoma in situ, pT1-2 prostatic cancer Gleason score <6, or being free of other primary solid or liquid tumor for >= 1 year).
+Major surgery within 4 weeks.
+Significant active cardiac disease within 6 months (including New York Heart Association Class III or IV congestive heart failure, myocardial infarction, unstable angina, or stroke).
+LVEF < 40%.
 Heart-rate corrected QT interval (QTcF) >= 450 msec or other factors that increase the risk of QT prolongation or arrhythmic events.
 Known medical history of progressive multifocal leukoencephalopathy (PML).",NCT06127407-1
-NCT05734105,1,Age range allowed: >=18 years. Sex allowed: Male or Female. Cancer type allowed: gastrointestinal stromal tumor. Histology allowed: gastrointestinal stromal tumor. Cancer burden allowed: advanced disease. Prior treatment required: imatinib. Prior treatment excluded: NA. Biomarkers required: KIT exon 11 mutation and (KIT exon 17 mutation or KIT exon 18 mutation) assessed by ctDNA sample. Biomarkers excluded: KIT exon 9 mutation or KIT exon 13 mutation or KIT exon 14 mutation.,"Poor performance status (ECOG PS >2).
-Active central nervous system metastases.
-New York Heart Association Class II-IV heart disease, myocardial infarction within 6 months, active ischemia, uncontrolled cardiac conditions such as angina pectoris, clinically significant cardiac arrhythmia requiring therapy, uncontrolled hypertension, or congestive heart failure.
-Use of strong or moderate inhibitors or inducers of cytochrome P450 (CYP) 3A.
-Major surgeries (eg, abdominal laparotomy) within 4 weeks.
-Known human immunodeficiency virus, acute or chronic hepatitis B, or acute or chronic hepatitis C infection.
-Gastrointestinal abnormalities including inability to take oral medication, malabsorption syndromes, or requirement for intravenous alimentation.
-Any active bleeding excluding hemorrhoidal or gum bleeding.",NCT05734105-1
-NCT05538130,1,Age range allowed: NA. Sex allowed: Both. Cancer type allowed: Solid tumors. Histology allowed: NA. Cancer burden allowed: Advanced or metastatic (including primary brain tumor). Prior treatment required: Prior treatment followed by disease progression and no satisfactory alternative treatment options. Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
-History or current evidence of retinal vein occlusion (RVO)
-Concurrent neuromuscular disorder associated with elevated creatine kinase (CK)",NCT05538130-1
-NCT05538130,2,Age range allowed: NA. Sex allowed: Both. Cancer type allowed: Melanoma. Histology allowed: NA. Cancer burden allowed: Advanced or metastatic. Prior treatment required: NA. Prior treatment excluded: NA. Biomarkers required: BRAF V600 mutation or BRAF Class II/III alteration. Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
-History or current evidence of retinal vein occlusion (RVO)
-Concurrent neuromuscular disorder associated with elevated creatine kinase (CK)",NCT05538130-2
-NCT05538130,3,Age range allowed: NA. Sex allowed: Both. Cancer type allowed: Solid tumors excluding melanoma. Histology allowed: NA. Cancer burden allowed: Unresectable or advanced or metastatic. Prior treatment required: Standard of care (disease progression or demonstrated intolerance). Prior treatment excluded: NA. Biomarkers required: BRAF founder alteration (non-V600 Class II/III BRAF alteration). Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
-History or current evidence of retinal vein occlusion (RVO)
-Concurrent neuromuscular disorder associated with elevated creatine kinase (CK)",NCT05538130-3
+NCT05734105,0,Age range allowed: >=18 years. Sex allowed: Male or female. Cancer type allowed: gastrointestinal stromal tumor. Histology allowed: gastrointestinal stromal tumor. Cancer burden allowed: advanced. Prior treatment required: imatinib. Prior treatment excluded: NA. Biomarkers required: KIT exon 11 mutation and KIT exon 17 mutation assessed during screening. Biomarkers excluded: KIT exon 9 mutation or KIT exon 13 mutation or KIT exon 14 mutation.,"Known active central nervous system metastases.
+Heart disease (including New York Heart Association Class II-IV heart disease, myocardial infarction within 6 months of start, active ischemia, angina pectoris, clinically significant cardiac arrhythmia requiring therapy, uncontrolled hypertension, or congestive heart failure).
+Use of strong or moderate inhibitors or inducers of cytochrome P450 3A.
+Major surgeries (eg abdominal laparotomy) within 4 weeks of study start.
+Human immunodeficiency virus or acute or chronic hepatitis B or acute or chronic hepatitis C infection.
+Gastrointestinal abnormalities (including inability to take oral medication, malabsorption syndromes, or requirement for intravenous alimentation).
+Any active bleeding excluding hemorrhoidal or gum bleeding.
+Poor performance status (eg ECOG > 2).",NCT05734105-0
+NCT05734105,1,Age range allowed: >=18 years. Sex allowed: Male or female. Cancer type allowed: gastrointestinal stromal tumor. Histology allowed: gastrointestinal stromal tumor. Cancer burden allowed: advanced. Prior treatment required: imatinib. Prior treatment excluded: NA. Biomarkers required: KIT exon 11 mutation and KIT exon 18 mutation assessed during screening. Biomarkers excluded: KIT exon 9 mutation or KIT exon 13 mutation or KIT exon 14 mutation.,"Known active central nervous system metastases.
+Heart disease (including New York Heart Association Class II-IV heart disease, myocardial infarction within 6 months of start, active ischemia, angina pectoris, clinically significant cardiac arrhythmia requiring therapy, uncontrolled hypertension, or congestive heart failure).
+Use of strong or moderate inhibitors or inducers of cytochrome P450 3A.
+Major surgeries (eg abdominal laparotomy) within 4 weeks of study start.
+Human immunodeficiency virus or acute or chronic hepatitis B or acute or chronic hepatitis C infection.
+Gastrointestinal abnormalities (including inability to take oral medication, malabsorption syndromes, or requirement for intravenous alimentation).
+Any active bleeding excluding hemorrhoidal or gum bleeding.
+Poor performance status (eg ECOG > 2).",NCT05734105-1
+NCT05538130,0,Age range allowed: NA. Sex allowed: Both sexes. Cancer type allowed: solid tumor including primary brain tumor. Histology allowed: NA. Cancer burden allowed: advanced or metastatic. Prior treatment required: progression during or following last prior treatment. Prior treatment excluded: NA. Biomarkers required: NA. Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
+History or current evidence of retinal vein occlusion
+Concurrent neuromuscular disorder associated with elevated creatine kinase",NCT05538130-0
+NCT05538130,1,Age range allowed: NA. Sex allowed: Both sexes. Cancer type allowed: melanoma. Histology allowed: NA. Cancer burden allowed: advanced or metastatic. Prior treatment required: available treatments no longer effective. Prior treatment excluded: NA. Biomarkers required: BRAF V600 mutation. Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
+History or current evidence of retinal vein occlusion
+Concurrent neuromuscular disorder associated with elevated creatine kinase",NCT05538130-1
+NCT05538130,2,Age range allowed: NA. Sex allowed: Both sexes. Cancer type allowed: melanoma. Histology allowed: NA. Cancer burden allowed: advanced or metastatic. Prior treatment required: available treatments no longer effective. Prior treatment excluded: NA. Biomarkers required: BRAF Class II/III alteration. Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
+History or current evidence of retinal vein occlusion
+Concurrent neuromuscular disorder associated with elevated creatine kinase",NCT05538130-2
+NCT05538130,3,Age range allowed: NA. Sex allowed: Both sexes. Cancer type allowed: solid tumor excluding melanoma. Histology allowed: NA. Cancer burden allowed: unresectable or advanced or metastatic. Prior treatment required: progression on or demonstrated intolerance to standard of care. Prior treatment excluded: NA. Biomarkers required: BRAF founder alteration (non-V600 Class II/III BRAF alteration). Biomarkers excluded: NA.,"Brain metastasis larger than 4 cm
+History or current evidence of retinal vein occlusion
+Concurrent neuromuscular disorder associated with elevated creatine kinase",NCT05538130-3
