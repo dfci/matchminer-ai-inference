@@ -52,6 +52,12 @@ def test_trial_qc_report_metrics(monkeypatch):
         "denominator": 2,
         "ids": ["T2"],
     }
+    failed_llm_qc_artifact = {
+        "metric": "trials_failed_inference",
+        "numerator": 1,
+        "denominator": 3,
+        "ids": ["T3"],
+    }
     monkeypatch.setattr(
         "matchminer_ai._qc.trials.count_embedding_tokens",
         lambda texts, *, embedding_config: [120, 10, 3400],
@@ -78,12 +84,15 @@ def test_trial_qc_report_metrics(monkeypatch):
         trial_source=trial_source,
         unfiltered_spaces=trial_spaces,
         truncated_llm_qc_artifact=truncated_llm_qc_artifact,
+        failed_llm_qc_artifact=failed_llm_qc_artifact,
         config=config,
     ).set_index("metric")
 
     assert report.loc["trials_missing_in_output", "value"] == 1
     assert report.loc["trials_missing_in_output", "percent"] > 0
     assert report.loc["trials_missing_in_output", "ids"] == ["T3"]
+    assert report.loc["trials_failed_inference", "value"] == 1
+    assert report.loc["trials_failed_inference", "ids"] == ["T3"]
     assert report.loc["spaces_per_trial_max", "value"] == 2
     assert report.loc["trials_with_non_distinct_spaces", "value"] == 1
     assert report.loc["trials_with_non_distinct_spaces", "ids"] == ["T1"]
@@ -141,6 +150,12 @@ def test_trial_qc_uses_embedding_max_seq_length(monkeypatch):
         unfiltered_spaces=trial_spaces,
         truncated_llm_qc_artifact={
             "metric": "trials_truncated_llm_response",
+            "numerator": 0,
+            "denominator": 1,
+            "ids": [],
+        },
+        failed_llm_qc_artifact={
+            "metric": "trials_failed_inference",
             "numerator": 0,
             "denominator": 1,
             "ids": [],

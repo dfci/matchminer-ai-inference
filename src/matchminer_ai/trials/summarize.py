@@ -87,7 +87,12 @@ def _filter_failed_trial_inference(
 
 def run_llm_summarization(
     trials_to_process: pd.DataFrame, config: MMAIConfig
-) -> tuple[pd.DataFrame, dict[str, Any], dict[str, object]]:
+) -> tuple[
+    pd.DataFrame,
+    dict[str, Any],
+    dict[str, object],
+    dict[str, object],
+]:
     """Run LLM-based trial summarization."""
     trial_config = dict(config.trial)
     runtime_trial_config = build_llm_runtime_config(
@@ -114,11 +119,16 @@ def run_llm_summarization(
 
     # Keep error strings out of the answer text consumed by postprocessing.
     # Reasoning remains optional backend-provided/debug context.
-    trials_with_summaries, _failed_trial_ids = _filter_failed_trial_inference(
+    trials_with_summaries, failed_trial_ids = _filter_failed_trial_inference(
         trials_with_summaries,
         generation,
     )
     trial_ids = trials_to_process["trial_id"].astype(str).tolist()
+    failed_llm_qc_artifact = build_qc_artifact(
+        metric="trials_failed_inference",
+        ids=failed_trial_ids,
+        denominator=len(trial_ids),
+    )
     truncated_llm_qc_artifact = build_qc_artifact(
         metric="trials_truncated_llm_response",
         ids=[
@@ -134,4 +144,9 @@ def run_llm_summarization(
         "config_snapshot": {"trial": trial_config},
         "model_metadata": generation.model_metadata,
     }
-    return trials_with_summaries, metadata, truncated_llm_qc_artifact
+    return (
+        trials_with_summaries,
+        metadata,
+        truncated_llm_qc_artifact,
+        failed_llm_qc_artifact,
+    )
