@@ -26,6 +26,9 @@ Returned by `summarize_trials(..., return_qc=True)`.
 
 - `trials_missing_in_output`: trials present in the input but not represented
   in the output after summarization/postprocessing.
+- `trials_failed_inference`: trials whose LLM inference finished with an error
+  after retries were exhausted. These trials are removed before
+  postprocessing.
 - `trials_truncated_llm_response`: trials where the LLM stopped due to max
   token length.
 - `spaces_per_trial_min|median|max`: min/median/max number of spaces per trial.
