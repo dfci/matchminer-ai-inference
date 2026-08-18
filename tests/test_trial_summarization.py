@@ -140,9 +140,12 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
         ]
     )
 
-    df, metadata, truncated_llm_qc_artifact = run_llm_summarization(
-        trials, default_config
-    )
+    (
+        df,
+        metadata,
+        truncated_llm_qc_artifact,
+        failed_llm_qc_artifact,
+    ) = run_llm_summarization(trials, default_config)
     assert df["trial_answer_text"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
     assert metadata["config_snapshot"]["trial"]["local"]["model_name"] == "model"
@@ -151,12 +154,16 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     assert truncated_llm_qc_artifact["denominator"] == 1
     assert truncated_llm_qc_artifact["numerator"] == 0
     assert truncated_llm_qc_artifact["ids"] == []
+    assert failed_llm_qc_artifact["metric"] == "trials_failed_inference"
+    assert failed_llm_qc_artifact["denominator"] == 1
+    assert failed_llm_qc_artifact["numerator"] == 0
+    assert failed_llm_qc_artifact["ids"] == []
 
 
-def test_run_llm_summarization_preserves_terminal_error_output(
+def test_run_llm_summarization_filters_terminal_error_output(
     monkeypatch, default_config
 ):
-    """Store terminal request errors in the answer column like the pipeline."""
+    """Filter terminal request errors and report their trial IDs for QC."""
     monkeypatch.setattr(
         "matchminer_ai.trials.summarize.get_llm_backend", lambda config: MagicMock()
     )
@@ -187,12 +194,14 @@ def test_run_llm_summarization_preserves_terminal_error_output(
         ]
     )
 
-    df, _, _ = run_llm_summarization(trials, default_config)
+    df, _, _, failed_llm_qc_artifact = run_llm_summarization(trials, default_config)
 
-    assert df["trial_answer_text"].tolist() == [
-        "SUM0",
-        "ERROR: timeout after all retries",
-    ]
+    assert df["trial_id"].tolist() == ["T1"]
+    assert df["trial_answer_text"].tolist() == ["SUM0"]
+    assert failed_llm_qc_artifact["metric"] == "trials_failed_inference"
+    assert failed_llm_qc_artifact["denominator"] == 2
+    assert failed_llm_qc_artifact["numerator"] == 1
+    assert failed_llm_qc_artifact["ids"] == ["T2"]
 
 
 def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
@@ -232,7 +241,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
         ]
     )
 
-    df, _, truncated_llm_qc_artifact = run_llm_summarization(trials, default_config)
+    df, _, truncated_llm_qc_artifact, _ = run_llm_summarization(trials, default_config)
     assert df["trial_id"].tolist() == ["T1", "T2"]
     assert df["trial_answer_text"].tolist() == ["SUM0", "SUM1"]
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
@@ -384,6 +393,12 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
             {"model_sha": "sha"},
             {
                 "metric": "trials_truncated_llm_response",
+                "numerator": 0,
+                "denominator": 1,
+                "ids": [],
+            },
+            {
+                "metric": "trials_failed_inference",
                 "numerator": 0,
                 "denominator": 1,
                 "ids": [],
