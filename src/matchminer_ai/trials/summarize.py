@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any, TYPE_CHECKING
 
 import pandas as pd
@@ -20,6 +21,9 @@ from .prompt_builder import build_trial_text, get_filled_trial_prompt
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
+
+
+logger = logging.getLogger(__name__)
 
 
 def summarize_trials_multi_cohort(
@@ -42,6 +46,43 @@ def summarize_trials_multi_cohort(
         llm_config=trial_config,
         model_metadata_cache_dir=model_metadata_cache_dir,
     )
+
+
+def _filter_failed_trial_inference(
+    trials_with_summaries: pd.DataFrame,
+    generation: LLMGenerationResult,
+) -> tuple[pd.DataFrame, list[str]]:
+    """Remove failed inference results before trial postprocessing."""
+    trial_ids = trials_with_summaries["trial_id"].astype(str).tolist()
+    generation_rows = list(
+        zip(
+            trial_ids,
+            generation.final_outputs,
+            generation.reasoning_outputs,
+            generation.finish_reasons,
+            strict=True,
+        )
+    )
+    successful_positions: list[int] = []
+    failed_trial_ids: list[str] = []
+    for position, (trial_id, _output, _reasoning, finish_reason) in enumerate(
+        generation_rows
+    ):
+        if str(finish_reason) == "error":
+            failed_trial_ids.append(trial_id)
+            logger.warning("Filtering trial %s after inference failed.", trial_id)
+        else:
+            successful_positions.append(position)
+
+    # Error strings are useful diagnostics but must not enter trial postprocessing.
+    successful_trials = trials_with_summaries.iloc[successful_positions].copy()
+    successful_trials["trial_answer_text"] = [
+        generation_rows[position][1] for position in successful_positions
+    ]
+    successful_trials["trial_reasoning_text"] = [
+        generation_rows[position][2] for position in successful_positions
+    ]
+    return successful_trials, failed_trial_ids
 
 
 def run_llm_summarization(
@@ -71,12 +112,13 @@ def run_llm_summarization(
         model_metadata_cache_dir=config.model_metadata_cache_dir,
     )
 
-    trial_summaries = generation.final_outputs
-    # Postprocessing consumes the answer text. Reasoning is optional
-    # backend-provided/debug context and is not required for parsing.
-    trials_with_summaries["trial_answer_text"] = trial_summaries
-    trials_with_summaries["trial_reasoning_text"] = generation.reasoning_outputs
-    trial_ids = trials_with_summaries["trial_id"].astype(str).tolist()
+    # Keep error strings out of the answer text consumed by postprocessing.
+    # Reasoning remains optional backend-provided/debug context.
+    trials_with_summaries, _failed_trial_ids = _filter_failed_trial_inference(
+        trials_with_summaries,
+        generation,
+    )
+    trial_ids = trials_to_process["trial_id"].astype(str).tolist()
     truncated_llm_qc_artifact = build_qc_artifact(
         metric="trials_truncated_llm_response",
         ids=[
