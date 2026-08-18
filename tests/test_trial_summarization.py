@@ -204,6 +204,61 @@ def test_run_llm_summarization_filters_terminal_error_output(
     assert failed_llm_qc_artifact["ids"] == ["T2"]
 
 
+def test_summarize_trials_filters_failed_inference_and_reports_qc(
+    monkeypatch,
+    default_config,
+    mock_summarized_data,
+):
+    """The public trial API omits failed requests and reports their IDs."""
+    backend = MagicMock()
+    backend.generate_llm_outputs.return_value = LLMGenerationResult(
+        final_outputs=[
+            mock_summarized_data.loc[0, "trial_answer_text"],
+            "ERROR: timeout after all retries",
+        ],
+        model_metadata={"model_sha": "sha"},
+        finish_reasons=["stop", "error"],
+        reasoning_outputs=["successful reasoning", ""],
+        raw_outputs=[],
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.get_llm_backend",
+        lambda config: backend,
+    )
+    default_config.debug_mode = True
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title 1",
+                "brief_summary": "Brief 1",
+                "eligibility_criteria": "Criteria 1",
+            },
+            {
+                "trial_id": "T2",
+                "trial_title": "Title 2",
+                "brief_summary": "Brief 2",
+                "eligibility_criteria": "Criteria 2",
+            },
+        ]
+    )
+
+    result, _, qc_report = summarize_trials(
+        trials,
+        config=default_config,
+        return_metadata=True,
+        return_qc=True,
+    )
+
+    assert set(result["trial_id"]) == {"T1"}
+    assert not result["trial_answer_text"].str.contains("ERROR:").any()
+    qc_by_metric = qc_report.set_index("metric")
+    assert qc_by_metric.loc["trials_failed_inference", "value"] == 1
+    assert qc_by_metric.loc["trials_failed_inference", "denominator"] == 2
+    assert qc_by_metric.loc["trials_failed_inference", "ids"] == ["T2"]
+    assert qc_by_metric.loc["trials_missing_in_output", "ids"] == ["T2"]
+
+
 def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
     """Ensure LLM outputs are aligned with the input trial order."""
     mock_backend = MagicMock()
