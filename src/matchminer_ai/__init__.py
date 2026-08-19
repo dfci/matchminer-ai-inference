@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from importlib import import_module
-from importlib.metadata import PackageNotFoundError, version
 from types import ModuleType
 
+from ._metadata import package_version
 from .config import load_config, load_default_preset, load_preset
 from .pipeline import MMAIPipeline
 
@@ -17,10 +17,7 @@ _LAZY_SUBMODULES = {
     "trials",
 }
 
-try:
-    __version__ = version("matchminer-ai")
-except PackageNotFoundError:
-    __version__ = "0+unknown"
+__version__ = package_version()
 
 __all__ = [
     "MMAIPipeline",

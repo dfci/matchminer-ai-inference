@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 import pandas as pd
 
+from matchminer_ai import __version__
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.backends import (
     LLMGenerationResult,
@@ -567,6 +568,10 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
         return_metadata=True,
     )
 
+    assert metadata["package"] == {
+        "name": "matchminer-ai",
+        "version": __version__,
+    }
     assert metadata["config_snapshot"]["remote"]["enabled"] is True
     assert metadata["config_snapshot"]["remote"]["server_urls"] == [
         "http://localhost:8000/v1"

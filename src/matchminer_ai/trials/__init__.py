@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot
 
 if TYPE_CHECKING:
@@ -139,6 +140,7 @@ def summarize_trials(
     # Depending on flags, decide what to return
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "trial_summarizer": metadata["model_metadata"],
