@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from importlib import resources
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
 from .inference import run_checker
 
@@ -142,6 +143,7 @@ def exclusion_criteria_check(
     # Optionally return metadata for reproducibility/debugging.
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "exclusion_criteria_checker": model_metadata,

@@ -12,6 +12,7 @@ from matchminer_ai.llm.backends import (
     build_llm_runtime_config,
     get_llm_backend,
 )
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
 from matchminer_ai.llm.prompt_rendering import Prompt
 
@@ -241,6 +242,7 @@ def summarize_patient_notes(
     final_rows = postprocess_patient_summaries(final_rows, resolved_config)
 
     metadata = {
+        "package": package_metadata(),
         "config_snapshot": config_snapshot(resolved_config),
         "model_metadata": model_metadata,
     }

@@ -8,6 +8,7 @@ from importlib import resources
 import pandas as pd
 import torch
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
 from .inference import run_checker
 
@@ -147,6 +148,7 @@ def score_match_quality(
     # Optionally return metadata for reproducibility/debugging.
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "match_quality_checker": model_metadata,

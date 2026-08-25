@@ -138,6 +138,6 @@ def expected_flattened_spaces(mock_summarized_data: pd.DataFrame) -> pd.DataFram
         _strip_numerical_prefix(TRIAL_SPACE_3),
         _strip_numerical_prefix(TRIAL_SPACE_4),
     ]
-    for_embed["clinical_space_number"] = [1, 2, 3, 1]
+    for_embed["clinical_space_number"] = [0, 1, 2, 0]
 
     return for_embed.reset_index(drop=True)

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Literal
 
 import pandas as pd
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
 from .inference import generate_embeddings
 
@@ -114,6 +115,7 @@ def embed_for_matching(
     result = output[id_cols + ["embedding"]].copy()
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "embedding_model": model_metadata,

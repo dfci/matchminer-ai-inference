@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 import pandas as pd
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
 from matchminer_ai.llm.backends import (
     build_llm_runtime_config,
@@ -206,6 +207,7 @@ def score_match_quality_with_llm(
 
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "llm_match_quality_checker": model_metadata,
@@ -320,6 +322,7 @@ def exclusion_criteria_check_with_llm(
 
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "llm_exclusion_criteria_checker": model_metadata,

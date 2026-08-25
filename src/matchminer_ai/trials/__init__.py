@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot
 
 if TYPE_CHECKING:
@@ -110,9 +111,12 @@ def summarize_trials(
         )
 
     logger.info("Starting trial summarization for %d trials.", len(trials))
-    trials_with_summaries, metadata, truncated_llm_qc_artifact = run_llm_summarization(
-        trials, resolved_config
-    )
+    (
+        trials_with_summaries,
+        metadata,
+        truncated_llm_qc_artifact,
+        failed_llm_qc_artifact,
+    ) = run_llm_summarization(trials, resolved_config)
     logger.info("Completed LLM summarization. Beginning postprocessing.")
     # Capture unfiltered spaces for QC before keyword filtering.
     result, unfiltered_spaces = postprocess_trial_summaries(
@@ -129,12 +133,14 @@ def summarize_trials(
         trial_source=trials,
         unfiltered_spaces=unfiltered_spaces,
         truncated_llm_qc_artifact=truncated_llm_qc_artifact,
+        failed_llm_qc_artifact=failed_llm_qc_artifact,
         config=resolved_config,
     )
 
     # Depending on flags, decide what to return
     if return_metadata:
         metadata_payload = {
+            "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
                 "trial_summarizer": metadata["model_metadata"],

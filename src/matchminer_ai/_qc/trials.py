@@ -54,6 +54,7 @@ def trial_qc_report(
     trial_source: pd.DataFrame,
     unfiltered_spaces: pd.DataFrame,
     truncated_llm_qc_artifact: dict[str, object],
+    failed_llm_qc_artifact: dict[str, object],
     config: MMAIConfig | None = None,
     expected_keywords: list[str] | None = None,
 ) -> pd.DataFrame:
@@ -73,6 +74,9 @@ def trial_qc_report(
         Trial-space table prior to keyword filtering, used for keyword checks.
     truncated_llm_qc_artifact : dict[str, object]
         QC artifact for trials truncated due to finish_reason='length' with
+        metric, numerator, denominator, and ids.
+    failed_llm_qc_artifact : dict[str, object]
+        QC artifact for trials filtered due to finish_reason='error' with
         metric, numerator, denominator, and ids.
     config : MMAIConfig | None, optional
         Config used to resolve backend and embedding settings when token counts
@@ -134,6 +138,7 @@ def trial_qc_report(
     )
 
     metrics.append(qc_artifact_to_report_row(truncated_llm_qc_artifact))
+    metrics.append(qc_artifact_to_report_row(failed_llm_qc_artifact))
 
     # QC metric for trial summaries exceeding embedding model token limit
     if config is not None and config.embedding:

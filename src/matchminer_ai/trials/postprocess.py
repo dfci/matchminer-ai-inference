@@ -88,7 +88,7 @@ def _expand_trial_spaces(
             ignore_index=True,
         )
         frame["clinical_space_summary"] = cohorts
-        frame["clinical_space_number"] = frame.index + 1
+        frame["clinical_space_number"] = frame.index
         frames.append(frame)
 
     if not frames:

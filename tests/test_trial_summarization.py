@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 import pandas as pd
 
+from matchminer_ai import __version__
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.backends import (
     LLMGenerationResult,
@@ -17,19 +18,31 @@ from matchminer_ai.trials import summarize_trials
 from matchminer_ai.trials.summarize import run_llm_summarization
 
 
-def test_build_trial_text_normalizes_whitespace():
-    """Ensure trial text normalization collapses whitespace across inputs."""
+def test_build_trial_text_preserves_formatting():
+    """Ensure trial text preserves whitespace and structure across inputs."""
     trials = pd.DataFrame(
         [
             {
-                "trial_title": "Title",
+                "trial_title": "Title  with repeated spaces",
                 "brief_summary": "Brief\nsummary",
-                "eligibility_criteria": "Eligibility   criteria",
+                "eligibility_criteria": (
+                    "Inclusion Criteria:\n"
+                    "  - Criterion one\n\n"
+                    "Exclusion Criteria:\n"
+                    "\t- Criterion two"
+                ),
             }
         ]
     )
     text = build_trial_text(trials).iloc[0]
-    assert text == "Title Brief summary Eligibility criteria"
+    assert text == (
+        "Title  with repeated spaces\n"
+        "Brief\nsummary\n"
+        "Inclusion Criteria:\n"
+        "  - Criterion one\n\n"
+        "Exclusion Criteria:\n"
+        "\t- Criterion two"
+    )
 
 
 def test_get_filled_trial_prompt_includes_trial_text():
@@ -128,9 +141,12 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
         ]
     )
 
-    df, metadata, truncated_llm_qc_artifact = run_llm_summarization(
-        trials, default_config
-    )
+    (
+        df,
+        metadata,
+        truncated_llm_qc_artifact,
+        failed_llm_qc_artifact,
+    ) = run_llm_summarization(trials, default_config)
     assert df["trial_answer_text"].iloc[0] == "SUM0"
     assert "trial_text" in df.columns
     assert metadata["config_snapshot"]["trial"]["local"]["model_name"] == "model"
@@ -139,6 +155,54 @@ def test_run_llm_summarization_returns_metadata(monkeypatch, default_config):
     assert truncated_llm_qc_artifact["denominator"] == 1
     assert truncated_llm_qc_artifact["numerator"] == 0
     assert truncated_llm_qc_artifact["ids"] == []
+    assert failed_llm_qc_artifact["metric"] == "trials_failed_inference"
+    assert failed_llm_qc_artifact["denominator"] == 1
+    assert failed_llm_qc_artifact["numerator"] == 0
+    assert failed_llm_qc_artifact["ids"] == []
+
+
+def test_run_llm_summarization_filters_terminal_error_output(
+    monkeypatch, default_config
+):
+    """Filter terminal request errors and report their trial IDs for QC."""
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.get_llm_backend", lambda config: MagicMock()
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.trials.summarize.summarize_trials_multi_cohort",
+        lambda *args, **kwargs: LLMGenerationResult(
+            final_outputs=["SUM0", "ERROR: timeout after all retries"],
+            model_metadata={"model_sha": "sha"},
+            finish_reasons=["stop", "error"],
+            reasoning_outputs=["", ""],
+            raw_outputs=[],
+        ),
+    )
+    trials = pd.DataFrame(
+        [
+            {
+                "trial_id": "T1",
+                "trial_title": "Title 1",
+                "brief_summary": "Brief 1",
+                "eligibility_criteria": "Criteria 1",
+            },
+            {
+                "trial_id": "T2",
+                "trial_title": "Title 2",
+                "brief_summary": "Brief 2",
+                "eligibility_criteria": "Criteria 2",
+            },
+        ]
+    )
+
+    df, _, _, failed_llm_qc_artifact = run_llm_summarization(trials, default_config)
+
+    assert df["trial_id"].tolist() == ["T1"]
+    assert df["trial_answer_text"].tolist() == ["SUM0"]
+    assert failed_llm_qc_artifact["metric"] == "trials_failed_inference"
+    assert failed_llm_qc_artifact["denominator"] == 2
+    assert failed_llm_qc_artifact["numerator"] == 1
+    assert failed_llm_qc_artifact["ids"] == ["T2"]
 
 
 def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
@@ -178,7 +242,7 @@ def test_run_llm_summarization_preserves_order(monkeypatch, default_config):
         ]
     )
 
-    df, _, truncated_llm_qc_artifact = run_llm_summarization(trials, default_config)
+    df, _, truncated_llm_qc_artifact, _ = run_llm_summarization(trials, default_config)
     assert df["trial_id"].tolist() == ["T1", "T2"]
     assert df["trial_answer_text"].tolist() == ["SUM0", "SUM1"]
     assert truncated_llm_qc_artifact["metric"] == "trials_truncated_llm_response"
@@ -233,6 +297,7 @@ def test_flatten_trial_to_spaces_uses_final_output_and_line_boilerplate():
         "Biomarkers excluded: None."
     ]
     assert result["boilerplate_text"].tolist() == [boilerplate]
+    assert result["clinical_space_number"].tolist() == [0]
 
 
 def test_local_backend_generate_llm_outputs(monkeypatch, default_config):
@@ -329,6 +394,12 @@ def test_summarize_trials_includes_debug_columns(monkeypatch):
             {"model_sha": "sha"},
             {
                 "metric": "trials_truncated_llm_response",
+                "numerator": 0,
+                "denominator": 1,
+                "ids": [],
+            },
+            {
+                "metric": "trials_failed_inference",
                 "numerator": 0,
                 "denominator": 1,
                 "ids": [],
@@ -497,6 +568,10 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
         return_metadata=True,
     )
 
+    assert metadata["package"] == {
+        "name": "matchminer-ai",
+        "version": __version__,
+    }
     assert metadata["config_snapshot"]["remote"]["enabled"] is True
     assert metadata["config_snapshot"]["remote"]["server_urls"] == [
         "http://localhost:8000/v1"

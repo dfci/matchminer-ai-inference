@@ -1,10 +1,11 @@
 metric,value,denominator,percent,ids
 trials_missing_in_output,0.0,10.0,0.0,[]
 trials_truncated_llm_response,0.0,10.0,0.0,[]
+trials_failed_inference,0.0,10.0,0.0,[]
 spaces_exceed_embedding_token_limit,0.0,30.0,0.0,[]
 spaces_per_trial_min,1.0,,,[]
-spaces_per_trial_median,2.5,,,[]
-spaces_per_trial_max,9.0,,,[]
+spaces_per_trial_median,3.0,,,[]
+spaces_per_trial_max,5.0,,,[]
 trials_with_non_distinct_spaces,0.0,10.0,0.0,[]
 spaces_dropped_missing_keyword:Age,0.0,30.0,0.0,[]
 spaces_dropped_missing_keyword:Sex,0.0,30.0,0.0,[]
