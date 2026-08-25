@@ -1595,8 +1595,7 @@ match_quality_pass : bool
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/rerank.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 43</span>
-<span class="normal"> 44</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
 <span class="normal"> 45</span>
 <span class="normal"> 46</span>
 <span class="normal"> 47</span>
@@ -1708,14 +1707,16 @@ match_quality_pass : bool
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality</span><span class="p">(</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality</span><span class="p">(</span>
     <span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">filter_low_quality</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Evaluate the clinical match quality of each candidate patient-trial pair.</span>
 
 <span class="sd">    Parameters</span>
@@ -1760,25 +1761,25 @@ match_quality_pass : bool
 <span class="sd">            Whether the match quality score meets the configured cutoff.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus a metadata dict.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Validate that candidate pair rows contain the text + ids needed for checker prompts.</span>
     <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;patient_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;space_trial_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;cancer_history_summary&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;clinical_space_summary&quot;</span><span class="p">,</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"space_trial_id"</span><span class="p">,</span>
+        <span class="s2">"cancer_history_summary"</span><span class="p">,</span>
+        <span class="s2">"clinical_space_summary"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">candidate_pairs</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="c1"># Resolve run config and build checker prompts from the configured template.</span>
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
-    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;match_quality&quot;</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="n">prompt_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">&quot;prompt_file&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">score_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">checker_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;score_cutoff&quot;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">))</span>
+    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"match_quality"</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="n">prompt_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">score_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">checker_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"score_cutoff"</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">))</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="n">_load_match_quality_template</span><span class="p">(</span><span class="n">prompt_file</span><span class="p">)</span>
     <span class="n">prompts</span> <span class="o">=</span> <span class="n">_build_match_quality_prompts</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">)</span>
@@ -1792,32 +1793,33 @@ match_quality_pass : bool
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Checker returned a different number of predictions than input rows.&quot;</span>
+            <span class="s2">"Checker returned a different number of predictions than input rows."</span>
         <span class="p">)</span>
 
     <span class="c1"># Convert model outputs into a compact, derived result table.</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">&quot;patient_id&quot;</span><span class="p">,</span> <span class="s2">&quot;space_trial_id&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"space_trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">confidence_scores</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">float</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">])))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">"score"</span><span class="p">])))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span>
     <span class="p">]</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;match_quality_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confidence_scores</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;match_quality_pass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_score"</span><span class="p">]</span> <span class="o">=</span> <span class="n">confidence_scores</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_pass"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">score_cutoff</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">confidence_scores</span>
     <span class="p">]</span>
 
     <span class="c1"># Optionally keep only matches that pass the quality threshold.</span>
     <span class="k">if</span> <span class="n">filter_low_quality</span><span class="p">:</span>
-        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;match_quality_pass&quot;</span><span class="p">]</span>
+        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_pass"</span><span class="p">]</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_rows</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Optionally return metadata for reproducibility/debugging.</span>
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;match_quality_checker&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"match_quality_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
@@ -1878,7 +1880,7 @@ match_quality_pass : bool
 
 
 <a href="#matchminer_ai.matching.llm_checks.score_match_quality_with_llm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">score_match_quality_with_llm</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">&#39;MMAIConfig | None&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">score_match_quality_with_llm</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'MMAIConfig | None'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2015,8 +2017,7 @@ llm_match_quality_parse_status : str
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/llm_checks.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
-<span class="normal">105</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
@@ -2126,13 +2127,15 @@ llm_match_quality_parse_status : str
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality_with_llm</span><span class="p">(</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality_with_llm</span><span class="p">(</span>
     <span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;MMAIConfig | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="s2">"MMAIConfig | None"</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Score candidate patient-trial matches with the configured LLM prompt.</span>
 
 <span class="sd">    Parameters</span>
@@ -2186,27 +2189,27 @@ llm_match_quality_parse_status : str
 <span class="sd">            when debug_mode is true.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus metadata.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;patient_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;space_trial_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;cancer_history_summary&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;clinical_space_summary&quot;</span><span class="p">,</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"space_trial_id"</span><span class="p">,</span>
+        <span class="s2">"cancer_history_summary"</span><span class="p">,</span>
+        <span class="s2">"clinical_space_summary"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">candidate_pairs</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
     <span class="n">llm_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">llm_match_quality</span><span class="p">)</span>
-    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">_load_prompt_template</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">llm_config</span><span class="p">[</span><span class="s2">&quot;prompt_file&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">_load_prompt_template</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">llm_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
     <span class="n">messages_list</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_build_messages</span><span class="p">(</span>
             <span class="n">prompt_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">trial_summary</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;clinical_space_summary&quot;</span><span class="p">]),</span>
-                <span class="n">patient_summary</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;cancer_history_summary&quot;</span><span class="p">]),</span>
+                <span class="n">trial_summary</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"clinical_space_summary"</span><span class="p">]),</span>
+                <span class="n">patient_summary</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"cancer_history_summary"</span><span class="p">]),</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">candidate_pairs</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
@@ -2214,26 +2217,27 @@ llm_match_quality_parse_status : str
     <span class="n">responses</span><span class="p">,</span> <span class="n">reasonings</span><span class="p">,</span> <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">_run_llm_check</span><span class="p">(</span>
         <span class="n">candidate_pairs</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
-        <span class="n">section_name</span><span class="o">=</span><span class="s2">&quot;llm_match_quality&quot;</span><span class="p">,</span>
+        <span class="n">section_name</span><span class="o">=</span><span class="s2">"llm_match_quality"</span><span class="p">,</span>
         <span class="n">messages_list</span><span class="o">=</span><span class="n">messages_list</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parsed</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_match_quality_score</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">&quot;patient_id&quot;</span><span class="p">,</span> <span class="s2">&quot;space_trial_id&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_match_quality_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">score</span> <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"space_trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"llm_match_quality_score"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">score</span> <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">resolved_config</span><span class="o">.</span><span class="n">debug_mode</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_match_quality_answer_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_match_quality_reasoning_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasonings</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_match_quality_parse_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_match_quality_answer_text"</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_match_quality_reasoning_text"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasonings</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_match_quality_parse_status"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">parse_status</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">parse_status</span> <span class="ow">in</span> <span class="n">parsed</span>
         <span class="p">]</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;llm_match_quality_checker&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"llm_match_quality_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>

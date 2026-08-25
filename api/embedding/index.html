@@ -1319,7 +1319,7 @@
 
 
 <a href="#matchminer_ai.embedding.embed.embed_for_matching" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">embed_for_matching</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;patient&#39;</span><span class="p">,</span> <span class="s1">&#39;trial&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">embed_for_matching</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">'patient'</span><span class="p">,</span> <span class="s1">'trial'</span><span class="p">],</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1469,8 +1469,7 @@ and model metadata for this run.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/embedding/embed.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 32</span>
-<span class="normal"> 33</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 33</span>
 <span class="normal"> 34</span>
 <span class="normal"> 35</span>
 <span class="normal"> 36</span>
@@ -1560,14 +1559,16 @@ and model metadata for this run.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">embed_for_matching</span><span class="p">(</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">embed_for_matching</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">entity_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;patient&quot;</span><span class="p">,</span> <span class="s2">&quot;trial&quot;</span><span class="p">],</span>
+    <span class="n">entity_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"patient"</span><span class="p">,</span> <span class="s2">"trial"</span><span class="p">],</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert trial or patient summaries into embedding vectors for semantic matching.</span>
 
 <span class="sd">    Parameters</span>
@@ -1575,7 +1576,7 @@ and model metadata for this run.</p>
 <span class="sd">    df : pd.DataFrame</span>
 <span class="sd">        Input summaries to embed.</span>
 
-<span class="sd">        For entity_type=&quot;patient&quot;</span>
+<span class="sd">        For entity_type="patient"</span>
 <span class="sd">            One row per patient.</span>
 
 <span class="sd">            Expected columns</span>
@@ -1583,7 +1584,7 @@ and model metadata for this run.</p>
 <span class="sd">            cancer_history_summary : str</span>
 <span class="sd">                Summary text to embed for each patient.</span>
 
-<span class="sd">        For entity_type=&quot;trial&quot;</span>
+<span class="sd">        For entity_type="trial"</span>
 <span class="sd">            One row per clinical space.</span>
 
 <span class="sd">            Expected columns</span>
@@ -1592,7 +1593,7 @@ and model metadata for this run.</p>
 <span class="sd">                Summary text to embed for each clinical space.</span>
 <span class="sd">            space_trial_id : str</span>
 <span class="sd">                Unique identifier for the clinical space.</span>
-<span class="sd">    entity_type : {&quot;patient&quot;, &quot;trial&quot;}</span>
+<span class="sd">    entity_type : {"patient", "trial"}</span>
 <span class="sd">        Controls which summary column is used as the text to embed.</span>
 <span class="sd">    config : MMAIConfig, optional</span>
 <span class="sd">        MMAI configuration containing embedding settings</span>
@@ -1609,45 +1610,46 @@ and model metadata for this run.</p>
 
 <span class="sd">        Columns</span>
 <span class="sd">        -------</span>
-<span class="sd">        For entity_type=&quot;patient&quot;</span>
+<span class="sd">        For entity_type="patient"</span>
 <span class="sd">            patient_id : str</span>
 <span class="sd">            embedding : array-like</span>
 <span class="sd">                Vector representation of the summary text in a shared semantic space.</span>
 
-<span class="sd">        For entity_type=&quot;trial&quot;</span>
+<span class="sd">        For entity_type="trial"</span>
 <span class="sd">            space_trial_id : str</span>
 <span class="sd">            embedding : array-like</span>
 <span class="sd">                Vector representation of the summary text in a shared semantic space.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus a metadata dict.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">text_col</span> <span class="o">=</span> <span class="n">_resolve_text_column</span><span class="p">(</span><span class="n">entity_type</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">text_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;df is missing required column for </span><span class="si">{</span><span class="n">entity_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"df is missing required column for </span><span class="si">{</span><span class="n">entity_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text_col</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">id_cols</span> <span class="o">=</span> <span class="n">_resolve_id_columns</span><span class="p">(</span><span class="n">entity_type</span><span class="p">)</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">id_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;df is missing required columns for </span><span class="si">{</span><span class="n">entity_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"df is missing required columns for </span><span class="si">{</span><span class="n">entity_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
-    <span class="n">embedding_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">,</span> <span class="s2">&quot;embedding&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="n">embedding_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">,</span> <span class="s2">"embedding"</span><span class="p">,</span> <span class="p">{}))</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="n">summaries</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">text_col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">summaries</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">text_col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">embeddings</span><span class="p">,</span> <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">generate_embeddings</span><span class="p">(</span>
         <span class="n">summaries</span><span class="p">,</span>
         <span class="n">embedding_config</span><span class="o">=</span><span class="n">embedding_config</span><span class="p">,</span>
         <span class="n">model_metadata_cache_dir</span><span class="o">=</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">model_metadata_cache_dir</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">embeddings</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">id_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">]</span> <span class="o">=</span> <span class="n">embeddings</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">id_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"embedding"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;embedding_model&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"embedding_model"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">metadata_payload</span>

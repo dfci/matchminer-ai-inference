@@ -1596,8 +1596,7 @@ exclusion_criteria_pass : bool
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/exclusion_check.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 41</span>
-<span class="normal"> 42</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 42</span>
 <span class="normal"> 43</span>
 <span class="normal"> 44</span>
 <span class="normal"> 45</span>
@@ -1706,14 +1705,16 @@ exclusion_criteria_pass : bool
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check</span><span class="p">(</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check</span><span class="p">(</span>
     <span class="n">matches</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">filter_excluded</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Evaluate whether each candidate patient-trial pair passes exclusion criteria.</span>
 
 <span class="sd">    Parameters</span>
@@ -1759,22 +1760,22 @@ exclusion_criteria_pass : bool
 <span class="sd">            this trial; False otherwise.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus metadata.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Validate that rows contain the text + ids needed for exclusion checker prompts.</span>
     <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;patient_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;trial_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;general_exclusion_criteria&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;general_exclusion_criteria_evidence&quot;</span><span class="p">,</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"trial_id"</span><span class="p">,</span>
+        <span class="s2">"general_exclusion_criteria"</span><span class="p">,</span>
+        <span class="s2">"general_exclusion_criteria_evidence"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matches</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;matches is missing required columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"matches is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Resolve run config and build checker prompts from the configured template.</span>
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
-    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exclusion_criteria&quot;</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="n">prompt_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">&quot;prompt_file&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"exclusion_criteria"</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="n">prompt_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="n">_load_exclusion_criteria_template</span><span class="p">(</span><span class="n">prompt_file</span><span class="p">)</span>
     <span class="n">prompts</span> <span class="o">=</span> <span class="n">_build_exclusion_criteria_prompts</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">)</span>
@@ -1788,31 +1789,32 @@ exclusion_criteria_pass : bool
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Checker returned a different number of predictions than input rows.&quot;</span>
+            <span class="s2">"Checker returned a different number of predictions than input rows."</span>
         <span class="p">)</span>
 
     <span class="c1"># Convert model outputs into a compact, derived result table.</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[[</span><span class="s2">&quot;patient_id&quot;</span><span class="p">,</span> <span class="s2">&quot;trial_id&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;exclusion_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"exclusion_score"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">"score"</span><span class="p">])</span> <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span>
     <span class="p">]</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;exclusion_criteria_pass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;NEGATIVE&quot;</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"exclusion_criteria_pass"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">"label"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"NEGATIVE"</span>
         <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span>
     <span class="p">]</span>
 
     <span class="c1"># Optionally keep only rows that passed exclusion criteria.</span>
     <span class="k">if</span> <span class="n">filter_excluded</span><span class="p">:</span>
-        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;exclusion_criteria_pass&quot;</span><span class="p">]</span>
+        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">"exclusion_criteria_pass"</span><span class="p">]</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_rows</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Optionally return metadata for reproducibility/debugging.</span>
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;exclusion_criteria_checker&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"exclusion_criteria_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
@@ -1873,7 +1875,7 @@ exclusion_criteria_pass : bool
 
 
 <a href="#matchminer_ai.matching.llm_checks.exclusion_criteria_check_with_llm" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span><span class="n">matches</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">&#39;MMAIConfig | None&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span><span class="n">matches</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s1">'MMAIConfig | None'</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2012,9 +2014,7 @@ llm_exclusion_criteria_parse_status : str
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/llm_checks.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
 <span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
@@ -2123,13 +2123,16 @@ llm_exclusion_criteria_parse_status : str
 <span class="normal">326</span>
 <span class="normal">327</span>
 <span class="normal">328</span>
-<span class="normal">329</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span>
     <span class="n">matches</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;MMAIConfig | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="s2">"MMAIConfig | None"</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Evaluate trial-level exclusion criteria with the configured LLM prompt.</span>
 
 <span class="sd">    Parameters</span>
@@ -2185,25 +2188,25 @@ llm_exclusion_criteria_parse_status : str
 <span class="sd">            when debug_mode is true.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus metadata.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;patient_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;trial_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;general_exclusion_criteria&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;general_exclusion_criteria_evidence&quot;</span><span class="p">,</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"trial_id"</span><span class="p">,</span>
+        <span class="s2">"general_exclusion_criteria"</span><span class="p">,</span>
+        <span class="s2">"general_exclusion_criteria_evidence"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matches</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;matches is missing required columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"matches is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
     <span class="n">llm_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">llm_exclusion_criteria</span><span class="p">)</span>
-    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">_load_prompt_template</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">llm_config</span><span class="p">[</span><span class="s2">&quot;prompt_file&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">_load_prompt_template</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">llm_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
     <span class="n">messages_list</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_build_messages</span><span class="p">(</span>
             <span class="n">prompt_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">patient_boilerplate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;general_exclusion_criteria_evidence&quot;</span><span class="p">]),</span>
-                <span class="n">trial_boilerplate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;general_exclusion_criteria&quot;</span><span class="p">]),</span>
+                <span class="n">patient_boilerplate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"general_exclusion_criteria_evidence"</span><span class="p">]),</span>
+                <span class="n">trial_boilerplate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"general_exclusion_criteria"</span><span class="p">]),</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matches</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
@@ -2211,26 +2214,27 @@ llm_exclusion_criteria_parse_status : str
     <span class="n">responses</span><span class="p">,</span> <span class="n">reasonings</span><span class="p">,</span> <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">_run_llm_check</span><span class="p">(</span>
         <span class="n">matches</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
-        <span class="n">section_name</span><span class="o">=</span><span class="s2">&quot;llm_exclusion_criteria&quot;</span><span class="p">,</span>
+        <span class="n">section_name</span><span class="o">=</span><span class="s2">"llm_exclusion_criteria"</span><span class="p">,</span>
         <span class="n">messages_list</span><span class="o">=</span><span class="n">messages_list</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parsed</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_exclusion_result</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[[</span><span class="s2">&quot;patient_id&quot;</span><span class="p">,</span> <span class="s2">&quot;trial_id&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_exclusion_criteria_pass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">passed</span> <span class="k">for</span> <span class="n">passed</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span><span class="p">[</span><span class="s2">"llm_exclusion_criteria_pass"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">passed</span> <span class="k">for</span> <span class="n">passed</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">resolved_config</span><span class="o">.</span><span class="n">debug_mode</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_exclusion_criteria_answer_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_exclusion_criteria_reasoning_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasonings</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;llm_exclusion_criteria_parse_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_exclusion_criteria_answer_text"</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_exclusion_criteria_reasoning_text"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasonings</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"llm_exclusion_criteria_parse_status"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">parse_status</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">parse_status</span> <span class="ow">in</span> <span class="n">parsed</span>
         <span class="p">]</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;llm_exclusion_criteria_checker&quot;</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"llm_exclusion_criteria_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>

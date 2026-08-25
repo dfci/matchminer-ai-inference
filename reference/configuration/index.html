@@ -2494,8 +2494,8 @@ change a few values in Python:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_default_preset</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">load_default_preset</span><span class="p">()</span>
-<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">&quot;enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">&quot;server_urls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;http://localhost:8000/v1&quot;</span><span class="p">]</span>
+<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">"enabled"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">config</span><span class="o">.</span><span class="n">remote</span><span class="p">[</span><span class="s2">"server_urls"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"http://localhost:8000/v1"</span><span class="p">]</span>
 </code></pre></div>
 <h2 id="custom-config-files">Custom Config Files<a class="headerlink" href="#custom-config-files" title="Permanent link">&para;</a></h2>
 <p>For package installs, treat the built-in preset files as read-only package data.
@@ -2503,7 +2503,7 @@ For larger or reusable changes, copy the default preset values into a YAML file
 in your project, edit them, and load that file by path:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_config</span>
 
-<span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="s2">&quot;my_config.yaml&quot;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="s2">"my_config.yaml"</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="root-keys">Root Keys<a class="headerlink" href="#root-keys" title="Permanent link">&para;</a></h2>
 <h3 id="debug_mode"><code>debug_mode</code><a class="headerlink" href="#debug_mode" title="Permanent link">&para;</a></h3>

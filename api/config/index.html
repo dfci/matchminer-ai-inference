@@ -1355,12 +1355,12 @@
 <span class="normal">88</span>
 <span class="normal">89</span>
 <span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MMAIConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a configuration YAML file from a user-provided path.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Load a configuration YAML file from a user-provided path."""</span>
     <span class="n">config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Config </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2"> did not parse into a mapping.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Config </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2"> did not parse into a mapping."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_config_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">preset_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">config_path</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1389,8 +1389,8 @@
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">93</span>
 <span class="normal">94</span>
 <span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_default_preset</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">MMAIConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the default configuration preset.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">load_preset</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Load the default configuration preset."""</span>
+    <span class="k">return</span> <span class="n">load_preset</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1419,7 +1419,7 @@
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_preset</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MMAIConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a named configuration preset.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Load a named configuration preset."""</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">_load_preset_data</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_config_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">preset_name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

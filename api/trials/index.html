@@ -1501,8 +1501,7 @@ metadata dict, and QC report DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/trials/__init__.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
-<span class="normal"> 15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
 <span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
@@ -1635,7 +1634,13 @@ metadata dict, and QC report DataFrame.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_trials</span><span class="p">(</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_trials</span><span class="p">(</span>
     <span class="n">trials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1647,7 +1652,7 @@ metadata dict, and QC report DataFrame.</p>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Summarize clinical trials into clinical spaces and general exclusion criteria.</span>
 
 <span class="sd">    Parameters</span>
@@ -1708,7 +1713,7 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">    tuple[pd.DataFrame, dict, pd.DataFrame]</span>
 <span class="sd">        When return_metadata and return_qc are True, returns the DataFrame,</span>
 <span class="sd">        metadata dict, and QC report DataFrame.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">MMAIConfig</span><span class="p">,</span> <span class="n">load_default_preset</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">.postprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">postprocess_trial_summaries</span>
@@ -1717,33 +1722,36 @@ metadata dict, and QC report DataFrame.</p>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">,</span> <span class="n">MMAIConfig</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;config must be an MMAIConfig instance or None.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"config must be an MMAIConfig instance or None."</span><span class="p">)</span>
 
     <span class="n">required_columns</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;trial_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;trial_title&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;brief_summary&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;eligibility_criteria&quot;</span><span class="p">,</span>
+        <span class="s2">"trial_id"</span><span class="p">,</span>
+        <span class="s2">"trial_title"</span><span class="p">,</span>
+        <span class="s2">"brief_summary"</span><span class="p">,</span>
+        <span class="s2">"eligibility_criteria"</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="n">required_columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">trials</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="n">missing_list</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing</span><span class="p">))</span>
+        <span class="n">missing_list</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing</span><span class="p">))</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;summarize_trials requires columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">required_columns</span><span class="p">))</span><span class="si">}</span><span class="s2">. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Missing: </span><span class="si">{</span><span class="n">missing_list</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">"summarize_trials requires columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">required_columns</span><span class="p">))</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="sa">f</span><span class="s2">"Missing: </span><span class="si">{</span><span class="n">missing_list</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting trial summarization for </span><span class="si">%d</span><span class="s2"> trials.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trials</span><span class="p">))</span>
-    <span class="n">trials_with_summaries</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">truncated_llm_qc_artifact</span> <span class="o">=</span> <span class="n">run_llm_summarization</span><span class="p">(</span>
-        <span class="n">trials</span><span class="p">,</span> <span class="n">resolved_config</span>
-    <span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Completed LLM summarization. Beginning postprocessing.&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting trial summarization for </span><span class="si">%d</span><span class="s2"> trials."</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trials</span><span class="p">))</span>
+    <span class="p">(</span>
+        <span class="n">trials_with_summaries</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">,</span>
+        <span class="n">truncated_llm_qc_artifact</span><span class="p">,</span>
+        <span class="n">failed_llm_qc_artifact</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">run_llm_summarization</span><span class="p">(</span><span class="n">trials</span><span class="p">,</span> <span class="n">resolved_config</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Completed LLM summarization. Beginning postprocessing."</span><span class="p">)</span>
     <span class="c1"># Capture unfiltered spaces for QC before keyword filtering.</span>
     <span class="n">result</span><span class="p">,</span> <span class="n">unfiltered_spaces</span> <span class="o">=</span> <span class="n">postprocess_trial_summaries</span><span class="p">(</span>
         <span class="n">trials_with_summaries</span><span class="p">,</span>
         <span class="n">resolved_config</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Postprocessing complete. Produced </span><span class="si">%d</span><span class="s2"> rows.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Postprocessing complete. Produced </span><span class="si">%d</span><span class="s2"> rows."</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 
     <span class="c1"># Build QC report</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">matchminer_ai._qc.trials</span><span class="w"> </span><span class="kn">import</span> <span class="n">trial_qc_report</span>
@@ -1753,15 +1761,17 @@ metadata dict, and QC report DataFrame.</p>
         <span class="n">trial_source</span><span class="o">=</span><span class="n">trials</span><span class="p">,</span>
         <span class="n">unfiltered_spaces</span><span class="o">=</span><span class="n">unfiltered_spaces</span><span class="p">,</span>
         <span class="n">truncated_llm_qc_artifact</span><span class="o">=</span><span class="n">truncated_llm_qc_artifact</span><span class="p">,</span>
+        <span class="n">failed_llm_qc_artifact</span><span class="o">=</span><span class="n">failed_llm_qc_artifact</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Depending on flags, decide what to return</span>
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;trial_summarizer&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;model_metadata&quot;</span><span class="p">],</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"trial_summarizer"</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">],</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>

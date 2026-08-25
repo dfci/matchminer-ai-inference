@@ -1251,6 +1251,9 @@ prompts, filters, and postprocessing rules. Metrics are returned as rows with
 <ul>
 <li><code>trials_missing_in_output</code>: trials present in the input but not represented
   in the output after summarization/postprocessing.</li>
+<li><code>trials_failed_inference</code>: trials whose LLM inference finished with an error
+  after retries were exhausted. These trials are removed before
+  postprocessing.</li>
 <li><code>trials_truncated_llm_response</code>: trials where the LLM stopped due to max
   token length.</li>
 <li><code>spaces_per_trial_min|median|max</code>: min/median/max number of spaces per trial.</li>

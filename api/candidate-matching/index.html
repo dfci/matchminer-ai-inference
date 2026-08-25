@@ -1485,7 +1485,7 @@ corpus items per query (sorted by similarity).</p>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate top-k candidate matches by ranking corpus items for each query item.</span>
 
 <span class="sd">    Parameters</span>
@@ -1512,23 +1512,23 @@ corpus items per query (sorted by similarity).</p>
 <span class="sd">            - patient_id or space_trial_id (from corpus_df)</span>
 <span class="sd">            - similarity_score : float</span>
 <span class="sd">            - rank : int (1 = highest similarity per query)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Validate required schema for IDs and embeddings.</span>
-    <span class="n">query_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">query_df</span><span class="p">,</span> <span class="s2">&quot;query_df&quot;</span><span class="p">)</span>
-    <span class="n">corpus_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">,</span> <span class="s2">&quot;corpus_df&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;embedding&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;query_df must include embedding&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;embedding&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corpus_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;corpus_df must include embedding&quot;</span><span class="p">)</span>
+    <span class="n">query_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">query_df</span><span class="p">,</span> <span class="s2">"query_df"</span><span class="p">)</span>
+    <span class="n">corpus_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">,</span> <span class="s2">"corpus_df"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"query_df must include embedding"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corpus_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"corpus_df must include embedding"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;k must be a positive integer or None&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"k must be a positive integer or None"</span><span class="p">)</span>
 
     <span class="c1"># Parse embeddings and ensure consistent vector dimensionality.</span>
-    <span class="n">query_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">query_df</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">])</span>
-    <span class="n">corpus_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">])</span>
+    <span class="n">query_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">query_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">])</span>
+    <span class="n">corpus_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">query_embeddings</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">corpus_embeddings</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">,</span> <span class="n">corpus_id_col</span><span class="p">,</span> <span class="s2">&quot;similarity_score&quot;</span><span class="p">,</span> <span class="s2">&quot;rank&quot;</span><span class="p">]</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">,</span> <span class="n">corpus_id_col</span><span class="p">,</span> <span class="s2">"similarity_score"</span><span class="p">,</span> <span class="s2">"rank"</span><span class="p">]</span>
         <span class="p">)</span>
 
     <span class="c1"># Normalize embeddings and compute cosine similarity matrix.</span>
@@ -1557,8 +1557,8 @@ corpus items per query (sorted by similarity).</p>
                 <span class="p">{</span>
                     <span class="n">query_id_col</span><span class="p">:</span> <span class="n">query_id</span><span class="p">,</span>
                     <span class="n">corpus_id_col</span><span class="p">:</span> <span class="n">corpus_ids</span><span class="p">[</span><span class="n">corpus_idx_int</span><span class="p">],</span>
-                    <span class="s2">&quot;similarity_score&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">corpus_idx_int</span><span class="p">]),</span>
-                    <span class="s2">&quot;rank&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span>
+                    <span class="s2">"similarity_score"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">corpus_idx_int</span><span class="p">]),</span>
+                    <span class="s2">"rank"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span>
                 <span class="p">}</span>
             <span class="p">)</span>
 

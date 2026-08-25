@@ -1538,8 +1538,7 @@ metadata dict, and QC report DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/patients/__init__.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
-<span class="normal"> 19</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
@@ -1666,7 +1665,9 @@ metadata dict, and QC report DataFrame.</p>
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
     <span class="n">notes</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1679,7 +1680,7 @@ metadata dict, and QC report DataFrame.</p>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Summarize longitudinal patient notes into a cancer history summary and</span>
 <span class="sd">    evidence related to general clinical trial exclusion criteria.</span>
 
@@ -1722,7 +1723,7 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">        patient_id : str</span>
 <span class="sd">            Original patient identifier.</span>
 <span class="sd">        cancer_history_summary : str</span>
-<span class="sd">            Summary of the patient&#39;s cancer history.</span>
+<span class="sd">            Summary of the patient's cancer history.</span>
 <span class="sd">        general_exclusion_criteria_evidence : str</span>
 <span class="sd">            Summary of conditions / findings that correspond to common</span>
 <span class="sd">            clinical trial exclusion criteria.</span>
@@ -1744,25 +1745,25 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">        When return_metadata and return_qc are True, returns the DataFrame,</span>
 <span class="sd">        metadata dict, and QC report DataFrame.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">,</span> <span class="n">MMAIConfig</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;config must be an MMAIConfig instance or None.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"config must be an MMAIConfig instance or None."</span><span class="p">)</span>
 
     <span class="n">required_columns</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;patient_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;note_text&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;note_date&quot;</span><span class="p">,</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"note_text"</span><span class="p">,</span>
+        <span class="s2">"note_date"</span><span class="p">,</span>
     <span class="p">]</span>
     <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">notes</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;summarize_patients requires columns &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2"> in the input DataFrame.&quot;</span>
+            <span class="s2">"summarize_patients requires columns "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2"> in the input DataFrame."</span>
         <span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preparing serial patient summarization for </span><span class="si">%d</span><span class="s2"> notes.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">notes</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Preparing serial patient summarization for </span><span class="si">%d</span><span class="s2"> notes."</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">notes</span><span class="p">))</span>
     <span class="n">summary_result</span> <span class="o">=</span> <span class="n">summarize_patient_notes</span><span class="p">(</span>
         <span class="n">notes</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
@@ -1780,13 +1781,14 @@ metadata dict, and QC report DataFrame.</p>
             <span class="n">summary_result</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">qc_report</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Patient summarization complete. Produced </span><span class="si">%d</span><span class="s2"> rows.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">summaries</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Patient summarization complete. Produced </span><span class="si">%d</span><span class="s2"> rows."</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">summaries</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;config_snapshot&quot;</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">&quot;model_metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;patient_summarizer&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;model_metadata&quot;</span><span class="p">],</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"patient_summarizer"</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">],</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>
