@@ -2,6 +2,7 @@ import asyncio
 from unittest.mock import MagicMock
 
 import pandas as pd
+import pytest
 
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.llm.backends import LLMGenerationResult, LocalBackend
@@ -289,11 +290,11 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
     assert prompt.max_tokens == 1000 - 600 - _RESPONSE_TOKEN_MARGIN
 
 
-def test_summarize_patient_notes_updates_running_summary_across_rounds(
+def test_summarize_patient_notes_resumes_after_completed_round(
     monkeypatch,
     tmp_path,
 ):
-    """Carry each round's summary forward as prior state for the next chunk."""
+    """Retry from the saved summary when a later inference round fails."""
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
@@ -341,8 +342,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(
     )
 
     class MockBackend:
-        def __init__(self):
-            self.calls = 0
+        fail_second_round = True
 
         def generate_llm_outputs(
             self,
@@ -351,8 +351,7 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(
             llm_config,
             model_metadata_cache_dir=None,
         ):
-            self.calls += 1
-            if self.calls == 1:
+            if prompt_list[0].prompt_text == "chunk one":
                 return LLMGenerationResult(
                     final_outputs=["Round 1\nBoilerplate conditions:\nNone"],
                     model_metadata={"model_name": "model", "model_sha": "sha"},
@@ -360,6 +359,8 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(
                     reasoning_outputs=[""],
                     raw_outputs=[],
                 )
+            if self.fail_second_round:
+                raise RuntimeError("interrupted during round two")
             return LLMGenerationResult(
                 final_outputs=["Round 2\nBoilerplate conditions:\nNone"],
                 model_metadata={"model_name": "model", "model_sha": "sha"},
@@ -368,24 +369,38 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(
                 raw_outputs=[],
             )
 
+    backend = MockBackend()
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.get_llm_backend",
-        lambda config: MockBackend(),
+        lambda config: backend,
     )
 
     notes = pd.DataFrame(
         [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
     )
+    with pytest.raises(RuntimeError, match="interrupted during round two"):
+        summarize_patient_notes(
+            notes,
+            config=_config(),
+            checkpoint_dir=tmp_path,
+        )
+
+    assert (tmp_path / "round_0000.parquet").exists()
+    assert not (tmp_path / "round_0001.parquet").exists()
+
+    backend.fail_second_round = False
+    seen_prior_summaries.clear()
     result, metadata = summarize_patient_notes(
         notes,
         config=_config(),
         checkpoint_dir=tmp_path,
     )
 
-    assert seen_prior_summaries == [None, "Round 1\nBoilerplate conditions:\nNone"]
+    assert seen_prior_summaries == ["Round 1\nBoilerplate conditions:\nNone"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Round 2"
     assert metadata["model_metadata"]["model_sha"] == "sha"
     assert (tmp_path / "prepared_chunks.parquet").exists()
+    assert (tmp_path / "round_0001.parquet").exists()
 
 
 def test_summarize_patient_notes_reuses_checkpointed_chunks(monkeypatch, tmp_path):

@@ -19,8 +19,10 @@ from matchminer_ai.llm.prompt_rendering import Prompt
 
 from .checkpoints import (
     load_prepared_chunks,
+    load_round_checkpoints,
     prepare_checkpoint_dir,
     save_prepared_chunks,
+    save_round_checkpoint,
 )
 from .postprocess import postprocess_patient_summaries
 from .prepare import prepare_patient_notes
@@ -191,6 +193,9 @@ def summarize_patient_notes(
 
     existing_summary_lookup = _build_existing_summary_lookup(existing_summaries)
     rounds = _build_rounds(prepared_chunks)
+    completed_rounds = (
+        load_round_checkpoints(checkpoint_dir) if checkpoint_dir is not None else {}
+    )
 
     backend = get_llm_backend(resolved_config)
     # This dict holds the latest available summary for each patient. If the
@@ -203,6 +208,16 @@ def summarize_patient_notes(
     model_metadata: dict[str, Any] = {}
     prompt_pool = None
 
+    # Rebuild the latest patient state before continuing with the next round.
+    for _, round_checkpoint in sorted(completed_rounds.items()):
+        patient_ids = round_checkpoint["patient_id"].astype(str)
+        current_summaries.update(
+            dict(zip(patient_ids, round_checkpoint["summary"], strict=False))
+        )
+        current_reasoning_outputs.update(
+            dict(zip(patient_ids, round_checkpoint["reasoning"], strict=False))
+        )
+
     # Round N contains the Nth chunk for every patient that still has one.
     # Processing by rounds ensures each patient's next chunk sees the most
     # recent summary generated from prior chunks.
@@ -211,13 +226,14 @@ def summarize_patient_notes(
         int(patient_config.get("prompt_build_workers", min(os.cpu_count() or 4, 32))),
     )
     try:
-        if rounds:
+        if len(completed_rounds) < len(rounds):
             prompt_pool = prep_prompt_pool(
                 patient_config=runtime_patient_config,
                 n_workers=n_prompt_workers,
             )
 
-        for round_df in rounds:
+        for round_idx in range(len(completed_rounds), len(rounds)):
+            round_df = rounds[round_idx]
             prompt_list, round_patient_ids = _build_prompt_list(
                 round_df,
                 current_summaries=current_summaries,
@@ -233,16 +249,37 @@ def summarize_patient_notes(
                 model_metadata = generation.model_metadata
             summaries = generation.final_outputs
             reasoning_outputs = generation.reasoning_outputs
+            finish_reasons = generation.finish_reasons
+            round_results: list[dict[str, str | None]] = []
             # Persist each round's final summary, not the reasoning trace, so
             # it becomes the prior summary for the next patient chunk.
-            for patient_id, summary, reasoning in zip(
+            for patient_id, summary, reasoning, finish_reason in zip(
                 round_patient_ids,
                 summaries,
                 reasoning_outputs,
+                finish_reasons,
                 strict=False,
             ):
+                prior_summary = current_summaries.get(patient_id)
+                round_results.append(
+                    {
+                        "patient_id": patient_id,
+                        "prior_summary": prior_summary,
+                        "reasoning": str(reasoning),
+                        "summary": str(summary),
+                        "finish_reason": str(finish_reason),
+                    }
+                )
                 current_summaries[patient_id] = str(summary)
                 current_reasoning_outputs[patient_id] = str(reasoning)
+
+            # A round becomes resumable only after inference finishes for the batch.
+            if checkpoint_dir is not None:
+                save_round_checkpoint(
+                    checkpoint_dir,
+                    round_idx,
+                    pd.DataFrame(round_results).sort_values("patient_id"),
+                )
     finally:
         if prompt_pool is not None:
             shutdown_prompt_pool(prompt_pool)
