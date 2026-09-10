@@ -152,7 +152,10 @@ def summarize_patient_notes(
         patient_summary : str
             Existing full patient summary text to update.
     checkpoint_dir : str or pathlib.Path, optional
-        Directory used to save and reuse patient summarization checkpoints.
+        Directory used to save progress during patient summarization. Reusing
+        the same directory on retry continues from the last saved point. The
+        caller is responsible for supplying a directory specific to this
+        input and run.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this summarization step.
     """
