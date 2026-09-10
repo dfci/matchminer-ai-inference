@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any, cast
 
 import pandas as pd
@@ -16,6 +17,11 @@ from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
 from matchminer_ai.llm.prompt_rendering import Prompt
 
+from .checkpoints import (
+    load_prepared_chunks,
+    prepare_checkpoint_dir,
+    save_prepared_chunks,
+)
 from .postprocess import postprocess_patient_summaries
 from .prepare import prepare_patient_notes
 from .prompt_builder import (
@@ -111,6 +117,7 @@ def summarize_patient_notes(
     config: MMAIConfig | None = None,
     *,
     existing_summaries: pd.DataFrame | None = None,
+    checkpoint_dir: str | Path | None = None,
     return_qc: bool = False,
 ) -> (
     tuple[pd.DataFrame, dict[str, Any]]
@@ -142,6 +149,8 @@ def summarize_patient_notes(
             Unique patient identifier.
         patient_summary : str
             Existing full patient summary text to update.
+    checkpoint_dir : str or pathlib.Path, optional
+        Directory used to save and reuse patient summarization checkpoints.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this summarization step.
     """
@@ -156,19 +165,30 @@ def summarize_patient_notes(
         config=resolved_config,
     )
 
-    # Convert note-level input into patient-level metadata plus chunk-level
-    # rows. The chunk rows are what drive the serial summarization loop.
-    tokenizer_name = runtime_patient_config.get(
-        "tokenizer_name",
-        runtime_patient_config["model_name"],
-    )
-    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, trust_remote_code=True)
-    prepared_patients, prepared_chunks = prepare_patient_notes(
-        notes,
-        tokenizer,
-        chunk_size=int(patient_config["chunk_size"]),
-        chunk_overlap=int(patient_config["chunk_overlap"]),
-    )
+    prepared_chunks = None
+    if checkpoint_dir is not None:
+        prepare_checkpoint_dir(checkpoint_dir)
+        prepared_chunks = load_prepared_chunks(checkpoint_dir)
+
+    if prepared_chunks is None:
+        # Tokenization and chunking are only repeated when no reusable checkpoint exists.
+        tokenizer_name = runtime_patient_config.get(
+            "tokenizer_name",
+            runtime_patient_config["model_name"],
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            tokenizer_name,
+            trust_remote_code=True,
+        )
+        prepared_chunks = prepare_patient_notes(
+            notes,
+            tokenizer,
+            chunk_size=int(patient_config["chunk_size"]),
+            chunk_overlap=int(patient_config["chunk_overlap"]),
+        )
+        if checkpoint_dir is not None:
+            save_prepared_chunks(checkpoint_dir, prepared_chunks)
+
     existing_summary_lookup = _build_existing_summary_lookup(existing_summaries)
     rounds = _build_rounds(prepared_chunks)
 
@@ -227,9 +247,8 @@ def summarize_patient_notes(
         if prompt_pool is not None:
             shutdown_prompt_pool(prompt_pool)
 
-    # Collapse the running patient state back to one final row per patient,
-    # then do postprocessing and QC report generation.
-    final_rows = prepared_patients.copy()
+    # Collapse chunk-level work to one final row for each summarized patient.
+    final_rows = prepared_chunks[["patient_id"]].drop_duplicates().copy()
     final_rows["patient_answer_text"] = final_rows["patient_id"].map(current_summaries)
     if resolved_config.debug_mode:
         # These columns preserve final-round debug traces without feeding them

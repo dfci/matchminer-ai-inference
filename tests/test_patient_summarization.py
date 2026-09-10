@@ -289,7 +289,10 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
     assert prompt.max_tokens == 1000 - 600 - _RESPONSE_TOKEN_MARGIN
 
 
-def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypatch):
+def test_summarize_patient_notes_updates_running_summary_across_rounds(
+    monkeypatch,
+    tmp_path,
+):
     """Carry each round's summary forward as prior state for the next chunk."""
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
@@ -298,26 +301,23 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
     )
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.prepare_patient_notes",
-        lambda notes, tokenizer, chunk_size, chunk_overlap: (
-            pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-02"}]),
-            pd.DataFrame(
-                [
-                    {
-                        "patient_id": "P1",
-                        "chunk_index": 0,
-                        "first_date": "2024-01-01",
-                        "last_date": "2024-01-01",
-                        "chunk_text": "chunk one",
-                    },
-                    {
-                        "patient_id": "P1",
-                        "chunk_index": 1,
-                        "first_date": "2024-01-02",
-                        "last_date": "2024-01-02",
-                        "chunk_text": "chunk two",
-                    },
-                ]
-            ),
+        lambda notes, tokenizer, chunk_size, chunk_overlap: pd.DataFrame(
+            [
+                {
+                    "patient_id": "P1",
+                    "chunk_index": 0,
+                    "first_date": "2024-01-01",
+                    "last_date": "2024-01-01",
+                    "chunk_text": "chunk one",
+                },
+                {
+                    "patient_id": "P1",
+                    "chunk_index": 1,
+                    "first_date": "2024-01-02",
+                    "last_date": "2024-01-02",
+                    "chunk_text": "chunk two",
+                },
+            ]
         ),
     )
 
@@ -376,11 +376,50 @@ def test_summarize_patient_notes_updates_running_summary_across_rounds(monkeypat
     notes = pd.DataFrame(
         [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
     )
-    result, metadata = summarize_patient_notes(notes, config=_config())
+    result, metadata = summarize_patient_notes(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
 
     assert seen_prior_summaries == [None, "Round 1\nBoilerplate conditions:\nNone"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Round 2"
     assert metadata["model_metadata"]["model_sha"] == "sha"
+    assert (tmp_path / "prepared_chunks.parquet").exists()
+
+
+def test_summarize_patient_notes_reuses_checkpointed_chunks(monkeypatch, tmp_path):
+    """A prepared-chunks checkpoint should bypass note preparation on retry."""
+    prepared_chunks = pd.DataFrame(
+        columns=[
+            "patient_id",
+            "chunk_index",
+            "first_date",
+            "last_date",
+            "chunk_text",
+        ]
+    )
+    save_prepared_chunks(tmp_path, prepared_chunks)
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
+        MagicMock(side_effect=AssertionError("tokenizer should not be loaded")),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
+        MagicMock(side_effect=AssertionError("notes should not be prepared")),
+    )
+
+    notes = pd.DataFrame(
+        [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
+    )
+    result, metadata = summarize_patient_notes(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
+
+    assert result.empty
+    assert metadata["model_metadata"] == {}
 
 
 def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatch):
@@ -392,19 +431,16 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
     )
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.prepare_patient_notes",
-        lambda notes, tokenizer, chunk_size, chunk_overlap: (
-            pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-02"}]),
-            pd.DataFrame(
-                [
-                    {
-                        "patient_id": "P1",
-                        "chunk_index": 0,
-                        "first_date": "2024-01-02",
-                        "last_date": "2024-01-02",
-                        "chunk_text": "new chunk",
-                    }
-                ]
-            ),
+        lambda notes, tokenizer, chunk_size, chunk_overlap: pd.DataFrame(
+            [
+                {
+                    "patient_id": "P1",
+                    "chunk_index": 0,
+                    "first_date": "2024-01-02",
+                    "last_date": "2024-01-02",
+                    "chunk_text": "new chunk",
+                }
+            ]
         ),
     )
 
@@ -467,19 +503,16 @@ def test_summarize_patient_notes_includes_standard_debug_columns(monkeypatch):
     )
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.prepare_patient_notes",
-        lambda notes, tokenizer, chunk_size, chunk_overlap: (
-            pd.DataFrame([{"patient_id": "P1", "last_note_date": "2024-01-01"}]),
-            pd.DataFrame(
-                [
-                    {
-                        "patient_id": "P1",
-                        "chunk_index": 0,
-                        "first_date": "2024-01-01",
-                        "last_date": "2024-01-01",
-                        "chunk_text": "chunk",
-                    }
-                ]
-            ),
+        lambda notes, tokenizer, chunk_size, chunk_overlap: pd.DataFrame(
+            [
+                {
+                    "patient_id": "P1",
+                    "chunk_index": 0,
+                    "first_date": "2024-01-01",
+                    "last_date": "2024-01-01",
+                    "chunk_text": "chunk",
+                }
+            ]
         ),
     )
 
@@ -534,31 +567,23 @@ def test_remote_summarize_patient_notes_uses_parallel_prompt_workers(monkeypatch
     )
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.prepare_patient_notes",
-        lambda notes, tokenizer, chunk_size, chunk_overlap: (
-            pd.DataFrame(
-                [
-                    {"patient_id": "P1", "last_note_date": "2024-01-01"},
-                    {"patient_id": "P2", "last_note_date": "2024-01-01"},
-                ]
-            ),
-            pd.DataFrame(
-                [
-                    {
-                        "patient_id": "P1",
-                        "chunk_index": 0,
-                        "first_date": "2024-01-01",
-                        "last_date": "2024-01-01",
-                        "chunk_text": "chunk one",
-                    },
-                    {
-                        "patient_id": "P2",
-                        "chunk_index": 0,
-                        "first_date": "2024-01-01",
-                        "last_date": "2024-01-01",
-                        "chunk_text": "chunk two",
-                    },
-                ]
-            ),
+        lambda notes, tokenizer, chunk_size, chunk_overlap: pd.DataFrame(
+            [
+                {
+                    "patient_id": "P1",
+                    "chunk_index": 0,
+                    "first_date": "2024-01-01",
+                    "last_date": "2024-01-01",
+                    "chunk_text": "chunk one",
+                },
+                {
+                    "patient_id": "P2",
+                    "chunk_index": 0,
+                    "first_date": "2024-01-01",
+                    "last_date": "2024-01-01",
+                    "chunk_text": "chunk two",
+                },
+            ]
         ),
     )
 
@@ -716,7 +741,7 @@ def test_summarize_patients_returns_metadata_and_qc(monkeypatch):
     assert metadata["model_metadata"]["patient_summarizer"]["model_sha"] == "sha"
 
 
-def test_summarize_patients_does_not_request_qc_by_default(monkeypatch):
+def test_summarize_patients_does_not_request_qc_by_default(monkeypatch, tmp_path):
     """Default patient summarization should skip QC-only embedding token counts."""
     notes = pd.DataFrame(
         [
@@ -748,7 +773,12 @@ def test_summarize_patients_does_not_request_qc_by_default(monkeypatch):
         summarize_mock,
     )
 
-    result = summarize_patients(notes, config=_config())
+    result = summarize_patients(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
 
     assert result.equals(summaries_df)
     assert summarize_mock.call_args.kwargs["return_qc"] is False
+    assert summarize_mock.call_args.kwargs["checkpoint_dir"] == tmp_path

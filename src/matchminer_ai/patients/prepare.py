@@ -117,16 +117,13 @@ def prepare_patient_notes(
     *,
     chunk_size: int = 10000,
     chunk_overlap: int = 500,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Convert note-level input into patient-level and chunk-level prepared tables.
-    """
+) -> pd.DataFrame:
+    """Convert note-level input into chronological, token-bounded chunks."""
     normalized = validate_note_inputs(notes)
     normalized = normalized.sort_values(["patient_id", "note_date"]).reset_index(
         drop=True
     )
 
-    patient_rows: list[dict[str, object]] = []
     chunk_rows: list[dict[str, object]] = []
 
     for patient_id, group in normalized.groupby("patient_id", sort=False):
@@ -138,14 +135,6 @@ def prepare_patient_notes(
             for _, row in group.iterrows()
         ]
         patient_notes = deduplicate_patient_notes(patient_notes)
-        last_note_date = patient_notes[-1][0] if patient_notes else ""
-
-        patient_rows.append(
-            {
-                "patient_id": str(patient_id),
-                "last_note_date": last_note_date,
-            }
-        )
 
         if not patient_notes:
             continue
@@ -169,11 +158,7 @@ def prepare_patient_notes(
                 }
             )
 
-    patient_df = pd.DataFrame(
-        patient_rows,
-        columns=["patient_id", "last_note_date"],
-    )
-    chunk_df = pd.DataFrame(
+    return pd.DataFrame(
         chunk_rows,
         columns=[
             "patient_id",
@@ -183,7 +168,6 @@ def prepare_patient_notes(
             "chunk_text",
         ],
     )
-    return patient_df, chunk_df
 
 
 __all__ = [
