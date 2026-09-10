@@ -315,7 +315,11 @@ def summarize_patient_notes(
         )
     final_rows = final_rows.dropna(subset=["patient_answer_text"]).copy()
 
-    final_rows = postprocess_patient_summaries(final_rows, resolved_config)
+    patient_count_before_cleaning = int(final_rows["patient_id"].nunique())
+    final_rows, removed_patient_ids = postprocess_patient_summaries(
+        final_rows,
+        resolved_config,
+    )
 
     metadata = {
         "package": package_metadata(),
@@ -324,10 +328,17 @@ def summarize_patient_notes(
     }
 
     if return_qc:
+        from matchminer_ai._qc.common import build_qc_artifact
         from matchminer_ai._qc.patients import patient_summary_qc_report
 
+        noninformative_summary_qc_artifact = build_qc_artifact(
+            metric="patients_dropped_noninformative_summary",
+            ids=sorted(removed_patient_ids),
+            denominator=patient_count_before_cleaning,
+        )
         qc_report = patient_summary_qc_report(
             final_rows,
+            noninformative_summary_qc_artifact=(noninformative_summary_qc_artifact),
             config=resolved_config,
         )
         return final_rows, metadata, qc_report

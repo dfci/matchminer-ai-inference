@@ -15,7 +15,7 @@ from matchminer_ai.patients.checkpoints import (
     save_prepared_chunks,
     save_round_checkpoint,
 )
-from matchminer_ai.patients.postprocess import parse_boilerplate
+from matchminer_ai.patients.postprocess import clean_bad_data, parse_boilerplate
 from matchminer_ai.patients.prompt_builder import (
     PromptWorkItem,
     _RESPONSE_TOKEN_MARGIN,
@@ -191,6 +191,26 @@ def test_parse_boilerplate_accepts_final_only_v22_output():
         parsed.loc[0, "general_exclusion_criteria_evidence"]
         == "Remote inactive prostate cancer."
     )
+
+
+def test_clean_bad_data():
+    """Remove empty and no-information summaries while retaining other text."""
+    summaries = pd.DataFrame(
+        [
+            {"patient_id": "P1", "cancer_history_summary": ""},
+            {"patient_id": "P2", "cancer_history_summary": "No information found"},
+            {
+                "patient_id": "P3",
+                "cancer_history_summary": "No evidence of malignancy",
+            },
+            {"patient_id": "P4", "cancer_history_summary": "Valid summary"},
+        ]
+    )
+
+    cleaned, removed_patient_ids = clean_bad_data(summaries)
+
+    assert cleaned["patient_id"].tolist() == ["P3", "P4"]
+    assert removed_patient_ids == {"P1", "P2"}
 
 
 def test_local_backend_truncate_texts_splits_long_inputs(monkeypatch):

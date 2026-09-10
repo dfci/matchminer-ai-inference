@@ -48,10 +48,18 @@ def test_patient_summary_qc_report_metrics(monkeypatch):
 
     report = patient_summary_qc_report(
         summaries,
+        noninformative_summary_qc_artifact={
+            "metric": "patients_dropped_noninformative_summary",
+            "numerator": 1,
+            "denominator": 4,
+            "ids": ["P4"],
+        },
         config=config,
         expected_keywords=["Cancer type", "Histology"],
     ).set_index("metric")
 
+    assert report.loc["patients_dropped_noninformative_summary", "value"] == 1
+    assert report.loc["patients_dropped_noninformative_summary", "ids"] == ["P4"]
     assert report.loc["patients_exceed_embedding_token_limit", "value"] == 1
     assert report.loc["patients_exceed_embedding_token_limit", "ids"] == ["P2"]
     assert report.loc["patients_exclusion_criteria_not_extracted", "value"] == 1
@@ -97,6 +105,12 @@ def test_patient_summary_qc_uses_embedding_max_seq_length(monkeypatch):
 
     report = patient_summary_qc_report(
         summaries,
+        noninformative_summary_qc_artifact={
+            "metric": "patients_dropped_noninformative_summary",
+            "numerator": 0,
+            "denominator": 2,
+            "ids": [],
+        },
         config=config,
         expected_keywords=[],
     ).set_index("metric")
