@@ -291,10 +291,12 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
 
 
 def test_summarize_patient_notes_resumes_after_completed_round(
+    caplog,
     monkeypatch,
     tmp_path,
 ):
     """Retry from the saved summary when a later inference round fails."""
+    caplog.set_level("INFO")
     _stub_patient_qc(monkeypatch)
     monkeypatch.setattr(
         "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
@@ -401,6 +403,8 @@ def test_summarize_patient_notes_resumes_after_completed_round(
     assert metadata["model_metadata"]["model_sha"] == "sha"
     assert (tmp_path / "prepared_chunks.parquet").exists()
     assert (tmp_path / "round_0001.parquet").exists()
+    assert "Loaded 1 completed patient summarization round(s)" in caplog.text
+    assert "Resuming patient summarization at round 2 of 2" in caplog.text
 
 
 def test_summarize_patient_notes_reuses_checkpointed_chunks(monkeypatch, tmp_path):

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import re
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import pandas as pd
 
 _PREPARED_CHUNKS_FILENAME = "prepared_chunks.parquet"
 _ROUND_CHECKPOINT_PATTERN = re.compile(r"round_(\d+)\.parquet")
+logger = logging.getLogger(__name__)
 
 
 def prepare_checkpoint_dir(checkpoint_dir: str | Path) -> Path:
@@ -24,6 +26,7 @@ def load_prepared_chunks(checkpoint_dir: str | Path) -> pd.DataFrame | None:
     path = Path(checkpoint_dir) / _PREPARED_CHUNKS_FILENAME
     if not path.exists():
         return None
+    logger.info("Loading prepared patient data from %s.", path)
     return pd.read_parquet(path)
 
 
@@ -34,6 +37,7 @@ def save_prepared_chunks(
     """Save prepared patient note chunks for reuse by a later retry."""
     path = prepare_checkpoint_dir(checkpoint_dir) / _PREPARED_CHUNKS_FILENAME
     prepared_chunks.to_parquet(path, index=False)
+    logger.info("Saved prepared patient data to %s.", path)
 
 
 def load_round_checkpoints(
@@ -50,6 +54,12 @@ def load_round_checkpoints(
         match = _ROUND_CHECKPOINT_PATTERN.fullmatch(path.name)
         if match:
             checkpoints[int(match.group(1))] = pd.read_parquet(path)
+    if checkpoints:
+        logger.info(
+            "Loaded %d completed patient summarization round(s) from %s.",
+            len(checkpoints),
+            checkpoint_path,
+        )
     return checkpoints
 
 
@@ -62,6 +72,9 @@ def save_round_checkpoint(
     checkpoint_path = prepare_checkpoint_dir(checkpoint_dir)
     path = checkpoint_path / f"round_{round_idx:04d}.parquet"
     round_results.to_parquet(path, index=False)
+    logger.info(
+        "Saved completed patient summarization round %d to %s.", round_idx, path
+    )
 
 
 __all__ = [

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import logging
 from pathlib import Path
 from typing import Any, cast
 
@@ -32,6 +33,9 @@ from .prompt_builder import (
     prep_prompt_pool,
     shutdown_prompt_pool,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 def validate_existing_summaries(
@@ -199,6 +203,12 @@ def summarize_patient_notes(
     completed_rounds = (
         load_round_checkpoints(checkpoint_dir) if checkpoint_dir is not None else {}
     )
+    if completed_rounds:
+        logger.info(
+            "Resuming patient summarization at round %d of %d.",
+            len(completed_rounds) + 1,
+            len(rounds),
+        )
 
     backend = get_llm_backend(resolved_config)
     # This dict holds the latest available summary for each patient. If the
