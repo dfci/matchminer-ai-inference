@@ -1049,17 +1049,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#resuming-patient-summarization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resuming patient summarization
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1309,17 +1298,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#resuming-patient-summarization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resuming patient summarization
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1385,7 +1363,7 @@
 
 
 <a href="#matchminer_ai.patients.summarize_patients" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">summarize_patients</span><span class="p">(</span><span class="n">notes</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">summarize_patients</span><span class="p">(</span><span class="n">notes</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1444,25 +1422,6 @@ serial updates.</p>
     Unique patient identifier.
 patient_summary : str
     Existing full patient summary text to update.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>checkpoint_dir</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Directory used to save progress during patient summarization. Reusing
-the same directory on retry continues from the last saved point. The
-caller is responsible for supplying a directory specific to this
-input and run.</p>
               </div>
             </td>
             <td>
@@ -1579,7 +1538,8 @@ metadata dict, and QC report DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/patients/__init__.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
+<span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
@@ -1707,20 +1667,11 @@ metadata dict, and QC report DataFrame.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
     <span class="n">notes</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
@@ -1756,11 +1707,6 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">            Unique patient identifier.</span>
 <span class="sd">        patient_summary : str</span>
 <span class="sd">            Existing full patient summary text to update.</span>
-<span class="sd">    checkpoint_dir : str or pathlib.Path, optional</span>
-<span class="sd">        Directory used to save progress during patient summarization. Reusing</span>
-<span class="sd">        the same directory on retry continues from the last saved point. The</span>
-<span class="sd">        caller is responsible for supplying a directory specific to this</span>
-<span class="sd">        input and run.</span>
 <span class="sd">    return_metadata : bool, optional</span>
 <span class="sd">        When True, also return a metadata dict containing the config snapshot</span>
 <span class="sd">        and model metadata for this run.</span>
@@ -1822,7 +1768,6 @@ metadata dict, and QC report DataFrame.</p>
         <span class="n">notes</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
         <span class="n">existing_summaries</span><span class="o">=</span><span class="n">existing_summaries</span><span class="p">,</span>
-        <span class="n">checkpoint_dir</span><span class="o">=</span><span class="n">checkpoint_dir</span><span class="p">,</span>
         <span class="n">return_qc</span><span class="o">=</span><span class="n">return_qc</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>
@@ -1864,12 +1809,7 @@ metadata dict, and QC report DataFrame.</p>
 
     </div>
 
-</div><h2 id="resuming-patient-summarization">Resuming patient summarization<a class="headerlink" href="#resuming-patient-summarization" title="Permanent link">&para;</a></h2>
-<p>Pass a run-specific filesystem directory as <code>checkpoint_dir</code> to save progress
-during patient summarization. If processing is interrupted, call
-<code>summarize_patients</code> again with the same directory to continue from the last
-saved point.</p>
-<p>Omit <code>checkpoint_dir</code> to run without writing checkpoint files.</p>
+</div>
 
 
 
