@@ -8,6 +8,12 @@ from matchminer_ai.llm.backends import LLMGenerationResult, LocalBackend
 from matchminer_ai.llm.prompt_rendering import Prompt
 from matchminer_ai.llm.remote_inference import generate_remote_llm_outputs
 from matchminer_ai.patients import summarize_patients
+from matchminer_ai.patients.checkpoints import (
+    load_prepared_chunks,
+    load_round_checkpoints,
+    save_prepared_chunks,
+    save_round_checkpoint,
+)
 from matchminer_ai.patients.postprocess import parse_boilerplate
 from matchminer_ai.patients.prompt_builder import (
     PromptWorkItem,
@@ -111,6 +117,29 @@ def _remote_config(debug_mode: bool = False) -> MMAIConfig:
         "prompt_build_workers": 2,
     }
     return config
+
+
+def test_patient_checkpoint_helpers_round_trip_dataframes(tmp_path):
+    """Checkpoint helpers should create their directory and restore saved data."""
+    checkpoint_dir = tmp_path / "patient-checkpoints"
+    prepared_chunks = pd.DataFrame(
+        [{"patient_id": "P1", "chunk_index": 0, "chunk_text": "note chunk"}]
+    )
+    round_results = pd.DataFrame([{"patient_id": "P1", "summary": "updated summary"}])
+
+    assert load_prepared_chunks(checkpoint_dir) is None
+    assert load_round_checkpoints(checkpoint_dir) == {}
+
+    save_prepared_chunks(checkpoint_dir, prepared_chunks)
+    save_round_checkpoint(checkpoint_dir, 0, round_results)
+
+    pd.testing.assert_frame_equal(
+        load_prepared_chunks(checkpoint_dir),
+        prepared_chunks,
+    )
+    loaded_rounds = load_round_checkpoints(checkpoint_dir)
+    assert list(loaded_rounds) == [0]
+    pd.testing.assert_frame_equal(loaded_rounds[0], round_results)
 
 
 def test_parse_boilerplate_splits_summary_and_exclusions():
