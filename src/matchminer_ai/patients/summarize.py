@@ -204,11 +204,18 @@ def summarize_patient_notes(
         load_round_checkpoints(checkpoint_dir) if checkpoint_dir is not None else {}
     )
     if completed_rounds:
-        logger.info(
-            "Resuming patient summarization at round %d of %d.",
-            len(completed_rounds) + 1,
-            len(rounds),
-        )
+        if len(completed_rounds) < len(rounds):
+            logger.info(
+                "Resuming patient summarization at round %d of %d.",
+                len(completed_rounds) + 1,
+                len(rounds),
+            )
+        else:
+            logger.info(
+                "All %d patient summarization round(s) are already complete; "
+                "using saved results.",
+                len(rounds),
+            )
 
     backend = get_llm_backend(resolved_config)
     # This dict holds the latest available summary for each patient. If the

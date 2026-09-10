@@ -406,6 +406,15 @@ def test_summarize_patient_notes_resumes_after_completed_round(
     assert "Loaded 1 completed patient summarization round(s)" in caplog.text
     assert "Resuming patient summarization at round 2 of 2" in caplog.text
 
+    caplog.clear()
+    summarize_patient_notes(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
+
+    assert "All 2 patient summarization round(s) are already complete" in caplog.text
+
 
 def test_summarize_patient_notes_reuses_checkpointed_chunks(monkeypatch, tmp_path):
     """A prepared-chunks checkpoint should bypass note preparation on retry."""
