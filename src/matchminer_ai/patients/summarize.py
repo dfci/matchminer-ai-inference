@@ -225,17 +225,24 @@ def summarize_patient_notes(
         patient_id: summary for patient_id, summary in existing_summary_lookup.items()
     }
     current_reasoning_outputs: dict[str, str] = {}
+    failed_patient_ids: set[str] = set()
     model_metadata: dict[str, Any] = {}
     prompt_pool = None
 
     # Rebuild the latest patient state before continuing with the next round.
     for _, round_checkpoint in sorted(completed_rounds.items()):
-        patient_ids = round_checkpoint["patient_id"].astype(str)
+        checkpoint_finish_reasons = round_checkpoint["finish_reason"].astype(str)
+        failed_in_round = checkpoint_finish_reasons == "error"
+        failed_patient_ids.update(
+            round_checkpoint.loc[failed_in_round, "patient_id"].astype(str)
+        )
+        successful_checkpoint = round_checkpoint.loc[~failed_in_round]
+        patient_ids = successful_checkpoint["patient_id"].astype(str)
         current_summaries.update(
-            dict(zip(patient_ids, round_checkpoint["summary"], strict=False))
+            dict(zip(patient_ids, successful_checkpoint["summary"], strict=False))
         )
         current_reasoning_outputs.update(
-            dict(zip(patient_ids, round_checkpoint["reasoning"], strict=False))
+            dict(zip(patient_ids, successful_checkpoint["reasoning"], strict=False))
         )
 
     # Round N contains the Nth chunk for every patient that still has one.
@@ -254,6 +261,26 @@ def summarize_patient_notes(
 
         for round_idx in range(len(completed_rounds), len(rounds)):
             round_df = rounds[round_idx]
+            round_df = round_df.loc[
+                ~round_df["patient_id"].astype(str).isin(failed_patient_ids)
+            ].reset_index(drop=True)
+            if round_df.empty:
+                if checkpoint_dir is not None:
+                    save_round_checkpoint(
+                        checkpoint_dir,
+                        round_idx,
+                        pd.DataFrame(
+                            columns=[
+                                "patient_id",
+                                "prior_summary",
+                                "reasoning",
+                                "summary",
+                                "finish_reason",
+                            ]
+                        ),
+                    )
+                continue
+
             prompt_list, round_patient_ids = _build_prompt_list(
                 round_df,
                 current_summaries=current_summaries,
@@ -271,6 +298,7 @@ def summarize_patient_notes(
             reasoning_outputs = generation.reasoning_outputs
             finish_reasons = generation.finish_reasons
             round_results: list[dict[str, str | None]] = []
+            failed_in_round_count = 0
             # Persist each round's final summary, not the reasoning trace, so
             # it becomes the prior summary for the next patient chunk.
             for patient_id, summary, reasoning, finish_reason in zip(
@@ -290,8 +318,19 @@ def summarize_patient_notes(
                         "finish_reason": str(finish_reason),
                     }
                 )
+                if str(finish_reason) == "error":
+                    failed_patient_ids.add(patient_id)
+                    failed_in_round_count += 1
+                    continue
                 current_summaries[patient_id] = str(summary)
                 current_reasoning_outputs[patient_id] = str(reasoning)
+
+            if failed_in_round_count:
+                logger.warning(
+                    "Filtering %d patient(s) after inference failed in round %d.",
+                    failed_in_round_count,
+                    round_idx + 1,
+                )
 
             # A round becomes resumable only after inference finishes for the batch.
             if checkpoint_dir is not None:
@@ -306,6 +345,10 @@ def summarize_patient_notes(
 
     # Collapse chunk-level work to one final row for each summarized patient.
     final_rows = prepared_chunks[["patient_id"]].drop_duplicates().copy()
+    total_patient_count = int(final_rows["patient_id"].nunique())
+    final_rows = final_rows.loc[
+        ~final_rows["patient_id"].astype(str).isin(failed_patient_ids)
+    ].copy()
     final_rows["patient_answer_text"] = final_rows["patient_id"].map(current_summaries)
     if resolved_config.debug_mode:
         # These columns preserve final-round debug traces without feeding them
@@ -336,9 +379,15 @@ def summarize_patient_notes(
             ids=sorted(removed_patient_ids),
             denominator=patient_count_before_cleaning,
         )
+        failed_inference_qc_artifact = build_qc_artifact(
+            metric="patients_failed_inference",
+            ids=sorted(failed_patient_ids),
+            denominator=total_patient_count,
+        )
         qc_report = patient_summary_qc_report(
             final_rows,
             noninformative_summary_qc_artifact=(noninformative_summary_qc_artifact),
+            failed_inference_qc_artifact=failed_inference_qc_artifact,
             config=resolved_config,
         )
         return final_rows, metadata, qc_report

@@ -36,6 +36,7 @@ def patient_summary_qc_report(
     patient_summaries: pd.DataFrame,
     *,
     noninformative_summary_qc_artifact: dict[str, object],
+    failed_inference_qc_artifact: dict[str, object],
     config: MMAIConfig | None = None,
     expected_keywords: list[str] | None = None,
 ) -> pd.DataFrame:
@@ -51,6 +52,8 @@ def patient_summary_qc_report(
     noninformative_summary_qc_artifact : dict[str, object]
         Counts and patient IDs for summaries removed as non-informative during
         postprocessing.
+    failed_inference_qc_artifact : dict[str, object]
+        Counts and patient IDs removed after terminal LLM inference errors.
     config : MMAIConfig | None, optional
         Config used to resolve backend and embedding settings when token counts
         are computed inside this QC function.
@@ -85,6 +88,7 @@ def patient_summary_qc_report(
     total_patients = int(summaries["patient_id"].nunique())
 
     metrics.append(qc_artifact_to_report_row(noninformative_summary_qc_artifact))
+    metrics.append(qc_artifact_to_report_row(failed_inference_qc_artifact))
 
     # QC metric for summaries that exceed embedding model token limit
     if config is not None and config.embedding:
