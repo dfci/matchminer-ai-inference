@@ -45,6 +45,50 @@ def _stub_patient_qc(monkeypatch):
     )
 
 
+def _stub_serial_summarization_runtime(
+    monkeypatch,
+    prepared_chunks,
+    generation_side_effect,
+):
+    """Stub patient preparation, prompt building, and inference for serial tests."""
+    seen_work_items = []
+
+    def build_prompts(_func, work_items, chunksize=1):
+        """Record prompt inputs and return lightweight rendered prompts."""
+        seen_work_items.extend(work_items)
+        return [
+            Prompt(row_idx=item.row_idx, prompt_text=item.chunk_text, max_tokens=7)
+            for item in work_items
+        ]
+
+    prompt_pool = MagicMock()
+    prompt_pool.map.side_effect = build_prompts
+    backend = MagicMock()
+    backend.generate_llm_outputs.side_effect = generation_side_effect
+
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
+        lambda model_name, **kwargs: MockTokenizer(),
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prepare_patient_notes",
+        lambda notes, tokenizer, chunk_size, chunk_overlap: prepared_chunks,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.prep_prompt_pool",
+        lambda patient_config, n_workers: prompt_pool,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
+        lambda prompt_pool: None,
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.get_llm_backend",
+        lambda config: backend,
+    )
+    return seen_work_items
+
+
 def _patient_config() -> dict:
     return {
         "local": {
@@ -310,91 +354,52 @@ def test_build_prompt_worker_leaves_response_token_margin(monkeypatch):
     assert prompt.max_tokens == 1000 - 600 - _RESPONSE_TOKEN_MARGIN
 
 
-def test_summarize_patient_notes_resumes_after_completed_round(
+def test_summarize_patient_notes_resumes_after_interrupted_round(
     caplog,
     monkeypatch,
     tmp_path,
 ):
     """Retry from the saved summary when a later inference round fails."""
     caplog.set_level("INFO")
-    _stub_patient_qc(monkeypatch)
-    monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
-        lambda model_name, **kwargs: MockTokenizer(),
+    prepared_chunks = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "chunk_index": chunk_index,
+                "first_date": f"2024-01-0{chunk_index + 1}",
+                "last_date": f"2024-01-0{chunk_index + 1}",
+                "chunk_text": f"chunk {chunk_index + 1}",
+            }
+            for chunk_index in range(2)
+        ]
     )
-    monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.prepare_patient_notes",
-        lambda notes, tokenizer, chunk_size, chunk_overlap: pd.DataFrame(
-            [
-                {
-                    "patient_id": "P1",
-                    "chunk_index": 0,
-                    "first_date": "2024-01-01",
-                    "last_date": "2024-01-01",
-                    "chunk_text": "chunk one",
-                },
-                {
-                    "patient_id": "P1",
-                    "chunk_index": 1,
-                    "first_date": "2024-01-02",
-                    "last_date": "2024-01-02",
-                    "chunk_text": "chunk two",
-                },
-            ]
-        ),
-    )
+    fail_second_round = True
 
-    seen_prior_summaries = []
-
-    class FakePromptPool:
-        def map(self, func, work_items, chunksize=1):
-            seen_prior_summaries.extend(item.prior_summary_text for item in work_items)
-            return [
-                Prompt(row_idx=item.row_idx, prompt_text=item.chunk_text, max_tokens=7)
-                for item in work_items
-            ]
-
-    monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.prep_prompt_pool",
-        lambda patient_config, n_workers: FakePromptPool(),
-    )
-    monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.shutdown_prompt_pool",
-        lambda prompt_pool: None,
-    )
-
-    class MockBackend:
-        fail_second_round = True
-
-        def generate_llm_outputs(
-            self,
-            *,
-            prompt_list,
-            llm_config,
-            model_metadata_cache_dir=None,
-        ):
-            if prompt_list[0].prompt_text == "chunk one":
-                return LLMGenerationResult(
-                    final_outputs=["Round 1\nBoilerplate conditions:\nNone"],
-                    model_metadata={"model_name": "model", "model_sha": "sha"},
-                    finish_reasons=["stop"],
-                    reasoning_outputs=[""],
-                    raw_outputs=[],
-                )
-            if self.fail_second_round:
-                raise RuntimeError("interrupted during round two")
+    def generate_for_resume(*, prompt_list, **_kwargs):
+        """Return round one, then simulate and recover from an interruption."""
+        nonlocal fail_second_round
+        if prompt_list[0].prompt_text == "chunk 1":
             return LLMGenerationResult(
-                final_outputs=["Round 2\nBoilerplate conditions:\nNone"],
+                final_outputs=["Round 1\nBoilerplate conditions:\nNone"],
                 model_metadata={"model_name": "model", "model_sha": "sha"},
                 finish_reasons=["stop"],
                 reasoning_outputs=[""],
                 raw_outputs=[],
             )
+        if fail_second_round:
+            raise RuntimeError("interrupted during round two")
+        return LLMGenerationResult(
+            final_outputs=["Round 2\nBoilerplate conditions:\nNone"],
+            model_metadata={"model_name": "model", "model_sha": "sha"},
+            finish_reasons=["stop"],
+            reasoning_outputs=[""],
+            raw_outputs=[],
+        )
 
-    backend = MockBackend()
-    monkeypatch.setattr(
-        "matchminer_ai.patients.summarize.get_llm_backend",
-        lambda config: backend,
+    seen_work_items = _stub_serial_summarization_runtime(
+        monkeypatch,
+        prepared_chunks,
+        generate_for_resume,
     )
 
     notes = pd.DataFrame(
@@ -409,16 +414,17 @@ def test_summarize_patient_notes_resumes_after_completed_round(
 
     assert (tmp_path / "round_0000.parquet").exists()
     assert not (tmp_path / "round_0001.parquet").exists()
-
-    backend.fail_second_round = False
-    seen_prior_summaries.clear()
+    fail_second_round = False
+    seen_work_items.clear()
     result, metadata = summarize_patient_notes(
         notes,
         config=_config(),
         checkpoint_dir=tmp_path,
     )
 
-    assert seen_prior_summaries == ["Round 1\nBoilerplate conditions:\nNone"]
+    assert [item.prior_summary_text for item in seen_work_items] == [
+        "Round 1\nBoilerplate conditions:\nNone"
+    ]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Round 2"
     assert metadata["model_metadata"]["model_sha"] == "sha"
     assert (tmp_path / "prepared_chunks.parquet").exists()
@@ -434,6 +440,142 @@ def test_summarize_patient_notes_resumes_after_completed_round(
     )
 
     assert "All 2 patient summarization round(s) are already complete" in caplog.text
+
+
+def test_summarize_patient_notes_excludes_failed_patient(
+    caplog,
+    monkeypatch,
+    tmp_path,
+):
+    """Exclude a terminal request failure from later rounds and final output."""
+    caplog.set_level("INFO")
+    prepared_chunks = pd.DataFrame(
+        [
+            {
+                "patient_id": patient_id,
+                "chunk_index": chunk_index,
+                "first_date": "2024-01-01",
+                "last_date": "2024-01-01",
+                "chunk_text": f"{patient_id} chunk {chunk_index}",
+            }
+            for chunk_index in range(2)
+            for patient_id in ["P1", "P2"]
+        ]
+    )
+    generation_call_prompts = []
+
+    def generate_with_patient_failure(*, prompt_list, **_kwargs):
+        """Fail P2 in round one and return successful output for P1."""
+        generation_call_prompts.append([prompt.prompt_text for prompt in prompt_list])
+        if len(generation_call_prompts) == 1:
+            return LLMGenerationResult(
+                final_outputs=[
+                    "P1 round 1\nBoilerplate conditions:\nNone",
+                    "ERROR: request failed",
+                ],
+                model_metadata={"model_name": "model", "model_sha": "sha"},
+                finish_reasons=["stop", "error"],
+                reasoning_outputs=["", ""],
+                raw_outputs=[],
+            )
+        return LLMGenerationResult(
+            final_outputs=["P1 round 2\nBoilerplate conditions:\nNone"],
+            model_metadata={"model_name": "model", "model_sha": "sha"},
+            finish_reasons=["stop"],
+            reasoning_outputs=[""],
+            raw_outputs=[],
+        )
+
+    _stub_serial_summarization_runtime(
+        monkeypatch,
+        prepared_chunks,
+        generate_with_patient_failure,
+    )
+    notes = pd.DataFrame(
+        [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
+    )
+
+    result, _ = summarize_patient_notes(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
+
+    assert generation_call_prompts[1] == ["P1 chunk 1"]
+    assert result["patient_id"].tolist() == ["P1"]
+    assert "Filtering 1 patient(s) after inference failed in round 1" in caplog.text
+    assert "Filtering patient P2" not in caplog.text
+
+
+def test_summarize_patient_notes_restores_failed_patient_from_checkpoint(
+    monkeypatch,
+    tmp_path,
+):
+    """Keep a previously failed patient excluded when resuming later rounds."""
+    prepared_chunks = pd.DataFrame(
+        [
+            {
+                "patient_id": patient_id,
+                "chunk_index": chunk_index,
+                "first_date": "2024-01-01",
+                "last_date": "2024-01-01",
+                "chunk_text": f"{patient_id} chunk {chunk_index}",
+            }
+            for chunk_index in range(2)
+            for patient_id in ["P1", "P2"]
+        ]
+    )
+    save_prepared_chunks(tmp_path, prepared_chunks)
+    save_round_checkpoint(
+        tmp_path,
+        0,
+        pd.DataFrame(
+            [
+                {
+                    "patient_id": "P1",
+                    "prior_summary": None,
+                    "reasoning": "",
+                    "summary": "P1 round 1\nBoilerplate conditions:\nNone",
+                    "finish_reason": "stop",
+                },
+                {
+                    "patient_id": "P2",
+                    "prior_summary": None,
+                    "reasoning": "",
+                    "summary": "ERROR: request failed",
+                    "finish_reason": "error",
+                },
+            ]
+        ),
+    )
+
+    def generate_remaining_patient(*, prompt_list, **_kwargs):
+        """Return the final summary for the only non-failed patient."""
+        assert [prompt.prompt_text for prompt in prompt_list] == ["P1 chunk 1"]
+        return LLMGenerationResult(
+            final_outputs=["P1 round 2\nBoilerplate conditions:\nNone"],
+            model_metadata={"model_name": "model", "model_sha": "sha"},
+            finish_reasons=["stop"],
+            reasoning_outputs=[""],
+            raw_outputs=[],
+        )
+
+    _stub_serial_summarization_runtime(
+        monkeypatch,
+        prepared_chunks,
+        generate_remaining_patient,
+    )
+    notes = pd.DataFrame(
+        [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-01"}]
+    )
+
+    result, _ = summarize_patient_notes(
+        notes,
+        config=_config(),
+        checkpoint_dir=tmp_path,
+    )
+
+    assert result["patient_id"].tolist() == ["P1"]
 
 
 def test_summarize_patient_notes_reuses_checkpointed_chunks(monkeypatch, tmp_path):
