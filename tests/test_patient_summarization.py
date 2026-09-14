@@ -668,7 +668,13 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
     )
 
     existing_summaries = pd.DataFrame(
-        [{"patient_id": "P1", "patient_summary": "Existing summary"}]
+        [
+            {"patient_id": "P1", "patient_summary": "Existing summary"},
+            {
+                "patient_id": "P2",
+                "patient_summary": "Prior cancer history\nBoilerplate conditions:\nPrior evidence",
+            },
+        ]
     )
     notes = pd.DataFrame(
         [{"patient_id": "P1", "note_text": "x", "note_date": "2024-01-02"}]
@@ -682,6 +688,50 @@ def test_summarize_patient_notes_uses_existing_summary_in_first_round(monkeypatc
 
     assert seen_prior_summaries == ["Existing summary"]
     assert result.loc[result.index[0], "cancer_history_summary"] == "Updated"
+    retained = result.set_index("patient_id").loc["P2"]
+    assert retained["cancer_history_summary"] == "Prior cancer history"
+    assert retained["general_exclusion_criteria_evidence"] == "Prior evidence"
+
+
+@pytest.mark.parametrize("note_texts", [[], [None], ["   "]])
+def test_summarize_patients_retains_existing_without_usable_notes(
+    monkeypatch, note_texts
+):
+    """Retain existing content without inference for empty, null, or blank notes."""
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.AutoTokenizer.from_pretrained",
+        lambda *args, **kwargs: MockTokenizer(),
+    )
+    backend = MagicMock()
+    monkeypatch.setattr(
+        "matchminer_ai.patients.summarize.get_llm_backend", lambda config: backend
+    )
+    notes = pd.DataFrame(
+        {
+            "patient_id": ["P1"] * len(note_texts),
+            "note_text": note_texts,
+            "note_date": ["2024-01-02"] * len(note_texts),
+        }
+    )
+    existing = pd.DataFrame(
+        [
+            {
+                "patient_id": "P1",
+                "patient_summary": "History\nBoilerplate conditions:\nEvidence",
+            }
+        ]
+    )
+
+    result = summarize_patients(notes, config=_config(), existing_summaries=existing)
+
+    assert result.to_dict("records") == [
+        {
+            "patient_id": "P1",
+            "cancer_history_summary": "History",
+            "general_exclusion_criteria_evidence": "Evidence",
+        }
+    ]
+    backend.generate_llm_outputs.assert_not_called()
 
 
 def test_summarize_patient_notes_includes_standard_debug_columns(monkeypatch):

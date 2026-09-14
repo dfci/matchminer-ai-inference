@@ -50,7 +50,8 @@ def summarize_patients(
             Date of the note.
     existing_summaries : pd.DataFrame, optional
         Optional patient-level prior summaries used as the starting state for
-        serial updates.
+        serial updates. Patients with no usable new notes retain their existing
+        summary, subject to the usual summary postprocessing and filtering.
 
         Expected columns
         ----------------

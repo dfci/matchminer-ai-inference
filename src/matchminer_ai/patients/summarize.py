@@ -147,7 +147,8 @@ def summarize_patient_notes(
             Date of the note.
     existing_summaries : pd.DataFrame, optional
         Optional patient-level prior summaries used as the starting state for
-        serial updates.
+        serial updates. Patients with no usable new notes retain their existing
+        summary, subject to the usual summary postprocessing and filtering.
 
         Expected columns
         ----------------
@@ -346,6 +347,11 @@ def summarize_patient_notes(
     # Collapse chunk-level work to one final row for each summarized patient.
     final_rows = prepared_chunks[["patient_id"]].drop_duplicates().copy()
     total_patient_count = int(final_rows["patient_id"].nunique())
+    # Retain supplied summaries when there is no new content to process.
+    final_rows = pd.concat(
+        [final_rows, pd.DataFrame({"patient_id": list(existing_summary_lookup)})],
+        ignore_index=True,
+    ).drop_duplicates(subset=["patient_id"])
     final_rows = final_rows.loc[
         ~final_rows["patient_id"].astype(str).isin(failed_patient_ids)
     ].copy()
