@@ -28,7 +28,6 @@ def validate_note_inputs(
     normalized = notes.copy()
     normalized = normalized[normalized["note_text"].notna()].copy()
     normalized["note_text"] = normalized["note_text"].astype(str)
-    normalized["note_date"] = pd.to_datetime(normalized["note_date"])
     normalized["patient_id"] = normalized["patient_id"].astype(str)
     return normalized
 
@@ -118,18 +117,25 @@ def prepare_patient_notes(
     chunk_size: int = 10000,
     chunk_overlap: int = 500,
 ) -> pd.DataFrame:
-    """Convert note-level input into chronological, token-bounded chunks."""
+    """Build token-bounded chunks, sorting notes chronologically.
+
+    Date values retain their string representation in prompts; missing dates
+    use ``unknown date``. Dates are parsed only for sorting.
+    """
     normalized = validate_note_inputs(notes)
-    normalized = normalized.sort_values(["patient_id", "note_date"]).reset_index(
-        drop=True
-    )
+    normalized = normalized.sort_values(
+        ["patient_id", "note_date"],
+        key=lambda column: (
+            pd.to_datetime(column) if column.name == "note_date" else column
+        ),
+    ).reset_index(drop=True)
 
     chunk_rows: list[dict[str, object]] = []
 
     for patient_id, group in normalized.groupby("patient_id", sort=False):
         patient_notes = [
             (
-                row["note_date"].date().isoformat(),
+                str(row["note_date"]) if pd.notna(row["note_date"]) else "unknown date",
                 str(row["note_text"]),
             )
             for _, row in group.iterrows()

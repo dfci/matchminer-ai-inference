@@ -193,7 +193,7 @@ def test_parse_boilerplate_splits_summary_and_exclusions():
         [
             {
                 "patient_answer_text": (
-                    "Cancer history here.\n" "Boilerplate conditions:\n" "No CNS mets."
+                    "Cancer history here.\nBoilerplate conditions:\nNo CNS mets."
                 )
             },
             {"patient_answer_text": "Cancer only."},
