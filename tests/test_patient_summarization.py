@@ -359,7 +359,7 @@ def test_summarize_patient_notes_resumes_after_interrupted_round(
     monkeypatch,
     tmp_path,
 ):
-    """Retry from the saved summary when a later inference round fails."""
+    """Resume from the saved summary, taking precedence over supplied prior state."""
     caplog.set_level("INFO")
     prepared_chunks = pd.DataFrame(
         [
@@ -416,9 +416,13 @@ def test_summarize_patient_notes_resumes_after_interrupted_round(
     assert not (tmp_path / "round_0001.parquet").exists()
     fail_second_round = False
     seen_work_items.clear()
+    existing_summaries = pd.DataFrame(
+        [{"patient_id": "P1", "patient_summary": "Older existing summary"}]
+    )
     result, metadata = summarize_patient_notes(
         notes,
         config=_config(),
+        existing_summaries=existing_summaries,
         checkpoint_dir=tmp_path,
     )
 
