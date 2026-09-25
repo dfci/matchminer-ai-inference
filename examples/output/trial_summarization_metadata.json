@@ -1,4 +1,8 @@
 {
+  "package": {
+    "name": "matchminer-ai",
+    "version": "0.5.0"
+  },
   "config_snapshot": {
     "version": 0,
     "debug_mode": false,

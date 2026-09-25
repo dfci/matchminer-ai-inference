@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 from matchminer_ai._metadata import package_metadata
@@ -21,6 +22,7 @@ def summarize_patients(
     *,
     config: MMAIConfig | None = None,
     existing_summaries: pd.DataFrame | None = None,
+    checkpoint_dir: str | Path | None = None,
     return_metadata: bool = False,
     return_qc: bool = False,
 ) -> (
@@ -48,7 +50,8 @@ def summarize_patients(
             Date of the note.
     existing_summaries : pd.DataFrame, optional
         Optional patient-level prior summaries used as the starting state for
-        serial updates.
+        serial updates. Patients with no usable new notes retain their existing
+        summary, subject to the usual summary postprocessing and filtering.
 
         Expected columns
         ----------------
@@ -56,6 +59,11 @@ def summarize_patients(
             Unique patient identifier.
         patient_summary : str
             Existing full patient summary text to update.
+    checkpoint_dir : str or pathlib.Path, optional
+        Directory used to save progress during patient summarization. Reusing
+        the same directory on retry continues from the last saved point. The
+        caller is responsible for supplying a directory specific to this
+        input and run.
     return_metadata : bool, optional
         When True, also return a metadata dict containing the config snapshot
         and model metadata for this run.
@@ -117,6 +125,7 @@ def summarize_patients(
         notes,
         config=resolved_config,
         existing_summaries=existing_summaries,
+        checkpoint_dir=checkpoint_dir,
         return_qc=return_qc,
     )
     if return_qc:
