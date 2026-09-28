@@ -13,6 +13,7 @@ from matchminer_ai.config import config_snapshot, load_default_preset
 from matchminer_ai.llm.backends import (
     build_llm_runtime_config,
     get_llm_backend,
+    remote_enabled,
 )
 from matchminer_ai.llm.prompt_rendering import build_prompt_list
 
@@ -209,10 +210,12 @@ def score_match_quality_with_llm(
         metadata_payload = {
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
-            "model_metadata": {
-                "llm_match_quality_checker": model_metadata,
-            },
+            "model_metadata": {},
         }
+        if not remote_enabled(resolved_config) and model_metadata:
+            metadata_payload["model_metadata"]["score_match_quality_with_llm"] = (
+                model_metadata
+            )
         return output, metadata_payload
     return output
 
@@ -324,10 +327,12 @@ def exclusion_criteria_check_with_llm(
         metadata_payload = {
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
-            "model_metadata": {
-                "llm_exclusion_criteria_checker": model_metadata,
-            },
+            "model_metadata": {},
         }
+        if not remote_enabled(resolved_config) and model_metadata:
+            metadata_payload["model_metadata"]["exclusion_criteria_check_with_llm"] = (
+                model_metadata
+            )
         return output, metadata_payload
     return output
 

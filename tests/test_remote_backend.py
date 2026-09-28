@@ -98,20 +98,13 @@ def _llm_config(**overrides):
 
 
 def _install_fakes(monkeypatch):
-    """Install fake OpenAI and metadata dependencies for remote backend tests."""
+    """Install the fake OpenAI dependency for remote backend tests."""
     FakeAsyncOpenAI.clients = []
     FakeAsyncOpenAI.behavior = None
     monkeypatch.setitem(
         sys.modules,
         "openai",
         SimpleNamespace(AsyncOpenAI=FakeAsyncOpenAI),
-    )
-    monkeypatch.setattr(
-        "matchminer_ai.llm.backends.get_model_metadata",
-        lambda model_name, cache_dir=None: {
-            "model_name": model_name,
-            "model_sha": "sha",
-        },
     )
 
 
@@ -129,7 +122,7 @@ def test_remote_backend_single_server_preserves_order(monkeypatch):
         "http://server-a/v1:p1",
         "http://server-a/v1:p2",
     ]
-    assert result.model_metadata["model_sha"] == "sha"
+    assert result.model_metadata == {}
     assert result.finish_reasons == ["stop", "stop", "stop"]
     assert FakeAsyncOpenAI.clients[0].timeout == 183
     assert FakeAsyncOpenAI.clients[0].closed is True
@@ -259,17 +252,9 @@ def test_remote_backend_uses_runtime_model_name(monkeypatch):
     assert FakeAsyncOpenAI.clients[0].calls[0]["model"] == "endpoint-model"
 
 
-def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
-    """Endpoint model names do not have to be Hugging Face model IDs."""
+def test_remote_backend_does_not_report_model_metadata(monkeypatch):
+    """Do not claim provenance for a model hosted by an HTTP endpoint."""
     _install_fakes(monkeypatch)
-
-    def raise_metadata(model_name, cache_dir=None):
-        raise RuntimeError("not a Hugging Face model")
-
-    monkeypatch.setattr(
-        "matchminer_ai.llm.backends.get_model_metadata",
-        raise_metadata,
-    )
 
     result = RemoteBackend().generate_llm_outputs(
         prompt_list=_prompts("p0"),
@@ -283,9 +268,7 @@ def test_remote_backend_metadata_falls_back_for_endpoint_model(monkeypatch):
         ),
     )
 
-    assert result.model_metadata["model_name"] == "gpt-compatible-name"
-    assert result.model_metadata["model_sha"] == "openai-compatible-endpoint"
-    assert "not a Hugging Face model" in result.model_metadata["metadata_error"]
+    assert result.model_metadata == {}
 
 
 def test_remote_backend_forwards_max_completion_tokens(monkeypatch):

@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot
+from matchminer_ai.llm.backends import remote_enabled
 
 if TYPE_CHECKING:
     import pandas as pd
@@ -44,7 +45,7 @@ def summarize_trials(
             Full eligibility criteria text for the trial.
     return_metadata : bool, optional
         When True, also return a metadata dict containing the config snapshot
-        and model metadata for this run.
+        and model metadata for models loaded locally by the package.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this run.
 
@@ -142,10 +143,12 @@ def summarize_trials(
         metadata_payload = {
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
-            "model_metadata": {
-                "trial_summarizer": metadata["model_metadata"],
-            },
+            "model_metadata": {},
         }
+        if not remote_enabled(resolved_config) and metadata["model_metadata"]:
+            metadata_payload["model_metadata"]["summarize_trials"] = metadata[
+                "model_metadata"
+            ]
         if return_qc:
             return result, metadata_payload, qc_report
         return result, metadata_payload

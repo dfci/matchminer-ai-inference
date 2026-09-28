@@ -118,7 +118,7 @@ def embed_for_matching(
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
-                "embedding_model": model_metadata,
+                "embed_for_matching": model_metadata,
             },
         }
         return result, metadata_payload

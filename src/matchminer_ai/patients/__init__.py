@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, cast
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
+from matchminer_ai.llm.backends import remote_enabled
 
 from .summarize import summarize_patient_notes
 
@@ -66,7 +67,7 @@ def summarize_patients(
         input and run.
     return_metadata : bool, optional
         When True, also return a metadata dict containing the config snapshot
-        and model metadata for this run.
+        and model metadata for models loaded locally by the package.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this run.
 
@@ -145,10 +146,12 @@ def summarize_patients(
         metadata_payload = {
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
-            "model_metadata": {
-                "patient_summarizer": metadata["model_metadata"],
-            },
+            "model_metadata": {},
         }
+        if not remote_enabled(resolved_config) and metadata["model_metadata"]:
+            metadata_payload["model_metadata"]["summarize_patients"] = metadata[
+                "model_metadata"
+            ]
         if return_qc:
             return summaries, metadata_payload, qc_report
         return summaries, metadata_payload
