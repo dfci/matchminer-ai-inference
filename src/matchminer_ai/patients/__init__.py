@@ -91,10 +91,15 @@ def summarize_patients(
         -------------------------------------------------------------
         patient_answer_text : str
             Text the package treated as the LLM answer and used for
-            postprocessing.
+            postprocessing. Reflects only the final summarization round for
+            each patient; reasoning and answer text from earlier rounds are
+            not retained here. If checkpoint_dir was supplied, per-round
+            values can be found in that round's checkpoint file.
         patient_reasoning_text : str
             Optional separate reasoning trace returned by the backend or
-            extracted by the configured reasoning parser.
+            extracted by the configured reasoning parser. Reflects only the
+            final summarization round for each patient; see
+            patient_answer_text above.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]

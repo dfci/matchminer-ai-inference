@@ -538,15 +538,15 @@ def test_summarize_patient_notes_restores_failed_patient_from_checkpoint(
                 {
                     "patient_id": "P1",
                     "prior_summary": None,
-                    "reasoning": "",
-                    "summary": "P1 round 1\nBoilerplate conditions:\nNone",
+                    "patient_reasoning_text": "",
+                    "patient_answer_text": "P1 round 1\nBoilerplate conditions:\nNone",
                     "finish_reason": "stop",
                 },
                 {
                     "patient_id": "P2",
                     "prior_summary": None,
-                    "reasoning": "",
-                    "summary": "ERROR: request failed",
+                    "patient_reasoning_text": "",
+                    "patient_answer_text": "ERROR: request failed",
                     "finish_reason": "error",
                 },
             ]

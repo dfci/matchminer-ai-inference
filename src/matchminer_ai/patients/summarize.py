@@ -240,10 +240,22 @@ def summarize_patient_notes(
         successful_checkpoint = round_checkpoint.loc[~failed_in_round]
         patient_ids = successful_checkpoint["patient_id"].astype(str)
         current_summaries.update(
-            dict(zip(patient_ids, successful_checkpoint["summary"], strict=False))
+            dict(
+                zip(
+                    patient_ids,
+                    successful_checkpoint["patient_answer_text"],
+                    strict=False,
+                )
+            )
         )
         current_reasoning_outputs.update(
-            dict(zip(patient_ids, successful_checkpoint["reasoning"], strict=False))
+            dict(
+                zip(
+                    patient_ids,
+                    successful_checkpoint["patient_reasoning_text"],
+                    strict=False,
+                )
+            )
         )
 
     # Round N contains the Nth chunk for every patient that still has one.
@@ -274,8 +286,8 @@ def summarize_patient_notes(
                             columns=[
                                 "patient_id",
                                 "prior_summary",
-                                "reasoning",
-                                "summary",
+                                "patient_reasoning_text",
+                                "patient_answer_text",
                                 "finish_reason",
                             ]
                         ),
@@ -314,8 +326,8 @@ def summarize_patient_notes(
                     {
                         "patient_id": patient_id,
                         "prior_summary": prior_summary,
-                        "reasoning": str(reasoning),
-                        "summary": str(summary),
+                        "patient_reasoning_text": str(reasoning),
+                        "patient_answer_text": str(summary),
                         "finish_reason": str(finish_reason),
                     }
                 )
