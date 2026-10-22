@@ -3,6 +3,7 @@ from types import SimpleNamespace
 
 import pandas as pd
 import pytest
+import torch
 
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.embedding.embed import embed_for_matching
@@ -212,11 +213,14 @@ def test_generate_embeddings_applies_configured_max_seq_length(monkeypatch):
             self.max_seq_length = None
             loaded_models.append(self)
 
-        def encode(self, texts, prompt, batch_size, normalize_embeddings):
+        def encode(
+            self, texts, prompt, batch_size, convert_to_tensor, normalize_embeddings
+        ):
             assert prompt == "query"
             assert batch_size == 12
+            assert convert_to_tensor is True
             assert normalize_embeddings is True
-            return [[float(len(text))] for text in texts]
+            return torch.tensor([[float(len(text))] for text in texts])
 
     monkeypatch.setattr(
         "matchminer_ai.embedding.inference._load_prompt_text",
