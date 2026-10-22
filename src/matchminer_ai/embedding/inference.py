@@ -68,7 +68,12 @@ def generate_embeddings(
         model_path,
         cache_dir=model_metadata_cache_dir,
     )
-    embeddings = model.encode(texts, prompt="query")
+    embeddings = model.encode(
+        texts,
+        prompt="query",
+        batch_size=12,
+        normalize_embeddings=True,
+    )
     embedding_list = (
         embeddings.tolist() if hasattr(embeddings, "tolist") else embeddings
     )

@@ -212,8 +212,10 @@ def test_generate_embeddings_applies_configured_max_seq_length(monkeypatch):
             self.max_seq_length = None
             loaded_models.append(self)
 
-        def encode(self, texts, prompt):
+        def encode(self, texts, prompt, batch_size, normalize_embeddings):
             assert prompt == "query"
+            assert batch_size == 12
+            assert normalize_embeddings is True
             return [[float(len(text))] for text in texts]
 
     monkeypatch.setattr(
