@@ -576,3 +576,4 @@ def test_summarize_trials_metadata_uses_live_config(monkeypatch, default_config)
     assert metadata["config_snapshot"]["remote"]["server_urls"] == [
         "http://localhost:8000/v1"
     ]
+    assert metadata["model_metadata"] == {}

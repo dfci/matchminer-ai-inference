@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 import pandas as pd
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
+
+
+logger = logging.getLogger(__name__)
 
 
 def _split_boilerplate_section(text: str, boilerplate_marker: str) -> tuple[str, str]:
@@ -41,15 +45,36 @@ def parse_boilerplate(df: pd.DataFrame, boilerplate_marker: str) -> pd.DataFrame
     return df
 
 
+def clean_bad_data(df: pd.DataFrame) -> tuple[pd.DataFrame, set[str]]:
+    """Remove empty or non-informative summaries and return their patient IDs."""
+    cleaned = df.copy()
+    initial_patient_ids = set(cleaned["patient_id"].astype(str))
+    cleaned["cancer_history_summary"] = cleaned["cancer_history_summary"].fillna("")
+
+    cleaned = cleaned[cleaned["cancer_history_summary"] != ""]
+    cleaned = cleaned[
+        ~cleaned["cancer_history_summary"].str.startswith("No information")
+    ]
+
+    retained_patient_ids = set(cleaned["patient_id"].astype(str))
+    removed_patient_ids = initial_patient_ids - retained_patient_ids
+    logger.info(
+        "Filtered %d patient summary row(s) as non-informative.",
+        len(removed_patient_ids),
+    )
+    return cleaned, removed_patient_ids
+
+
 def postprocess_patient_summaries(
     df: pd.DataFrame,
     config: MMAIConfig,
-) -> pd.DataFrame:
-    """Postprocess final serial patient summaries into clean outputs."""
+) -> tuple[pd.DataFrame, set[str]]:
+    """Parse patient summaries, remove non-informative rows, and return their IDs."""
     patient_config = dict(config.patient)
     boilerplate_marker = patient_config["boilerplate_marker"]
-    cleaned = parse_boilerplate(df, boilerplate_marker).copy()
+    parsed = parse_boilerplate(df, boilerplate_marker)
+    cleaned, removed_patient_ids = clean_bad_data(parsed)
     if not config.debug_mode:
         cleaned = cleaned.drop(columns=["patient_answer_text"], errors="ignore")
     cleaned = cleaned.drop(columns=["finish_reason"], errors="ignore")
-    return cleaned
+    return cleaned, removed_patient_ids

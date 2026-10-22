@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import MMAIConfig, config_snapshot, load_default_preset
+from matchminer_ai.llm.backends import remote_enabled
 
 from .summarize import summarize_patient_notes
 
@@ -21,6 +23,7 @@ def summarize_patients(
     *,
     config: MMAIConfig | None = None,
     existing_summaries: pd.DataFrame | None = None,
+    checkpoint_dir: str | Path | None = None,
     return_metadata: bool = False,
     return_qc: bool = False,
 ) -> (
@@ -48,7 +51,8 @@ def summarize_patients(
             Date of the note.
     existing_summaries : pd.DataFrame, optional
         Optional patient-level prior summaries used as the starting state for
-        serial updates.
+        serial updates. Patients with no usable new notes retain their existing
+        summary, subject to the usual summary postprocessing and filtering.
 
         Expected columns
         ----------------
@@ -56,9 +60,14 @@ def summarize_patients(
             Unique patient identifier.
         patient_summary : str
             Existing full patient summary text to update.
+    checkpoint_dir : str or pathlib.Path, optional
+        Directory used to save progress during patient summarization. Reusing
+        the same directory on retry continues from the last saved point. The
+        caller is responsible for supplying a directory specific to this
+        input and run.
     return_metadata : bool, optional
         When True, also return a metadata dict containing the config snapshot
-        and model metadata for this run.
+        and model metadata for models loaded locally by the package.
     return_qc : bool, optional
         When True, also return a QC report DataFrame for this run.
 
@@ -82,10 +91,15 @@ def summarize_patients(
         -------------------------------------------------------------
         patient_answer_text : str
             Text the package treated as the LLM answer and used for
-            postprocessing.
+            postprocessing. Reflects only the final summarization round for
+            each patient; reasoning and answer text from earlier rounds are
+            not retained here. If checkpoint_dir was supplied, per-round
+            values can be found in that round's checkpoint file.
         patient_reasoning_text : str
             Optional separate reasoning trace returned by the backend or
-            extracted by the configured reasoning parser.
+            extracted by the configured reasoning parser. Reflects only the
+            final summarization round for each patient; see
+            patient_answer_text above.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus a metadata dict.
     tuple[pd.DataFrame, pd.DataFrame]
@@ -117,6 +131,7 @@ def summarize_patients(
         notes,
         config=resolved_config,
         existing_summaries=existing_summaries,
+        checkpoint_dir=checkpoint_dir,
         return_qc=return_qc,
     )
     if return_qc:
@@ -136,10 +151,12 @@ def summarize_patients(
         metadata_payload = {
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
-            "model_metadata": {
-                "patient_summarizer": metadata["model_metadata"],
-            },
+            "model_metadata": {},
         }
+        if not remote_enabled(resolved_config) and metadata["model_metadata"]:
+            metadata_payload["model_metadata"]["summarize_patients"] = metadata[
+                "model_metadata"
+            ]
         if return_qc:
             return summaries, metadata_payload, qc_report
         return summaries, metadata_payload

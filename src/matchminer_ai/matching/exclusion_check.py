@@ -146,7 +146,7 @@ def exclusion_criteria_check(
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
-                "exclusion_criteria_checker": model_metadata,
+                "exclusion_criteria_check": model_metadata,
             },
         }
         return output, metadata_payload

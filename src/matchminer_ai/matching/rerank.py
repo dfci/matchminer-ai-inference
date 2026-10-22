@@ -151,7 +151,7 @@ def score_match_quality(
             "package": package_metadata(),
             "config_snapshot": config_snapshot(resolved_config),
             "model_metadata": {
-                "match_quality_checker": model_metadata,
+                "score_match_quality": model_metadata,
             },
         }
         return output, metadata_payload
