@@ -1240,6 +1240,9 @@ prompts, filters, and postprocessing rules. Metrics are returned as rows with
 <h2 id="patient-summarization-qc">Patient summarization QC<a class="headerlink" href="#patient-summarization-qc" title="Permanent link">&para;</a></h2>
 <p>Returned by <code>summarize_patients(..., return_qc=True)</code>.</p>
 <ul>
+<li><code>patients_dropped_noninformative_summary</code>: summaries removed because they
+  were empty or began with <code>No information</code>.</li>
+<li><code>patients_failed_inference</code>: patients removed after LLM inference failed.</li>
 <li><code>patients_exclusion_criteria_not_extracted</code>: exclusion criteria not successfully extracted.</li>
 <li><code>patients_missing_keyword:&lt;keyword&gt;</code>: summaries missing an expected keyword.</li>
 <li><code>patients_exceed_embedding_token_limit</code>: summaries whose embedding-tokenized

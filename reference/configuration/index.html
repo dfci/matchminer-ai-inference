@@ -753,6 +753,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#returned-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returned Metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#remote" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1863,6 +1874,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#returned-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returned Metadata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#remote" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2512,6 +2534,23 @@ intermediate columns are retained in output tables.</p>
 <h3 id="model_metadata_cache_dir"><code>model_metadata_cache_dir</code><a class="headerlink" href="#model_metadata_cache_dir" title="Permanent link">&para;</a></h3>
 <p>Directory path used by model metadata helpers to cache Hugging Face model
 metadata JSON files.</p>
+<h2 id="returned-metadata">Returned Metadata<a class="headerlink" href="#returned-metadata" title="Permanent link">&para;</a></h2>
+<p>Functions with <code>return_metadata=True</code> return the package version, resolved
+configuration snapshot, and model provenance collected by the package. Model
+metadata is keyed by the public operation that used the model:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"model_metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"summarize_patients"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization/model"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_sha"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Model metadata is included only when the package loads the model directly. For
+HTTP inference, the requested model name remains in the task's <code>remote</code> config
+snapshot, but <code>model_metadata</code> has no entry for that operation because the
+package cannot verify the model behind the endpoint.</p>
 <h2 id="remote"><code>remote</code><a class="headerlink" href="#remote" title="Permanent link">&para;</a></h2>
 <p>Global transport settings used when <code>remote.enabled</code> is true and LLM tasks send
 OpenAI-compatible chat completion requests to external endpoints. The default
@@ -2575,8 +2614,7 @@ return no separate reasoning field.</p>
 <h3 id="trialremote"><code>trial.remote</code><a class="headerlink" href="#trialremote" title="Permanent link">&para;</a></h3>
 <p>Task-specific remote chat completion request settings:</p>
 <ul>
-<li><code>model_name</code>: model name sent in OpenAI-compatible chat completion requests
-  and used for remote endpoint metadata.</li>
+<li><code>model_name</code>: model name sent in OpenAI-compatible chat completion requests.</li>
 <li><code>request_params</code>: top-level chat completion request fields sent as-is,
   including the output-token budget. Use <code>max_tokens</code> for vLLM and many
   compatible endpoints, or <code>max_completion_tokens</code> for endpoints that require

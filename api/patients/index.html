@@ -1049,6 +1049,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#resuming-patient-summarization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resuming patient summarization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resuming patient summarization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checkpoint-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkpoint files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1298,6 +1326,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#resuming-patient-summarization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resuming patient summarization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resuming patient summarization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checkpoint-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkpoint files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1363,7 +1419,7 @@
 
 
 <a href="#matchminer_ai.patients.summarize_patients" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">summarize_patients</span><span class="p">(</span><span class="n">notes</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">summarize_patients</span><span class="p">(</span><span class="n">notes</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1416,12 +1472,32 @@ note_date : str or datetime
             <td>
               <div class="doc-md-description">
                 <p>Optional patient-level prior summaries used as the starting state for
-serial updates.</p>
+serial updates. Patients with no usable new notes retain their existing
+summary, subject to the usual summary postprocessing and filtering.</p>
 <h5 id="matchminer_ai.patients.summarize_patients--expected-columns">Expected columns<a class="headerlink" href="#matchminer_ai.patients.summarize_patients--expected-columns" title="Permanent link">&para;</a></h5>
 <p>patient_id : str
     Unique patient identifier.
 patient_summary : str
     Existing full patient summary text to update.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>checkpoint_dir</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Directory used to save progress during patient summarization. Reusing
+the same directory on retry continues from the last saved point. The
+caller is responsible for supplying a directory specific to this
+input and run.</p>
               </div>
             </td>
             <td>
@@ -1438,7 +1514,7 @@ patient_summary : str
             <td>
               <div class="doc-md-description">
                 <p>When True, also return a metadata dict containing the config snapshot
-and model metadata for this run.</p>
+and model metadata for models loaded locally by the package.</p>
               </div>
             </td>
             <td>
@@ -1494,10 +1570,15 @@ general_exclusion_criteria_evidence : str
 <hr />
 <p>patient_answer_text : str
     Text the package treated as the LLM answer and used for
-    postprocessing.
+    postprocessing. Reflects only the final summarization round for
+    each patient; reasoning and answer text from earlier rounds are
+    not retained here. If checkpoint_dir was supplied, per-round
+    values can be found in that round's checkpoint file.
 patient_reasoning_text : str
     Optional separate reasoning trace returned by the backend or
-    extracted by the configured reasoning parser.</p>
+    extracted by the configured reasoning parser. Reflects only the
+    final summarization round for each patient; see
+    patient_answer_text above.</p>
               </div>
             </td>
           </tr>
@@ -1538,9 +1619,7 @@ metadata dict, and QC report DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/patients/__init__.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
@@ -1667,11 +1746,29 @@ metadata dict, and QC report DataFrame.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_patients</span><span class="p">(</span>
     <span class="n">notes</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">existing_summaries</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">return_qc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
@@ -1699,7 +1796,8 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">            Date of the note.</span>
 <span class="sd">    existing_summaries : pd.DataFrame, optional</span>
 <span class="sd">        Optional patient-level prior summaries used as the starting state for</span>
-<span class="sd">        serial updates.</span>
+<span class="sd">        serial updates. Patients with no usable new notes retain their existing</span>
+<span class="sd">        summary, subject to the usual summary postprocessing and filtering.</span>
 
 <span class="sd">        Expected columns</span>
 <span class="sd">        ----------------</span>
@@ -1707,9 +1805,14 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">            Unique patient identifier.</span>
 <span class="sd">        patient_summary : str</span>
 <span class="sd">            Existing full patient summary text to update.</span>
+<span class="sd">    checkpoint_dir : str or pathlib.Path, optional</span>
+<span class="sd">        Directory used to save progress during patient summarization. Reusing</span>
+<span class="sd">        the same directory on retry continues from the last saved point. The</span>
+<span class="sd">        caller is responsible for supplying a directory specific to this</span>
+<span class="sd">        input and run.</span>
 <span class="sd">    return_metadata : bool, optional</span>
 <span class="sd">        When True, also return a metadata dict containing the config snapshot</span>
-<span class="sd">        and model metadata for this run.</span>
+<span class="sd">        and model metadata for models loaded locally by the package.</span>
 <span class="sd">    return_qc : bool, optional</span>
 <span class="sd">        When True, also return a QC report DataFrame for this run.</span>
 
@@ -1733,10 +1836,15 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">        -------------------------------------------------------------</span>
 <span class="sd">        patient_answer_text : str</span>
 <span class="sd">            Text the package treated as the LLM answer and used for</span>
-<span class="sd">            postprocessing.</span>
+<span class="sd">            postprocessing. Reflects only the final summarization round for</span>
+<span class="sd">            each patient; reasoning and answer text from earlier rounds are</span>
+<span class="sd">            not retained here. If checkpoint_dir was supplied, per-round</span>
+<span class="sd">            values can be found in that round's checkpoint file.</span>
 <span class="sd">        patient_reasoning_text : str</span>
 <span class="sd">            Optional separate reasoning trace returned by the backend or</span>
-<span class="sd">            extracted by the configured reasoning parser.</span>
+<span class="sd">            extracted by the configured reasoning parser. Reflects only the</span>
+<span class="sd">            final summarization round for each patient; see</span>
+<span class="sd">            patient_answer_text above.</span>
 <span class="sd">    tuple[pd.DataFrame, dict]</span>
 <span class="sd">        When return_metadata is True, returns the DataFrame plus a metadata dict.</span>
 <span class="sd">    tuple[pd.DataFrame, pd.DataFrame]</span>
@@ -1768,6 +1876,7 @@ metadata dict, and QC report DataFrame.</p>
         <span class="n">notes</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
         <span class="n">existing_summaries</span><span class="o">=</span><span class="n">existing_summaries</span><span class="p">,</span>
+        <span class="n">checkpoint_dir</span><span class="o">=</span><span class="n">checkpoint_dir</span><span class="p">,</span>
         <span class="n">return_qc</span><span class="o">=</span><span class="n">return_qc</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>
@@ -1787,10 +1896,12 @@ metadata dict, and QC report DataFrame.</p>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
             <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"patient_summarizer"</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">],</span>
-            <span class="p">},</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">remote_enabled</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">)</span> <span class="ow">and</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">]:</span>
+            <span class="n">metadata_payload</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">][</span><span class="s2">"summarize_patients"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span>
+                <span class="s2">"model_metadata"</span>
+            <span class="p">]</span>
         <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">summaries</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="p">,</span> <span class="n">qc_report</span>
         <span class="k">return</span> <span class="n">summaries</span><span class="p">,</span> <span class="n">metadata_payload</span>
@@ -1809,7 +1920,52 @@ metadata dict, and QC report DataFrame.</p>
 
     </div>
 
-</div>
+</div><h2 id="resuming-patient-summarization">Resuming patient summarization<a class="headerlink" href="#resuming-patient-summarization" title="Permanent link">&para;</a></h2>
+<p>Pass a run-specific filesystem directory as <code>checkpoint_dir</code> to save progress
+during patient summarization. If processing is interrupted, call
+<code>summarize_patients</code> again with the same directory to continue from the last
+saved point.</p>
+<p>Omit <code>checkpoint_dir</code> to run without writing checkpoint files.</p>
+<h3 id="checkpoint-files">Checkpoint files<a class="headerlink" href="#checkpoint-files" title="Permanent link">&para;</a></h3>
+<p>When <code>checkpoint_dir</code> is supplied, patient summarization writes these
+Parquet files to that directory:</p>
+<ul>
+<li><code>prepared_chunks.parquet</code> — the patient note chunks prepared for
+  summarization, saved once before the first round runs.</li>
+<li><code>round_0000.parquet</code>, <code>round_0001.parquet</code>, ... — one file per
+  summarization round, each holding every patient's result for that round.</li>
+</ul>
+<p>Each round checkpoint has the following columns:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>patient_id</code></td>
+<td>Patient identifier.</td>
+</tr>
+<tr>
+<td><code>prior_summary</code></td>
+<td>The summary carried into this round, before this round's chunk was incorporated.</td>
+</tr>
+<tr>
+<td><code>patient_reasoning_text</code></td>
+<td>The model's reasoning trace for this round.</td>
+</tr>
+<tr>
+<td><code>patient_answer_text</code></td>
+<td>The model's summary output for this round.</td>
+</tr>
+<tr>
+<td><code>finish_reason</code></td>
+<td>Generation finish reason, e.g. <code>"stop"</code> or <code>"error"</code>.</td>
+</tr>
+</tbody>
+</table>
 
 
 

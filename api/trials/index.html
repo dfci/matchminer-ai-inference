@@ -1395,7 +1395,7 @@ eligibility_criteria : str
             <td>
               <div class="doc-md-description">
                 <p>When True, also return a metadata dict containing the config snapshot
-and model metadata for this run.</p>
+and model metadata for models loaded locally by the package.</p>
               </div>
             </td>
             <td>
@@ -1501,8 +1501,7 @@ metadata dict, and QC report DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/trials/__init__.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
-<span class="normal"> 16</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
 <span class="normal"> 19</span>
@@ -1640,7 +1639,10 @@ metadata dict, and QC report DataFrame.</p>
 <span class="normal">151</span>
 <span class="normal">152</span>
 <span class="normal">153</span>
-<span class="normal">154</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_trials</span><span class="p">(</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">summarize_trials</span><span class="p">(</span>
     <span class="n">trials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1672,7 +1674,7 @@ metadata dict, and QC report DataFrame.</p>
 <span class="sd">            Full eligibility criteria text for the trial.</span>
 <span class="sd">    return_metadata : bool, optional</span>
 <span class="sd">        When True, also return a metadata dict containing the config snapshot</span>
-<span class="sd">        and model metadata for this run.</span>
+<span class="sd">        and model metadata for models loaded locally by the package.</span>
 <span class="sd">    return_qc : bool, optional</span>
 <span class="sd">        When True, also return a QC report DataFrame for this run.</span>
 
@@ -1770,10 +1772,12 @@ metadata dict, and QC report DataFrame.</p>
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
             <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"trial_summarizer"</span><span class="p">:</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">],</span>
-            <span class="p">},</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">remote_enabled</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">)</span> <span class="ow">and</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">]:</span>
+            <span class="n">metadata_payload</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">][</span><span class="s2">"summarize_trials"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span>
+                <span class="s2">"model_metadata"</span>
+            <span class="p">]</span>
         <span class="k">if</span> <span class="n">return_qc</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="p">,</span> <span class="n">qc_report</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">metadata_payload</span>

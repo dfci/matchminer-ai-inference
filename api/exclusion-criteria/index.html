@@ -1814,7 +1814,7 @@ exclusion_criteria_pass : bool
             <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
             <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
             <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"exclusion_criteria_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+                <span class="s2">"exclusion_criteria_check"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
@@ -2014,10 +2014,7 @@ llm_exclusion_criteria_parse_status : str
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/llm_checks.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
@@ -2126,7 +2123,12 @@ llm_exclusion_criteria_parse_status : str
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exclusion_criteria_check_with_llm</span><span class="p">(</span>
     <span class="n">matches</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="s2">"MMAIConfig | None"</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2233,10 +2235,12 @@ llm_exclusion_criteria_parse_status : str
         <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
             <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"llm_exclusion_criteria_checker"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
-            <span class="p">},</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">remote_enabled</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">)</span> <span class="ow">and</span> <span class="n">model_metadata</span><span class="p">:</span>
+            <span class="n">metadata_payload</span><span class="p">[</span><span class="s2">"model_metadata"</span><span class="p">][</span><span class="s2">"exclusion_criteria_check_with_llm"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">model_metadata</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
     <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
