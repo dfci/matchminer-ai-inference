@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
       
 
@@ -2673,6 +2673,13 @@ query prompt.</p>
 uses this value during <code>encode()</code>, so inputs longer than this limit are
 truncated before embedding generation. QC reports use the same value when
 flagging summaries that exceed the embedding input limit.</p>
+<p>This value should match the <code>model_path</code> configured alongside it — it is
+specific to the embedding model in use, not a general-purpose default.
+Changing <code>embedding.model_path</code> to a different model without reviewing
+<code>max_seq_length</code> against that model's own native truncation cutoff (e.g.
+its <code>sentence_bert_config.json</code>) can silently truncate inputs at the wrong
+point, producing different embeddings than the model would otherwise
+produce for longer inputs.</p>
 <h2 id="match_quality"><code>match_quality</code><a class="headerlink" href="#match_quality" title="Permanent link">&para;</a></h2>
 <p>Configuration for the match-quality checker model.</p>
 <h3 id="match_qualitymodel_name"><code>match_quality.model_name</code><a class="headerlink" href="#match_qualitymodel_name" title="Permanent link">&para;</a></h3>
@@ -2771,10 +2778,10 @@ return no separate reasoning field.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
