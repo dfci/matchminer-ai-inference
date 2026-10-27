@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from .embed import embed_for_matching
+from .embed import embed_for_matching, embed_texts
 
-__all__ = ["embed_for_matching"]
+__all__ = ["embed_for_matching", "embed_texts"]

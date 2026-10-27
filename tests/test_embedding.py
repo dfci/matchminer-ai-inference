@@ -6,7 +6,7 @@ import pytest
 import torch
 
 from matchminer_ai.config import MMAIConfig
-from matchminer_ai.embedding.embed import embed_for_matching
+from matchminer_ai.embedding import embed_for_matching, embed_texts
 from matchminer_ai.embedding import inference as embedding_inference
 from matchminer_ai.embedding.inference import generate_embeddings
 
@@ -199,6 +199,50 @@ def test_embed_for_matching_return_metadata(monkeypatch):
     assert metadata["config_snapshot"]["embedding"]["model_path"] == "cfg-model"
     assert metadata["model_metadata"]["embed_for_matching"]["model_name"] == "cfg-model"
     assert backend.last_model_metadata_cache_dir == ".mmai_cache/model_metadata"
+
+
+@pytest.mark.parametrize("texts", [["abc", "de", "abc"], []])
+def test_embed_texts_matches_dataframe_api(monkeypatch, default_config, texts):
+    """Both public APIs preserve order, metadata, and config, including empty input."""
+    backend = MockBackend()
+    monkeypatch.setattr(
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
+    )
+    default_config.embedding = {"model_path": "mock-model", "device": "cpu"}
+    default_config.model_metadata_cache_dir = ".mmai_cache/model_metadata"
+    vectors, model_metadata = embed_texts(texts, config=default_config)
+    assert backend.last_texts == texts
+    assert backend.last_embedding_config == default_config.embedding
+    assert (
+        backend.last_model_metadata_cache_dir == default_config.model_metadata_cache_dir
+    )
+    assert vectors == [[float(len(text))] for text in texts]
+    frame = pd.DataFrame(
+        {
+            "patient_id": [str(i) for i in range(len(texts))],
+            "cancer_history_summary": texts,
+        }
+    )
+    result, metadata = embed_for_matching(
+        frame, entity_type="patient", config=default_config, return_metadata=True
+    )
+    assert result["embedding"].tolist() == vectors
+    assert metadata["model_metadata"]["embed_for_matching"] == model_metadata
+
+
+def test_embed_texts_uses_default_config(monkeypatch, default_config):
+    """The list API resolves the default preset when no config is provided."""
+    backend = MockBackend()
+    default_config.embedding = {"model_path": "default-model"}
+    monkeypatch.setattr(
+        "matchminer_ai.embedding.embed.generate_embeddings", backend.generate_embeddings
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.embedding.embed.load_default_preset", lambda: default_config
+    )
+    vectors, metadata = embed_texts(["abc"])
+    assert vectors == [[3.0]]
+    assert metadata["model_name"] == "default-model"
 
 
 def test_generate_embeddings_applies_configured_max_seq_length(monkeypatch):
