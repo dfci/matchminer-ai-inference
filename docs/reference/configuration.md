@@ -249,6 +249,14 @@ uses this value during `encode()`, so inputs longer than this limit are
 truncated before embedding generation. QC reports use the same value when
 flagging summaries that exceed the embedding input limit.
 
+This value should match the `model_path` configured alongside it — it is
+specific to the embedding model in use, not a general-purpose default.
+Changing `embedding.model_path` to a different model without reviewing
+`max_seq_length` against that model's own native truncation cutoff (e.g.
+its `sentence_bert_config.json`) can silently truncate inputs at the wrong
+point, producing different embeddings than the model would otherwise
+produce for longer inputs.
+
 ## `match_quality`
 
 Configuration for the match-quality checker model.

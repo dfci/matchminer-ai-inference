@@ -4,3 +4,4 @@
     options:
       members:
         - embed_for_matching
+        - embed_texts

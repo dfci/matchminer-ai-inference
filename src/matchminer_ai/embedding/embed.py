@@ -30,6 +30,25 @@ def _resolve_id_columns(entity_type: Literal["patient", "trial"]) -> list[str]:
     raise ValueError("entity_type must be one of: 'patient', 'trial'")
 
 
+def embed_texts(
+    texts: list[str],
+    *,
+    config: MMAIConfig | None = None,
+) -> tuple[list[list[float]], dict]:
+    """Embed summary strings in input order and return vectors plus model metadata.
+
+    Accepts patient or trial text without identifiers or DataFrames. Uses the
+    default preset when config is omitted and reuses the cached inference model.
+    Model metadata includes model_name and model_sha.
+    """
+    resolved_config = config or load_default_preset()
+    return generate_embeddings(
+        texts,
+        embedding_config=dict(getattr(resolved_config, "embedding", {})),
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    )
+
+
 def embed_for_matching(
     df: pd.DataFrame,
     *,
@@ -101,16 +120,11 @@ def embed_for_matching(
         raise ValueError(f"df is missing required columns for {entity_type}: {missing}")
 
     resolved_config = config or load_default_preset()
-    embedding_config = dict(getattr(resolved_config, "embedding", {}))
 
     output = df.copy()
 
     summaries = output[text_col].fillna("").astype(str).tolist()
-    embeddings, model_metadata = generate_embeddings(
-        summaries,
-        embedding_config=embedding_config,
-        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
-    )
+    embeddings, model_metadata = embed_texts(summaries, config=resolved_config)
     output["embedding"] = embeddings
     result = output[id_cols + ["embedding"]].copy()
     if return_metadata:
