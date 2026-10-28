@@ -31,6 +31,15 @@ source .venv/bin/activate
 uv pip install matchminer-ai
 ```
 
+## Model Compatibility
+This package uses model collections available on HuggingFace at `https://huggingface.co/ksg-dfci/` starting with collection 0526. As collections are updated, they will be tied to a specific version of this package. Please see the [user guide](/docs/user-guide/patient-centric-matching.md/#model-collections) for more information.
+
+| Collection | Compatible package versions | Notes |
+|------------|-----------------------------|-------|
+| 1225 | NA | initial model and synthetic data release |
+| 0426 | NA | MatchMiner-AI updates for April 2026 ('v21'), incorporating more quantitative scoring of degree of match between patient and trial space. |
+| 0526 | v0.2.0+ | May 2026 MatchMiner-AI updates ('v22'), incorporating switch to Gemma-4-31B-IT , and repetition penalty adjustment to improve patient summarization. |
+
 ## Quickstart
 See the example notebook for a full walkthrough using sample input data:
 [example notebook](https://github.com/dfci/matchminer-ai-inference/blob/main/examples/run_examples.ipynb)

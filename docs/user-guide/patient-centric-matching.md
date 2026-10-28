@@ -11,12 +11,12 @@ Currently, MatchMiner-AI is most fully developed for Patient-centric matching. T
 ## How MatchMiner-AI works
 
 MatchMiner-AI has 6 main steps (Figure 1):
-1. Summarize Trials (Create a list of target populations, or trial 'spaces', for each trial, and extract the trial's "boilerplate" exclusion criteria)
-2. Summarize Patients
-3. Embed Trial Spaces[^1] and Patient Summaries (TrialSpace Model)
-4. Generate Candidate Matches
-5. Evaluate Candidate Match Quality (TrialChecker Model)
-6. Check for Common Exclusion criteria unrelated to the core clinical question asked by the trial (Boilerplate Checker Model)
+1. Summarize Trials (Create a list of target populations, or trial 'spaces', for each trial, and extract the trial's "boilerplate" exclusion criteria) <br>
+2. Summarize Patients <br>
+3. Embed Trial Spaces[^1] and Patient Summaries (TrialSpace Model) <br>
+4. Generate Candidate Matches <br>
+5. Evaluate Candidate Match Quality (TrialChecker Model) <br>
+6. Check for Common Exclusion criteria unrelated to the core clinical question asked by the trial (Boilerplate Checker Model)<br>
 
 [^1] A processed clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
 
@@ -26,7 +26,8 @@ Table 1 summarizes the models used for each step. For more on local and remote
 inference options for LLM-backed steps, see
 [Choosing an Inference Setup](local-vs-remote.md).
 
-Table 1: MatchMiner-AI Steps and Models
+Table 1: MatchMiner-AI Steps and Models. <br>
+*Note: Models are provided on HuggingFace as collections. Please see [Model Collections](#model-collections) for more information.*
 
 | Step | Package Function | Model | Notes |
 |------|-------|-------|--------|
@@ -38,6 +39,14 @@ Table 1: MatchMiner-AI Steps and Models
 | 6. Check for Exclusions | `exclusion_criteria_check` | `BoilerplateChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
 
 [^2] for both score_match_quality and exclusion_criteria_check, we also offer alternative functions which perform these steps using a LLM. To run these steps with a LLM, use `score_match_quality_wth_LLM` and `exclusion_criteria_check_with_LLM`.
+
+## Model Collections
+MatchMiner-AI combines an open-source large language model, used with specific prompts and parameters, with three families of trained models which have been released on HuggingFace at `https://huggingface.co/ksg-dfci`.:
+- TrialSpace finds candidate trials for a patient.<br>
+- TrialChecker judges whether the patient meets a trial’s eligibility criteria.<br>
+- BoilerplateChecker checks the common exclusion criteria most trials share.<br>
+
+The trained models can be found on HuggingFace. The prompts and parameters used for the open-source large language model summaries are found in this matchminer-ai-inference repository. When a new collection is released, the version of the package will change and will documented with the new collection. Please see this repository's [README.md](../../README.md) for package and model collection compatibility.
 
 ## Trial Spaces
 
