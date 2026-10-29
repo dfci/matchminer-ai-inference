@@ -18,7 +18,7 @@ MatchMiner-AI has 6 main steps (Figure 1):
 5. Evaluate Candidate Match Quality (TrialChecker Model) <br>
 6. Check for Common Exclusion criteria unrelated to the core clinical question asked by the trial (Boilerplate Checker Model)<br>
 
-[^1] A processed clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
+[^1]: A processed clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
 
 ![Figure 1. MatchMiner-AI Process Overview](../assets/images/MM-AI_process-overview_publicpkg.png)
 
@@ -31,8 +31,8 @@ Table 1: MatchMiner-AI Steps and Models. <br>
 
 | Step | Package Function | Model | Notes |
 |------|-------|-------|--------|
-| 1. Summarize Trials | `summarize_trials` | public LLM | by default, currently uses `google/gemma-4-31B-it` |
-| 2. Summarize Patients | `summarize_patients` | public LLM | by default, currently uses `google/gemma-4-31B-it` |
+| 1. Summarize Trials | `summarize_trials` | open-weights local LLM | by default, currently uses `google/gemma-4-31B-it` |
+| 2. Summarize Patients | `summarize_patients` | open-weights local LLM | by default, currently uses `google/gemma-4-31B-it` |
 | 3. Embed Trial Spaces and Patient Summaries | `embed_for_matching` | `TrialSpace`, a trained Sentence Transformers model | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
 | 4. Generate Candidate Matches | `generate_candidate_matches` | NA | |
 | 5. Evaluate Candidate Match Quality | `score_match_quality` | `TrialChecker`, a trained ModernBERT model [^2] | provided on Hugging Face at `https://huggingface.co/ksg-dfci` |
