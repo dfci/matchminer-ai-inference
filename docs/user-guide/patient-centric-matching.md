@@ -18,7 +18,7 @@ MatchMiner-AI has 6 main steps (Figure 1):
 5. Evaluate Candidate Match Quality (TrialChecker Model) <br>
 6. Check for Common Exclusion criteria unrelated to the core clinical question asked by the trial (Boilerplate Checker Model)<br>
 
-[^1]: A processed clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section below for more information.
+[^1]: A processed clinical trial is divided into one or more Trial Spaces. Please see the [Trial Spaces](#trial-spaces) section for more information.
 
 ![Figure 1. MatchMiner-AI Process Overview](../assets/images/MM-AI_process-overview_publicpkg.png)
 
