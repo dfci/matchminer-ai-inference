@@ -41,7 +41,7 @@ Table 1: MatchMiner-AI Steps and Models. <br>
 [^2] for both score_match_quality and exclusion_criteria_check, we also offer alternative functions which perform these steps using a LLM. To run these steps with a LLM, use `score_match_quality_wth_LLM` and `exclusion_criteria_check_with_LLM`.
 
 ## Model Collections
-MatchMiner-AI combines an open-source large language model, used with specific prompts and parameters, with three families of trained models which have been released on HuggingFace at `https://huggingface.co/ksg-dfci`.:
+MatchMiner-AI combines an open-source large language model, used with specific prompts and parameters, with three families of trained models which have been released on HuggingFace at [huggingface.co/ksg-dfci](https://huggingface.co/ksg-dfci):
 - TrialSpace finds candidate trials for a patient.<br>
 - TrialChecker judges whether the patient meets a trial’s eligibility criteria.<br>
 - BoilerplateChecker checks the common exclusion criteria most trials share.<br>
