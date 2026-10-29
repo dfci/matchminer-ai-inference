@@ -32,7 +32,7 @@ uv pip install matchminer-ai
 ```
 
 ## Model Compatibility
-This package uses model collections available on HuggingFace at [huggingface.co/ksg-dfci/](https://huggingface.co/ksg-dfci/) starting with collection 0526. As collections are updated, they will be tied to a specific version of this package. Please see the [user guide](/docs/user-guide/patient-centric-matching.md/#model-collections) for more information.
+This package uses model collections available on HuggingFace at [huggingface.co/ksg-dfci/](https://huggingface.co/ksg-dfci/) starting with collection [0526](https://huggingface.co/collections/ksg-dfci/matchminer-ai-0526). As collections are updated, they will be tied to a specific version of this package. Please see the [user guide](/docs/user-guide/patient-centric-matching.md/#model-collections) for more information.
 
 | Collection | Compatible package versions | Notes |
 |------------|-----------------------------|-------|
