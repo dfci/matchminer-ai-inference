@@ -31,14 +31,9 @@ source .venv/bin/activate
 uv pip install matchminer-ai
 ```
 
-## Model Compatibility
-This package uses model collections available on HuggingFace at [huggingface.co/ksg-dfci/](https://huggingface.co/ksg-dfci/) starting with collection [0526](https://huggingface.co/collections/ksg-dfci/matchminer-ai-0526). As collections are updated, they will be tied to a specific version of this package. Please see the [user guide](/docs/user-guide/patient-centric-matching.md/#model-collections) for more information.
+## Models
 
-| Collection | Compatible package versions | Notes |
-|------------|-----------------------------|-------|
-| 1225 | NA | initial model and synthetic data release |
-| 0426 | NA | MatchMiner-AI updates for April 2026 ('v21'), incorporating more quantitative scoring of degree of match between patient and trial space. |
-| 0526 | v0.2.0+ | May 2026 MatchMiner-AI updates ('v22'), incorporating switch to Gemma-4-31B-IT , and repetition penalty adjustment to improve patient summarization. |
+MatchMiner-AI is **open source and uses open-weight models**. The [default configuration](https://github.com/dfci/matchminer-ai-inference/blob/main/src/matchminer_ai/presets/default.yaml) combines a large language model for summarization with models we train and release on Hugging Face. Our trained models are released in collections paired with compatible package releases. The current configuration uses [collection 0526](https://huggingface.co/collections/ksg-dfci/matchminer-ai-0526), supported since package version 0.2.0. See [Model Collections](https://dfci.github.io/matchminer-ai-inference/user-guide/patient-centric-matching/#model-collections) for more information.
 
 ## Quickstart
 See the example notebook for a full walkthrough using sample input data:

@@ -27,7 +27,7 @@ inference options for LLM-backed steps, see
 [Choosing an Inference Setup](local-vs-remote.md).
 
 Table 1: MatchMiner-AI Steps and Models. <br>
-*Note: Models are provided on HuggingFace as collections. Please see [Model Collections](#model-collections) for more information.*
+*Note: Models are provided on HuggingFace as collections. Please see [Model Collections](#model-collections) below for more information.*
 
 | Step | Package Function | Model | Notes |
 |------|-------|-------|--------|
@@ -46,7 +46,13 @@ MatchMiner-AI combines an open-source large language model, used with specific p
 - TrialChecker judges whether the patient meets a trial’s eligibility criteria.<br>
 - BoilerplateChecker checks the common exclusion criteria most trials share.<br>
 
-The trained models can be found on HuggingFace. The prompts and parameters used for the open-source large language model summaries are found in this matchminer-ai-inference repository. When a new collection is released, the version of the package will change and will documented with the new collection. Please see this repository's [README.md](../../README.md) for package and model collection compatibility.
+The trained models can be found on HuggingFace. The prompts and parameters used for the open-source large language model summaries are found in this matchminer-ai-inference repository. When a new collection is released, the version of the package will change and will documented with the new collection. Please see the table below for package and model collection compatibility.
+
+| Collection | Compatible package versions | Notes |
+|------------|-----------------------------|-------|
+| 1225 | NA | initial model and synthetic data release |
+| 0426 | NA | MatchMiner-AI updates for April 2026 ('v21'), incorporating more quantitative scoring of degree of match between patient and trial space. |
+| 0526 | v0.2.0+ | May 2026 MatchMiner-AI updates ('v22'), incorporating switch to Gemma-4-31B-IT , and repetition penalty adjustment to improve patient summarization. |
 
 ## Trial Spaces
 
