@@ -4,3 +4,4 @@
     options:
       members:
         - generate_candidate_matches
+        - rank_similarity
