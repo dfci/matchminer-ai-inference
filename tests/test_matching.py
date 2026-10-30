@@ -9,9 +9,21 @@ from matchminer_ai.matching import (
     exclusion_criteria_check,
     exclusion_criteria_check_with_llm,
     generate_candidate_matches,
+    rank_similarity,
     score_match_quality,
     score_match_quality_with_llm,
 )
+
+
+def test_rank_similarity_returns_top_k_index_score_pairs_sorted_descending():
+    """corpus_index in each result must point back to the correct corpus row by position --
+    a wrong index would silently attribute a similarity score to the wrong corpus item."""
+    query_embeddings = [[1.0, 0.0]]
+    corpus_embeddings = [[0.0, 1.0], [1.0, 0.0], [0.5, 0.5]]
+
+    result = rank_similarity(query_embeddings, corpus_embeddings, k=2)
+
+    assert result == [[(1, pytest.approx(1.0)), (2, pytest.approx(0.70710678))]]
 
 
 def test_generate_candidate_matches_returns_top_k_per_query():
