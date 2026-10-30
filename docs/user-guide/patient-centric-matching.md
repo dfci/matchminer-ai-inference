@@ -46,7 +46,7 @@ MatchMiner-AI combines an open-source large language model, used with specific p
 - TrialChecker judges whether the patient meets a trial’s eligibility criteria.<br>
 - BoilerplateChecker checks the common exclusion criteria most trials share.<br>
 
-The trained models can be found on HuggingFace. The prompts and parameters used for the open-source large language model summaries are found in this matchminer-ai-inference repository. When a new collection is released, the version of the package will change and will documented with the new collection. Please see the table below for package and model collection compatibility.
+The trained models can be found on HuggingFace. The prompts and parameters used for the open-source large language model summaries are found in this matchminer-ai-inference repository. When a new collection is released, the version of the package will change and will be documented with the new collection. Please see the table below for package and model collection compatibility.
 
 | Collection | Compatible package versions | Notes |
 |------------|-----------------------------|-------|
