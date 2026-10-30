@@ -31,6 +31,10 @@ source .venv/bin/activate
 uv pip install matchminer-ai
 ```
 
+## Models
+
+MatchMiner-AI is **open source and uses open-weight models**. The [default configuration](https://github.com/dfci/matchminer-ai-inference/blob/main/src/matchminer_ai/presets/default.yaml) combines a large language model for summarization with models we train and release on Hugging Face. Our trained models are released in collections paired with compatible package releases. The current configuration uses [collection 0526](https://huggingface.co/collections/ksg-dfci/matchminer-ai-0526), supported since package version 0.2.0. See [Model Collections](https://dfci.github.io/matchminer-ai-inference/user-guide/patient-centric-matching/#model-collections) for more information.
+
 ## Quickstart
 See the example notebook for a full walkthrough using sample input data:
 [example notebook](https://github.com/dfci/matchminer-ai-inference/blob/main/examples/run_examples.ipynb)

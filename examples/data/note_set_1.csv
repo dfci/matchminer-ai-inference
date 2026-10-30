@@ -1,5 +1,5 @@
-patient_id,event_type,note_text,split,note_is_from_positive_prompt,note_date
-1722,pathology_report,"**Pathology Report**
+patient_id,note_text,note_date
+1722,"**Pathology Report**
 
 ---
 
@@ -56,8 +56,8 @@ Dr. S. Lee, MD — Attending Surgical Pathologist
 
 
 
-***End of Report***",test,1,8/7/20 0:52
-1722,ngs_report,"**PATHOLOGY – MOLECULAR GENETICS REPORT**
+***End of Report***",8/7/20 0:52
+1722,"**PATHOLOGY – MOLECULAR GENETICS REPORT**
 
 ---
 
@@ -122,8 +122,8 @@ Comprehensive Next‑Generation Sequencing (NGS) assay covering >300 cancer‐re
 Molecular Pathology Laboratory – Genomics Division  
 Board‑Certified Molecular Geneticist: Dr. A. Patel, MD, PhD  
 
-**Signature:** _______________________   **Date:** *[date omitted]*",test,1,9/17/20 14:27
-1722,clinical_note,"**Oncology Consultation Note – Initial Visit**
+**Signature:** _______________________   **Date:** *[date omitted]*",9/17/20 14:27
+1722,"**Oncology Consultation Note – Initial Visit**
 
 **Patient:** Michael Chen  
 **Age/Sex:** 58‑yr / Male  
@@ -285,8 +285,8 @@ Impression: Locally advanced gastroesophageal junction adenocarcinoma (cT3N?, cM
 
 Signature: ________________________  
 Medical Oncology Attending – Dr. [Name], MD  
-Date: _(to be inserted)_",test,1,9/19/20 15:15
-1722,imaging_report,"**Imaging Modality:** Contrast‑Enhanced Computed Tomography (CT) Chest / Abdomen / Pelvis  
+Date: _(to be inserted)_",9/19/20 15:15
+1722,"**Imaging Modality:** Contrast‑Enhanced Computed Tomography (CT) Chest / Abdomen / Pelvis  
 
 **Patient:** Male, 58 years old  
 **Clinical History:** Newly diagnosed Stage IV gastric adenocarcinoma involving the gastro‑oesophageal junction (GEJ) with hepatic metastases. Baseline staging examination requested prior to initiation of systemic therapy.  
@@ -336,8 +336,8 @@ Multiphase contrast‑enhanced CT performed from the thoracic inlet through the 
 1. **Baseline staging CT** demonstrating a **5.2 cm circumferential GEJ adenocarcinoma** with associated regional infiltration.  
 2. **Multiple hepatic metastases**, largest measuring **2.8 cm** in segment VII; distribution consistent with known stage IV disease.  
 3. No additional distant metastatic sites identified (lungs clear, no bony involvement, no peritoneal carcinomatosis).  
-4. Overall impression: Disease extent corresponds to previously established diagnosis of stage IV gastric/gastro‑oesophageal junction adenocarcinoma, HER2‑positive, MSS. Imaging serves as pre‑treatment baseline for subsequent therapeutic response assessments.  ",test,1,11/24/20 21:27
-1722,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+4. Overall impression: Disease extent corresponds to previously established diagnosis of stage IV gastric/gastro‑oesophageal junction adenocarcinoma, HER2‑positive, MSS. Imaging serves as pre‑treatment baseline for subsequent therapeutic response assessments.  ",11/24/20 21:27
+1722,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** Michael Chen  **MRN:** ***  
 **DOB/Age:** 58 years (currently 59)  **Sex:** Male  
@@ -456,8 +456,8 @@ Interpretation: Radiographic appearance compatible with *stable disease* accordi
 
 **Signature:** ___________________________  
 Dr. A. Patel, MD – Medical Oncology  
-Date: [auto‑generated]",test,1,3/16/21 17:57
-1722,imaging_report,"**Patient:** Michael Chen  **Age/Gender:** 58‑yr Male  
+Date: [auto‑generated]",3/16/21 17:57
+1722,"**Patient:** Michael Chen  **Age/Gender:** 58‑yr Male  
 **MRN:** ***[Redacted]***  
 
 ---
@@ -497,8 +497,8 @@ Image quality satisfactory; adequate blood glucose level recorded at 92 mg/dL be
 
 3. **Absence of new metabolically active lesions** in chest, abdomen, pelvis, or skeleton. No development of malignant ascites or peritoneal implants detectable on PET/CT.  
 
-Overall, the disease demonstrates a mixed pattern—responding primary tumor while distant hepatic sites remain biologically quiescent. Continued surveillance recommended per treating oncologist’s protocol.",test,1,5/1/21 21:26
-1722,clinical_note,"**Oncology Progress Note**
+Overall, the disease demonstrates a mixed pattern—responding primary tumor while distant hepatic sites remain biologically quiescent. Continued surveillance recommended per treating oncologist’s protocol.",5/1/21 21:26
+1722,"**Oncology Progress Note**
 
 **Patient:** Michael Chen  **MRN:** ***  
 **DOB/Age:** 58 yr (currently 60)  **Sex:** Male  
@@ -626,8 +626,8 @@ Interpretation: Radiographically progressive disease manifest as newly apparent 
 
 **Signature:** ___________________________  
 **Provider:** Dr. ___[Medical Oncologist]___, MD  
-**Date:** [to be inserted automatically]",test,1,10/13/21 6:19
-1722,imaging_report,"**IMAGING REPORT**
+**Date:** [to be inserted automatically]",10/13/21 6:19
+1722,"**IMAGING REPORT**
 
 ---
 
@@ -672,8 +672,8 @@ Systematic laparoscopic inspection reveals extensive peritoneal carcinomatosis c
 1. **Newly identified peritoneal carcinomatosis** involving omentum, diaphragmatic, pelvic, and intestinal serosal surfaces—consistent with disease progression relative to baseline staging.  
 2. Positive peritoneal fluid cytology supporting microscopic confirmation of peritoneal metastasis.  
 
-These findings establish definitive locoregional advancement of the patient’s gastric adenocarcinoma and provide essential staging information for subsequent therapeutic decision making. No immediate interventional procedures performed; postoperative care plan to address symptom control and further systemic therapy considerations pending multidisciplinary review.  ",test,1,8/6/22 9:15
-1722,clinical_note,"**Oncology Progress Note – Post‑Operative Day 5**
+These findings establish definitive locoregional advancement of the patient’s gastric adenocarcinoma and provide essential staging information for subsequent therapeutic decision making. No immediate interventional procedures performed; postoperative care plan to address symptom control and further systemic therapy considerations pending multidisciplinary review.  ",8/6/22 9:15
+1722,"**Oncology Progress Note – Post‑Operative Day 5**
 
 ---
 
@@ -823,8 +823,8 @@ No known drug allergies (NKDA).
 Dr. [Name], MD – Medical Oncologist  
 [Institution]  
 
-*(Electronic signature generated)*",test,1,6/7/23 13:13
-1722,clinical_note,"**Oncology Progress Note – Follow‑Up After Palliative Spine Radiation**
+*(Electronic signature generated)*",6/7/23 13:13
+1722,"**Oncology Progress Note – Follow‑Up After Palliative Spine Radiation**
 
 **Patient:** Michael Chen  **MRN:** ***  
 **DOB/Age:** 58 yr → 61 yr today **Sex:** Male  
@@ -948,8 +948,8 @@ All values stable compared with previous draw except modest rise in CEA reflecti
 
 **Signature:** ________________________   
 Dr. A. Patel, MD – Medical Oncology    
-Date: [auto‑filled]",test,1,2/26/24 8:25
-4716,pathology_report,"**Pathology Report**
+Date: [auto‑filled]",2/26/24 8:25
+4716,"**Pathology Report**
 
 ---
 
@@ -1009,8 +1009,8 @@ No additional molecular testing requested on this specimen.
 
 **Verified By:** ___________________________________   *Board‑Certified Anatomic Pathologist*  
 
-*(Signature & electronic verification)*",train,1,3/5/20 16:40
-4716,ngs_report,"**Next‑Generation Sequencing (NGS) Molecular Profiling Report**
+*(Signature & electronic verification)*",3/5/20 16:40
+4716,"**Next‑Generation Sequencing (NGS) Molecular Profiling Report**
 
 ---
 
@@ -1088,8 +1088,8 @@ Overall, the genomic landscape demonstrates strong activation of mitogenic pathw
 
 — End of Report —
 
-*(Report generated by Molecular Diagnostics Laboratory, certified under CLIA §493.1250. Review signed electronically by Dr. Elena R. Patel, MD, PhD, Director of Molecular Pathology.)*",train,1,4/23/20 4:39
-4716,imaging_report,"**IMAGING REPORT**
+*(Report generated by Molecular Diagnostics Laboratory, certified under CLIA §493.1250. Review signed electronically by Dr. Elena R. Patel, MD, PhD, Director of Molecular Pathology.)*",4/23/20 4:39
+4716,"**IMAGING REPORT**
 
 ---
 
@@ -1124,8 +1124,8 @@ Overall, the genomic landscape demonstrates strong activation of mitogenic pathw
 2. No discrete intra‑abdominal or pelvic mass, lymphadenopathy, or distant metastatic focus identified.  
 3. All visceral organs appear normal. No acute intra‑abdominal complication such as hemorrhage, abscess, or obstruction.  
 
-*Overall impression:* No radiographic evidence of residual disease following appendectomy for well‑differentiated neuroendocrine tumour (grade 2, Ki‑67 ~8%). Routine surveillance imaging as per institutional protocol is reasonable.",train,1,8/9/20 10:23
-4716,clinical_note,"**Oncology Surgical Follow‑Up Note – Surveillance Recommendation**
+*Overall impression:* No radiographic evidence of residual disease following appendectomy for well‑differentiated neuroendocrine tumour (grade 2, Ki‑67 ~8%). Routine surveillance imaging as per institutional protocol is reasonable.",8/9/20 10:23
+4716,"**Oncology Surgical Follow‑Up Note – Surveillance Recommendation**
 
 ---
 
@@ -1256,8 +1256,8 @@ If any new symptoms arise (abdominal pain, GI bleeding, carcinoid‐related flus
 
 *Prepared by:* Dr. [Name], MD  
 Surgical Oncology Fellow / Attending Surgeon  
-Date: ***[auto‑generated]***",train,1,10/3/20 19:31
-4716,imaging_report,"**Imaging Report – Computed Tomography (CT) Abdomen & Pelvis**
+Date: ***[auto‑generated]***",10/3/20 19:31
+4716,"**Imaging Report – Computed Tomography (CT) Abdomen & Pelvis**
 
 ---
 
@@ -1330,8 +1330,8 @@ Surveillance imaging following resection of a Grade 2 well‑differentiated neu
 2. No additional abdominal or pelvic sites of disease identified; remaining visceral organs—including liver, pancreas, spleen, adrenals, and kidneys—appear uninvolved.  
 3. Absence of significant ascites, lymphadenopathy, or osseous metastases on current study.  
 
-**Recommendation:** Correlation with prior imaging and consideration of further functional imaging (e.g., ^68Ga‑DOTATATE PET/CT) for somatostatin receptor evaluation may aid therapeutic planning. Routine follow‑up imaging as dictated by oncology service.  ",train,1,10/28/20 14:22
-4716,clinical_note,"**ONCOLOGY CONSULTATION NOTE**
+**Recommendation:** Correlation with prior imaging and consideration of further functional imaging (e.g., ^68Ga‑DOTATATE PET/CT) for somatostatin receptor evaluation may aid therapeutic planning. Routine follow‑up imaging as dictated by oncology service.  ",10/28/20 14:22
+4716,"**ONCOLOGY CONSULTATION NOTE**
 
 **Patient:** Daniel O’Connor  **DOB/Age:** 26 yr (age 25 at encounter)  
 **MRN:** ___________  **Date of Service:** __________________  
@@ -1491,8 +1491,8 @@ Overall prognosis remains favorable compared with poorly differentiated NECs, bu
 
 Signature: ______________________________________  
 Dr. _________, MD — Medical Oncology  
-[Institution Name]",train,1,11/23/20 4:32
-4716,imaging_report,"**PATIENT:** Daniel O’Connor  **AGE/SEX:** 26/M  
+[Institution Name]",11/23/20 4:32
+4716,"**PATIENT:** Daniel O’Connor  **AGE/SEX:** 26/M  
 
 **STUDY:** Computed Tomography (CT) – Abdomen & Pelvis with Intravenous Contrast  
 **CLINICAL INDICATION:** Surveillance following two cycles of temozolomide + bevacizumab for biopsy‑proven metastatic well‑differentiated neuroendocrine tumour (appendiceal origin). Request for interval assessment of known peritoneal disease.  
@@ -1538,8 +1538,8 @@ Upper thoracic slices captured incidentally reveal clear lungs with no pulmonary
 2. **No new intra‑abdominal or pelvic lesions** identified on current examination.  
 3. Remaining abdominal viscera appear unremarkable.
 
-*Report generated by:* Radiology Department – Abdominal Imaging Service.",train,1,5/15/21 18:30
-4716,clinical_note,"**Oncology Progress Note – Follow‑up Visit**
+*Report generated by:* Radiology Department – Abdominal Imaging Service.",5/15/21 18:30
+4716,"**Oncology Progress Note – Follow‑up Visit**
 
 **Patient:** Daniel O’Connor **MRN:** ***  
 **DOB/Age:** **26 y/o Male** **Date of Service:** *[auto‑filled]*  
@@ -1666,8 +1666,8 @@ Overall performance status excellent; tolerating regimen with manageable toxicit
 
 Signature: ________________________  
 Dr. [Name], MD – Medical Oncology  
-Board Certified in Hematology/Medical Oncology  ",train,1,9/17/21 14:02
-4716,imaging_report,"**Ga‑68 DOTATATE PET/CT – Imaging Report**
+Board Certified in Hematology/Medical Oncology  ",9/17/21 14:02
+4716,"**Ga‑68 DOTATATE PET/CT – Imaging Report**
 
 ---
 
@@ -1700,8 +1700,8 @@ Board Certified in Hematology/Medical Oncology  ",train,1,9/17/21 14:02
 1. Persistent, moderately ^68Ga‑DOTATATE‑avid peritoneal nodule (right iliac crest) unchanged in size and metabolic activity (SUV_max ≈ 12); indicates stable disease under current octreotide LAR therapy.  
 2. No additional somatostatin‑receptor expressing lesions identified throughout the thoraco‑abdomen-pelvis. Overall disease burden remains limited to the single known focus.  
 
-These findings support continuation of the existing therapeutic plan without immediate alteration.",train,1,12/30/21 21:49
-4716,clinical_note,"**Oncology Progress Note**
+These findings support continuation of the existing therapeutic plan without immediate alteration.",12/30/21 21:49
+4716,"**Oncology Progress Note**
 
 **Patient:** Daniel O’Connor **MRN:** __________  
 **DOB/Age:** ______ / 28 yrs **Sex:** Male  
@@ -1834,8 +1834,8 @@ Interpretation: Hematologic and metabolic parameters fully within normal ranges;
 
 Signature: _______________________________  
 Dr. ***[Name]***, MD – Medical Oncology  
-Date: __________________________________  ",train,1,4/12/22 10:31
-4716,imaging_report,"**Imaging Report – Computed Tomography Abdomen/Pelvis with Intravenous Contrast**
+Date: __________________________________  ",4/12/22 10:31
+4716,"**Imaging Report – Computed Tomography Abdomen/Pelvis with Intravenous Contrast**
 
 ---
 
@@ -1873,8 +1873,8 @@ Compared with the preceding CT performed twelve months ago (which demonstrated c
 2. No additional visceral, nodal, or osseous sites of disease identified.  
 3. Interval regression of formerly visualized peritoneal implant, supporting prior treatment efficacy.  
 
-*These findings correlate with biochemical and functional imaging data indicating progressive disease despite prior systemic and peptide receptor radionuclide therapies.*",train,1,6/2/23 11:57
-4716,clinical_note,"**Oncology Clinic Progress Note – Consultation Follow‑up**
+*These findings correlate with biochemical and functional imaging data indicating progressive disease despite prior systemic and peptide receptor radionuclide therapies.*",6/2/23 11:57
+4716,"**Oncology Clinic Progress Note – Consultation Follow‑up**
 
 ---
 
@@ -2024,8 +2024,8 @@ Interpretation: Radiographically isolated hepatic progression while preserving s
 
 **Signature**  
 Dr. ***[Oncologist Name]***, MD — Medical Oncology  
-Date: *[auto‑generated]*",train,1,6/2/23 19:46
-4716,imaging_report,"**Ga‑68 DOTATATE PET/CT – Whole Body Study**
+Date: *[auto‑generated]*",6/2/23 19:46
+4716,"**Ga‑68 DOTATATE PET/CT – Whole Body Study**
 
 **Patient:** Daniel O’Connor  **Sex/Age:** Male / 31 yrs  
 **Indication:** Restaging following completion of three cycles of Lu‑177‑DOTATATE peptide receptor radionuclide therapy (PRRT); evaluation of previously documented hepatic metastatic deposit (segment III) and peritoneal nodularity.  
@@ -2065,8 +2065,8 @@ Normal biodistribution pattern in bone marrow and skeletal musculature. No evide
 
 3. No newly emergent sites of somatostatin‑receptor avid disease elsewhere in the body. Overall disease burden is substantially lowered compared with the most recent comparative study (age 29).
 
-*These observations are compatible with a partial therapeutic response according to RECIST 1.1 criteria applied to functional imaging.*",train,1,7/1/23 5:18
-4716,clinical_note,"**Oncology Progress Note – Follow‑up Visit**
+*These observations are compatible with a partial therapeutic response according to RECIST 1.1 criteria applied to functional imaging.*",7/1/23 5:18
+4716,"**Oncology Progress Note – Follow‑up Visit**
 
 **Patient:** Daniel O’Connor **MRN:** [redacted]  
 **DOB/Age:** 26 yr (currently 31 yr) **Sex:** Male  
@@ -2181,8 +2181,8 @@ The plan reflects a conservative “watch‑and‑wait” approach appropriate f
 
 **Signature:** ___________________________  
 Dr. ***[Name], MD*** – Medical Oncology  
-[Institution Name]",train,1,9/29/23 12:48
-6346,pathology_report,"**Pathology Report**
+[Institution Name]",9/29/23 12:48
+6346,"**Pathology Report**
 
 ---
 
@@ -2235,8 +2235,8 @@ Six cylindrical tissue fragments measuring 0.8–1.2 cm in greatest dimension,
 **Verified By:**  
 [Name], MD — Board Certified Surgical Pathologist  
 
-*(Signature block to be completed electronically)*",train,1,12/9/20 17:25
-6346,imaging_report,"**Imaging Report**
+*(Signature block to be completed electronically)*",12/9/20 17:25
+6346,"**Imaging Report**
 
 ---
 
@@ -2281,8 +2281,8 @@ Six cylindrical tissue fragments measuring 0.8–1.2 cm in greatest dimension,
 
 *Prepared by:* ___________________________  
 Board‑Certified Radiologist, Nuclear Medicine  
-Date of Interpretation: _____________  ",train,1,3/30/21 8:07
-6346,clinical_note,"**Oncology Progress Note**
+Date of Interpretation: _____________  ",3/30/21 8:07
+6346,"**Oncology Progress Note**
 
 ---
 
@@ -2382,8 +2382,8 @@ Negative for all remaining organ system inquiries.
 | **Documentation** | Updated problem list and medication reconciliation completed; placed orders for labs and imaging through EMR. |
 
 Signature: ________________________   
-Dr. ____________, MD — Medical Oncology​",train,1,4/21/21 21:34
-6346,imaging_report,"**PET/CT REPORT**
+Dr. ____________, MD — Medical Oncology​",4/21/21 21:34
+6346,"**PET/CT REPORT**
 
 **Patient:** James Lee  **Sex/Age:** Male / 62 y (age at time of examination: 60)  
 **Exam Date:** [Date omitted – to be inserted]  
@@ -2424,8 +2424,8 @@ Prior PET/CT obtained 12 months earlier (baseline study at initial diagnosis).
 2. **Persistent metabolic activity** in pre‑existing thoracic spinal metastases without increase in SUV or development of new skeletal lesions.  
 3. **No evidence of new distant metastatic disease** in lungs, liver, intra‑abdominal viscera, or other osseous locations.  
 
-Overall, the current PET/CT demonstrates stability of both soft‑tissue and osseous disease burden relative to the prior examination.",train,1,6/23/21 21:54
-6346,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+Overall, the current PET/CT demonstrates stability of both soft‑tissue and osseous disease burden relative to the prior examination.",6/23/21 21:54
+6346,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -2553,8 +2553,8 @@ Radiology impression: Partial metabolic response of known thoracic spinal metast
 Dr. ***[Attending Medical Oncologist]***, MD  
 Medical Oncology Division  
 
-*(Electronic signature timestamp excluded per instructions.)*",train,1,10/5/21 6:28
-6346,imaging_report,"**Nuclear Medicine Bone Scintigraphy Report**
+*(Electronic signature timestamp excluded per instructions.)*",10/5/21 6:28
+6346,"**Nuclear Medicine Bone Scintigraphy Report**
 
 ---
 
@@ -2601,8 +2601,8 @@ When juxtaposed with the baseline bone scan performed approximately one year ago
 **Prepared By:** _______________________   *Board‑Certified Nuclear Medicine Physician*  
 **Report Reviewed On:** _____________  
 
-*(Signature electronic)*",train,1,12/17/21 18:38
-6346,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Signature electronic)*",12/17/21 18:38
+6346,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** James Lee  
 **MRN:** ***[Redacted]***  
@@ -2721,8 +2721,8 @@ There is **currently no radiographic evidence of pulmonary metastasis**.
 
 Signature: ________________________  
 Dr. **[Name], MD** – Medical Oncology  
-Board Certified in Hematology/Medical Oncology",train,1,11/20/22 18:37
-6346,imaging_report,"**IMAGING REPORT**
+Board Certified in Hematology/Medical Oncology",11/20/22 18:37
+6346,"**IMAGING REPORT**
 
 ---
 
@@ -2776,8 +2776,8 @@ Board Certified in Hematology/Medical Oncology",train,1,11/20/22 18:37
 2. **Stable osseous metastatic burden** involving the thoracic spine and adjacent axial skeleton; no evidence of progression or new skeletal lesions.
 3. **No significant thoracic, abdominal, or pelvic lymphadenopathy** and no acute intra‑thoraco‑abdominopelvic pathology.
 
-*These findings support radiographic progression of disease manifest as isolated hepatic metastasis while extracranial bone disease remains controlled.*",train,1,5/25/23 19:56
-6346,pathology_report,"**PATHOLOGY REPORT**
+*These findings support radiographic progression of disease manifest as isolated hepatic metastasis while extracranial bone disease remains controlled.*",5/25/23 19:56
+6346,"**PATHOLOGY REPORT**
 
 ---
 
@@ -2856,8 +2856,8 @@ No evidence of microsatellite instability or mismatch repair deficiency.
 
 --- 
 
-*End of Report.*",train,1,8/4/23 17:43
-6346,ngs_report,"**Molecular Oncology – Next Generation Sequencing Report**
+*End of Report.*",8/4/23 17:43
+6346,"**Molecular Oncology – Next Generation Sequencing Report**
 
 ---
 
@@ -2941,8 +2941,8 @@ Signature: _______________________   Date: *[omitted]*
 
 --- 
 
-*End of Report*",train,1,10/6/23 17:26
-6346,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*End of Report*",10/6/23 17:26
+6346,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -3092,8 +3092,8 @@ Patient verbalizes understanding of proposed shift to chemotherapy, expresses pr
 Dr. A. Patel, MD  
 Medical Oncologist – Breast Cancer Service  
 
-*(Electronic signature generated per institutional policy.)*",train,1,11/12/23 19:41
-6346,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Electronic signature generated per institutional policy.)*",11/12/23 19:41
+6346,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** James Lee  **MRN:** ██████  
 **DOB/Age:** 62 y/o (currently 65)  **Sex:** Male  
@@ -3218,8 +3218,8 @@ No additional concerns raised.
 
 **Signature:** ___________________________  
 Dr. A. Patel, MD — Medical Oncology  
-Date: [auto‑filled]  ",train,1,2/4/24 19:58
-11609,pathology_report,"**Pathology Report**
+Date: [auto‑filled]  ",2/4/24 19:58
+11609,"**Pathology Report**
 
 ---
 
@@ -3287,8 +3287,8 @@ The histopathological profile—diffuse infiltrative astrocytic architecture, ma
 **Report Prepared By:**  
 Dr. A. Nguyen, MD — Department of Neuropathology  
 
-**Electronically Signed:** _______________________   **Date:** _____________",train,1,1/12/20 0:56
-11609,imaging_report,"**MRI Brain with Intravenous Gadolinium Contrast**
+**Electronically Signed:** _______________________   **Date:** _____________",1/12/20 0:56
+11609,"**MRI Brain with Intravenous Gadolinium Contrast**
 
 ---
 
@@ -3342,8 +3342,8 @@ Major arterial flow voids preserved. No aneurysmal dilatation or arteriovenous m
 --- 
 
 *Prepared by:* ___________________________  
-Radiology Department – Neuro‑Oncology Service  ",train,1,7/14/20 22:05
-11609,clinical_note,"**Oncologic Follow‑Up Visit – Progress Note**
+Radiology Department – Neuro‑Oncology Service  ",7/14/20 22:05
+11609,"**Oncologic Follow‑Up Visit – Progress Note**
 
 **Patient:** Sarah Patel  **DOB:**   **Sex:** Female  **Age:** 61  
 **MRN:** [redacted]  **Date of Service:** *[date omitted]*  
@@ -3462,8 +3462,8 @@ Radiology impression attached to chart.
 **Provider:** Dr. Michael J. Lee, MD — Medical Oncology (Neuro‑oncology Division)  
 **Contact:** ext. 2124  
 
----",train,1,9/27/20 8:42
-11609,imaging_report,"**Imaging Report – Magnetic Resonance Imaging (MRI) Brain with Intravenous Contrast**
+---",9/27/20 8:42
+11609,"**Imaging Report – Magnetic Resonance Imaging (MRI) Brain with Intravenous Contrast**
 
 ---
 
@@ -3508,8 +3508,8 @@ Prior examination: Pre‑operative MRI brain performed at age 60 (baseline for 
 3. No evidence of new intracranial metastatic disease, hemorrhage, or hydrocephalus.  
 
 *Prepared by:* ___________________________  
-Radiology Department – Neuro‑Oncology Service  ",train,1,10/4/20 22:21
-11609,clinical_note,"**Oncologic Progress Note – Neuro‐Oncology Service**
+Radiology Department – Neuro‑Oncology Service  ",10/4/20 22:21
+11609,"**Oncologic Progress Note – Neuro‐Oncology Service**
 
 ---
 
@@ -3629,8 +3629,8 @@ Patient verbalized understanding of plan, expressed optimism about cognitive imp
 **Signature:** ________________________   
 Dr. [Attending Neuro‑Oncologist] MD, PhD    
 Board Certified Neuro‑Oncologist    
-Date: _(auto‑generated)_",train,1,7/30/21 18:47
-11609,imaging_report,"**MRI BRAIN WITH AND WITHOUT GADOLINIUM CONTRAST – SURVEILLANCE STUDY**
+Date: _(auto‑generated)_",7/30/21 18:47
+11609,"**MRI BRAIN WITH AND WITHOUT GADOLINIUM CONTRAST – SURVEILLANCE STUDY**
 
 **Patient:** Sarah Patel  **Age/Gender:** 63/Female  
 **Clinical History:** Glioblastoma, IDH‑wildtype, WHO Grade 4, status post maximal safe resection (left temporoparietal), adjuvant chemoradiation with temozolomide, subsequent observation. Current concern for disease progression.  
@@ -3681,8 +3681,8 @@ Prior postoperative MRI dated 12 months ago (post‑temozolomide completion) d
 2. Associated modest peri‑nodular vasogenic edema without diffusion restriction.  
 3. Stable appearance of remaining brain structures; no distant metastatic deposits identified.
 
-Correlation with neurological examination and discussion with the treating neuro‑oncology team recommended for therapeutic planning.",train,1,9/17/21 3:15
-11609,clinical_note,"**Oncology Progress Note – Neuro‐oncology Service**
+Correlation with neurological examination and discussion with the treating neuro‑oncology team recommended for therapeutic planning.",9/17/21 3:15
+11609,"**Oncology Progress Note – Neuro‐oncology Service**
 
 **Patient:** Sarah Patel  **DOB:**   (**Age:** 63)  
 **MRN:** _______________________  **Date:** ___________  
@@ -3806,8 +3806,8 @@ Interpretation (radiology): Interval growth of enhancing component consistent wi
 **Signature:** ______________________________________   
 Dr. _________, MD — Medical Oncology (Neuro‑oncology Division)   
 
-*(Electronic signature timestamp omitted per instruction.)*",train,1,11/13/21 1:11
-11609,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Electronic signature timestamp omitted per instruction.)*",11/13/21 1:11
+11609,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -3970,8 +3970,8 @@ Overall, Ms. Patel feels “about the same” compared with her baseline before 
 **Signature:**  
 Dr. Michael L. Chen, MD  
 Neuro‑Oncology Fellow (Attending supervision)  
-Date: [auto‑generated]  ",train,1,3/4/22 18:12
-11609,imaging_report,"**Imaging Report – Magnetic Resonance Imaging (MRI) Brain with Contrast**
+Date: [auto‑generated]  ",3/4/22 18:12
+11609,"**Imaging Report – Magnetic Resonance Imaging (MRI) Brain with Contrast**
 
 ---
 
@@ -4012,8 +4012,8 @@ Date: [auto‑generated]  ",train,1,3/4/22 18:12
 
 
 ***Prepared by:** [Radiologist’s Name], MD  
-Board Certified Radiology – Neuroradiology*",train,1,5/22/22 14:36
-11609,clinical_note,"**Oncology Progress Note**
+Board Certified Radiology – Neuroradiology*",5/22/22 14:36
+11609,"**Oncology Progress Note**
 
 **Patient:** Sarah Patel  **DOB:**   **MRN:**                   
 **Date of Service:** *[date omitted]*  
@@ -4151,8 +4151,8 @@ Dr. ***[Name]***, MD
 Medical Oncology – Neuro‑oncology Division    
 Institution Name    
 
-*(Electronic signature generated)*",train,1,6/29/22 8:44
-11609,pathology_report,"**PATHOLOGY REPORT**
+*(Electronic signature generated)*",6/29/22 8:44
+11609,"**PATHOLOGY REPORT**
 
 ---
 
@@ -4221,8 +4221,8 @@ These morphologic and molecular alterations support a biologically more aggressi
 
 **Pathologist:** _______________________ **Signature:** _______________________
 
-*(Report generated electronically; no further comments regarding clinical management are provided herein.)*",train,1,7/21/22 7:58
-12019,pathology_report,"**Pathology Report**
+*(Report generated electronically; no further comments regarding clinical management are provided herein.)*",7/21/22 7:58
+12019,"**Pathology Report**
 
 ---
 
@@ -4289,8 +4289,8 @@ Given the presence of distant metastases documented radiographically (liver lesi
 
 **Prepared By:**  
 Dr. E. Lopez, MD — Department of Anatomic Pathology  
-Signature: _______________________   Date: *[date omitted]*",val,1,7/7/20 9:53
-12019,ngs_report,"**Molecular Oncology Laboratory – Next‑Generation Sequencing Report**
+Signature: _______________________   Date: *[date omitted]*",7/7/20 9:53
+12019,"**Molecular Oncology Laboratory – Next‑Generation Sequencing Report**
 
 ---
 
@@ -4368,8 +4368,8 @@ Dr. Elena Martínez, MD, PhD
 Board‑Certified Molecular Geneticist  
 Molecular Oncology Laboratory – Certified CLIA/CAP Facility  
 
-*(Report generated electronically; no handwritten signature required)*",val,1,1/19/21 17:30
-12019,clinical_note,"**Oncology Consultation Note – Initial Visit**
+*(Report generated electronically; no handwritten signature required)*",1/19/21 17:30
+12019,"**Oncology Consultation Note – Initial Visit**
 
 ---
 
@@ -4552,8 +4552,8 @@ Impression: Radiographically confirmed stage IV HR⁺/HER2‑negative breast c
 ***Signature***  
 Dr. Alejandro Martínez, MD  
 Medical Oncologist – Breast Service  
-[Electronic Signature]",val,1,6/23/21 2:18
-12019,imaging_report,"**Radiology Report**
+[Electronic Signature]",6/23/21 2:18
+12019,"**Radiology Report**
 
 ---
 
@@ -4612,8 +4612,8 @@ Visualized lumbar spine and pelvis reveal normal marrow signal without overt lyt
 
 These findings correlate clinically with progressive hepatic tumor burden despite ongoing systemic therapy. Further correlation with multidisciplinary team discussion is advised.   
 
-*(Report prepared by:* Dr. ***[Name]***, MD, Radiology Department *)*",val,1,6/6/22 20:42
-12019,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Report prepared by:* Dr. ***[Name]***, MD, Radiology Department *)*",6/6/22 20:42
+12019,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -4745,8 +4745,8 @@ Dr. [Attending Oncologist], MD — Medical Oncology, Breast Service
 
 ---  
 
-*Prepared electronically; verified against source data.*",val,1,7/28/22 11:35
-12019,imaging_report,"**MRI Abdomen – Liver Focused Study  
+*Prepared electronically; verified against source data.*",7/28/22 11:35
+12019,"**MRI Abdomen – Liver Focused Study  
 Patient:** Sofia Ramirez  
 **Sex/Age:** Female / 46 years  
 
@@ -4797,8 +4797,8 @@ No free intraperitoneal fluid. Osseous visualisation limited to lower thoracic s
 --- 
 
 *Prepared by:* _______________________   
-Radiology Department, [Institution]  ",val,1,12/30/22 10:36
-12019,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+Radiology Department, [Institution]  ",12/30/22 10:36
+12019,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -4914,8 +4914,8 @@ Medical Oncologist, MD, FACOG
 
 
 ***End of Document***
-",val,1,9/9/23 5:30
-12019,imaging_report,"**Imaging Report – High‑Resolution Chest Computed Tomography**
+",9/9/23 5:30
+12019,"**Imaging Report – High‑Resolution Chest Computed Tomography**
 
 ---
 
@@ -4968,8 +4968,8 @@ High‑resolution computed tomography of the chest performed without intravenous
 2. No mediastinal or hilar lymphadenopathy.  
 3. Absence of pleural effusion, pneumothorax, or other acute intrathoracic abnormalities.
 
-Overall thoracic imaging suggests no interval change in pulmonary metastatic burden. Further correlation with clinical course and ongoing systemic therapy is advised.",val,1,2/26/24 5:53
-15687,pathology_report,"**PATHOLOGY REPORT**
+Overall thoracic imaging suggests no interval change in pulmonary metastatic burden. Further correlation with clinical course and ongoing systemic therapy is advised.",2/26/24 5:53
+15687,"**PATHOLOGY REPORT**
 
 ---
 
@@ -5031,8 +5031,8 @@ Next‑generation sequencing panel completed; see accompanying molecular patholo
 **Pathologist:** ___________________________   
 **Signature:** _______________________________________   
 
-*(Report generated electronically; electronic signature applied.)*",train,1,12/21/20 9:26
-15687,imaging_report,"**Patient:** Samuel “Sam’’ O’Connor  **Age:** 63  **Sex:** Male  
+*(Report generated electronically; electronic signature applied.)*",12/21/20 9:26
+15687,"**Patient:** Samuel “Sam’’ O’Connor  **Age:** 63  **Sex:** Male  
 
 ---
 
@@ -5081,8 +5081,8 @@ Next‑generation sequencing panel completed; see accompanying molecular patholo
 
 3. No additional intrapulmonary nodules, pleural effusion, or obvious distant thoracic metastatic deposits identified on this baseline study.  
 
-These findings establish the initial thoracic disease burden prior to commencement of systemic chemotherapy and radiation planning.",train,1,2/2/22 5:27
-15687,imaging_report,"**Imaging Report – Bone Scintigraphy**
+These findings establish the initial thoracic disease burden prior to commencement of systemic chemotherapy and radiation planning.",2/2/22 5:27
+15687,"**Imaging Report – Bone Scintigraphy**
 
 ---
 
@@ -5135,8 +5135,8 @@ Board Certified Nuclear Medicine Radiologist
 
 **Signature:** _______________________________________  
 
-*(Electronic signature)*",train,1,3/18/22 14:46
-15687,imaging_report,"**Imaging Report – Computed Tomography Abdomen (Contrast Enhanced)**  
+*(Electronic signature)*",3/18/22 14:46
+15687,"**Imaging Report – Computed Tomography Abdomen (Contrast Enhanced)**  
 
 ---
 
@@ -5176,8 +5176,8 @@ Board Certified Nuclear Medicine Radiologist
 2. No additional intra‑abdominal metastatic foci identified (liver, pancreas, kidney, peritoneum).  
 3. Unchanged appearance of previously recognized bony disease in the lumbar spine.  
 
-*These findings establish baseline abdominal staging for correlation with subsequent surveillance examinations.*",train,1,4/26/22 6:51
-15687,ngs_report,"**Molecular Oncology Report – Next Generation Sequencing (NGS)**  
+*These findings establish baseline abdominal staging for correlation with subsequent surveillance examinations.*",4/26/22 6:51
+15687,"**Molecular Oncology Report – Next Generation Sequencing (NGS)**  
 
 ---
 
@@ -5244,8 +5244,8 @@ No therapeutically targetable driver mutations (e.g., EGFR sensitizing mutations
 
 
 
-***End of Report***",train,1,8/30/22 7:44
-15687,clinical_note,"**Oncology Progress Note – Follow‑Up After Cycle 2 of First‑Line Therapy**
+***End of Report***",8/30/22 7:44
+15687,"**Oncology Progress Note – Follow‑Up After Cycle 2 of First‑Line Therapy**
 
 ---
 
@@ -5355,8 +5355,8 @@ Overall interpretation: Favorable morphologic response of primary tumor with mai
 ---  
 
 **Signature:** ___________________________  
-*(Electronic signature of treating Medical Oncologist)*",train,1,2/11/23 14:51
-15687,clinical_note,"**Oncology Progress Note – Follow‑up Visit**
+*(Electronic signature of treating Medical Oncologist)*",2/11/23 14:51
+15687,"**Oncology Progress Note – Follow‑up Visit**
 
 ---
 
@@ -5537,8 +5537,8 @@ Interpretation: Consistent with **Partial Response** (≥ 30 % reduction in 
 Signature: _____________________________  
 Date: __________________________________  
 
-*(Electronic signature – Dr. [Name], MD, Medical Oncologist)*",train,1,12/11/23 19:46
-15687,imaging_report,"**Imaging Report – Brain Magnetic Resonance Imaging**
+*(Electronic signature – Dr. [Name], MD, Medical Oncologist)*",12/11/23 19:46
+15687,"**Imaging Report – Brain Magnetic Resonance Imaging**
 
 ---
 
@@ -5569,8 +5569,8 @@ Prior imaging: Baseline non‑contrast head CT obtained at initial staging (appr
 - **No intracranial metastatic disease identified.** Absence of enhancing lesions, diffusion abnormalities, or meningeal involvement suggests complete radiographic remission of previously undetected central nervous system disease following prophylactic cranial irradiation (PCI).  
 - Incidental mild chronic microvascular leukoaraiosis, likely related to vascular risk factors; clinically insignificant at this time.  
 
-*This examination provides a comprehensive evaluation of the brain parenchyma and extra‑axial structures. Correlation with ongoing clinical surveillance recommended.*",train,1,2/20/24 2:08
-20838,pathology_report,"**Department of Pathology – Anatomic & Molecular Diagnostics**  
+*This examination provides a comprehensive evaluation of the brain parenchyma and extra‑axial structures. Correlation with ongoing clinical surveillance recommended.*",2/20/24 2:08
+20838,"**Department of Pathology – Anatomic & Molecular Diagnostics**  
 **Institution:** St. Michael’s Cancer Center  
 
 ---
@@ -5655,8 +5655,8 @@ Adequate sampling achieved with representation of both peripheral and transition
 --- 
 
 **Pathologist:** _______________________   **MD, PhD**  
-**Report Generated On:** *[Date omitted]*",train,1,7/4/20 9:57
-20838,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+**Report Generated On:** *[Date omitted]*",7/4/20 9:57
+20838,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -5802,8 +5802,8 @@ Patient verbalized understanding of the therapeutic rationale, agreed with the p
 
 **Signature:** ___________________________  
 **Provider:** Dr. [First Last], MD – Medical Oncology  
-**Contact:** [Phone] • Fax: [Number]  ",train,1,10/20/20 21:51
-20838,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+**Contact:** [Phone] • Fax: [Number]  ",10/20/20 21:51
+20838,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -5897,8 +5897,8 @@ No imaging performed during this encounter. Most recent imaging (bone scintigrap
 
 Signature: ___________________________  
 Dr. [Attending Oncologist], MD – Medical Oncology  
-Date: *(auto‑inserted)*  ",train,1,3/13/21 1:56
-20838,clinical_note,"**Oncology Progress Note**
+Date: *(auto‑inserted)*  ",3/13/21 1:56
+20838,"**Oncology Progress Note**
 
 **Patient:** Daniel O'Connor **MRN:** __________  
 **DOB/Age:** ______ / 66 years  
@@ -6019,8 +6019,8 @@ Dr. ______________________________________
 Medical Oncology, MD  
 [Institution]  
 
----",train,1,4/28/21 1:10
-20838,imaging_report,"**Patient:** Daniel O'Connor **Sex/Age:** Male / 70 years  
+---",4/28/21 1:10
+20838,"**Patient:** Daniel O'Connor **Sex/Age:** Male / 70 years  
 **Referring Physician:** Oncology Service  
 
 ---
@@ -6063,8 +6063,8 @@ Mild osteoarthritic change evident at bilateral knee joints; deemed unrelated to
 --- 
 
 *Prepared by:* Nuclear Medicine Department  
-*Report generated electronically.*",train,1,11/1/22 13:11
-20838,imaging_report,"**Imaging Report**
+*Report generated electronically.*",11/1/22 13:11
+20838,"**Imaging Report**
 
 **Patient:** Daniel O'Connor  
 **Sex/Age:** Male / 70 years  
@@ -6104,8 +6104,8 @@ Mild osteoarthritic change evident at bilateral knee joints; deemed unrelated to
 --- 
 
 **Prepared By:** Radiology Department, [Institution]  
-**Report Generated On:** *[Date omitted]*",train,1,11/18/22 10:04
-20838,clinical_note,"**Oncology Progress Note**
+**Report Generated On:** *[Date omitted]*",11/18/22 10:04
+20838,"**Oncology Progress Note**
 
 **Patient:** Daniel O'Connor **MRN:** [redacted]  
 **DOB/Age:** 70 y/o (currently 67 y/o at time of encounter)  
@@ -6208,8 +6208,8 @@ All orders transmitted electronically. Patient verbalized understanding of plan 
 
 **Signature:** ___________________________  
 **Attending Oncologist:** Dr. ***[Name], MD***  
-**Department of Oncology**  ",train,1,11/19/22 17:13
-20838,clinical_note,"**Oncology Progress Note**
+**Department of Oncology**  ",11/19/22 17:13
+20838,"**Oncology Progress Note**
 
 **Patient:** Daniel O'Connor  **MRN:** ***  
 **DOB/Age:** 70 yr (Age 68 at time of encounter)  **Sex:** Male  
@@ -6353,8 +6353,8 @@ Overall functional status remains ECOG 1. He wishes to maintain activity levels 
 | **Follow‑Up** | Return visit in 4 weeks for labs, side‑effect check, and discussion of radiation plan outcome. Earlier contact if worsening pain, neurological deficits, or acute toxicities arise. |
 
 Signature: ________________________   Dr. **[Oncologist Name], MD**   
-Date: ___________   Department of Medical Oncology, [Institution]",train,1,10/24/23 6:13
-20838,imaging_report,"**^64Cu‑SAR‑bisPSMA PET/CT – IMAGING REPORT**
+Date: ___________   Department of Medical Oncology, [Institution]",10/24/23 6:13
+20838,"**^64Cu‑SAR‑bisPSMA PET/CT – IMAGING REPORT**
 
 ---
 
@@ -6398,8 +6398,8 @@ No significant motion artifacts were observed. Blood glucose level at injection 
 2. **New PSMA‑avid right adrenal nodule** (**SUV_max 9.0**) representing probable metastatic deposit; absent on earlier imaging.  
 3. No additional visceral or extra‑osseous metastatic foci identified throughout the surveyed field.  
 
-Overall impression suggests continued disease activity with emergence of a solitary adrenal lesion, indicative of incremental progression despite current therapeutic regimen. Further multidisciplinary discussion may be warranted regarding potential modification of systemic strategy.  ",train,1,10/26/23 17:55
-20838,ngs_report,"**Molecular Oncology – Next Generation Sequencing (NGS) Report**
+Overall impression suggests continued disease activity with emergence of a solitary adrenal lesion, indicative of incremental progression despite current therapeutic regimen. Further multidisciplinary discussion may be warranted regarding potential modification of systemic strategy.  ",10/26/23 17:55
+20838,"**Molecular Oncology – Next Generation Sequencing (NGS) Report**
 
 ---
 
@@ -6467,8 +6467,8 @@ Overall, the molecular profile underscores HRR deficiency amenable to PARP‑inh
 **Report generated by:** Molecular Diagnostics Laboratory – Integrated Cancer Genomics Service  
 **Reporting Pathologist:** Dr. A. Patel, MD, PhD (Board Certified Anatomic & Molecular Pathology)  
 
-*(Signature omitted)*",train,1,12/9/23 3:18
-20838,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Signature omitted)*",12/9/23 3:18
+20838,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** Daniel O'Connor **MRN:** ██████  
 **DOB/Age:** 70 yr (currently 69 mo post–trial enrollment)  
@@ -6593,8 +6593,8 @@ Counseled patient extensively on expectations, emphasizing that mixed responses 
 **Provider:** Dr. _________, MD – Medical Oncology  
 **Contact:** Ext. ___ / Pager ____
 
-*(End of note)*",train,1,12/16/23 21:35
-20838,imaging_report,"**^64Cu‑SAR‑bisPSMA PET/CT REPORT**
+*(End of note)*",12/16/23 21:35
+20838,"**^64Cu‑SAR‑bisPSMA PET/CT REPORT**
 
 ---
 
@@ -6645,8 +6645,8 @@ Restaging/evaluation of disease status in metastatic castration‑resistant pros
 
 2. Persistent right adrenal nodule with unchanged PSMA uptake (SUVmax 9.0), stable in size and metabolism relative to prior study.  
 
-Overall disease burden remains clinically significant with both responding and progressive components (“mixed response”). Correlation with current laboratory markers (PSA trend) and symptomatology recommended for comprehensive assessment.",train,1,2/29/24 17:38
-21339,pathology_report,"**Pathology Report**
+Overall disease burden remains clinically significant with both responding and progressive components (“mixed response”). Correlation with current laboratory markers (PSA trend) and symptomatology recommended for comprehensive assessment.",2/29/24 17:38
+21339,"**Pathology Report**
 
 ---
 
@@ -6737,8 +6737,8 @@ Additional molecular profiling (NGS panel revealing BRCA2 truncation, TP53 misse
 Dr. [Name], MD — Department of Anatomic Pathology  
 Signature: _______________________   
 Report Date: ***[Not Provided]***
-",test,1,2/8/21 19:19
-21339,imaging_report,"**IMAGING REPORT**
+",2/8/21 19:19
+21339,"**IMAGING REPORT**
 
 **Patient:** EMILY DAVIS  
 **Sex/Age:** Female / 71 y  
@@ -6799,8 +6799,8 @@ Report Date: ***[Not Provided]***
 4. Regional **retroperitoneal adenopathy** involving para‑aortic and iliac nodes.  
 5. Overall imaging pattern corresponds to **stage IV high‑grade serous ovarian carcinoma** (AJCC T3c N1 M1).
 
-No acute intra‑abdominal complications such as obstruction, perforation, or hemorrhage identified. Further correlation with surgical/pathologic findings recommended.",test,1,4/9/22 15:26
-21339,clinical_note,"**Oncology Progress Note – Follow‑Up After First‑Line Chemotherapy**
+No acute intra‑abdominal complications such as obstruction, perforation, or hemorrhage identified. Further correlation with surgical/pathologic findings recommended.",4/9/22 15:26
+21339,"**Oncology Progress Note – Follow‑Up After First‑Line Chemotherapy**
 
 ---
 
@@ -6918,8 +6918,8 @@ No evidence of marrow suppression or hepatobiliary dysfunction at this interval.
 
 **Signature:** _______________________   
 Dr. [Oncologist Name], MD – Gynecologic Oncology    
-Date: _(auto‑generated)_",test,1,8/8/22 15:54
-21339,ngs_report,"**Molecular Diagnostic Report – Next Generation Sequencing (NGS)**  
+Date: _(auto‑generated)_",8/8/22 15:54
+21339,"**Molecular Diagnostic Report – Next Generation Sequencing (NGS)**  
 
 ---
 
@@ -6994,8 +6994,8 @@ Overall, the molecular profile demonstrates a classic “BRCAness” signature c
 Genomics Laboratory, Department of Pathology & Molecular Medicine  
 Accredited CLIA/CAP Certified Facility  
 
-**Signature:** _______________________   **Date:** *(date omitted per instruction)*",test,1,11/3/22 15:35
-21339,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+**Signature:** _______________________   **Date:** *(date omitted per instruction)*",11/3/22 15:35
+21339,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -7095,8 +7095,8 @@ Patient verbalized understanding of the above plan, expressed confidence in cont
 ***Signature***  
 Dr. [Oncologist Name], MD  
 Medical Oncology, Division of Gynecologic Malignancies  
-[Institution]  ",test,1,8/18/23 0:52
-3996000000,pathology_report,"**Pathology Report**
+[Institution]  ",8/18/23 0:52
+3996000000,"**Pathology Report**
 
 ---
 
@@ -7177,8 +7177,8 @@ The biopsied mediastinal mass demonstrates classic morphological and immunopheno
 Dr. ***[Name], MD***  
 Department of Hematopathology  
 
-**Signature:** _______________________    **Report Release Date:** *[date omitted]*",train,0,7/26/20 13:18
-3996000000,ngs_report,"**MOLECULAR GENOMICS REPORT  
+**Signature:** _______________________    **Report Release Date:** *[date omitted]*",7/26/20 13:18
+3996000000,"**MOLECULAR GENOMICS REPORT  
 Next‑Generation Sequencing (Targeted Panel)**  
 
 ---
@@ -7239,8 +7239,8 @@ While none of the identified lesions presently qualify for an FDA‑approved tar
 **Report generated by:** Molecular Diagnostics Laboratory, Department of Hematopathology  
 **Assay version:** HemePanel v3.2 (DNA+RNA)  
 **Reporting pathologist:** Dr. Elena S. Marquez, MD, PhD  
-**Signature:** _______________________   **Date:** *[automatically inserted]*",train,0,1/19/21 23:15
-3996000000,imaging_report,"**Radiology Report – Contrast‑Enhanced Chest Computed Tomography**
+**Signature:** _______________________   **Date:** *[automatically inserted]*",1/19/21 23:15
+3996000000,"**Radiology Report – Contrast‑Enhanced Chest Computed Tomography**
 
 ---
 
@@ -7286,8 +7286,8 @@ While none of the identified lesions presently qualify for an FDA‑approved tar
 
 3. **Upper abdominal survey unremarkable**, providing no evidence of distant metastatic involvement at this time.  
 
-*End of report.*",train,0,4/21/21 15:17
-3996000000,clinical_note,"**Oncology Progress Note – Hematology Service**
+*End of report.*",4/21/21 15:17
+3996000000,"**Oncology Progress Note – Hematology Service**
 
 ---
 
@@ -7417,8 +7417,8 @@ Impression: Partial radiographic response according to Lugano criteria (≥50 
 Signature: ___________________________  
 Dr. ***[Hemato‑oncologist Name], MD***  
 Division of Hematology/Medical Oncology  
-Date: *(auto‑generated)*",train,0,10/11/22 22:26
-3996000000,imaging_report,"**Imaging Report – Positron Emission Tomography / Computed Tomography (FDG-PET/CT)**  
+Date: *(auto‑generated)*",10/11/22 22:26
+3996000000,"**Imaging Report – Positron Emission Tomography / Computed Tomography (FDG-PET/CT)**  
 
 ---
 
@@ -7477,8 +7477,8 @@ Overall, the PET/CT indicates incomplete metabolic response of the primary media
 **Prepared By:**  
 Radiology Department – Nuclear Medicine Division  
 Attending Radiologist: Dr. ___________________________________  
-Report generated electronically; signature pending verification.  ",train,0,1/24/23 18:14
-3996000000,clinical_note,"**ONCOLOGY PROGRESS NOTE – VICTOR RAMIREZ**
+Report generated electronically; signature pending verification.  ",1/24/23 18:14
+3996000000,"**ONCOLOGY PROGRESS NOTE – VICTOR RAMIREZ**
 
 ---
 
@@ -7654,8 +7654,8 @@ Interpretation by radiology: **Stable disease** per RECIST criteria (no ≥20% d
 **Signature:**  
 Dr. ***[Name], MD***  
 Medical Oncologist – Hematologic Malignancies  
-(Clinic contact information omitted)",train,0,7/17/23 22:25
-3996000000,clinical_note,"**ONCOLOGY PROGRESS NOTE**
+(Clinic contact information omitted)",7/17/23 22:25
+3996000000,"**ONCOLOGY PROGRESS NOTE**
 
 **Patient:** Victor Ramirez  **MRN:** __________  
 **DOB/Age:** 45‑year‑old Male  **Date:** _______________________  
@@ -7770,8 +7770,8 @@ All discussions were conducted in Spanish when preferred; interpreter services u
 Dr. _________, MD – Hematology/Medical Oncology    
 [Institution Name]    
 
-*(Electronic Signature)*",train,0,6/1/24 19:44
-3996000000,imaging_report,"**Imaging Report – Positron Emission Tomography / Computed Tomography (FDG-PET/CT)**  
+*(Electronic Signature)*",6/1/24 19:44
+3996000000,"**Imaging Report – Positron Emission Tomography / Computed Tomography (FDG-PET/CT)**  
 
 ---
 
@@ -7833,8 +7833,8 @@ All four nodules demonstrate markedly avid FDG uptake exceeding background lung 
 
 4. Mildly increased splenic and bone‑marrow FDG uptake may represent early infiltration; correlate clinically and consider follow‑up imaging or targeted biopsy if indicated.  
 
-These findings fulfill criteria for disease progression per Lugano Classification for NHL/LBL, now encompassing extranodal thoraco‑abdominal sites. Further therapeutic planning should involve multidisciplinary discussion, taking into account the patient’s declining functional status (ECOG 2) and limited options owing to absent CD20/CD19/CD22 expression.",train,0,7/9/24 8:42
-4030000000,pathology_report,"**Pathology Report**
+These findings fulfill criteria for disease progression per Lugano Classification for NHL/LBL, now encompassing extranodal thoraco‑abdominal sites. Further therapeutic planning should involve multidisciplinary discussion, taking into account the patient’s declining functional status (ECOG 2) and limited options owing to absent CD20/CD19/CD22 expression.",7/9/24 8:42
+4030000000,"**Pathology Report**
 
 ---
 
@@ -7884,8 +7884,8 @@ Signature: ___________________________________
 
 
 
-*(Report generated electronically; no further signatory required.)*",train,0,4/19/20 21:37
-4030000000,imaging_report,"**ImAGING REPORT**
+*(Report generated electronically; no further signatory required.)*",4/19/20 21:37
+4030000000,"**ImAGING REPORT**
 
 **Patient:** Susan Patel  
 **Age/Sex:** 55‑year‑old Female* (*age at time of original imaging: 53 years)  
@@ -7935,8 +7935,8 @@ High‑resolution axial T1‑weighted, axial and sagittal T2-weighted fast spin�
 
 --- 
 
-**Radiologist:** ______________________    **Signature:** ______________________    **Accession #:** _____________    **Report Generated On:** ________",train,0,7/10/20 23:07
-4030000000,clinical_note,"**Clinic:** Gynecologic Oncology – Post‑Operative Visit  
+**Radiologist:** ______________________    **Signature:** ______________________    **Accession #:** _____________    **Report Generated On:** ________",7/10/20 23:07
+4030000000,"**Clinic:** Gynecologic Oncology – Post‑Operative Visit  
 **Provider:** Dr. L. Martinez, MD  
 **Date:** *[date omitted]*  
 
@@ -8096,8 +8096,8 @@ No additional cross‑sectional imaging ordered at this encounter.
    - Provided printed handout on postoperative self‑care and medication schedule.  
 
 **Signature:** ___________________________  
-Dr. Laura Martinez, MD — Gynecologic Oncologist",train,0,8/25/20 5:43
-4030000000,imaging_report,"**IMAGING REPORT**
+Dr. Laura Martinez, MD — Gynecologic Oncologist",8/25/20 5:43
+4030000000,"**IMAGING REPORT**
 
 **Patient:** Susan Patel  
 **Sex/Age:** Female / 55 years  
@@ -8156,8 +8156,8 @@ Dr. Laura Martinez, MD — Gynecologic Oncologist",train,0,8/25/20 5:43
 
 **Prepared By:** _________________________   **Date:** *(automatically inserted)*  
 
-*(Signature of interpreting radiologist)*",train,0,9/16/21 14:49
-4030000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*(Signature of interpreting radiologist)*",9/16/21 14:49
+4030000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -8288,8 +8288,8 @@ Impression: **Stable disease** per RECIST criteria; no new sites of metastatic i
 
 Signature: ___________________________  
 Dr. [Attending Oncologist], MD – Gynecologic Oncology  
-Date: _____________ (to be auto‑filled)",train,0,1/31/22 2:11
-4030000000,ngs_report,"**Molecular Oncology Laboratory  
+Date: _____________ (to be auto‑filled)",1/31/22 2:11
+4030000000,"**Molecular Oncology Laboratory  
 Comprehensive Solid Tumor Next‑Generation Sequencing (NGS) Report**
 
 ---
@@ -8357,8 +8357,8 @@ _Date of Report Issuance_: *[date omitted]*
 
 ---  
 
-*This report reflects the state of knowledge and technology available at the time of testing.*",train,0,8/22/22 14:48
-4030000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*This report reflects the state of knowledge and technology available at the time of testing.*",8/22/22 14:48
+4030000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -8471,8 +8471,8 @@ A contrast‑enhanced **CT abdomen/pelvis** ordered today; images expected withi
 ---  
 
 **Signature:** _______________________________  
-*(Electronic Signature – Medical Oncologist)*  ",train,0,8/9/23 15:44
-4030000000,imaging_report,"**PATIENT:** Susan Patel  **AGE/GENDER:** 55‑yr Female  
+*(Electronic Signature – Medical Oncologist)*  ",8/9/23 15:44
+4030000000,"**PATIENT:** Susan Patel  **AGE/GENDER:** 55‑yr Female  
 
 **EXAMINATION:** ^18F‑FDG Positron Emission Tomography–Computed Tomography (PET/CT) whole body  
 **CLINICAL INDICATION:** Surveillance for recurrent/metastatic disease in a patient with previously treated low‑grade serous ovarian carcinoma (stage IIIC); recent increase in pelvic pain and rise in serum CA‑125.  
@@ -8533,8 +8533,8 @@ Prior PET/CT performed three months earlier (post‑adjuvant chemotherapy) demon
 2. **Solitary hypermetabolic para‑aortic lymph node** (2 cm, SUVmax ~9) suggesting nodal dissemination.  
 3. Stable appearance of previously noted small peritoneal implants; no new intra‑abdominal solid organ metastases or skeletal involvement.  
 
-These findings are concordant with biochemical progression (rising CA‑125) and support classification of the ovarian low‑grade serous carcinoma as now radiographically progressive despite prior platinum‑based therapy.",train,0,9/12/23 17:51
-4030000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+These findings are concordant with biochemical progression (rising CA‑125) and support classification of the ovarian low‑grade serous carcinoma as now radiographically progressive despite prior platinum‑based therapy.",9/12/23 17:51
+4030000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -8623,8 +8623,8 @@ Dr. [Oncologist Name], MD – Medical Oncologist, Gynecologic Malignancies
 
 ---  
 
-*Prepared according to departmental documentation standards.*",train,0,9/22/23 6:44
-4030000000,imaging_report,"**IMAGING REPORT**
+*Prepared according to departmental documentation standards.*",9/22/23 6:44
+4030000000,"**IMAGING REPORT**
 
 **Patient:** Susan Patel  **Age/Sex:** 55‑yr / Female  
 **Study:** Computed Tomography (CT) Abdomen & Pelvis – Intravenous Iodinated Contrast (Portal Venous Phase)  
@@ -8667,8 +8667,8 @@ No appreciable free intra‑abdominal fluid collection. Overall distribution of 
 - Para‑aortic lymph node unchanged in size; no new adenopathic foci.  
 - No newly detectable visceral or bony metastasis.  
 
-These findings are compatible with continued disease stability while receiving endocrine therapy (letrozole). No acute abnormalities identified.",train,0,7/26/24 16:07
-4837000000,pathology_report,"**Pathology Report**
+These findings are compatible with continued disease stability while receiving endocrine therapy (letrozole). No acute abnormalities identified.",7/26/24 16:07
+4837000000,"**Pathology Report**
 
 ---
 
@@ -8734,8 +8734,8 @@ Date of Report: *[automatically inserted]*
 
 **Signature:** ___________________________  
 
-*(Electronic signature verified)*",train,0,2/24/21 0:33
-4837000000,ngs_report,"**MOLECULAR ONCOLOGY REPORT  
+*(Electronic signature verified)*",2/24/21 0:33
+4837000000,"**MOLECULAR ONCOLOGY REPORT  
 Next‑Generation Sequencing (NGS) – Comprehensive Solid Tumor Panel**
 
 ---
@@ -8812,8 +8812,8 @@ Overall, the molecular profile demonstrates multiple convergent activators of th
 
 **Report generated by:** Molecular Diagnostics Laboratory, Department of Pathology  
 **Pathologist (Molecular):** Dr. Elena Ramirez, MD, PhD  
-**Signature:** _______________________   **Date:** *[date omitted]*",train,0,1/26/22 23:20
-4837000000,imaging_report,"**IMAGING REPORT**
+**Signature:** _______________________   **Date:** *[date omitted]*",1/26/22 23:20
+4837000000,"**IMAGING REPORT**
 
 ---
 
@@ -8871,8 +8871,8 @@ Overall, the CT chest‑abdomen‑pelvis demonstrates no detectable distant spre
 
 **Radiologist:** _________________________   **Signature:** ________________________
 
-**Accession #:** [Redacted]  **Date of Report Generation:** *[automatically inserted]*",train,0,1/21/23 9:07
-4837000000,clinical_note,"**Oncology Consultation Note**
+**Accession #:** [Redacted]  **Date of Report Generation:** *[automatically inserted]*",1/21/23 9:07
+4837000000,"**Oncology Consultation Note**
 
 **Date:** *[to be inserted]*  
 **Provider:** Dr. A. Patel, MD – Medical Oncology  
@@ -9047,8 +9047,8 @@ All values are unremarkable and meet pre‑operative clearance criteria.
 
 **Signature:** ___________________________  
 Dr. A. Patel, MD – Medical Oncologist  
-Department of Oncology, *[Institution Name]*",train,0,5/7/23 1:16
-4837000000,pathology_report,"**Pathology Report**
+Department of Oncology, *[Institution Name]*",5/7/23 1:16
+4837000000,"**Pathology Report**
 
 ---
 
@@ -9115,8 +9115,8 @@ Adequacy of sampling satisfied; margins of nodal tissue fully evaluated. No addi
 Dr. Elaine K. Morrison, MD  
 Board Certified Surgical Pathologist  
 
-**Signature:** _______________________   **Date:** *[date omitted]*",train,0,6/14/23 21:18
-4837000000,clinical_note,"**Oncology Progress Note**
+**Signature:** _______________________   **Date:** *[date omitted]*",6/14/23 21:18
+4837000000,"**Oncology Progress Note**
 
 **Patient:** Michael Alvarez  
 **MRN:** ___________  
@@ -9250,8 +9250,8 @@ Most recent contrast‑enhanced CT chest/abdomen/pelvis (performed 2 weeks pre�
 
 **Signature:** ______________________________________  
 **Provider:** Dr. [Name], MD – Medical Oncology  
-**Contact:** ___@hospital.org Phone: xxx‑xxx‑xxxx",train,0,9/14/23 5:21
-16916000000,pathology_report,"**Pathology Report**
+**Contact:** ___@hospital.org Phone: xxx‑xxx‑xxxx",9/14/23 5:21
+16916000000,"**Pathology Report**
 
 ---
 
@@ -9315,8 +9315,8 @@ Dr. ***[Name], MD***
 Department of Anatomic Pathology  
 Signature: ________________________
 
-**Report Verified On:** *[date omitted – to be inserted]*",train,0,1/23/20 19:19
-16916000000,imaging_report,"**IMAGING REPORT**
+**Report Verified On:** *[date omitted – to be inserted]*",1/23/20 19:19
+16916000000,"**IMAGING REPORT**
 
 ---
 
@@ -9348,8 +9348,8 @@ Patient positioned supine with dedicated extremity coil centered over distal thi
 2. No additional skeletal “skip” lesions identified elsewhere in the examined femur.  
 3. Adjacent joints, major neurovascular bundles, and surrounding soft tissues largely spared aside from limited superficial extension.  
 
-These observations correlate with the recent core‑needle biopsy confirming conventional high‑grade osteosarcoma. Further multidisciplinary discussion regarding definitive local control (e.g., limb‑sparring resection vs. amputation) and systemic staging is recommended.",train,0,10/4/20 15:41
-16916000000,clinical_note,"**Oncology Progress Note – Initial Post‑Neoadjuvant Assessment**
+These observations correlate with the recent core‑needle biopsy confirming conventional high‑grade osteosarcoma. Further multidisciplinary discussion regarding definitive local control (e.g., limb‑sparring resection vs. amputation) and systemic staging is recommended.",10/4/20 15:41
+16916000000,"**Oncology Progress Note – Initial Post‑Neoadjuvant Assessment**
 
 ---
 
@@ -9499,8 +9499,8 @@ Chest X‑ray (baseline): clear lungs, no pleural effusions.
 
 ---  
 
-*Prepared electronically; reviewed and verified accuracy.*",train,0,1/19/21 12:49
-16916000000,pathology_report,"**PATHOLOGY REPORT**
+*Prepared electronically; reviewed and verified accuracy.*",1/19/21 12:49
+16916000000,"**PATHOLOGY REPORT**
 
 ---
 
@@ -9558,8 +9558,8 @@ Dr. S. Lee, MD — Board Certified Musculoskeletal Pathologist
 
 --- 
 
-*(End of Report)*",train,0,6/1/21 16:42
-16916000000,clinical_note,"**Oncology Follow‑Up Note – Postoperative Visit**
+*(End of Report)*",6/1/21 16:42
+16916000000,"**Oncology Follow‑Up Note – Postoperative Visit**
 
 ---
 
@@ -9650,8 +9650,8 @@ Both studies interpreted as “No evidence of recurrent or metastatic disease.�
 
 ---  
 
-*Prepared electronically; printed copy filed in EMR.*",train,0,7/25/21 12:18
-16916000000,imaging_report,"**Imaging Report – Chest Computed Tomography**
+*Prepared electronically; printed copy filed in EMR.*",7/25/21 12:18
+16916000000,"**Imaging Report – Chest Computed Tomography**
 
 ---
 
@@ -9681,8 +9681,8 @@ Multidetector helical CT of the chest without intravenous contrast was obtained 
 1. Unremarkable chest CT. No pulmonary nodules or other parenchymal abnormalities identified. This study shows no radiographic evidence of metastatic disease in the lungs.  
 2. No mediastinal adenopathy, pleural effusion, or osseous lesions observed.  
 
-Overall, the current imaging supports continued absence of detectable systemic dissemination at this point in surveillance. Routine interval follow‑up imaging as recommended by the treating oncology team is advised.",train,0,10/16/21 14:47
-16916000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+Overall, the current imaging supports continued absence of detectable systemic dissemination at this point in surveillance. Routine interval follow‑up imaging as recommended by the treating oncology team is advised.",10/16/21 14:47
+16916000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -9783,8 +9783,8 @@ No new imaging ordered at this visit pending interval reassessment.
 **Signature:** ___________________________ MD, Oncology Fellow  
 **Attending:** Dr. ____________, MD, MSON  
 
-*(Electronic signature timestamped automatically.)*",train,0,1/23/22 2:24
-16916000000,imaging_report,"**Patient:** Daniel Alvarez  **Age:** 19 y/o  **Sex:** Male  
+*(Electronic signature timestamped automatically.)*",1/23/22 2:24
+16916000000,"**Patient:** Daniel Alvarez  **Age:** 19 y/o  **Sex:** Male  
 
 **Study:** Computed Tomography – Chest (IV Contrast)  
 **Date of Examination:** [date withheld]  
@@ -9821,8 +9821,8 @@ Multidetector helical acquisition of the entire thorax performed after administr
 1. New solitary **1.2 cm** right lower‑lobe pulmonary nodule, not present on prior imaging—radiographically suspicious for metastatic involvement from previously diagnosed high‑grade osteosarcoma.  
 2. No additional intrathoracic metastatic foci, lymphadenopathy, or pleural disease evident.  
 
-Correlation with clinical status recommended; consideration of tissue confirmation or interval imaging for growth assessment may be appropriate per treating team’s discretion.",train,0,4/13/22 12:03
-16916000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+Correlation with clinical status recommended; consideration of tissue confirmation or interval imaging for growth assessment may be appropriate per treating team’s discretion.",4/13/22 12:03
+16916000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 ---
 
@@ -9926,8 +9926,8 @@ Interpretation (by attending radiologist): *Solitary pulmonary nodule most compa
 **Signature:** ___________________________  
 Attending Oncology Fellow / Staff Physician (MD)  
 
-*(Date auto‑populated upon entry.)*",train,0,11/12/22 0:36
-16916000000,imaging_report,"**Chest Computed Tomography (CT) – Imaging Report**
+*(Date auto‑populated upon entry.)*",11/12/22 0:36
+16916000000,"**Chest Computed Tomography (CT) – Imaging Report**
 
 ---
 
@@ -9979,8 +9979,8 @@ Adequate inspiratory effort achieved; no motion artifact compromising image qual
 ---  
 
 *Prepared by:* Radiology Department, Certified Thoracic Imager  
-*Report generated electronically.*",train,0,4/17/23 0:50
-16916000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+*Report generated electronically.*",4/17/23 0:50
+16916000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** Daniel Alvarez **MRN:** ████████  
 **DOB:** [redacted] **Age:** 20 y/o **Sex:** Male  
@@ -10098,8 +10098,8 @@ Counseling reiterated: While participation offers potential benefit, outcomes re
 
 **Signature:** ___________________________  
 Dr. ***[Oncologist Name], MD*** – Pediatric/Young Adult Oncology Division  
-Date: **[auto‑generated]**",train,0,5/4/23 15:02
-16916000000,clinical_note,"**Oncology Progress Note – Follow‑Up Visit**
+Date: **[auto‑generated]**",5/4/23 15:02
+16916000000,"**Oncology Progress Note – Follow‑Up Visit**
 
 **Patient:** Daniel Alvarez **MRN:** ██████  
 **DOB/Age:** 20 y/o **Sex:** Male  
@@ -10215,8 +10215,8 @@ Counseled patient and mother extensively regarding expected course, importance o
 
 **Signature:** ___________________________  
 Dr. ***[Name]***, MD – Oncology Fellow / Attending Physician  
-Date: *[auto‑generated]*",train,0,11/15/23 4:35
-16916000000,ngs_report,"**INSTITUTIONAL PATHOLOGY & GENOMIC SERVICES  
+Date: *[auto‑generated]*",11/15/23 4:35
+16916000000,"**INSTITUTIONAL PATHOLOGY & GENOMIC SERVICES  
 Comprehensive Molecular Diagnostic Laboratory**
 
 ---
@@ -10303,4 +10303,4 @@ All reported alterations meet validated analytical thresholds of the employed as
 Dr. Elena Martínez, MD, PhD  
 Director, Molecular Diagnostics  
 
-**Report Release Date:** *(date omitted per instruction)*  ",train,0,3/6/24 2:00
+**Report Release Date:** *(date omitted per instruction)*  ",3/6/24 2:00
