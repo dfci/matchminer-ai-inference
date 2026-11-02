@@ -35,11 +35,12 @@ def test_rank_similarity_breaks_ties_by_corpus_order_deterministically():
     corpus_embeddings = [[1.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 0.0]]
 
     results = [
-        rank_similarity(query_embeddings, corpus_embeddings, k=3)
-        for _ in range(20)
+        rank_similarity(query_embeddings, corpus_embeddings, k=3) for _ in range(20)
     ]
 
-    expected = [[(0, pytest.approx(1.0)), (2, pytest.approx(1.0)), (3, pytest.approx(1.0))]]
+    expected = [
+        [(0, pytest.approx(1.0)), (2, pytest.approx(1.0)), (3, pytest.approx(1.0))]
+    ]
     assert all(result == expected for result in results)
 
 
