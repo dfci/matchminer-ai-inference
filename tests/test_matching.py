@@ -26,6 +26,23 @@ def test_rank_similarity_returns_top_k_index_score_pairs_sorted_descending():
     assert result == [[(1, pytest.approx(1.0)), (2, pytest.approx(0.70710678))]]
 
 
+def test_rank_similarity_breaks_ties_by_corpus_order_deterministically():
+    """When k truncates the ranking and multiple corpus rows tie exactly at the
+    cutoff score, the tie must break by corpus order every time -- otherwise an
+    unstable sort/topk could silently swap which trial is selected into the
+    top-k on different runs of identical input."""
+    query_embeddings = [[1.0, 0.0]]
+    corpus_embeddings = [[1.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 0.0]]
+
+    results = [
+        rank_similarity(query_embeddings, corpus_embeddings, k=3)
+        for _ in range(20)
+    ]
+
+    expected = [[(0, pytest.approx(1.0)), (2, pytest.approx(1.0)), (3, pytest.approx(1.0))]]
+    assert all(result == expected for result in results)
+
+
 def test_generate_candidate_matches_returns_top_k_per_query():
     """Return top-k matches per query sorted by similarity."""
     query_df = pd.DataFrame(

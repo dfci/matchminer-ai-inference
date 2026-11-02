@@ -95,10 +95,9 @@ def rank_similarity(
         if top_k == 0:
             results.append([])
             continue
-        if top_k == num_corpus:
-            ranked_idx = torch.argsort(scores, descending=True)
-        else:
-            ranked_idx = torch.topk(scores, k=top_k, largest=True).indices
+        # stable=True guarantees ties break by corpus order, deterministically
+        # across runs/devices; torch.topk has no stability guarantee at all.
+        ranked_idx = torch.argsort(scores, descending=True, stable=True)[:top_k]
         results.append([(int(idx), float(scores[int(idx)])) for idx in ranked_idx])
 
     return results
