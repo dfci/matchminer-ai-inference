@@ -1061,6 +1061,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#matchminer_ai.matching.match.rank_similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rank_similarity
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1215,6 +1226,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#matchminer_ai.matching.match.rank_similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rank_similarity
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1241,6 +1263,10 @@
 
 
 <h1 id="candidate-matching">Candidate Matching<a class="headerlink" href="#candidate-matching" title="Permanent link">&para;</a></h1>
+<p><code>generate_candidate_matches</code> is the notebook layer: DataFrame in, DataFrame out, for
+interactive analysis. <code>rank_similarity</code> is the service layer it's built on: plain
+embedding lists in, <code>(corpus_index, score)</code> pairs out, for callers already working in
+their own data types (e.g. a live matching service).</p>
 
 
 <div class="doc doc-object doc-module">
@@ -1392,6 +1418,248 @@ corpus items per query (sorted by similarity).</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/match.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_candidate_matches</span><span class="p">(</span>
+    <span class="n">query_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">corpus_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Generate top-k candidate matches by ranking corpus items for each query item.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    query_df : pd.DataFrame</span>
+<span class="sd">        Query-side DataFrame with embeddings.</span>
+<span class="sd">        Must contain:</span>
+<span class="sd">            - patient_id or space_trial_id: str</span>
+<span class="sd">            - embedding : array-like</span>
+<span class="sd">    corpus_df : pd.DataFrame</span>
+<span class="sd">        Corpus-side DataFrame with embeddings.</span>
+<span class="sd">        Must contain:</span>
+<span class="sd">            - patient_id or space_trial_id: str</span>
+<span class="sd">            - embedding : array-like</span>
+<span class="sd">    k : int | None, default 20</span>
+<span class="sd">        Number of top matches to return per query entity. If None, return all</span>
+<span class="sd">        corpus items per query (sorted by similarity).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Ranked top-k match pairs including:</span>
+<span class="sd">            - patient_id or space_trial_id (from query_df)</span>
+<span class="sd">            - patient_id or space_trial_id (from corpus_df)</span>
+<span class="sd">            - similarity_score : float</span>
+<span class="sd">            - rank : int (1 = highest similarity per query)</span>
+<span class="sd">    """</span>
+    <span class="c1"># Validate required schema for IDs and embeddings.</span>
+    <span class="n">query_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">query_df</span><span class="p">,</span> <span class="s2">"query_df"</span><span class="p">)</span>
+    <span class="n">corpus_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">,</span> <span class="s2">"corpus_df"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"query_df must include embedding"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corpus_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"corpus_df must include embedding"</span><span class="p">)</span>
+
+    <span class="n">query_ids</span> <span class="o">=</span> <span class="n">query_df</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">corpus_ids</span> <span class="o">=</span> <span class="n">corpus_df</span><span class="p">[</span><span class="n">corpus_id_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">ranked</span> <span class="o">=</span> <span class="n">rank_similarity</span><span class="p">(</span><span class="n">query_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">],</span> <span class="n">corpus_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="n">query_id_col</span><span class="p">:</span> <span class="n">query_id</span><span class="p">,</span>
+            <span class="n">corpus_id_col</span><span class="p">:</span> <span class="n">corpus_ids</span><span class="p">[</span><span class="n">corpus_idx</span><span class="p">],</span>
+            <span class="s2">"similarity_score"</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span>
+            <span class="s2">"rank"</span><span class="p">:</span> <span class="n">rank</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">matches</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">query_ids</span><span class="p">,</span> <span class="n">ranked</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="p">(</span><span class="n">corpus_idx</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matches</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">,</span> <span class="n">corpus_id_col</span><span class="p">,</span> <span class="s2">"similarity_score"</span><span class="p">,</span> <span class="s2">"rank"</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="matchminer_ai.matching.match.rank_similarity" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">rank_similarity</span>
+
+
+<a href="#matchminer_ai.matching.match.rank_similarity" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">rank_similarity</span><span class="p">(</span><span class="n">query_embeddings</span><span class="p">,</span> <span class="n">corpus_embeddings</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Rank corpus embeddings by cosine similarity, for each query embedding.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>query_embeddings</code>
+            </td>
+            <td>
+                  <code><span title="Sequence">Sequence</span>[<span title="array">array</span> - <span title="like">like</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Query-side embedding vectors.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>corpus_embeddings</code>
+            </td>
+            <td>
+                  <code><span title="Sequence">Sequence</span>[<span title="array">array</span> - <span title="like">like</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Corpus-side embedding vectors.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>k</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of top matches to return per query row. If None, return all
+corpus rows per query (sorted by similarity).</p>
+              </div>
+            </td>
+            <td>
+                  <code>20</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<span title="list">list</span>[<span title="tuple">tuple</span>[<span title="int">int</span>, <span title="float">float</span>]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Per query row, a list of (corpus_index, similarity_score) pairs into
+<code>corpus_embeddings</code>, sorted by similarity descending and truncated to
+the top <code>k</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/matchminer_ai/matching/match.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 49</span>
 <span class="normal"> 50</span>
 <span class="normal"> 51</span>
@@ -1446,127 +1714,61 @@ corpus items per query (sorted by similarity).</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_candidate_matches</span><span class="p">(</span>
-    <span class="n">query_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">corpus_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rank_similarity</span><span class="p">(</span>
+    <span class="n">query_embeddings</span><span class="p">,</span>
+    <span class="n">corpus_embeddings</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Generate top-k candidate matches by ranking corpus items for each query item.</span>
+<span class="sd">    Rank corpus embeddings by cosine similarity, for each query embedding.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    query_df : pd.DataFrame</span>
-<span class="sd">        Query-side DataFrame with embeddings.</span>
-<span class="sd">        Must contain:</span>
-<span class="sd">            - patient_id or space_trial_id: str</span>
-<span class="sd">            - embedding : array-like</span>
-<span class="sd">    corpus_df : pd.DataFrame</span>
-<span class="sd">        Corpus-side DataFrame with embeddings.</span>
-<span class="sd">        Must contain:</span>
-<span class="sd">            - patient_id or space_trial_id: str</span>
-<span class="sd">            - embedding : array-like</span>
+<span class="sd">    query_embeddings : Sequence[array-like]</span>
+<span class="sd">        Query-side embedding vectors.</span>
+<span class="sd">    corpus_embeddings : Sequence[array-like]</span>
+<span class="sd">        Corpus-side embedding vectors.</span>
 <span class="sd">    k : int | None, default 20</span>
-<span class="sd">        Number of top matches to return per query entity. If None, return all</span>
-<span class="sd">        corpus items per query (sorted by similarity).</span>
+<span class="sd">        Number of top matches to return per query row. If None, return all</span>
+<span class="sd">        corpus rows per query (sorted by similarity).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    pd.DataFrame</span>
-<span class="sd">        Ranked top-k match pairs including:</span>
-<span class="sd">            - patient_id or space_trial_id (from query_df)</span>
-<span class="sd">            - patient_id or space_trial_id (from corpus_df)</span>
-<span class="sd">            - similarity_score : float</span>
-<span class="sd">            - rank : int (1 = highest similarity per query)</span>
+<span class="sd">    list[list[tuple[int, float]]]</span>
+<span class="sd">        Per query row, a list of (corpus_index, similarity_score) pairs into</span>
+<span class="sd">        `corpus_embeddings`, sorted by similarity descending and truncated to</span>
+<span class="sd">        the top `k`.</span>
 <span class="sd">    """</span>
-    <span class="c1"># Validate required schema for IDs and embeddings.</span>
-    <span class="n">query_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">query_df</span><span class="p">,</span> <span class="s2">"query_df"</span><span class="p">)</span>
-    <span class="n">corpus_id_col</span> <span class="o">=</span> <span class="n">_resolve_id_column</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">,</span> <span class="s2">"corpus_df"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"query_df must include embedding"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">"embedding"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corpus_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"corpus_df must include embedding"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"k must be a positive integer or None"</span><span class="p">)</span>
 
     <span class="c1"># Parse embeddings and ensure consistent vector dimensionality.</span>
-    <span class="n">query_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">query_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">])</span>
-    <span class="n">corpus_embeddings</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">corpus_df</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">query_embeddings</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">corpus_embeddings</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">,</span> <span class="n">corpus_id_col</span><span class="p">,</span> <span class="s2">"similarity_score"</span><span class="p">,</span> <span class="s2">"rank"</span><span class="p">]</span>
-        <span class="p">)</span>
+    <span class="n">query_matrix</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">query_embeddings</span><span class="p">)</span>
+    <span class="n">corpus_matrix</span> <span class="o">=</span> <span class="n">_stack_embeddings</span><span class="p">(</span><span class="n">corpus_embeddings</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query_matrix</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">corpus_matrix</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">query_embeddings</span><span class="p">]</span>
 
     <span class="c1"># Normalize embeddings and compute cosine similarity matrix.</span>
-    <span class="n">query_norm</span> <span class="o">=</span> <span class="n">_normalize_rows</span><span class="p">(</span><span class="n">query_embeddings</span><span class="p">)</span>
-    <span class="n">corpus_norm</span> <span class="o">=</span> <span class="n">_normalize_rows</span><span class="p">(</span><span class="n">corpus_embeddings</span><span class="p">)</span>
+    <span class="n">query_norm</span> <span class="o">=</span> <span class="n">_normalize_rows</span><span class="p">(</span><span class="n">query_matrix</span><span class="p">)</span>
+    <span class="n">corpus_norm</span> <span class="o">=</span> <span class="n">_normalize_rows</span><span class="p">(</span><span class="n">corpus_matrix</span><span class="p">)</span>
     <span class="n">similarity</span> <span class="o">=</span> <span class="n">query_norm</span> <span class="o">@</span> <span class="n">corpus_norm</span><span class="o">.</span><span class="n">T</span>
 
-    <span class="c1"># Extract top-k corpus matches per query.</span>
-    <span class="n">query_ids</span> <span class="o">=</span> <span class="n">query_df</span><span class="p">[</span><span class="n">query_id_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">corpus_ids</span> <span class="o">=</span> <span class="n">corpus_df</span><span class="p">[</span><span class="n">corpus_id_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-    <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">num_corpus</span> <span class="o">=</span> <span class="n">similarity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">top_k</span> <span class="o">=</span> <span class="n">num_corpus</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">num_corpus</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">row_idx</span><span class="p">,</span> <span class="n">query_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">query_ids</span><span class="p">):</span>
+
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">similarity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="n">similarity</span><span class="p">[</span><span class="n">row_idx</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">top_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">top_k</span> <span class="o">==</span> <span class="n">num_corpus</span><span class="p">:</span>
-            <span class="n">ranked_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ranked_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">,</span> <span class="n">largest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">indices</span>
-        <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">corpus_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranked_idx</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">corpus_idx_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">corpus_idx</span><span class="p">)</span>
-            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="n">query_id_col</span><span class="p">:</span> <span class="n">query_id</span><span class="p">,</span>
-                    <span class="n">corpus_id_col</span><span class="p">:</span> <span class="n">corpus_ids</span><span class="p">[</span><span class="n">corpus_idx_int</span><span class="p">],</span>
-                    <span class="s2">"similarity_score"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">corpus_idx_int</span><span class="p">]),</span>
-                    <span class="s2">"rank"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
+        <span class="c1"># stable=True guarantees ties break by corpus order, deterministically</span>
+        <span class="c1"># across runs/devices; torch.topk has no stability guarantee at all.</span>
+        <span class="n">ranked_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">top_k</span><span class="p">]</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">ranked_idx</span><span class="p">])</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">result</span>
-
-    <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
