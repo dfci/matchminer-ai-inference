@@ -13,6 +13,7 @@ from matchminer_ai.matching import (
     score_match_quality,
     score_match_quality_with_llm,
 )
+from matchminer_ai.matching.rerank import score_match_quality_pairs
 
 
 def test_rank_similarity_returns_top_k_index_score_pairs_sorted_descending():
@@ -236,6 +237,124 @@ def test_score_match_quality_return_metadata(monkeypatch):
     assert metadata["model_metadata"]["score_match_quality"]["model_name"] == (
         "ksg-dfci/TrialChecker-1225"
     )
+
+
+def _match_quality_config(**overrides):
+    """Build a minimal match-quality config, with overrides for specific keys."""
+    match_quality = {
+        "model_name": "ksg-dfci/TrialChecker-1225",
+        "device": "cpu",
+        "prompt_file": "match_quality_checker_template.txt",
+        "max_length": 4096,
+        "score_cutoff": 0.5,
+        **overrides,
+    }
+    return MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        trial={},
+        patient={},
+        local={},
+        remote={},
+        embedding={},
+        model_metadata_cache_dir=None,
+        raw={"match_quality": match_quality},
+    )
+
+
+def test_score_match_quality_pairs_puts_clinical_space_before_patient_summary(
+    monkeypatch,
+):
+    """The checker was trained on "<space>\\nNow here is the patient
+    summary:<patient>". Filling the template the other way round still runs and
+    still returns plausible scores, so a swap is silent"""
+    backend = _MockCheckerBackend([{"score": 0.0}, {"score": 0.0}])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
+    )
+
+    score_match_quality_pairs(
+        patient_summaries=["patient A", "patient B"],
+        clinical_space_summaries=["space A", "space B"],
+        config=_match_quality_config(),
+    )
+
+    assert backend.last_prompts == [
+        "space A\nNow here is the patient summary:patient A",
+        "space B\nNow here is the patient summary:patient B",
+    ]
+
+
+def test_score_match_quality_pairs_returns_sigmoid_scores_in_input_order(
+    monkeypatch,
+):
+    """Callers map results back to their own ids by position, so result i must
+    belong to pair i. A score exactly at the cutoff passes. The metadata is the
+    model metadata only."""
+    backend = _MockCheckerBackend([{"score": 2.0}, {"score": -2.0}, {"score": 0.0}])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
+    )
+
+    results, metadata = score_match_quality_pairs(
+        patient_summaries=["p1", "p2", "p3"],
+        clinical_space_summaries=["s1", "s2", "s3"],
+        config=_match_quality_config(score_cutoff=0.5),
+    )
+
+    assert [r["score"] for r in results] == pytest.approx(
+        [0.880797, 0.119203, 0.5], abs=1e-6
+    )
+    assert [r["pass"] for r in results] == [True, False, True]
+    assert metadata == {"model_name": "ksg-dfci/TrialChecker-1225"}
+
+
+@pytest.mark.parametrize(
+    ("patient_summaries", "clinical_space_summaries", "error"),
+    [
+        (["p1"], ["s1", "s2"], ValueError),
+        ("p1", ["s1", "s2"], TypeError),
+        (["p1", None], ["s1", "s2"], TypeError),
+    ],
+    ids=["length-mismatch", "bare-str", "non-str-item"],
+)
+def test_score_match_quality_pairs_rejects_inputs_that_would_misalign(
+    monkeypatch, patient_summaries, clinical_space_summaries, error
+):
+    """Inputs that can't be paired one-to-one must fail before the model runs,
+    not be scored. A bare str would otherwise be read as one summary per
+    character, and a None would be scored as the literal text "None"."""
+    backend = _MockCheckerBackend([])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
+    )
+
+    with pytest.raises(error):
+        score_match_quality_pairs(
+            patient_summaries=patient_summaries,
+            clinical_space_summaries=clinical_space_summaries,
+            config=_match_quality_config(),
+        )
+    assert backend.last_prompts is None
+
+
+def test_score_match_quality_pairs_requires_score_cutoff_in_config(monkeypatch):
+    """The cutoff decides pass/fail, so it must come from the config (and so
+    show up in config snapshots). A code default would apply silently to any
+    custom config that left it out."""
+    backend = _MockCheckerBackend([{"score": 0.0}])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.rerank.run_checker", backend.run_checker
+    )
+    config = _match_quality_config()
+    del config.raw["match_quality"]["score_cutoff"]
+
+    with pytest.raises(KeyError, match="score_cutoff"):
+        score_match_quality_pairs(
+            patient_summaries=["p1"],
+            clinical_space_summaries=["s1"],
+            config=config,
+        )
 
 
 def test_exclusion_criteria_check_maps_outputs_and_filters(monkeypatch):
