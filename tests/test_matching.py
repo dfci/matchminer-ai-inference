@@ -11,9 +11,9 @@ from matchminer_ai.matching import (
     generate_candidate_matches,
     rank_similarity,
     score_match_quality,
+    score_match_quality_pairs,
     score_match_quality_with_llm,
 )
-from matchminer_ai.matching.rerank import score_match_quality_pairs
 
 
 def test_rank_similarity_returns_top_k_index_score_pairs_sorted_descending():
