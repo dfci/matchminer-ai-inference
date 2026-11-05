@@ -65,9 +65,11 @@ def score_match_quality_pairs(
     Returns
     -------
     tuple[list[dict], dict]
-        - One ``{"score": float, "pass": bool}`` per pair, in input order.
-          ``score`` is the sigmoid confidence in [0, 1]; ``pass`` is
-          ``score >= match_quality.score_cutoff``.
+        - One ``{"match_quality_score": float, "match_quality_pass": bool}``
+          per pair, in input order (the same names as the
+          ``score_match_quality`` columns). ``match_quality_score`` is the
+          sigmoid confidence in [0, 1]; ``match_quality_pass`` is
+          ``match_quality_score >= match_quality.score_cutoff``.
         - Model metadata (``model_name``, ``model_sha``, ...).
 
     Raises
@@ -118,7 +120,9 @@ def score_match_quality_pairs(
     results: list[dict[str, Any]] = []
     for prediction in predictions:
         score = float(torch.sigmoid(torch.tensor(float(prediction["score"]))).item())
-        results.append({"score": score, "pass": score >= score_cutoff})
+        results.append(
+            {"match_quality_score": score, "match_quality_pass": score >= score_cutoff}
+        )
     return results, model_metadata
 
 
@@ -204,13 +208,15 @@ def score_match_quality(
 
     # Map pair results back onto the candidate rows, in input order.
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
-    # Explicit dtypes so an empty input still yields float / bool columns.
-    output["match_quality_score"] = pd.Series(
-        [result["score"] for result in results], index=output.index, dtype="float64"
-    )
-    output["match_quality_pass"] = pd.Series(
-        [result["pass"] for result in results], index=output.index, dtype="bool"
-    )
+    # Result keys are the column names. Explicit dtypes so an empty input still
+    # yields float / bool columns.
+    for column, dtype in (
+        ("match_quality_score", "float64"),
+        ("match_quality_pass", "bool"),
+    ):
+        output[column] = pd.Series(
+            [result[column] for result in results], index=output.index, dtype=dtype
+        )
 
     # Optionally keep only matches that pass the quality threshold.
     if filter_low_quality:

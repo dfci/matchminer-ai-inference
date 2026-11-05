@@ -302,10 +302,10 @@ def test_score_match_quality_pairs_returns_sigmoid_scores_in_input_order(
         config=_match_quality_config(score_cutoff=0.5),
     )
 
-    assert [r["score"] for r in results] == pytest.approx(
+    assert [r["match_quality_score"] for r in results] == pytest.approx(
         [0.880797, 0.119203, 0.5], abs=1e-6
     )
-    assert [r["pass"] for r in results] == [True, False, True]
+    assert [r["match_quality_pass"] for r in results] == [True, False, True]
     assert metadata == {"model_name": "ksg-dfci/TrialChecker-1225"}
 
 
