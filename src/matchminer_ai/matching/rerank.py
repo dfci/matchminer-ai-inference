@@ -23,25 +23,6 @@ def _load_match_quality_template(filename: str) -> str:
         return handle.read().strip()
 
 
-def _build_match_quality_prompts(
-    candidate_pairs: pd.DataFrame,
-    *,
-    template: str,
-) -> list[str]:
-    patient_summaries = (
-        candidate_pairs["cancer_history_summary"].fillna("").astype(str).tolist()
-    )
-    clinical_spaces = (
-        candidate_pairs["clinical_space_summary"].fillna("").astype(str).tolist()
-    )
-    return [
-        template.format(clinical_space, patient_summary)
-        for patient_summary, clinical_space in zip(
-            patient_summaries, clinical_spaces, strict=False
-        )
-    ]
-
-
 def _validate_text_list(name: str, values: list[str]) -> list[str]:
     # Type hints aren't enforced at runtime. A bare str is iterable as
     # characters, so reject it so it can't pass the length check by accident.
@@ -207,37 +188,29 @@ def score_match_quality(
             f"candidate_pairs is missing required columns: {', '.join(missing)}"
         )
 
-    # Resolve run config and build checker prompts from the configured template.
+    # Resolve once so the config snapshot matches the config actually scored with.
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.raw.get("match_quality", {}))
-    prompt_file = str(checker_config["prompt_file"]).strip()
-    score_cutoff = float(checker_config.get("score_cutoff", 0.2))
 
-    template = _load_match_quality_template(prompt_file)
-    prompts = _build_match_quality_prompts(candidate_pairs, template=template)
-
-    # Run the backend text-classification model over all prompts.
-    predictions, model_metadata = run_checker(
-        prompts,
-        checker_config=checker_config,
-        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    # Missing text becomes "" (the service layer requires str), then score.
+    results, model_metadata = score_match_quality_pairs(
+        patient_summaries=(
+            candidate_pairs["cancer_history_summary"].fillna("").astype(str).tolist()
+        ),
+        clinical_space_summaries=(
+            candidate_pairs["clinical_space_summary"].fillna("").astype(str).tolist()
+        ),
+        config=resolved_config,
     )
 
-    if len(predictions) != len(candidate_pairs):
-        raise ValueError(
-            "Checker returned a different number of predictions than input rows."
-        )
-
-    # Convert model outputs into a compact, derived result table.
+    # Map pair results back onto the candidate rows, in input order.
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
-    confidence_scores = [
-        float(torch.sigmoid(torch.tensor(float(prediction["score"]))).item())
-        for prediction in predictions
-    ]
-    output["match_quality_score"] = confidence_scores
-    output["match_quality_pass"] = [
-        score >= score_cutoff for score in confidence_scores
-    ]
+    # Explicit dtypes so an empty input still yields float / bool columns.
+    output["match_quality_score"] = pd.Series(
+        [result["score"] for result in results], index=output.index, dtype="float64"
+    )
+    output["match_quality_pass"] = pd.Series(
+        [result["pass"] for result in results], index=output.index, dtype="bool"
+    )
 
     # Optionally keep only matches that pass the quality threshold.
     if filter_low_quality:
