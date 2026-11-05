@@ -475,7 +475,7 @@ def test_clear_checker_pipeline_cache_forces_reload(monkeypatch):
         lambda model_name, cache_dir=None: {"model_name": model_name},
     )
 
-    checker_config = {"model_name": "checker/model", "device": "cpu"}
+    checker_config = {"model_name": "checker/model", "device": "cpu", "max_length": 8}
     inference.run_checker(["prompt 1"], checker_config=checker_config)
     inference.clear_checker_pipeline_cache()
     inference.run_checker(["prompt 2"], checker_config=checker_config)

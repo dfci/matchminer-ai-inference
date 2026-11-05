@@ -57,7 +57,7 @@ def run_checker(
     """Run a text-classification checker model on prompts."""
     model_name = checker_config["model_name"]
     device = checker_config["device"]
-    max_length = int(checker_config.get("max_length", 4096))
+    max_length = int(checker_config["max_length"])
     checker_pipeline = _get_checker_pipeline(
         model_name,
         device,
