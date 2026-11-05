@@ -48,12 +48,12 @@ def test_default_preset_matches_training_runtime_defaults():
 
     assert config.embedding["model_path"] == "ksg-dfci/TrialSpace-0526"
     assert config.embedding["max_seq_length"] == 2500
-    assert config.raw["match_quality"]["model_name"] == "ksg-dfci/TrialChecker-0526"
-    assert config.raw["match_quality"]["max_length"] == 4096
-    assert config.raw["exclusion_criteria"]["model_name"] == (
+    assert config.match_quality["model_name"] == "ksg-dfci/TrialChecker-0526"
+    assert config.match_quality["max_length"] == 4096
+    assert config.exclusion_criteria["model_name"] == (
         "ksg-dfci/BoilerplateChecker-0526"
     )
-    assert config.raw["exclusion_criteria"]["max_length"] == 3192
+    assert config.exclusion_criteria["max_length"] == 3192
 
     assert config.llm_match_quality["local"]["engine"]["max_model_len"] == 50000
     assert config.llm_match_quality["local"]["model_name"] == "google/gemma-4-31B-it"

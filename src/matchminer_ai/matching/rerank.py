@@ -89,7 +89,7 @@ def score_match_quality_pairs(
         )
 
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.raw.get("match_quality", {}))
+    checker_config = dict(resolved_config.match_quality)
     score_cutoff = float(checker_config["score_cutoff"])
 
     # Nothing to score: skip loading the checker pipeline.

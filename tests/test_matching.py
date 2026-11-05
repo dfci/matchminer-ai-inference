@@ -138,13 +138,12 @@ def test_score_match_quality_maps_outputs_and_filters(monkeypatch):
         remote={},
         embedding={},
         model_metadata_cache_dir=None,
-        raw={
-            "match_quality": {
-                "model_name": "ksg-dfci/TrialChecker-1225",
-                "device": "cpu",
-                "prompt_file": "match_quality_checker_template.txt",
-                "score_cutoff": 0.2,
-            }
+        raw={},
+        match_quality={
+            "model_name": "ksg-dfci/TrialChecker-1225",
+            "device": "cpu",
+            "prompt_file": "match_quality_checker_template.txt",
+            "score_cutoff": 0.2,
         },
     )
     pairs = pd.DataFrame(
@@ -203,13 +202,12 @@ def test_score_match_quality_return_metadata(monkeypatch):
         remote={},
         embedding={},
         model_metadata_cache_dir=".mmai_cache/model_metadata",
-        raw={
-            "match_quality": {
-                "model_name": "ksg-dfci/TrialChecker-1225",
-                "device": "cpu",
-                "prompt_file": "match_quality_checker_template.txt",
-                "score_cutoff": 0.2,
-            }
+        raw={},
+        match_quality={
+            "model_name": "ksg-dfci/TrialChecker-1225",
+            "device": "cpu",
+            "prompt_file": "match_quality_checker_template.txt",
+            "score_cutoff": 0.2,
         },
     )
     pairs = pd.DataFrame(
@@ -258,7 +256,8 @@ def _match_quality_config(**overrides):
         remote={},
         embedding={},
         model_metadata_cache_dir=None,
-        raw={"match_quality": match_quality},
+        raw={},
+        match_quality=match_quality,
     )
 
 
@@ -347,7 +346,7 @@ def test_score_match_quality_pairs_requires_score_cutoff_in_config(monkeypatch):
         "matchminer_ai.matching.rerank.run_checker", backend.run_checker
     )
     config = _match_quality_config()
-    del config.raw["match_quality"]["score_cutoff"]
+    del config.match_quality["score_cutoff"]
 
     with pytest.raises(KeyError, match="score_cutoff"):
         score_match_quality_pairs(
@@ -377,12 +376,11 @@ def test_exclusion_criteria_check_maps_outputs_and_filters(monkeypatch):
         remote={},
         embedding={},
         model_metadata_cache_dir=None,
-        raw={
-            "exclusion_criteria": {
-                "model_name": "ksg-dfci/BoilerPlateChecker-1225",
-                "device": "cpu",
-                "prompt_file": "exclusion_criteria_checker_template.txt",
-            }
+        raw={},
+        exclusion_criteria={
+            "model_name": "ksg-dfci/BoilerPlateChecker-1225",
+            "device": "cpu",
+            "prompt_file": "exclusion_criteria_checker_template.txt",
         },
     )
     matches = pd.DataFrame(
@@ -444,12 +442,11 @@ def test_exclusion_criteria_check_return_metadata(monkeypatch):
         remote={},
         embedding={},
         model_metadata_cache_dir=".mmai_cache/model_metadata",
-        raw={
-            "exclusion_criteria": {
-                "model_name": "ksg-dfci/BoilerPlateChecker-1225",
-                "device": "cpu",
-                "prompt_file": "exclusion_criteria_checker_template.txt",
-            }
+        raw={},
+        exclusion_criteria={
+            "model_name": "ksg-dfci/BoilerPlateChecker-1225",
+            "device": "cpu",
+            "prompt_file": "exclusion_criteria_checker_template.txt",
         },
     )
     matches = pd.DataFrame(

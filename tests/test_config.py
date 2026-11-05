@@ -69,7 +69,7 @@ exclusion_criteria:
     assert config.patient["remote"]["model_name"] == "custom-patient-model"
     assert config.embedding["device"] == "cpu"
     assert config.embedding["max_seq_length"] == 2500
-    assert config.raw["match_quality"]["model_name"] == "custom-match-model"
+    assert config.match_quality["model_name"] == "custom-match-model"
 
 
 def test_load_config_rejects_non_mapping_yaml(tmp_path):
