@@ -14,14 +14,12 @@ def _get_checker_pipeline(
     model_name: str,
     device: str,
     max_length: int,
-    model_metadata_cache_dir: str | None,
 ):
     """Load and cache a Transformers text-classification checker pipeline."""
     from transformers import AutoTokenizer, pipeline
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
-        cache_dir=model_metadata_cache_dir,
         trust_remote_code=True,
     )
     return pipeline(
@@ -62,7 +60,6 @@ def run_checker(
         model_name,
         device,
         max_length,
-        model_metadata_cache_dir,
     )
     model_metadata = get_model_metadata(
         model_name,
