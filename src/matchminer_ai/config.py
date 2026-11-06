@@ -27,6 +27,8 @@ class MMAIConfig:
     raw: dict[str, Any]
     llm_match_quality: dict[str, Any] = field(default_factory=dict)
     llm_exclusion_criteria: dict[str, Any] = field(default_factory=dict)
+    match_quality: dict[str, Any] = field(default_factory=dict)
+    exclusion_criteria: dict[str, Any] = field(default_factory=dict)
 
 
 def config_snapshot(config: MMAIConfig) -> dict[str, Any]:
@@ -43,6 +45,8 @@ def config_snapshot(config: MMAIConfig) -> dict[str, Any]:
             "embedding": deepcopy(config.embedding),
             "llm_match_quality": deepcopy(config.llm_match_quality),
             "llm_exclusion_criteria": deepcopy(config.llm_exclusion_criteria),
+            "match_quality": deepcopy(config.match_quality),
+            "exclusion_criteria": deepcopy(config.exclusion_criteria),
             "model_metadata_cache_dir": config.model_metadata_cache_dir,
         }
     )
@@ -69,6 +73,8 @@ def _config_from_data(data: dict[str, Any], preset_name: str) -> MMAIConfig:
         embedding=dict(data["embedding"]),
         llm_match_quality=dict(data.get("llm_match_quality", {})),
         llm_exclusion_criteria=dict(data.get("llm_exclusion_criteria", {})),
+        match_quality=dict(data.get("match_quality", {})),
+        exclusion_criteria=dict(data.get("exclusion_criteria", {})),
         model_metadata_cache_dir=data["model_metadata_cache_dir"],
         raw=deepcopy(data),
     )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from importlib import resources
 
 import pandas as pd
@@ -10,6 +10,7 @@ import torch
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
+from matchminer_ai.llm.backends import get_model_metadata
 from .inference import run_checker
 
 if TYPE_CHECKING:
@@ -22,23 +23,107 @@ def _load_match_quality_template(filename: str) -> str:
         return handle.read().strip()
 
 
-def _build_match_quality_prompts(
-    candidate_pairs: pd.DataFrame,
-    *,
-    template: str,
-) -> list[str]:
-    patient_summaries = (
-        candidate_pairs["cancer_history_summary"].fillna("").astype(str).tolist()
-    )
-    clinical_spaces = (
-        candidate_pairs["clinical_space_summary"].fillna("").astype(str).tolist()
-    )
-    return [
-        template.format(clinical_space, patient_summary)
-        for patient_summary, clinical_space in zip(
-            patient_summaries, clinical_spaces, strict=False
+def _validate_text_list(name: str, values: list[str]) -> list[str]:
+    # Type hints aren't enforced at runtime. A bare str is iterable as
+    # characters, so reject it so it can't pass the length check by accident.
+    if isinstance(values, str):
+        raise TypeError(f"{name} must be a list of strings, not a single str.")
+    texts = list(values)
+    bad = [i for i, text in enumerate(texts) if not isinstance(text, str)]
+    if bad:
+        raise TypeError(
+            f"{name} must contain only strings; non-string values at indices {bad}."
         )
+    return texts
+
+
+def score_match_quality_pairs(
+    *,
+    patient_summaries: list[str],
+    clinical_space_summaries: list[str],
+    config: MMAIConfig | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """
+    Score patient / clinical-space text pairs for match quality, in input order.
+
+    Service-layer entrypoint: takes plain text with no identifiers or
+    DataFrames. Pair ``i`` is
+    ``(patient_summaries[i], clinical_space_summaries[i])``. To check one
+    patient against many spaces, repeat the patient summary.
+
+    Parameters
+    ----------
+    patient_summaries : list[str]
+        Patient summary text, one per pair.
+    clinical_space_summaries : list[str]
+        Trial clinical-space summary text, one per pair. Must be the same
+        length as ``patient_summaries``.
+    config : MMAIConfig, optional
+        MMAI configuration containing ``match_quality`` checker settings.
+        Uses the default preset when omitted.
+
+    Returns
+    -------
+    tuple[list[dict], dict]
+        - One ``{"match_quality_score": float, "match_quality_pass": bool}``
+          per pair, in input order (the same names as the
+          ``score_match_quality`` columns). ``match_quality_score`` is the
+          sigmoid confidence in [0, 1]; ``match_quality_pass`` is
+          ``match_quality_score >= match_quality.score_cutoff``.
+        - Model metadata (``model_name``, ``model_sha``, ...).
+
+    Raises
+    ------
+    TypeError
+        If either argument is a single ``str`` or contains non-string values.
+    ValueError
+        If the two sequences differ in length, or the checker returns a
+        different number of predictions than pairs.
+    """
+    patients = _validate_text_list("patient_summaries", patient_summaries)
+    spaces = _validate_text_list("clinical_space_summaries", clinical_space_summaries)
+    if len(patients) != len(spaces):
+        raise ValueError(
+            "patient_summaries and clinical_space_summaries must be the same "
+            f"length; got {len(patients)} and {len(spaces)}."
+        )
+
+    resolved_config = config or load_default_preset()
+    checker_config = dict(resolved_config.match_quality)
+    score_cutoff = float(checker_config["score_cutoff"])
+
+    # Nothing to score: skip loading the checker pipeline.
+    if not patients:
+        model_metadata = get_model_metadata(
+            checker_config["model_name"],
+            cache_dir=resolved_config.model_metadata_cache_dir,
+        )
+        return [], model_metadata
+
+    template = _load_match_quality_template(str(checker_config["prompt_file"]).strip())
+    # The checker was trained on clinical space first, patient summary second.
+    prompts = [
+        template.format(space, patient)
+        for patient, space in zip(patients, spaces, strict=True)
     ]
+
+    predictions, model_metadata = run_checker(
+        prompts,
+        checker_config=checker_config,
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    )
+    if len(predictions) != len(prompts):
+        raise ValueError(
+            "Checker returned a different number of predictions than input rows."
+        )
+
+    results: list[dict[str, Any]] = []
+    for prediction in predictions:
+        score = float(torch.sigmoid(torch.tensor(float(prediction["score"]))).item())
+        results.append(
+            {"match_quality_score": score, "match_quality_pass": score >= score_cutoff}
+        )
+    return results, model_metadata
 
 
 def score_match_quality(
@@ -107,37 +192,31 @@ def score_match_quality(
             f"candidate_pairs is missing required columns: {', '.join(missing)}"
         )
 
-    # Resolve run config and build checker prompts from the configured template.
+    # Resolve once so the config snapshot matches the config actually scored with.
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.raw.get("match_quality", {}))
-    prompt_file = str(checker_config["prompt_file"]).strip()
-    score_cutoff = float(checker_config.get("score_cutoff", 0.2))
 
-    template = _load_match_quality_template(prompt_file)
-    prompts = _build_match_quality_prompts(candidate_pairs, template=template)
-
-    # Run the backend text-classification model over all prompts.
-    predictions, model_metadata = run_checker(
-        prompts,
-        checker_config=checker_config,
-        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    # Missing text becomes "" (the service layer requires str), then score.
+    results, model_metadata = score_match_quality_pairs(
+        patient_summaries=(
+            candidate_pairs["cancer_history_summary"].fillna("").astype(str).tolist()
+        ),
+        clinical_space_summaries=(
+            candidate_pairs["clinical_space_summary"].fillna("").astype(str).tolist()
+        ),
+        config=resolved_config,
     )
 
-    if len(predictions) != len(candidate_pairs):
-        raise ValueError(
-            "Checker returned a different number of predictions than input rows."
-        )
-
-    # Convert model outputs into a compact, derived result table.
+    # Map pair results back onto the candidate rows, in input order.
     output = candidate_pairs[["patient_id", "space_trial_id"]].copy()
-    confidence_scores = [
-        float(torch.sigmoid(torch.tensor(float(prediction["score"]))).item())
-        for prediction in predictions
-    ]
-    output["match_quality_score"] = confidence_scores
-    output["match_quality_pass"] = [
-        score >= score_cutoff for score in confidence_scores
-    ]
+    # Result keys are the column names. Explicit dtypes so an empty input still
+    # yields float / bool columns.
+    for column, dtype in (
+        ("match_quality_score", "float64"),
+        ("match_quality_pass", "bool"),
+    ):
+        output[column] = pd.Series(
+            [result[column] for result in results], index=output.index, dtype=dtype
+        )
 
     # Optionally keep only matches that pass the quality threshold.
     if filter_low_quality:
