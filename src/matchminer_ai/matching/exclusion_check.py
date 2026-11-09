@@ -24,23 +24,6 @@ def _load_exclusion_criteria_template(filename: str) -> str:
         return handle.read().strip()
 
 
-def _build_exclusion_criteria_prompts(
-    matches: pd.DataFrame,
-    *,
-    template: str,
-) -> list[str]:
-    patient_evidence = (
-        matches["general_exclusion_criteria_evidence"].fillna("").astype(str).tolist()
-    )
-    trial_exclusions = (
-        matches["general_exclusion_criteria"].fillna("").astype(str).tolist()
-    )
-    return [
-        template.format(evidence, criteria)
-        for evidence, criteria in zip(patient_evidence, trial_exclusions, strict=False)
-    ]
-
-
 def exclusion_criteria_check_pairs(
     *,
     patient_exclusion_evidence: list[str],
@@ -165,7 +148,7 @@ def exclusion_criteria_check(
         MMAI configuration containing exclusion checker settings.
         Uses default preset when omitted.
     filter_excluded : bool, default False
-        If True, return only rows where ``exclusion_criteria_pass`` is True.
+        If True, return only rows where ``exclusion_label`` is ``"NEGATIVE"``.
     return_metadata : bool, default False
         When True, also return a metadata dict containing the config snapshot
         and model metadata for this run.
@@ -181,11 +164,11 @@ def exclusion_criteria_check(
             Patient identifier.
         trial_id : str
             Trial identifier.
+        exclusion_label : str
+            ``"NEGATIVE"`` when there is no evidence the patient meets the
+            trial's exclusion criteria, ``"POSITIVE"`` when there is.
         exclusion_score : float
-            Model-generated confidence score associated with exclusion-check label.
-        exclusion_criteria_pass : bool
-            True when the patient is predicted to pass exclusion criteria for
-            this trial; False otherwise.
+            The checker's confidence in ``exclusion_label``.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus metadata.
     """
@@ -200,39 +183,38 @@ def exclusion_criteria_check(
     if missing:
         raise ValueError(f"matches is missing required columns: {', '.join(missing)}")
 
-    # Resolve run config and build checker prompts from the configured template.
+    # Resolve once so the config snapshot matches the config actually checked with.
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.exclusion_criteria)
-    prompt_file = str(checker_config["prompt_file"]).strip()
 
-    template = _load_exclusion_criteria_template(prompt_file)
-    prompts = _build_exclusion_criteria_prompts(matches, template=template)
-
-    # Run the backend text-classification model over all prompts.
-    predictions, model_metadata = run_checker(
-        prompts,
-        checker_config=checker_config,
-        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    # Missing text becomes "" (the service layer requires str), then check.
+    results, model_metadata = exclusion_criteria_check_pairs(
+        patient_exclusion_evidence=(
+            matches["general_exclusion_criteria_evidence"]
+            .fillna("")
+            .astype(str)
+            .tolist()
+        ),
+        trial_exclusion_criteria=(
+            matches["general_exclusion_criteria"].fillna("").astype(str).tolist()
+        ),
+        config=resolved_config,
     )
 
-    if len(predictions) != len(matches):
-        raise ValueError(
-            "Checker returned a different number of predictions than input rows."
+    # Map pair results back onto the input rows, in input order. Result keys are
+    # the column names. Explicit dtypes so an empty input still yields
+    # str / float columns.
+    output = matches[["patient_id", "trial_id"]].copy()
+    for column, dtype in (
+        ("exclusion_label", "object"),
+        ("exclusion_score", "float64"),
+    ):
+        output[column] = pd.Series(
+            [result[column] for result in results], index=output.index, dtype=dtype
         )
 
-    # Convert model outputs into a compact, derived result table.
-    output = matches[["patient_id", "trial_id"]].copy()
-    output["exclusion_score"] = [
-        float(prediction["score"]) for prediction in predictions
-    ]
-    output["exclusion_criteria_pass"] = [
-        str(prediction["label"]).strip().upper() == "NEGATIVE"
-        for prediction in predictions
-    ]
-
-    # Optionally keep only rows that passed exclusion criteria.
+    # Optionally drop rows with evidence the patient meets the exclusion criteria.
     if filter_excluded:
-        keep_rows = output["exclusion_criteria_pass"]
+        keep_rows = output["exclusion_label"].str.strip().str.upper() == "NEGATIVE"
         output = output.loc[keep_rows].copy()
     output = output.reset_index(drop=True)
 
