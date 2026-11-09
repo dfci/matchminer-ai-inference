@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -1117,6 +1117,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#matchminer_ai.matching.rerank.score_match_quality_pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        score_match_quality_pairs
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1327,6 +1338,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#matchminer_ai.matching.rerank.score_match_quality_pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        score_match_quality_pairs
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1409,6 +1431,11 @@
 
 
 <h1 id="match-quality">Match Quality<a class="headerlink" href="#match-quality" title="Permanent link">&para;</a></h1>
+<p><code>score_match_quality</code> is the notebook layer: DataFrame in, DataFrame out, for
+interactive analysis. <code>score_match_quality_pairs</code> is the service layer it's built on:
+plain patient and clinical-space text lists in, one
+<code>{"match_quality_score", "match_quality_pass"}</code> per pair plus model metadata out, for
+callers already working in their own data types (e.g. a live matching service).</p>
 
 
 <div class="doc doc-object doc-module">
@@ -1595,7 +1622,385 @@ match_quality_pass : bool
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/matchminer_ai/matching/rerank.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 44</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality</span><span class="p">(</span>
+    <span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">filter_low_quality</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Evaluate the clinical match quality of each candidate patient-trial pair.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    candidate_pairs : pd.DataFrame</span>
+<span class="sd">        DataFrame of candidate patient-trial pairs.</span>
+
+<span class="sd">        Expected columns</span>
+<span class="sd">        ----------------</span>
+<span class="sd">        patient_id : str</span>
+<span class="sd">            Patient identifier.</span>
+<span class="sd">        space_trial_id : str</span>
+<span class="sd">            Trial-space identifier.</span>
+<span class="sd">        cancer_history_summary : str</span>
+<span class="sd">            Patient summary text.</span>
+<span class="sd">        clinical_space_summary : str</span>
+<span class="sd">            Trial clinical-space summary text.</span>
+
+<span class="sd">    config : MMAIConfig, optional</span>
+<span class="sd">        MMAI configuration containing match quality checker settings.</span>
+<span class="sd">        Uses default preset when omitted.</span>
+<span class="sd">    filter_low_quality : bool, default True</span>
+<span class="sd">        If True, only return rows where ``match_quality_pass`` evaluates to True.</span>
+<span class="sd">    return_metadata : bool, default False</span>
+<span class="sd">        When True, also return a metadata dict containing the config snapshot</span>
+<span class="sd">        and model metadata for this run.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Derived output table containing:</span>
+
+<span class="sd">        Columns</span>
+<span class="sd">        -------</span>
+<span class="sd">        patient_id : str</span>
+<span class="sd">            Patient identifier.</span>
+<span class="sd">        space_trial_id : str</span>
+<span class="sd">            Trial-space identifier.</span>
+<span class="sd">        match_quality_score : float</span>
+<span class="sd">            Model-generated confidence score for clinical match quality.</span>
+<span class="sd">        match_quality_pass : bool</span>
+<span class="sd">            Whether the match quality score meets the configured cutoff.</span>
+<span class="sd">    tuple[pd.DataFrame, dict]</span>
+<span class="sd">        When return_metadata is True, returns the DataFrame plus a metadata dict.</span>
+<span class="sd">    """</span>
+    <span class="c1"># Validate that candidate pair rows contain the text + ids needed for checker prompts.</span>
+    <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"patient_id"</span><span class="p">,</span>
+        <span class="s2">"space_trial_id"</span><span class="p">,</span>
+        <span class="s2">"cancer_history_summary"</span><span class="p">,</span>
+        <span class="s2">"clinical_space_summary"</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">candidate_pairs</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Resolve once so the config snapshot matches the config actually scored with.</span>
+    <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
+
+    <span class="c1"># Missing text becomes "" (the service layer requires str), then score.</span>
+    <span class="n">results</span><span class="p">,</span> <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">score_match_quality_pairs</span><span class="p">(</span>
+        <span class="n">patient_summaries</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">candidate_pairs</span><span class="p">[</span><span class="s2">"cancer_history_summary"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">),</span>
+        <span class="n">clinical_space_summaries</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">candidate_pairs</span><span class="p">[</span><span class="s2">"clinical_space_summary"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">),</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">resolved_config</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Map pair results back onto the candidate rows, in input order.</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"space_trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Result keys are the column names. Explicit dtypes so an empty input still</span>
+    <span class="c1"># yields float / bool columns.</span>
+    <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">"match_quality_score"</span><span class="p">,</span> <span class="s2">"float64"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"match_quality_pass"</span><span class="p">,</span> <span class="s2">"bool"</span><span class="p">),</span>
+    <span class="p">):</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">output</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Optionally keep only matches that pass the quality threshold.</span>
+    <span class="k">if</span> <span class="n">filter_low_quality</span><span class="p">:</span>
+        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_pass"</span><span class="p">]</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_rows</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Optionally return metadata for reproducibility/debugging.</span>
+    <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
+        <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
+            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
+            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"score_match_quality"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
+    <span class="k">return</span> <span class="n">output</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="matchminer_ai.matching.rerank.score_match_quality_pairs" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">score_match_quality_pairs</span>
+
+
+<a href="#matchminer_ai.matching.rerank.score_match_quality_pairs" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">score_match_quality_pairs</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">patient_summaries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">clinical_space_summaries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Score patient / clinical-space text pairs for match quality, in input order.</p>
+<p>Service-layer entrypoint: takes plain text with no identifiers or
+DataFrames. Pair <code>i</code> is
+<code>(patient_summaries[i], clinical_space_summaries[i])</code>. To check one
+patient against many spaces, repeat the patient summary.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>patient_summaries</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Patient summary text, one per pair.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>clinical_space_summaries</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Trial clinical-space summary text, one per pair. Must be the same
+length as <code>patient_summaries</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>config</code>
+            </td>
+            <td>
+                  <code><span title="matchminer_ai.config.MMAIConfig">MMAIConfig</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>MMAI configuration containing <code>match_quality</code> checker settings.
+Uses the default preset when omitted.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="tuple">tuple</span>[<span title="list">list</span>[<span title="dict">dict</span>], <span title="dict">dict</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <ul>
+<li>One <code>{"match_quality_score": float, "match_quality_pass": bool}</code>
+  per pair, in input order (the same names as the
+  <code>score_match_quality</code> columns). <code>match_quality_score</code> is the
+  sigmoid confidence in [0, 1]; <code>match_quality_pass</code> is
+  <code>match_quality_score &gt;= match_quality.score_cutoff</code>.</li>
+<li>Model metadata (<code>model_name</code>, <code>model_sha</code>, ...).</li>
+</ul>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If either argument is a single <code>str</code> or contains non-string values.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the two sequences differ in length, or the checker returns a
+different number of predictions than pairs.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/matchminer_ai/matching/rerank.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
 <span class="normal"> 45</span>
 <span class="normal"> 46</span>
 <span class="normal"> 47</span>
@@ -1677,153 +2082,93 @@ match_quality_pass : bool
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality</span><span class="p">(</span>
-    <span class="n">candidate_pairs</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">score_match_quality_pairs</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
+    <span class="n">patient_summaries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">clinical_space_summaries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">MMAIConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">filter_low_quality</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">return_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Evaluate the clinical match quality of each candidate patient-trial pair.</span>
+<span class="sd">    Score patient / clinical-space text pairs for match quality, in input order.</span>
+
+<span class="sd">    Service-layer entrypoint: takes plain text with no identifiers or</span>
+<span class="sd">    DataFrames. Pair ``i`` is</span>
+<span class="sd">    ``(patient_summaries[i], clinical_space_summaries[i])``. To check one</span>
+<span class="sd">    patient against many spaces, repeat the patient summary.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    candidate_pairs : pd.DataFrame</span>
-<span class="sd">        DataFrame of candidate patient-trial pairs.</span>
-
-<span class="sd">        Expected columns</span>
-<span class="sd">        ----------------</span>
-<span class="sd">        patient_id : str</span>
-<span class="sd">            Patient identifier.</span>
-<span class="sd">        space_trial_id : str</span>
-<span class="sd">            Trial-space identifier.</span>
-<span class="sd">        cancer_history_summary : str</span>
-<span class="sd">            Patient summary text.</span>
-<span class="sd">        clinical_space_summary : str</span>
-<span class="sd">            Trial clinical-space summary text.</span>
-
+<span class="sd">    patient_summaries : list[str]</span>
+<span class="sd">        Patient summary text, one per pair.</span>
+<span class="sd">    clinical_space_summaries : list[str]</span>
+<span class="sd">        Trial clinical-space summary text, one per pair. Must be the same</span>
+<span class="sd">        length as ``patient_summaries``.</span>
 <span class="sd">    config : MMAIConfig, optional</span>
-<span class="sd">        MMAI configuration containing match quality checker settings.</span>
-<span class="sd">        Uses default preset when omitted.</span>
-<span class="sd">    filter_low_quality : bool, default True</span>
-<span class="sd">        If True, only return rows where ``match_quality_pass`` evaluates to True.</span>
-<span class="sd">    return_metadata : bool, default False</span>
-<span class="sd">        When True, also return a metadata dict containing the config snapshot</span>
-<span class="sd">        and model metadata for this run.</span>
+<span class="sd">        MMAI configuration containing ``match_quality`` checker settings.</span>
+<span class="sd">        Uses the default preset when omitted.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    pd.DataFrame</span>
-<span class="sd">        Derived output table containing:</span>
+<span class="sd">    tuple[list[dict], dict]</span>
+<span class="sd">        - One ``{"match_quality_score": float, "match_quality_pass": bool}``</span>
+<span class="sd">          per pair, in input order (the same names as the</span>
+<span class="sd">          ``score_match_quality`` columns). ``match_quality_score`` is the</span>
+<span class="sd">          sigmoid confidence in [0, 1]; ``match_quality_pass`` is</span>
+<span class="sd">          ``match_quality_score &gt;= match_quality.score_cutoff``.</span>
+<span class="sd">        - Model metadata (``model_name``, ``model_sha``, ...).</span>
 
-<span class="sd">        Columns</span>
-<span class="sd">        -------</span>
-<span class="sd">        patient_id : str</span>
-<span class="sd">            Patient identifier.</span>
-<span class="sd">        space_trial_id : str</span>
-<span class="sd">            Trial-space identifier.</span>
-<span class="sd">        match_quality_score : float</span>
-<span class="sd">            Model-generated confidence score for clinical match quality.</span>
-<span class="sd">        match_quality_pass : bool</span>
-<span class="sd">            Whether the match quality score meets the configured cutoff.</span>
-<span class="sd">    tuple[pd.DataFrame, dict]</span>
-<span class="sd">        When return_metadata is True, returns the DataFrame plus a metadata dict.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        If either argument is a single ``str`` or contains non-string values.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the two sequences differ in length, or the checker returns a</span>
+<span class="sd">        different number of predictions than pairs.</span>
 <span class="sd">    """</span>
-    <span class="c1"># Validate that candidate pair rows contain the text + ids needed for checker prompts.</span>
-    <span class="n">required</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">"patient_id"</span><span class="p">,</span>
-        <span class="s2">"space_trial_id"</span><span class="p">,</span>
-        <span class="s2">"cancer_history_summary"</span><span class="p">,</span>
-        <span class="s2">"clinical_space_summary"</span><span class="p">,</span>
-    <span class="p">]</span>
-    <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">candidate_pairs</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+    <span class="n">patients</span> <span class="o">=</span> <span class="n">_validate_text_list</span><span class="p">(</span><span class="s2">"patient_summaries"</span><span class="p">,</span> <span class="n">patient_summaries</span><span class="p">)</span>
+    <span class="n">spaces</span> <span class="o">=</span> <span class="n">_validate_text_list</span><span class="p">(</span><span class="s2">"clinical_space_summaries"</span><span class="p">,</span> <span class="n">clinical_space_summaries</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">patients</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"candidate_pairs is missing required columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="s2">"patient_summaries and clinical_space_summaries must be the same "</span>
+            <span class="sa">f</span><span class="s2">"length; got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">patients</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
 
-    <span class="c1"># Resolve run config and build checker prompts from the configured template.</span>
     <span class="n">resolved_config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">load_default_preset</span><span class="p">()</span>
-    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"match_quality"</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="n">prompt_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">score_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">checker_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"score_cutoff"</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">))</span>
+    <span class="n">checker_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">match_quality</span><span class="p">)</span>
+    <span class="n">score_cutoff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">"score_cutoff"</span><span class="p">])</span>
 
-    <span class="n">template</span> <span class="o">=</span> <span class="n">_load_match_quality_template</span><span class="p">(</span><span class="n">prompt_file</span><span class="p">)</span>
-    <span class="n">prompts</span> <span class="o">=</span> <span class="n">_build_match_quality_prompts</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">)</span>
+    <span class="c1"># Nothing to score: skip loading the checker pipeline.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">patients</span><span class="p">:</span>
+        <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">get_model_metadata</span><span class="p">(</span>
+            <span class="n">checker_config</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">],</span>
+            <span class="n">cache_dir</span><span class="o">=</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">model_metadata_cache_dir</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[],</span> <span class="n">model_metadata</span>
 
-    <span class="c1"># Run the backend text-classification model over all prompts.</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">_load_match_quality_template</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">checker_config</span><span class="p">[</span><span class="s2">"prompt_file"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="c1"># The checker was trained on clinical space first, patient summary second.</span>
+    <span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">patient</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">patient</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">patients</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">]</span>
+
     <span class="n">predictions</span><span class="p">,</span> <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">run_checker</span><span class="p">(</span>
         <span class="n">prompts</span><span class="p">,</span>
         <span class="n">checker_config</span><span class="o">=</span><span class="n">checker_config</span><span class="p">,</span>
         <span class="n">model_metadata_cache_dir</span><span class="o">=</span><span class="n">resolved_config</span><span class="o">.</span><span class="n">model_metadata_cache_dir</span><span class="p">,</span>
     <span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidate_pairs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompts</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">"Checker returned a different number of predictions than input rows."</span>
         <span class="p">)</span>
 
-    <span class="c1"># Convert model outputs into a compact, derived result table.</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">candidate_pairs</span><span class="p">[[</span><span class="s2">"patient_id"</span><span class="p">,</span> <span class="s2">"space_trial_id"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">confidence_scores</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">float</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">"score"</span><span class="p">])))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span>
-    <span class="p">]</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_score"</span><span class="p">]</span> <span class="o">=</span> <span class="n">confidence_scores</span>
-    <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_pass"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">score_cutoff</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">confidence_scores</span>
-    <span class="p">]</span>
-
-    <span class="c1"># Optionally keep only matches that pass the quality threshold.</span>
-    <span class="k">if</span> <span class="n">filter_low_quality</span><span class="p">:</span>
-        <span class="n">keep_rows</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">"match_quality_pass"</span><span class="p">]</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_rows</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># Optionally return metadata for reproducibility/debugging.</span>
-    <span class="k">if</span> <span class="n">return_metadata</span><span class="p">:</span>
-        <span class="n">metadata_payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"package"</span><span class="p">:</span> <span class="n">package_metadata</span><span class="p">(),</span>
-            <span class="s2">"config_snapshot"</span><span class="p">:</span> <span class="n">config_snapshot</span><span class="p">(</span><span class="n">resolved_config</span><span class="p">),</span>
-            <span class="s2">"model_metadata"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"score_match_quality"</span><span class="p">:</span> <span class="n">model_metadata</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">metadata_payload</span>
-    <span class="k">return</span> <span class="n">output</span>
+    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">"score"</span><span class="p">])))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">"match_quality_score"</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span> <span class="s2">"match_quality_pass"</span><span class="p">:</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">score_cutoff</span><span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">model_metadata</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2311,7 +2656,7 @@ llm_match_quality_parse_status : str
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
