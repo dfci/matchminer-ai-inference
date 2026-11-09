@@ -52,12 +52,12 @@ def exclusion_criteria_check_pairs(
     Returns
     -------
     tuple[list[dict], dict]
-        - One ``{"exclusion_label": str, "exclusion_score": float}`` per
-          pair, in input order, as the checker returns them.
-          ``exclusion_label`` is ``"NEGATIVE"`` when there is no evidence the
-          patient meets the trial's exclusion criteria, and ``"POSITIVE"``
-          when there is. ``exclusion_score`` is the checker's confidence in
-          that label.
+        - One ``{"exclusion_score": float, "exclusion_criteria_pass": bool}``
+          per pair, in input order (the same names as the
+          ``exclusion_criteria_check`` columns). ``exclusion_criteria_pass``
+          is True when the checker predicts the patient meets none of the
+          trial's exclusion criteria. ``exclusion_score`` is the checker's
+          confidence in that prediction, whichever way it went.
         - Model metadata (``model_name``, ``model_sha``, ...).
 
     Raises
@@ -108,10 +108,13 @@ def exclusion_criteria_check_pairs(
             "Checker returned a different number of predictions than input rows."
         )
 
+    # A NEGATIVE label means no evidence the patient meets the exclusion criteria.
     results: list[dict[str, Any]] = [
         {
-            "exclusion_label": str(prediction["label"]),
             "exclusion_score": float(prediction["score"]),
+            "exclusion_criteria_pass": (
+                str(prediction["label"]).strip().upper() == "NEGATIVE"
+            ),
         }
         for prediction in predictions
     ]
@@ -148,7 +151,7 @@ def exclusion_criteria_check(
         MMAI configuration containing exclusion checker settings.
         Uses default preset when omitted.
     filter_excluded : bool, default False
-        If True, return only rows where ``exclusion_label`` is ``"NEGATIVE"``.
+        If True, return only rows where ``exclusion_criteria_pass`` is True.
     return_metadata : bool, default False
         When True, also return a metadata dict containing the config snapshot
         and model metadata for this run.
@@ -164,11 +167,11 @@ def exclusion_criteria_check(
             Patient identifier.
         trial_id : str
             Trial identifier.
-        exclusion_label : str
-            ``"NEGATIVE"`` when there is no evidence the patient meets the
-            trial's exclusion criteria, ``"POSITIVE"`` when there is.
         exclusion_score : float
-            The checker's confidence in ``exclusion_label``.
+            Model-generated confidence score associated with exclusion-check label.
+        exclusion_criteria_pass : bool
+            True when the patient is predicted to pass exclusion criteria for
+            this trial; False otherwise.
     tuple[pd.DataFrame, dict]
         When return_metadata is True, returns the DataFrame plus metadata.
     """
@@ -202,19 +205,19 @@ def exclusion_criteria_check(
 
     # Map pair results back onto the input rows, in input order. Result keys are
     # the column names. Explicit dtypes so an empty input still yields
-    # str / float columns.
+    # float / bool columns.
     output = matches[["patient_id", "trial_id"]].copy()
     for column, dtype in (
-        ("exclusion_label", "object"),
         ("exclusion_score", "float64"),
+        ("exclusion_criteria_pass", "bool"),
     ):
         output[column] = pd.Series(
             [result[column] for result in results], index=output.index, dtype=dtype
         )
 
-    # Optionally drop rows with evidence the patient meets the exclusion criteria.
+    # Optionally keep only rows that passed exclusion criteria.
     if filter_excluded:
-        keep_rows = output["exclusion_label"].str.strip().str.upper() == "NEGATIVE"
+        keep_rows = output["exclusion_criteria_pass"]
         output = output.loc[keep_rows].copy()
     output = output.reset_index(drop=True)
 
