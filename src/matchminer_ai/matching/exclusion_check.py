@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from importlib import resources
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
+from matchminer_ai.llm.backends import get_model_metadata
 from .inference import run_checker
+from .rerank import _validate_text_list
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
@@ -37,6 +39,100 @@ def _build_exclusion_criteria_prompts(
         template.format(evidence, criteria)
         for evidence, criteria in zip(patient_evidence, trial_exclusions, strict=False)
     ]
+
+
+def exclusion_criteria_check_pairs(
+    *,
+    patient_exclusion_evidence: list[str],
+    trial_exclusion_criteria: list[str],
+    config: MMAIConfig | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """
+    Check patient evidence / trial exclusion criteria text pairs, in input order.
+
+    Service-layer entrypoint: takes plain text with no identifiers or
+    DataFrames. Pair ``i`` is
+    ``(patient_exclusion_evidence[i], trial_exclusion_criteria[i])``. To check
+    one patient against many trials, repeat the patient evidence.
+
+    Parameters
+    ----------
+    patient_exclusion_evidence : list[str]
+        Patient-level evidence related to exclusion criteria, one per pair.
+    trial_exclusion_criteria : list[str]
+        Trial-level exclusion criteria text, one per pair. Must be the same
+        length as ``patient_exclusion_evidence``.
+    config : MMAIConfig, optional
+        MMAI configuration containing ``exclusion_criteria`` checker settings.
+        Uses the default preset when omitted.
+
+    Returns
+    -------
+    tuple[list[dict], dict]
+        - One ``{"exclusion_label": str, "exclusion_score": float}`` per
+          pair, in input order, as the checker returns them.
+          ``exclusion_label`` is ``"NEGATIVE"`` when there is no evidence the
+          patient meets the trial's exclusion criteria, and ``"POSITIVE"``
+          when there is. ``exclusion_score`` is the checker's confidence in
+          that label.
+        - Model metadata (``model_name``, ``model_sha``, ...).
+
+    Raises
+    ------
+    TypeError
+        If either argument is a single ``str`` or contains non-string values.
+    ValueError
+        If the two sequences differ in length, or the checker returns a
+        different number of predictions than pairs.
+    """
+    patients = _validate_text_list(
+        "patient_exclusion_evidence", patient_exclusion_evidence
+    )
+    trials = _validate_text_list("trial_exclusion_criteria", trial_exclusion_criteria)
+    if len(patients) != len(trials):
+        raise ValueError(
+            "patient_exclusion_evidence and trial_exclusion_criteria must be the "
+            f"same length; got {len(patients)} and {len(trials)}."
+        )
+
+    resolved_config = config or load_default_preset()
+    checker_config = dict(resolved_config.exclusion_criteria)
+
+    # Nothing to check: skip loading the checker pipeline.
+    if not patients:
+        model_metadata = get_model_metadata(
+            checker_config["model_name"],
+            cache_dir=resolved_config.model_metadata_cache_dir,
+        )
+        return [], model_metadata
+
+    template = _load_exclusion_criteria_template(
+        str(checker_config["prompt_file"]).strip()
+    )
+
+    prompts = [
+        template.format(patient, trial)
+        for patient, trial in zip(patients, trials, strict=True)
+    ]
+
+    predictions, model_metadata = run_checker(
+        prompts,
+        checker_config=checker_config,
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    )
+    if len(predictions) != len(prompts):
+        raise ValueError(
+            "Checker returned a different number of predictions than input rows."
+        )
+
+    results: list[dict[str, Any]] = [
+        {
+            "exclusion_label": str(prediction["label"]),
+            "exclusion_score": float(prediction["score"]),
+        }
+        for prediction in predictions
+    ]
+    return results, model_metadata
 
 
 def exclusion_criteria_check(
@@ -153,4 +249,4 @@ def exclusion_criteria_check(
     return output
 
 
-__all__ = ["exclusion_criteria_check"]
+__all__ = ["exclusion_criteria_check", "exclusion_criteria_check_pairs"]
