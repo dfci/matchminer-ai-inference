@@ -106,7 +106,7 @@ def exclusion_criteria_check(
 
     # Resolve run config and build checker prompts from the configured template.
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.raw.get("exclusion_criteria", {}))
+    checker_config = dict(resolved_config.exclusion_criteria)
     prompt_file = str(checker_config["prompt_file"]).strip()
 
     template = _load_exclusion_criteria_template(prompt_file)
