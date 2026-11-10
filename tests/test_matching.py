@@ -7,6 +7,7 @@ import pytest
 from matchminer_ai.config import MMAIConfig
 from matchminer_ai.matching import (
     exclusion_criteria_check,
+    exclusion_criteria_check_pairs,
     exclusion_criteria_check_with_llm,
     generate_candidate_matches,
     rank_similarity,
@@ -474,6 +475,81 @@ def test_exclusion_criteria_check_return_metadata(monkeypatch):
     assert metadata["model_metadata"]["exclusion_criteria_check"]["model_name"] == (
         "ksg-dfci/BoilerPlateChecker-1225"
     )
+
+
+def _exclusion_criteria_config():
+    """Build a minimal exclusion-criteria checker config."""
+    return MMAIConfig(
+        preset_name="default",
+        debug_mode=False,
+        trial={},
+        patient={},
+        local={},
+        remote={},
+        embedding={},
+        model_metadata_cache_dir=None,
+        raw={},
+        exclusion_criteria={
+            "model_name": "ksg-dfci/BoilerPlateChecker-1225",
+            "device": "cpu",
+            "prompt_file": "exclusion_criteria_checker_template.txt",
+        },
+    )
+
+
+def test_exclusion_criteria_check_pairs_puts_patient_evidence_before_trial_criteria(
+    monkeypatch,
+):
+    """The checker was trained on "Patient history: <patient>\\nTrial
+    exclusions:<trial>". Both slots take free text, so filling the template the
+    other way round still runs and still returns plausible labels: a swap is
+    silent."""
+    backend = _MockCheckerBackend(
+        [{"label": "NEGATIVE", "score": 0.9}, {"label": "NEGATIVE", "score": 0.9}]
+    )
+    monkeypatch.setattr(
+        "matchminer_ai.matching.exclusion_check.run_checker", backend.run_checker
+    )
+
+    exclusion_criteria_check_pairs(
+        patient_exclusion_evidence=["patient A", "patient B"],
+        trial_exclusion_criteria=["trial A", "trial B"],
+        config=_exclusion_criteria_config(),
+    )
+
+    assert backend.last_prompts == [
+        "Patient history: patient A\nTrial exclusions:trial A",
+        "Patient history: patient B\nTrial exclusions:trial B",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("patient_exclusion_evidence", "trial_exclusion_criteria", "error"),
+    [
+        (["p1"], ["t1", "t2"], ValueError),
+        ("p1", ["t1", "t2"], TypeError),
+        (["p1", None], ["t1", "t2"], TypeError),
+    ],
+    ids=["length-mismatch", "bare-str", "non-str-item"],
+)
+def test_exclusion_criteria_check_pairs_rejects_inputs_that_would_misalign(
+    monkeypatch, patient_exclusion_evidence, trial_exclusion_criteria, error
+):
+    """Inputs that can't be paired one-to-one must fail before the model runs,
+    not be checked. A bare str would otherwise be read as one evidence text per
+    character, and a None would be checked as the literal text "None"."""
+    backend = _MockCheckerBackend([])
+    monkeypatch.setattr(
+        "matchminer_ai.matching.exclusion_check.run_checker", backend.run_checker
+    )
+
+    with pytest.raises(error):
+        exclusion_criteria_check_pairs(
+            patient_exclusion_evidence=patient_exclusion_evidence,
+            trial_exclusion_criteria=trial_exclusion_criteria,
+            config=_exclusion_criteria_config(),
+        )
+    assert backend.last_prompts is None
 
 
 def test_run_checker_reuses_cached_pipeline(monkeypatch):
