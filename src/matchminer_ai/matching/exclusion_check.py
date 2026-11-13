@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from importlib import resources
 
 from matchminer_ai._metadata import package_metadata
 from matchminer_ai.config import config_snapshot, load_default_preset
+from matchminer_ai.llm.backends import get_model_metadata
 from .inference import run_checker
+from .rerank import _validate_text_list
 
 if TYPE_CHECKING:
     from matchminer_ai.config import MMAIConfig
@@ -22,21 +24,101 @@ def _load_exclusion_criteria_template(filename: str) -> str:
         return handle.read().strip()
 
 
-def _build_exclusion_criteria_prompts(
-    matches: pd.DataFrame,
+def exclusion_criteria_check_pairs(
     *,
-    template: str,
-) -> list[str]:
-    patient_evidence = (
-        matches["general_exclusion_criteria_evidence"].fillna("").astype(str).tolist()
+    patient_exclusion_evidence: list[str],
+    trial_exclusion_criteria: list[str],
+    config: MMAIConfig | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """
+    Check patient evidence / trial exclusion criteria text pairs, in input order.
+
+    Service-layer entrypoint: takes plain text with no identifiers or
+    DataFrames. Pair ``i`` is
+    ``(patient_exclusion_evidence[i], trial_exclusion_criteria[i])``. To check
+    one patient against many trials, repeat the patient evidence.
+
+    Parameters
+    ----------
+    patient_exclusion_evidence : list[str]
+        Patient-level evidence related to exclusion criteria, one per pair.
+    trial_exclusion_criteria : list[str]
+        Trial-level exclusion criteria text, one per pair. Must be the same
+        length as ``patient_exclusion_evidence``.
+    config : MMAIConfig, optional
+        MMAI configuration containing ``exclusion_criteria`` checker settings.
+        Uses the default preset when omitted.
+
+    Returns
+    -------
+    tuple[list[dict], dict]
+        - One ``{"exclusion_score": float, "exclusion_criteria_pass": bool}``
+          per pair, in input order (the same names as the
+          ``exclusion_criteria_check`` columns). ``exclusion_criteria_pass``
+          is True when the checker predicts the patient meets none of the
+          trial's exclusion criteria. ``exclusion_score`` is the checker's
+          confidence in that prediction, whichever way it went.
+        - Model metadata (``model_name``, ``model_sha``, ...).
+
+    Raises
+    ------
+    TypeError
+        If either argument is a single ``str`` or contains non-string values.
+    ValueError
+        If the two sequences differ in length, or the checker returns a
+        different number of predictions than pairs.
+    """
+    patients = _validate_text_list(
+        "patient_exclusion_evidence", patient_exclusion_evidence
     )
-    trial_exclusions = (
-        matches["general_exclusion_criteria"].fillna("").astype(str).tolist()
+    trials = _validate_text_list("trial_exclusion_criteria", trial_exclusion_criteria)
+    if len(patients) != len(trials):
+        raise ValueError(
+            "patient_exclusion_evidence and trial_exclusion_criteria must be the "
+            f"same length; got {len(patients)} and {len(trials)}."
+        )
+
+    resolved_config = config or load_default_preset()
+    checker_config = dict(resolved_config.exclusion_criteria)
+
+    # Nothing to check: skip loading the checker pipeline.
+    if not patients:
+        model_metadata = get_model_metadata(
+            checker_config["model_name"],
+            cache_dir=resolved_config.model_metadata_cache_dir,
+        )
+        return [], model_metadata
+
+    template = _load_exclusion_criteria_template(
+        str(checker_config["prompt_file"]).strip()
     )
-    return [
-        template.format(evidence, criteria)
-        for evidence, criteria in zip(patient_evidence, trial_exclusions, strict=False)
+
+    prompts = [
+        template.format(patient, trial)
+        for patient, trial in zip(patients, trials, strict=True)
     ]
+
+    predictions, model_metadata = run_checker(
+        prompts,
+        checker_config=checker_config,
+        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    )
+    if len(predictions) != len(prompts):
+        raise ValueError(
+            "Checker returned a different number of predictions than input rows."
+        )
+
+    # A NEGATIVE label means no evidence the patient meets the exclusion criteria.
+    results: list[dict[str, Any]] = [
+        {
+            "exclusion_score": float(prediction["score"]),
+            "exclusion_criteria_pass": (
+                str(prediction["label"]).strip().upper() == "NEGATIVE"
+            ),
+        }
+        for prediction in predictions
+    ]
+    return results, model_metadata
 
 
 def exclusion_criteria_check(
@@ -104,35 +186,34 @@ def exclusion_criteria_check(
     if missing:
         raise ValueError(f"matches is missing required columns: {', '.join(missing)}")
 
-    # Resolve run config and build checker prompts from the configured template.
+    # Resolve once so the config snapshot matches the config actually checked with.
     resolved_config = config or load_default_preset()
-    checker_config = dict(resolved_config.exclusion_criteria)
-    prompt_file = str(checker_config["prompt_file"]).strip()
 
-    template = _load_exclusion_criteria_template(prompt_file)
-    prompts = _build_exclusion_criteria_prompts(matches, template=template)
-
-    # Run the backend text-classification model over all prompts.
-    predictions, model_metadata = run_checker(
-        prompts,
-        checker_config=checker_config,
-        model_metadata_cache_dir=resolved_config.model_metadata_cache_dir,
+    # Missing text becomes "" (the service layer requires str), then check.
+    results, model_metadata = exclusion_criteria_check_pairs(
+        patient_exclusion_evidence=(
+            matches["general_exclusion_criteria_evidence"]
+            .fillna("")
+            .astype(str)
+            .tolist()
+        ),
+        trial_exclusion_criteria=(
+            matches["general_exclusion_criteria"].fillna("").astype(str).tolist()
+        ),
+        config=resolved_config,
     )
 
-    if len(predictions) != len(matches):
-        raise ValueError(
-            "Checker returned a different number of predictions than input rows."
-        )
-
-    # Convert model outputs into a compact, derived result table.
+    # Map pair results back onto the input rows, in input order. Result keys are
+    # the column names. Explicit dtypes so an empty input still yields
+    # float / bool columns.
     output = matches[["patient_id", "trial_id"]].copy()
-    output["exclusion_score"] = [
-        float(prediction["score"]) for prediction in predictions
-    ]
-    output["exclusion_criteria_pass"] = [
-        str(prediction["label"]).strip().upper() == "NEGATIVE"
-        for prediction in predictions
-    ]
+    for column, dtype in (
+        ("exclusion_score", "float64"),
+        ("exclusion_criteria_pass", "bool"),
+    ):
+        output[column] = pd.Series(
+            [result[column] for result in results], index=output.index, dtype=dtype
+        )
 
     # Optionally keep only rows that passed exclusion criteria.
     if filter_excluded:
@@ -153,4 +234,4 @@ def exclusion_criteria_check(
     return output
 
 
-__all__ = ["exclusion_criteria_check"]
+__all__ = ["exclusion_criteria_check", "exclusion_criteria_check_pairs"]
