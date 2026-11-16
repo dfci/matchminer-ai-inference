@@ -258,7 +258,12 @@ def test_generate_embeddings_applies_configured_max_seq_length(monkeypatch):
             loaded_models.append(self)
 
         def encode(
-            self, texts, prompt_name, batch_size, convert_to_tensor, normalize_embeddings
+            self,
+            texts,
+            prompt_name,
+            batch_size,
+            convert_to_tensor,
+            normalize_embeddings,
         ):
             assert prompt_name == "query"
             assert batch_size == 12
