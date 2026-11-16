@@ -73,7 +73,7 @@ def generate_embeddings(
     with torch.no_grad():
         embeddings_tensor = model.encode(
             texts,
-            prompt="query",
+            prompt_name="query",
             batch_size=12,
             convert_to_tensor=True,
             normalize_embeddings=True,
@@ -92,7 +92,7 @@ def count_embedding_tokens(
         embedding_config
     )
     tokenizer = _get_embedding_tokenizer(model_path)
-    prepared = [f"{query_prompt} {text}".strip() for text in texts]
+    prepared = [query_prompt + text for text in texts]
     encoded = tokenizer(prepared, add_special_tokens=True, truncation=False)
     input_ids = encoded["input_ids"] if isinstance(encoded, dict) else encoded.input_ids
     return [len(ids) for ids in input_ids]
