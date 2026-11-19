@@ -400,11 +400,14 @@ async def generate_remote_llm_outputs_async(
             finish_reasons[result.row_idx] = result.finish_reason
         return texts, reasonings, finish_reasons
     finally:
-        close_tasks = [
-            client.aclose() for client, _ in server_clients if hasattr(client, "aclose")
-        ]
-        if close_tasks:
-            await asyncio.gather(*close_tasks, return_exceptions=True)
+        # Clients must be
+        # closed on this loop: an unclosed client is closed by the SDK's
+        # ``__del__`` on whatever loop is running at GC time, which fails with
+        # "Event loop is closed" once ``asyncio.run`` has torn this loop down.
+        await asyncio.gather(
+            *(client.close() for client, _ in server_clients),
+            return_exceptions=True,
+        )
 
 
 def generate_remote_llm_outputs(

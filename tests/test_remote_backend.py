@@ -41,7 +41,8 @@ class FakeAsyncOpenAI:
         self.closed = False
         FakeAsyncOpenAI.clients.append(self)
 
-    async def aclose(self):
+    async def close(self):
+        """Match AsyncOpenAI, whose async close method is ``close()``."""
         self.closed = True
 
     async def create(self, **kwargs):
