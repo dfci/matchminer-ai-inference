@@ -253,14 +253,19 @@ def test_generate_embeddings_applies_configured_max_seq_length(monkeypatch):
         def __init__(self, model_path, device):
             self.model_path = model_path
             self.device = device
-            self.prompts = {}
+            self.prompts = {"query": "stored model prompt"}
             self.max_seq_length = None
             loaded_models.append(self)
 
         def encode(
-            self, texts, prompt, batch_size, convert_to_tensor, normalize_embeddings
+            self,
+            texts,
+            prompt_name,
+            batch_size,
+            convert_to_tensor,
+            normalize_embeddings,
         ):
-            assert prompt == "query"
+            assert prompt_name == "query"
             assert batch_size == 12
             assert convert_to_tensor is True
             assert normalize_embeddings is True
@@ -308,7 +313,7 @@ def test_count_embedding_tokens_uses_tokenizer_without_loading_model(monkeypatch
 
     class FakeTokenizer:
         def __call__(self, texts, add_special_tokens=True, truncation=False):
-            assert texts == ["query prompt abc", "query prompt de"]
+            assert texts == ["query promptabc", "query promptde"]
             assert add_special_tokens is True
             assert truncation is False
             return {"input_ids": [[1, 2, 3], [1, 2]]}
